@@ -1,0 +1,6 @@
+@import "variables";
+@import "../tripoin-valo/valotripoin";
+
+.tripoin-valo-metro {
+   @include valotripoin;
+}

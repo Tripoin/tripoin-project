@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
+        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
+	
+	<int:channel id="responseChannelUser"/>
+	<int:channel id="requestChannelUser"/>
+	
+	<int:channel id="responseChannelUserSave"/>
+	<int:channel id="requestChannelUserSave"/>
+	<int:channel id="routeChannelUserSave"/>
+	
+	<int:channel id="responseChannelUserUpdate"/>
+	<int:channel id="requestChannelUserUpdate"/>
+	<int:channel id="routeChannelUserUpdate"/>
+	
+	<int:channel id="responseChannelUserDelete"/>
+	<int:channel id="requestChannelUserDelete"/>
+	<int:channel id="routeChannelUserDelete"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelUser"
+		reply-channel="responseChannelUser"
+		supported-methods="GET" 
+		path="/wscontext/user/load">
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>	
+	<int:service-activator ref="userEndpoint" method="getAllUser" input-channel="requestChannelUser" output-channel="responseChannelUser"/>
+		
+	<int-http:inbound-gateway request-channel="requestChannelUserSave"
+		reply-channel="responseChannelUserSave"
+		supported-methods="POST" 
+		path="/wscontext/user/save, /wscontext/user/save/{product}"
+		request-payload-type="com.tripoin.core.dto.UserData">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelProductSave" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelUserSave"/>
+	</int:router>	
+	<int:service-activator ref="userSaveEndpoint" method="saveProduct" input-channel="requestChannelUserSave" output-channel="responseChannelUserSave"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelUserUpdate"
+		reply-channel="responseChannelUserUpdate"
+		supported-methods="POST" 
+		path="/wscontext/user/update, /wscontext/user/save/{product}"
+		request-payload-type="com.tripoin.core.dto.UserData">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelUserUpdate" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelUserUpdate"/>
+	</int:router>	
+	<int:service-activator ref="userUpdateEndpoint" method="saveProduct" input-channel="requestChannelUserUpdate" output-channel="responseChannelUserUpdate"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelUserDelete"
+		reply-channel="responseChannelUserDelete"
+		supported-methods="POST" 
+		path="/wscontext/user/delete, /wscontext/user/save/{product}"
+		request-payload-type="com.tripoin.core.dto.UserData">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelUserDelete" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelUserDelete"/>
+	</int:router>	
+	<int:service-activator ref="userDeleteEndpoint" method="saveProduct" input-channel="requestChannelUserDelete" output-channel="responseChannelUserDelete"/>
+	
+</beans>
