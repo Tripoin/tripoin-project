@@ -47,10 +47,16 @@ public class ForgotPasswordEndpoint extends XReturnStatus {
 	
 	private String emailTo;
 	private String emailFrom;
+	private String webAppHost;
 
 	@Value("${tripoin.email.from}")
 	public void setEmailFrom(String emailFrom) {
 		this.emailFrom = emailFrom;
+	}
+
+	@Value("${tripoin.web.app.host}")
+	public void setWebAppHost(String webAppHost) {
+		this.webAppHost = webAppHost;
 	}
 
 	@Secured({RoleConstant.ROLE_ANONYMOUS_SECURE})
@@ -76,7 +82,7 @@ public class ForgotPasswordEndpoint extends XReturnStatus {
 					connect.setResponseDesc("Account is expired");					
 				}else{
 				    Profile profile = profileList.get(0);
-				    if(profile.getForgotExpired() == null && new Date().after(profile.getForgotExpired())){
+				    if(profile.getForgotExpired() == null || new Date().after(profile.getForgotExpired())){
 					    UUID uuid = UUID.randomUUID();
 					    Date expired = addDays(new Date(), 1);
 					    profile.setForgotUUID(uuid.toString());
@@ -88,7 +94,11 @@ public class ForgotPasswordEndpoint extends XReturnStatus {
 				    Map<String, String> mapSystemParamter = new HashMap<String, String>();
 				    for(SystemParameter systemParameter : systemParameters)
 				    	mapSystemParamter.put(systemParameter.getCode(), systemParameter.getValue());
-					iCoreMailSender.sendMailContent(emailFrom, emailTo, mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_SUBJECT), mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_BODY));
+				    String content = mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_BODY);
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_FULLNAME, profile.getName());
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_USERNAME, profile.getUser().getUsername());
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_URL, webAppHost.concat("/forgotpassword").concat("?user=").concat(profile.getUser().getUsername()).concat("&uuid=").concat(profile.getForgotUUID()));
+					iCoreMailSender.sendMailContent(emailFrom, emailTo, mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_SUBJECT), content);
 					connect.setResponseCode("0");
 					connect.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
 					connect.setResponseDesc("Forgot Password Success");					
