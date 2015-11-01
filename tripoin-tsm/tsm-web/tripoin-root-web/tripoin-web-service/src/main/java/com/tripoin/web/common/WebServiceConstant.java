@@ -17,7 +17,8 @@ public class WebServiceConstant {
 	
 	public static final String HTTP_ONLY = "HttpOnly";
 
-	public static final String HTTP_FORGOT_PASSWORD = HTTP_CONTEXT_ANONYMOUS.concat("/forgotpassword");
+	public static final String HTTP_FORGOT_PASSWORD_PATH = "/forgotpassword";
+	public static final String HTTP_FORGOT_PASSWORD = HTTP_CONTEXT_ANONYMOUS.concat(HTTP_FORGOT_PASSWORD_PATH);
 	public static final String HTTP_FORGOT_PASSWORD_VERIFY = HTTP_CONTEXT_ANONYMOUS.concat("/forgotpassword").concat(HTTP_VERIFY);
 	
 	public static final String HTTP_CONNECTION = HTTP_CONTEXT_DEFAULT.concat("/connection");	

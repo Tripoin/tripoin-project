@@ -15,11 +15,14 @@ public enum EWebUIConstant {
         		+ "Keep me logged in."),
     NOTIF_FAILURE_FORGOT_PASSWORD_TITLE("Warning"),
     NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE("Email Failure"),
-    NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC("Account is expired."),
+    NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE("Link Failure"),
+    NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC("Account has been expired."),
     NOTIF_ACOUNT_ENABLED_FORGOT_PASSWORD_DESC("Account is no longer active."),	
     NOTIF_EMAIL_NULL_FORGOT_PASSWORD_DESC("Email is not registered."),		
-    NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC("Email is not valid."),	
-	
+    NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC("Email is not valid."),
+    NOTIF_LINK_EXPIRED_FORGOT_PASSWORD_DESC("Link has been is expired."),
+    NOTIF_LINK_NULL_FORGOT_PASSWORD_DESC("Link is not found."),
+
     REGEX_EMAIL("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"),
 	REGEX_USERNAME("^[a-zA-Z0-9_.@-]{5,55}$"),

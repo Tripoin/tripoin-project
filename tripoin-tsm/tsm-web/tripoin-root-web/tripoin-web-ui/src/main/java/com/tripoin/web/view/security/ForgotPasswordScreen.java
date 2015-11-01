@@ -119,8 +119,8 @@ public class ForgotPasswordScreen extends CssLayout implements View {
 			@Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
-                	email.setValue(null);
-                	reTypeEmail.setValue(null);
+                	email.setValue("");
+                	reTypeEmail.setValue("");
                 	Page.getCurrent().setTitle("Tripoin Login");
     	            getUI().setContent(loginScreen);
                 } finally {
@@ -153,24 +153,24 @@ public class ForgotPasswordScreen extends CssLayout implements View {
         			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
                     notificationAfterSend.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
             		notificationAfterSend.show(Page.getCurrent());
-                	email.setValue(null);
-                	reTypeEmail.setValue(null);        		
+            		email.setValue("");
+                	reTypeEmail.setValue("");        		
                 	Page.getCurrent().setTitle("Tripoin Login");
                     getUI().setContent(loginScreen);
         		}else if("2".equals(generalTransferObject.getResponseCode())){    			
         			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
                     notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACOUNT_ENABLED_FORGOT_PASSWORD_DESC.toString());
             		notificationAfterSend.show(Page.getCurrent());  
-                	email.setValue(null);
-                	reTypeEmail.setValue(null);      		
+            		email.setValue("");
+                	reTypeEmail.setValue("");    		
                 	Page.getCurrent().setTitle("Tripoin Login");
                     getUI().setContent(loginScreen);    			
         		}else if("3".equals(generalTransferObject.getResponseCode())){    			
         			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
                     notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC.toString());
             		notificationAfterSend.show(Page.getCurrent());  
-                	email.setValue(null);
-                	reTypeEmail.setValue(null);      		
+                	email.setValue("");
+                	reTypeEmail.setValue("");      		
                 	Page.getCurrent().setTitle("Tripoin Login");
                     getUI().setContent(loginScreen);    			
         		}else {    			

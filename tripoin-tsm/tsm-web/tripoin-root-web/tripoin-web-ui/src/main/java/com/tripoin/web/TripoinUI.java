@@ -14,10 +14,13 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.MenuData;
 import com.tripoin.web.authentication.IAccessControl;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.IStateFullRest;
+import com.tripoin.web.common.WebServiceConstant;
+import com.tripoin.web.service.IForgotPasswordService;
 import com.tripoin.web.service.ILogoutService;
 import com.tripoin.web.servlet.DiscoveryNavigator;
 import com.tripoin.web.view.ErrorView;
@@ -83,10 +86,36 @@ public class TripoinUI extends UI implements ErrorHandler {
 	
 	@Autowired
 	private ILogoutService logoutService;
+	
+	@Autowired
+	private IForgotPasswordService forgotPasswordService;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         try{
+        	if(WebServiceConstant.HTTP_FORGOT_PASSWORD_PATH.equals(getPage().getLocation().getPath())){
+        		String[] rawParameter = getPage().getLocation().getQuery().split("&");
+        		String username =rawParameter[0].split("=")[1];
+        		String uuid =rawParameter[1].split("=")[1];
+        		GeneralTransferObject generalTransferObject = forgotPasswordService.verifyForgotPassword(username, uuid);
+    			Notification notificationVerifyEmail = new Notification("");  
+        		notificationVerifyEmail.setStyleName("system closable");
+        		notificationVerifyEmail.setPosition(Position.BOTTOM_CENTER);
+                notificationVerifyEmail.setDelayMsec(7500);
+        		if("0".equals(generalTransferObject.getResponseCode())){			
+        			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
+        			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
+        			notificationVerifyEmail.show(Page.getCurrent());        			
+        		}else if("2".equals(generalTransferObject.getResponseCode())){			
+        			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+        			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_EXPIRED_FORGOT_PASSWORD_DESC.toString());
+        			notificationVerifyEmail.show(Page.getCurrent());          			
+        		}else{			
+        			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+        			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_NULL_FORGOT_PASSWORD_DESC.toString());
+        			notificationVerifyEmail.show(Page.getCurrent());            			
+        		}
+        	}
         	getSession().setErrorHandler(this);
 	        Responsive.makeResponsive(this);
 	        addStyleName(ValoTheme.UI_WITH_MENU);

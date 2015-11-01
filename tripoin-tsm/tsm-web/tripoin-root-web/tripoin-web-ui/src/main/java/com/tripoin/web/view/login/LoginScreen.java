@@ -116,7 +116,9 @@ public class LoginScreen extends CssLayout implements View {
         forgotPassword.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = -2432274293955123347L;
 			@Override
-            public void buttonClick(Button.ClickEvent event) {				
+            public void buttonClick(Button.ClickEvent event) {	
+				username.setValue("");
+				password.setValue("");
 	        	Page.getCurrent().setTitle("Tripoin Forgot Password");
 	            getUI().setContent(forgotPasswordScreen);
             }

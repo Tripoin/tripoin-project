@@ -32,4 +32,14 @@ public class ForgotPasswordServiceImpl implements IForgotPasswordService {
 		return generalTransferObject;
 	}
 
+	@Override
+	public GeneralTransferObject verifyForgotPassword(String username, String uuid) {
+		stateFullRest.clearAllCookies();
+		stateFullRest.setUsername("tripoin.app.web");
+		stateFullRest.setPassword("72jsoH!=jn3oskqPHJ#@");
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_FORGOT_PASSWORD_VERIFY), ParameterConstant.FORGOT_PASSWORD_USERNAME.concat(username).concat("&").concat(ParameterConstant.FORGOT_PASSWORD_UUID).concat(uuid), GeneralTransferObject.class);
+		stateFullRest.clearAllCookies();
+		return generalTransferObject;
+	}
+
 }
