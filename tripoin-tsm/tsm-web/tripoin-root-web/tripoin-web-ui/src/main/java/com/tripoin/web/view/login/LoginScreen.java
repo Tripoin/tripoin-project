@@ -159,7 +159,7 @@ public class LoginScreen extends CssLayout implements View {
     }
 
     private void showNotification(Notification notification) {
-        notification.setDelayMsec(2000);
+        notification.setDelayMsec(1500);
         notification.show(Page.getCurrent());
     }
 

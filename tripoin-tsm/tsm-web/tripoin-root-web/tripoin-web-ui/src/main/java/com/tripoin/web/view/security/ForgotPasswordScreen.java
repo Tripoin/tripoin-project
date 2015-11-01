@@ -2,6 +2,11 @@ package com.tripoin.web.view.security;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.web.common.EWebUIConstant;
+import com.tripoin.web.service.IForgotPasswordService;
 import com.tripoin.web.view.login.LoginScreen;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
@@ -26,11 +31,15 @@ import com.vaadin.ui.themes.ValoTheme;
 public class ForgotPasswordScreen extends CssLayout implements View {
 
 	private static final long serialVersionUID = -1126309038760546247L;
+	
+	@Autowired
+	private IForgotPasswordService forgotPasswordService;
+	
 	private TextField email;
 	private TextField reTypeEmail;
     private Button send;
     private Button cancel;
-    private Notification notification = new Notification("");
+    private Notification notificationAfterSend = new Notification("");
     
     private LoginScreen loginScreen;
     
@@ -64,12 +73,9 @@ public class ForgotPasswordScreen extends CssLayout implements View {
         addComponent(centeringLayout);
         addComponent(loginInformation);
         
-		notification.setCaption("Email Confirmation");
-        notification.setDescription("Confirmation change password has been sent, please check your email!\n"
-        		+ "Keep me logged in.");
-		notification.setStyleName("system closable");
-        notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(5000);
+		notificationAfterSend.setStyleName("system closable");
+        notificationAfterSend.setPosition(Position.BOTTOM_CENTER);
+        notificationAfterSend.setDelayMsec(5000);
     }
 
     private Component buildLoginForm() {
@@ -113,6 +119,8 @@ public class ForgotPasswordScreen extends CssLayout implements View {
 			@Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
+                	email.setValue(null);
+                	reTypeEmail.setValue(null);
                 	Page.getCurrent().setTitle("Tripoin Login");
     	            getUI().setContent(loginScreen);
                 } finally {
@@ -139,15 +147,57 @@ public class ForgotPasswordScreen extends CssLayout implements View {
 
     private void sendEmailForgotPassword() {
     	if(email.getValue().equals(reTypeEmail.getValue())){
-    		notification.show(Page.getCurrent());
-        	Page.getCurrent().setTitle("Tripoin Login");
-            getUI().setContent(loginScreen);    		
-    	}    	
+    		if(email.getValue().matches(EWebUIConstant.REGEX_EMAIL.toString())){
+        		GeneralTransferObject generalTransferObject = forgotPasswordService.forgotPassword(email.getValue());
+        		if("0".equals(generalTransferObject.getResponseCode())){    			
+        			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
+                    notificationAfterSend.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
+            		notificationAfterSend.show(Page.getCurrent());
+                	email.setValue(null);
+                	reTypeEmail.setValue(null);        		
+                	Page.getCurrent().setTitle("Tripoin Login");
+                    getUI().setContent(loginScreen);
+        		}else if("2".equals(generalTransferObject.getResponseCode())){    			
+        			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
+                    notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACOUNT_ENABLED_FORGOT_PASSWORD_DESC.toString());
+            		notificationAfterSend.show(Page.getCurrent());  
+                	email.setValue(null);
+                	reTypeEmail.setValue(null);      		
+                	Page.getCurrent().setTitle("Tripoin Login");
+                    getUI().setContent(loginScreen);    			
+        		}else if("3".equals(generalTransferObject.getResponseCode())){    			
+        			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
+                    notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC.toString());
+            		notificationAfterSend.show(Page.getCurrent());  
+                	email.setValue(null);
+                	reTypeEmail.setValue(null);      		
+                	Page.getCurrent().setTitle("Tripoin Login");
+                    getUI().setContent(loginScreen);    			
+        		}else {    			
+        			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString(),
+                            Notification.Type.HUMANIZED_MESSAGE));
+                    email.focus(); 			
+        		}    			
+    		}else{
+    			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString(),
+                        Notification.Type.HUMANIZED_MESSAGE));
+                email.focus();
+    		}
+    	}else{
+    		showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.LOGIN_FAILED_DESC.toString(),
+                    Notification.Type.HUMANIZED_MESSAGE));
+    		email.focus();
+    	}
     }
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		
 	}
+
+    private void showNotification(Notification notification) {
+        notification.setDelayMsec(1500);
+        notification.show(Page.getCurrent());
+    }
     
 }

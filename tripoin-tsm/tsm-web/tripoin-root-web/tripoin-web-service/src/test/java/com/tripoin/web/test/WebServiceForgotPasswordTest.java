@@ -12,8 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.MenuData;
-import com.tripoin.core.dto.MenuTransferObject;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -24,13 +23,13 @@ import com.tripoin.web.common.WebServiceConstant;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/spring/applicationContext-web-service.xml",
 		"classpath:META-INF/spring/applicationContext-web-service-test.xml"})
-public class WebServiceLoginMenuTest implements ApplicationContextAware {
+public class WebServiceForgotPasswordTest implements ApplicationContextAware {
 	
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(WebServiceLoginMenuTest.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WebServiceForgotPasswordTest.class);
 	
 	@Autowired
 	private ICommonRest commonRest;
-
+	
 	@Autowired
 	private IStateFullRest stateFullRestTest;
 		
@@ -49,14 +48,14 @@ public class WebServiceLoginMenuTest implements ApplicationContextAware {
 	}
 
 	@Test
-	public void runResponseGetTest() {
-		stateFullRestTest.setUsername("admin");
-		stateFullRestTest.setPassword("admin");
-		
-		MenuTransferObject menuTransferObject = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_LOGIN_MENU), ParameterConstant.VIEW_TYPE.concat(ParameterConstant.VIEW_WEB), MenuTransferObject.class);		
-		LOGGER.debug("Response Message Menu : ".concat(menuTransferObject.getResponseMsg()));
-		for(MenuData menuData : menuTransferObject.getMenuDatas())
-			LOGGER.debug("Response Data Menu : ".concat(menuData.toString()));
+	public void runResponsePostTest() {
+		String email = "ridla.fadilah@gmail.com";
+		stateFullRestTest.clearAllCookies();
+		stateFullRestTest.setUsername("tripoin.app.web");
+		stateFullRestTest.setPassword("72jsoH!=jn3oskqPHJ#@");
+		GeneralTransferObject generalTransferObject = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_FORGOT_PASSWORD), ParameterConstant.FORGOT_PASSWORD_EMAIL.concat(email), GeneralTransferObject.class);
+		stateFullRestTest.clearAllCookies();
+		LOGGER.debug("General Transfer Object : ".concat(generalTransferObject.toString()));
 	}
 
 }
