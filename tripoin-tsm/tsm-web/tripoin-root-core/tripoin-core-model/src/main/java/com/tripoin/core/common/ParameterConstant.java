@@ -27,11 +27,16 @@ public class ParameterConstant {
 	public static final String MENU_NON_PAGE = "MENU-NON-PAGE";
 
 	public static final String FORGOT_PASSWORD_EMAIL = "EMAIL-FORGOT-PASSWORD=";
+	public static final String FORGOT_PASSWORD_USERNAME = "USERNAME-FORGOT-PASSWORD=";
+	public static final String FORGOT_PASSWORD_UUID = "UUID-FORGOT-PASSWORD=";
 	public static final String FORGOT_PASSWORD_SUBJECT = "TRIPOIN.EMAIL.FORGOT.PASSWORD.SUBJECT";
 	public static final String FORGOT_PASSWORD_BODY = "TRIPOIN.EMAIL.FORGOT.PASSWORD.BODY.MESSAGE";
+	public static final String FORGOT_PASSWORD_VERIFY_SUBJECT = "TRIPOIN.EMAIL.FORGOT.PASSWORD.VERIFY.SUBJECT";
+	public static final String FORGOT_PASSWORD_VERIFY_BODY = "TRIPOIN.EMAIL.FORGOT.PASSWORD.VERIFY.BODY.MESSAGE";
 
 	public static final String TRIPOIN_CONTENT_FULLNAME = "\\$\\{TRIPOIN.CONTENT.FULLNAME\\}";
 	public static final String TRIPOIN_CONTENT_USERNAME = "\\$\\{TRIPOIN.CONTENT.USERNAME\\}";
+	public static final String TRIPOIN_CONTENT_PASSWORD = "\\$\\{TRIPOIN.CONTENT.PASSWORD\\}";
 	public static final String TRIPOIN_CONTENT_URL = "\\$\\{TRIPOIN.CONTENT.URL\\}";	
 	
 }
