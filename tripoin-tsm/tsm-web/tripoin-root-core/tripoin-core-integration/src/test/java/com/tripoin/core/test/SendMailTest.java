@@ -1,10 +1,11 @@
 package com.tripoin.core.test;
 
-import org.jasypt.digest.StandardStringDigester;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +13,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.pojo.SystemParameter;
+import com.tripoin.core.service.util.ISystemParameterService;
+import com.tripoin.util.mail.ICoreMailSender;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -20,17 +24,14 @@ import com.tripoin.core.service.IGenericManagerJpa;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/spring/applicationContext-mail.xml",
 		"classpath:META-INF/spring/datasource/dataSourceContext-mysql.xml",
-		"classpath:META-INF/spring/applicationContext-jpa.xml",
-		"classpath*:WEB-INF/config/security-integration-config.xml" })
-public class GenerateUserTest implements ApplicationContextAware {
-	
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(GenerateUserTest.class);
+		"classpath:META-INF/spring/applicationContext-jpa.xml" })
+public class SendMailTest implements ApplicationContextAware {
 	
 	@Autowired
-	private StandardStringDigester jasyptStringDigester;
-	
+	private ISystemParameterService systemParameterService;
+
 	@Autowired
-	private IGenericManagerJpa iGenericManagerJpa;
+	private ICoreMailSender iCoreMailSender;
 	
 	private ApplicationContext applicationContext;
 	
@@ -48,7 +49,11 @@ public class GenerateUserTest implements ApplicationContextAware {
 	
 	@Test
 	public void runTest() throws Exception {
-		LOGGER.debug("Password spring : ".concat(jasyptStringDigester.digest("72jsoH!=jn3oskqPHJ#@")));		
+		List<SystemParameter> systemParameters = systemParameterService.listValue(new Object[]{ParameterConstant.FORGOT_PASSWORD_SUBJECT, ParameterConstant.FORGOT_PASSWORD_BODY});
+	    Map<String, String> mapSystemParamter = new HashMap<String, String>();
+	    for(SystemParameter systemParameter : systemParameters)
+	    	mapSystemParamter.put(systemParameter.getCode(), systemParameter.getValue());
+		iCoreMailSender.sendMailContent("noreply@tripoin.co.id", "ridla.fadilah@gmail.com", mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_SUBJECT), mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_BODY));		
 	}
 
 }

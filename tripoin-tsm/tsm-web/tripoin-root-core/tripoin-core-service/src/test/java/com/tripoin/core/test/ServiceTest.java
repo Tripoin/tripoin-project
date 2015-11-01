@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
-import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.Profile;
 import com.tripoin.core.pojo.SystemParameter;
@@ -60,9 +59,9 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Test
 	public void runTest() throws Exception {
-		String username = "ridla";
+		String username = "tripoin.app.web";	
 		
-		List<User> users = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{username}, new PageArgument(0,2));
+		List<User> users = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{username}, null);
 		for(User user : users) LOGGER.debug("User Data : "+user);
 		
 		List<Menu> menus = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? ORDER BY mn.tree ASC", new Object[]{"ROLE_SALESSUPERVISOR"}, null);

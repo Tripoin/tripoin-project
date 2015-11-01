@@ -67,7 +67,7 @@ public class ForgotPasswordEndpoint extends XReturnStatus {
 			List<Profile> profileList = iGenericManagerJpa.loadObjectsFilterArgument(Profile.class, filterArguments, new Object[] { emailTo }, null, null);
 			if(profileList != null && profileList.size() > 0 && profileList.get(0) != null){
 				if(profileList.get(0).getUser().getEnabled() != 1){					
-					connect.setResponseCode("3");
+					connect.setResponseCode("2");
 					connect.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 					connect.setResponseDesc("Account is no longer active");					
 				}else if(profileList.get(0).getUser().getExpiredDate() != null && new Date().after(profileList.get(0).getUser().getExpiredDate())){					
@@ -76,7 +76,7 @@ public class ForgotPasswordEndpoint extends XReturnStatus {
 					connect.setResponseDesc("Account is expired");					
 				}else{
 				    Profile profile = profileList.get(0);
-				    if(new Date().after(profile.getForgotExpired())){
+				    if(profile.getForgotExpired() == null && new Date().after(profile.getForgotExpired())){
 					    UUID uuid = UUID.randomUUID();
 					    Date expired = addDays(new Date(), 1);
 					    profile.setForgotUUID(uuid.toString());
@@ -85,13 +85,16 @@ public class ForgotPasswordEndpoint extends XReturnStatus {
 				    }
 				    
 				    List<SystemParameter> systemParameters = systemParameterService.listValue(new Object[]{ParameterConstant.FORGOT_PASSWORD_SUBJECT, ParameterConstant.FORGOT_PASSWORD_BODY});
-					iCoreMailSender.sendMailContent(emailFrom, emailTo, systemParameters.get(0).getValue(), systemParameters.get(1).getValue());
+				    Map<String, String> mapSystemParamter = new HashMap<String, String>();
+				    for(SystemParameter systemParameter : systemParameters)
+				    	mapSystemParamter.put(systemParameter.getCode(), systemParameter.getValue());
+					iCoreMailSender.sendMailContent(emailFrom, emailTo, mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_SUBJECT), mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_BODY));
 					connect.setResponseCode("0");
 					connect.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
 					connect.setResponseDesc("Forgot Password Success");					
 				}	
 			}else{
-				connect.setResponseCode("2");
+				connect.setResponseCode("4");
 				connect.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 				connect.setResponseDesc("Email is not registered");				
 			}
