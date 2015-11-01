@@ -1,0 +1,39 @@
+package com.tripoin.web.common;
+
+/**
+ * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
+ */
+public enum EWebUIConstant {
+	
+	LOGIN_FAILED_TITLE("Login Failed"),
+	LOGIN_FAILED_DESC("Please check username and password and try again."),
+	LOGIN_USERNAME_NULL_DESC("Username empty."),
+	LOGIN_PASSWORD_NULL_DESC("Password empty."),
+	
+	REGEX_USERNAME("^[a-zA-Z0-9_.@-]{5,55}$"),
+	REGEX_PASSWORD("((?=\\S+$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,20})"),
+	REGEX_CONTAINS_LOWERUPERCASE("((?=\\S+$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})"),
+	REGEX_CONTAINS_DIGIT("((?=\\S+$)(?=.*\\d).{6,20})"),
+	REGEX_CONTAINS_WHITESPACE("((?=\\S+$).{6,20})"),
+	REGEX_CONTAINS_MINMAX(".{6,20}"),
+	REGEX_AUTHORIZATION("Basic |\\[|\\]"),
+	
+	AUTHORIZATION("Authorization"),
+	
+    COMING("Coming"), AVAILABLE("Available"), DISCONTINUED("Discontinued"),
+	
+	HOME_VIEW(""),
+	NAVIGATE_NULL("#!");
+	
+	private String operator;	
+	
+	private EWebUIConstant(String operator){
+		this.operator = operator ;
+	}
+	
+	@Override
+	public String toString() {
+		return operator;
+	}
+	
+}

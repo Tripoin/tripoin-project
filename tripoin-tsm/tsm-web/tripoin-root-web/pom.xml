@@ -1,0 +1,143 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.tripoin.web</groupId>
+    <artifactId>tripoin-root-web</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+	<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.encoding>UTF-8</project.encoding>
+		<project.source.version>1.7</project.source.version>
+		<project.target.version>1.7</project.target.version>
+		
+		<tripoin.util.version>1.0.0</tripoin.util.version>
+        				
+        <!-- Convenience property to set the Spring Framework version -->
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring.security.version>3.2.3.RELEASE</spring.security.version>
+		<spring.integration.version>4.1.0.RELEASE</spring.integration.version>
+		
+        <!-- Convenience property to set the Maven -->
+		<maven.compiler.version>3.0</maven.compiler.version>
+		<maven.dependency.plugin.version>2.9</maven.dependency.plugin.version>
+		<maven.resources.plugin.version>2.6</maven.resources.plugin.version>
+		<maven.jar.plugin.version>2.5</maven.jar.plugin.version>
+		<maven.clean.plugin.version>2.4.1</maven.clean.plugin.version>
+		<maven.install.plugin.version>2.4</maven.install.plugin.version>
+		<maven.war.plugin.version>2.3</maven.war.plugin.version>
+		<maven.failsafe.plugin.version>2.16</maven.failsafe.plugin.version>
+		<yuicompressor.maven.plugin.version>1.5.1</yuicompressor.maven.plugin.version>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        
+        <!-- Convenience property to set the Common -->
+		<commons.fileupload.version>1.2.2</commons.fileupload.version>
+		<commons.io.version>2.4</commons.io.version>
+		
+        <!-- Convenience property to set the Hibernate version -->
+		<hibernate.validator.version>5.1.0.CR1</hibernate.validator.version>
+		
+        <!-- Convenience property to set the Vaadin -->		
+		<vaadin.version>7.4.6</vaadin.version>
+		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+		<vaadin.sass.compiler.version>0.9.12</vaadin.sass.compiler.version>
+		<vaadin.spring.version>1.0.0.beta3</vaadin.spring.version>
+		<vaadin.addons.aceeditor.version>0.8.14</vaadin.addons.aceeditor.version>
+		
+        <!-- Convenience property to set the Jetty Lib -->
+		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
+		<jetty.server.version>8.1.12.v20130726</jetty.server.version>
+                        
+        <!-- Convenience property to set the Other Lib -->
+        <freemarker.version>2.3.15</freemarker.version>
+		<javax.servlet.version>3.0.1</javax.servlet.version>
+		<javax.validation.version>1.0.0.GA</javax.validation.version>
+		<jasypt.version>1.7</jasypt.version>
+        <lambdaj.version>2.3.3</lambdaj.version>
+        <jackson.core.asl.version>1.9.13</jackson.core.asl.version>
+        <jackson-databind.version>2.3.2</jackson-databind.version>
+        <mockito.core.version>1.9.5</mockito.core.version>
+		<xalan.version>2.7.1</xalan.version>
+		<xerces.version>2.10.0</xerces.version>
+		<nekohtml.version>1.9.19</nekohtml.version>
+		<asm.version>5.0.3</asm.version>
+		<portlet.version>2.0</portlet.version>
+		<eclipse.lifecycle.mapping.version>1.0.0</eclipse.lifecycle.mapping.version>
+    </properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<encoding>${project.encoding}</encoding>
+					<source>${project.source.version}</source>
+					<target>${project.target.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven.resources.plugin.version}</version>
+				<configuration>
+					<encoding>${project.encoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven.war.plugin.version}</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-maven-plugin</artifactId>
+					<version>${vaadin.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven.jar.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven.install.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-bom</artifactId>
+				<version>${vaadin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<modules>
+		<module>tripoin-web-service</module>
+		<module>tripoin-web-ui</module>
+	</modules>
+</project>
