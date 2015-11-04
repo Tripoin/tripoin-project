@@ -246,7 +246,8 @@ public class TripoinUI extends UI implements ErrorHandler {
         	notification.show(getPage());
         else
         	notification.show(Page.getCurrent());
-        errorView = new ErrorView(accessDeniedException.getMessage());
+        errorView = new ErrorView();
+        errorView.setDescription(accessDeniedException.getMessage());
         setContent(errorView);
 	}
     

@@ -10,6 +10,8 @@ public enum EWebUIConstant {
 	LOGIN_USERNAME_NULL_DESC("Username empty."),
 	LOGIN_PASSWORD_NULL_DESC("Password empty."),
 
+    NOTIF_CAPTCHA_FAILURE_TITLE("Captcha Failure"),		
+    NOTIF_CAPTCHA_NOTVALID_DESC("Captcha is not valid."),
 	NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE("Email Confirmation"),
 	NOTIF_SUCCESS_FORGOT_PASSWORD_DESC("Confirmation change password has been sent, please check your email!\n"
         		+ "Keep me logged in."),

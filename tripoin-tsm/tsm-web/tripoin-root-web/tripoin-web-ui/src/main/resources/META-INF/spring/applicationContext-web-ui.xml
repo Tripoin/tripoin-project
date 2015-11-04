@@ -36,5 +36,22 @@
 	<context:component-scan base-package="com.tripoin.web.view.page">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
     </context:component-scan>
+    
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+                <bean class="com.google.code.kaptcha.util.Config">
+                        <constructor-arg type="java.util.Properties">
+                                <props> 
+                                        <prop key="kaptcha.border">no</prop>
+                                        <prop key="kaptcha.image.width">200</prop> 
+                                        <prop key="kaptcha.image.height">45</prop>
+                                        <prop key="kaptcha.textproducer.char.string">123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</prop>
+                                        <prop key="kaptcha.textproducer.char.length">5</prop>
+                                        <prop key="kaptcha.textproducer.font.size">30</prop>                                       
+                                </props>
+                        </constructor-arg>
+                </bean>
+        </property>
+	</bean>
 		
 </beans>

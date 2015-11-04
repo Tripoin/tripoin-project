@@ -66,6 +66,8 @@
 		<asm.version>5.0.3</asm.version>
 		<portlet.version>2.0</portlet.version>
 		<eclipse.lifecycle.mapping.version>1.0.0</eclipse.lifecycle.mapping.version>
+		<google.kaptcha.version>2.3.2</google.kaptcha.version>
+		<httpclient.version>4.3.1</httpclient.version>
     </properties>
 
 	<build>

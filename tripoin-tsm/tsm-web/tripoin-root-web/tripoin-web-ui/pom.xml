@@ -417,9 +417,14 @@
 		</dependency>
 		<!-- refer other data -->
 		<dependency>
+			<groupId>com.google.kaptcha</groupId>
+			<artifactId>kaptcha</artifactId>
+			<version>${google.kaptcha.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.1</version>
+			<version>${httpclient.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
@@ -605,12 +610,22 @@
 				<configuration>
 					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<jvmArgs>-XX:+CMSClassUnloadingEnabled -XX:PermSize=256M -XX:MaxPermSize=512M</jvmArgs>
+					<systemProperties>
+						<systemProperty>
+            				<name>java.awt.headless</name>
+            				<value>true</value>
+       					</systemProperty>
+					</systemProperties>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
 	<repositories>
+		<repository>
+			<id>sonatype-forge</id>
+    		<url>https://repository.sonatype.org/content/groups/forge/</url>
+		</repository>
 		<repository>
 			<id>vaadin-addons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>

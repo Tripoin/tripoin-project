@@ -1,23 +1,38 @@
 package com.tripoin.web.view.security;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.code.kaptcha.Constants;
+import com.google.code.kaptcha.Producer;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IForgotPasswordService;
 import com.tripoin.web.view.login.LoginScreen;
+import com.vaadin.event.MouseEvents.ClickEvent;
+import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -35,11 +50,18 @@ public class ForgotPasswordScreen extends CssLayout implements View {
 	@Autowired
 	private IForgotPasswordService forgotPasswordService;
 	
+	@Autowired
+	private Producer captchaProducer;
+	
 	private TextField email;
 	private TextField reTypeEmail;
     private Button send;
     private Button cancel;
     private Notification notificationAfterSend = new Notification("");
+	private TextField captchaTextField;
+    private String captchaPlainText;
+    private Embedded reloadCaptcha;
+    private VerticalLayout groupCaptcha;
     
     private LoginScreen loginScreen;
     
@@ -79,23 +101,44 @@ public class ForgotPasswordScreen extends CssLayout implements View {
     }
 
     private Component buildLoginForm() {
-        FormLayout loginForm = new FormLayout();
-        loginForm.addStyleName("login-form");
-        loginForm.setSizeUndefined();
-        loginForm.setMargin(false);
+        FormLayout forgotPasswordForm = new FormLayout();
+        forgotPasswordForm.addStyleName("login-form");
+        forgotPasswordForm.setSizeUndefined();
+        forgotPasswordForm.setMargin(false);
 
-        loginForm.addComponent(email = new TextField("Email"));
+        forgotPasswordForm.addComponent(email = new TextField("Email"));
         email.setWidth(15, Unit.EM);
         email.setDescription("Email");
         email.setMaxLength(55);
-        loginForm.addComponent(reTypeEmail = new TextField("Re-Type Email"));
+        forgotPasswordForm.addComponent(reTypeEmail = new TextField("Re-Type Email"));
         reTypeEmail.setWidth(15, Unit.EM);
         reTypeEmail.setDescription("Re-Type Email");
         reTypeEmail.setMaxLength(55);
+
+        groupCaptcha = new VerticalLayout();
+        groupCaptcha.setWidth(15, Unit.EM);
+        groupCaptcha.setSpacing(true);
+        reloadCaptcha = new Embedded(null, generateCaptcha());
+        reloadCaptcha.setWidth(15, Unit.EM);
+        reloadCaptcha.setHeight(5, Unit.EM);
+        reloadCaptcha.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = -8643020125552543352L;
+			@Override
+			public void click(ClickEvent event) {
+				reloadCaptcha.setSource(generateCaptcha());
+			}
+		});
+        captchaTextField = new TextField();
+        captchaTextField.setWidth(15, Unit.EM);
+        captchaTextField.setMaxLength(5);
+        groupCaptcha.addComponent(reloadCaptcha);
+        groupCaptcha.addComponent(captchaTextField);
+        forgotPasswordForm.addComponent(groupCaptcha);
         
         CssLayout buttons = new CssLayout();
         buttons.setStyleName("buttons");
-        loginForm.addComponent(buttons);      
+        buttons.setSizeUndefined();
+        forgotPasswordForm.addComponent(buttons);      
         buttons.addComponent(send = new Button("Send"));
         send.setDisableOnClick(true);
         send.addClickListener(new Button.ClickListener() {
@@ -119,6 +162,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
 			@Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
+                	reloadCaptcha.setSource(generateCaptcha());
                 	email.setValue("");
                 	reTypeEmail.setValue("");
                 	Page.getCurrent().setTitle("Tripoin Login");
@@ -130,7 +174,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
         });
         cancel.addStyleName(ValoTheme.BUTTON_LINK);
         
-        return loginForm;
+        return forgotPasswordForm;
     }
 
     private CssLayout buildLoginInformation() {
@@ -148,56 +192,95 @@ public class ForgotPasswordScreen extends CssLayout implements View {
     private void sendEmailForgotPassword() {
     	if(email.getValue().equals(reTypeEmail.getValue())){
     		if(email.getValue().matches(EWebUIConstant.REGEX_EMAIL.toString())){
-        		GeneralTransferObject generalTransferObject = forgotPasswordService.forgotPassword(email.getValue());
-        		if("0".equals(generalTransferObject.getResponseCode())){    			
-        			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
-                    notificationAfterSend.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
-            		notificationAfterSend.show(Page.getCurrent());
-            		email.setValue("");
-                	reTypeEmail.setValue("");        		
-                	Page.getCurrent().setTitle("Tripoin Login");
-                    getUI().setContent(loginScreen);
-        		}else if("2".equals(generalTransferObject.getResponseCode())){    			
-        			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
-                    notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACOUNT_ENABLED_FORGOT_PASSWORD_DESC.toString());
-            		notificationAfterSend.show(Page.getCurrent());  
-            		email.setValue("");
-                	reTypeEmail.setValue("");    		
-                	Page.getCurrent().setTitle("Tripoin Login");
-                    getUI().setContent(loginScreen);    			
-        		}else if("3".equals(generalTransferObject.getResponseCode())){    			
-        			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
-                    notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC.toString());
-            		notificationAfterSend.show(Page.getCurrent());  
-                	email.setValue("");
-                	reTypeEmail.setValue("");      		
-                	Page.getCurrent().setTitle("Tripoin Login");
-                    getUI().setContent(loginScreen);    			
-        		}else {    			
-        			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString(),
+    			if(captchaPlainText.equalsIgnoreCase(captchaTextField.getValue())){
+            		GeneralTransferObject generalTransferObject = forgotPasswordService.forgotPassword(email.getValue());
+            		if("0".equals(generalTransferObject.getResponseCode())){		
+            			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
+                        notificationAfterSend.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
+                		notificationAfterSend.show(Page.getCurrent());
+                		reloadCaptcha.setSource(generateCaptcha());
+                		email.setValue("");
+                    	reTypeEmail.setValue("");        		
+                    	Page.getCurrent().setTitle("Tripoin Login");
+                        getUI().setContent(loginScreen);
+            		}else if("2".equals(generalTransferObject.getResponseCode())){    			
+            			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
+                        notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACOUNT_ENABLED_FORGOT_PASSWORD_DESC.toString());
+                		notificationAfterSend.show(Page.getCurrent());
+                		reloadCaptcha.setSource(generateCaptcha());
+                		email.setValue("");
+                    	reTypeEmail.setValue("");    		
+                    	Page.getCurrent().setTitle("Tripoin Login");
+                        getUI().setContent(loginScreen);    			
+            		}else if("3".equals(generalTransferObject.getResponseCode())){    			
+            			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
+                        notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC.toString());
+                		notificationAfterSend.show(Page.getCurrent()); 
+                		reloadCaptcha.setSource(generateCaptcha());
+                    	email.setValue("");
+                    	reTypeEmail.setValue("");      		
+                    	Page.getCurrent().setTitle("Tripoin Login");
+                        getUI().setContent(loginScreen);    			
+            		}else {    			
+            			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString(),
+                                Notification.Type.HUMANIZED_MESSAGE));
+                        email.focus(); 	
+                        reloadCaptcha.setSource(generateCaptcha());		
+            		}    	
+    			}else{
+        			showNotification(new Notification(EWebUIConstant.NOTIF_CAPTCHA_FAILURE_TITLE.toString(), EWebUIConstant.NOTIF_CAPTCHA_NOTVALID_DESC.toString(),
                             Notification.Type.HUMANIZED_MESSAGE));
-                    email.focus(); 			
-        		}    			
+                    captchaTextField.focus();  				
+                    reloadCaptcha.setSource(generateCaptcha());
+    			}
     		}else{
     			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString(),
                         Notification.Type.HUMANIZED_MESSAGE));
                 email.focus();
+                reloadCaptcha.setSource(generateCaptcha());
     		}
     	}else{
     		showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.LOGIN_FAILED_DESC.toString(),
                     Notification.Type.HUMANIZED_MESSAGE));
     		email.focus();
+            reloadCaptcha.setSource(generateCaptcha());
     	}
     }
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		
-	}
+	}	
 
     private void showNotification(Notification notification) {
         notification.setDelayMsec(1500);
         notification.show(Page.getCurrent());
+    }
+    
+    public StreamResource generateCaptcha(){
+		VaadinService.getCurrentResponse().setDateHeader("Expires", 0);
+    	VaadinService.getCurrentResponse().setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    	VaadinService.getCurrentResponse().setHeader("Cache-Control", "post-check=0, pre-check=0");
+    	VaadinService.getCurrentResponse().setHeader("Pragma", "no-cache");
+    	VaadinService.getCurrentResponse().setContentType("image/jpeg");
+    	captchaPlainText = captchaProducer.createText();
+    	VaadinSession.getCurrent().setAttribute(Constants.KAPTCHA_SESSION_KEY, captchaPlainText);
+        StreamResource.StreamSource captchaImageStream = new StreamResource.StreamSource(){
+			private static final long serialVersionUID = 4205683823302736202L;
+			@Override
+			public InputStream getStream() {
+		        BufferedImage bufferedImage = captchaProducer.createImage(captchaPlainText);
+		        ByteArrayOutputStream imageInputStream = new ByteArrayOutputStream();
+		        
+		        try {
+					ImageIO.write(bufferedImage, "jpg", imageInputStream);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return new ByteArrayInputStream(imageInputStream.toByteArray());
+			}        	
+        };
+        return new StreamResource(captchaImageStream, "kaptcha.jpg");    	
     }
     
 }

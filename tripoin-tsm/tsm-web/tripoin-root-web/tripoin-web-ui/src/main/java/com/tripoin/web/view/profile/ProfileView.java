@@ -261,7 +261,7 @@ public class ProfileView extends VerticalLayout implements View, ClickListener {
             phone.setReadOnly(true);
             telp.setReadOnly(true);
             bio.setReadOnly(true);
-            lastModified = new Label(statusModified(profileData.getModifiedTime()));            
+            lastModified.setValue(statusModified(profileData.getModifiedTime()));
             form.addStyleName("light");
             event.getButton().setCaption("Edit");
             event.getButton().removeStyleName("primary");
