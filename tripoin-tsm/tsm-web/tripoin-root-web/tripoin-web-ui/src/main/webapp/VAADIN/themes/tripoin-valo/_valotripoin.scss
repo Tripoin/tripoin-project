@@ -1,5 +1,54 @@
+$form-info-width: 80% !default;
+$v-layout-margin-top: round($v-unit-size / 1.5) !default;
+
 @mixin valotripoin {
   @include valo;
+  .tripoin-custom-screen {
+    width: 100%;
+    height: auto;
+    .tripoin-custom-form {
+      @include valo-panel-style;
+      padding: $v-layout-margin;
+      @include valo-animate-in-fade($duration: 1s);
+      border: none;
+      box-shadow: none;
+      background: transparent;
+    }
+  }
+  
+  .v-ui[width-range~="0-800px"] {
+    .main-screen {
+      padding-top: $v-unit-size;
+    }
+    .tripoin-custom-screen {
+      height: auto;
+      min-height: 100%;
+      .tripoin-custom-form {
+        width: 100%;
+        max-width: 100%;
+        table {
+          width: 100%;
+        }
+        .v-textfield {
+          width: 100% !important;
+        }
+        .v-formlayout-captioncell,
+        .v-formlayout-contentcell,
+        .v-formlayout-errorcell {
+          display: block;
+          text-align: center;
+          padding-top: 0;
+        }
+        .buttons {
+          width: 100%;
+          .v-button {
+            display: block;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
 
   #themeSelect {
     position: fixed;

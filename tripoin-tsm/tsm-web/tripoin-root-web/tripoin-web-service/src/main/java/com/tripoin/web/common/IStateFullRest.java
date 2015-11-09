@@ -121,11 +121,17 @@ public interface IStateFullRest {
 	public <T> T put(String url, Object data, Class<T> clazz);
 	
 	/**
-	 * 
 	 * <b>Sample Code:</b><br>
 	 * <code>stateFullRest.getHeaders()</code><br>
 	 * @return
 	 */
 	public HttpHeaders getHeaders();
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>setMultipart(true)</code><br>
+	 * @param isMultipart
+	 */
+	public void setMultipart(boolean isMultipart);
 
 }

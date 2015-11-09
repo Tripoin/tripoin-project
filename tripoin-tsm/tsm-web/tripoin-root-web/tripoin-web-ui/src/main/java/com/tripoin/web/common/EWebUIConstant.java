@@ -40,7 +40,9 @@ public enum EWebUIConstant {
     COMING("Coming"), AVAILABLE("Available"), DISCONTINUED("Discontinued"),
 	
 	HOME_VIEW(""),
-	NAVIGATE_NULL("#!");
+	NAVIGATE_NULL("#!"),
+	
+	TYPE_FILE_IMAGE("image");
 	
 	private String operator;	
 	

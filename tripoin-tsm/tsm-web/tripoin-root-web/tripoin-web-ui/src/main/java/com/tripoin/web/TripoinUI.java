@@ -118,13 +118,8 @@ public class TripoinUI extends UI implements ErrorHandler {
         	}
         	getSession().setErrorHandler(this);
 	        Responsive.makeResponsive(this);
-	        addStyleName(ValoTheme.UI_WITH_MENU);
 	        setLocale(Locale.US);
-	        if (vaadinRequest.getParameter("test") != null) {
-	            if (getPage().getWebBrowser().getBrowserApplication().contains("PhantomJS") || (getPage().getWebBrowser().isIE() && getPage() .getWebBrowser().getBrowserMajorVersion() <= 9)) {
-	                getPage().getStyles().add(".v-app.v-app.v-app {font-family: Sans-Serif;}");
-	            }
-	        }
+	        
 	        if (accessControl.isUserSignedIn()){
 	            mainView();
 	        }else{
@@ -167,6 +162,7 @@ public class TripoinUI extends UI implements ErrorHandler {
         }
         root.addMenu(menuItems);
         root.setWidth("100%"); 
+        addStyleName(ValoTheme.UI_WITH_MENU);
 		removeStyleName("login-screen");
 		removeStyleName("login-information");
 		removeStyleName("login-form");
@@ -179,7 +175,13 @@ public class TripoinUI extends UI implements ErrorHandler {
         navigator = new DiscoveryNavigator(this, viewDisplay);
         final String f = Page.getCurrent().getUriFragment();
         if (f == null || f.isEmpty() || EWebUIConstant.HOME_VIEW.toString().equals(f) || HomeView.VIEW_NAME.equals(f) || EWebUIConstant.NAVIGATE_NULL.toString().equals(f)) 
-            navigator.navigateTo(HomeView.VIEW_NAME);          
+            navigator.navigateTo(HomeView.VIEW_NAME);
+        else if(f.startsWith("!") && baseMenuLayout.getMapDataMenu().containsKey(f.substring(1)))
+        	navigator.navigateTo(f);
+        else{
+        	UI.getCurrent().getPage().setUriFragment(null, true);
+        	navigator.navigateTo(HomeView.VIEW_NAME);
+        }
         navigator.setErrorView(ErrorView.class);
         navigator.addViewChangeListener(new ViewChangeListener() {
 			private static final long serialVersionUID = -1255484519903571054L;

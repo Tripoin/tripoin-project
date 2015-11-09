@@ -84,7 +84,7 @@ public class DiscoveryNavigator extends Navigator implements ViewCacheContainer 
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void initViews() {
-		if (views.isEmpty()) {
+		if (views.isEmpty() || views == null) {
 			logger.debug("discovery views from spring context");
 
 			long start = Calendar.getInstance().getTimeInMillis();
@@ -182,8 +182,8 @@ public class DiscoveryNavigator extends Navigator implements ViewCacheContainer 
 		}
 
 		// fix Vaadin
-		if (navigationState.startsWith("#!")) {
-			super.navigateTo(navigationState.substring(2));
+		if (navigationState.startsWith("!")) {
+			super.navigateTo(navigationState.substring(1));
 		} else {
 			super.navigateTo(navigationState);
 		}

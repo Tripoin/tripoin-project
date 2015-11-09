@@ -13,6 +13,7 @@ public class WebServiceConstant {
 	private static final String HTTP_SAVE = "/save";
 	private static final String HTTP_UPDATE = "/update";
 	private static final String HTTP_VERIFY = "/verify";
+	private static final String HTTP_IMAGE = "/image";
 	/*private static final String HTTP_DELETE = "/delete";*/
 	
 	public static final String HTTP_ONLY = "HttpOnly";
@@ -27,6 +28,7 @@ public class WebServiceConstant {
 	public static final String HTTP_LOGOUT = HTTP_CONTEXT_DEFAULT.concat("/logout");
 	public static final String HTTP_PROFILE = HTTP_CONTEXT_DEFAULT.concat("/profile").concat(HTTP_LOAD);
 	public static final String HTTP_PROFILE_UPDATE = HTTP_CONTEXT_DEFAULT.concat("/profile").concat(HTTP_UPDATE);
+	public static final String HTTP_PROFILE_IMAGE = HTTP_CONTEXT_DEFAULT.concat("/profile").concat(HTTP_IMAGE);
 	public static final String HTTP_USER = HTTP_CONTEXT_DEFAULT.concat("/user").concat(HTTP_LOAD);
 	public static final String HTTP_USER_ALL = HTTP_CONTEXT_DEFAULT.concat("/user").concat(HTTP_LOAD).concat(HTTP_ALL);
 	public static final String HTTP_USER_SAVE = HTTP_CONTEXT_DEFAULT.concat("/user").concat(HTTP_SAVE);

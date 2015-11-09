@@ -72,44 +72,44 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
         userData = userService.getUser();
         
         setMargin(true);
+        addStyleName("tripoin-custom-screen");
+        HorizontalLayout row = new HorizontalLayout();
+        row.setMargin(false);
+        row.setWidth("100%");
+        addComponent(row);
         final FormLayout formTitle = new FormLayout();
         formTitle.setMargin(false);
-        formTitle.addStyleName("light");
-        
+        formTitle.addStyleName("light");        
         Label title = new Label("Change Password");
         title.addStyleName("h1");
-        formTitle.addComponent(title);
-
-        HorizontalLayout row = new HorizontalLayout();
-        row.setSpacing(true);
-        row.setMargin(false);
-        row.setWidth("800px");
+        formTitle.addComponent(title);        
         row.addComponent(formTitle);
-        addComponent(row);
 
         final FormLayout form = new FormLayout();
+        form.setStyleName("tripoin-custom-form");
         form.setMargin(false);
-        form.setWidth("800px");
         addComponent(form);
         
         Label section = new Label(" ");
         section.addStyleName("h3");
         section.addStyleName("colored");
+        section.setWidth("80%");
         form.addComponent(section);       
         
         oldPassword.setRequired(true);
-        oldPassword.setWidth("65%");
+        oldPassword.setWidth("45%");
         form.addComponent(oldPassword);        
         
         newPassword.setRequired(true);
-        newPassword.setWidth("65%");
+        newPassword.setWidth("45%");
         form.addComponent(newPassword);        
         
         reTypePassword.setRequired(true);
-        reTypePassword.setWidth("65%");
+        reTypePassword.setWidth("45%");
         form.addComponent(reTypePassword);  
 
         Button save = new Button("Save", this);
+        save.addStyleName("primary");
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
         HorizontalLayout footer = new HorizontalLayout();
@@ -125,7 +125,6 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
         warningPanel.setIcon(FontAwesome.WARNING);
         final VerticalLayout content = new VerticalLayout();
         warningPanel.setContent(content);
-        warningPanel.setWidth("800px");
         content.setSpacing(true);
         content.setMargin(true);
         content.addComponent(messageAfterSave);

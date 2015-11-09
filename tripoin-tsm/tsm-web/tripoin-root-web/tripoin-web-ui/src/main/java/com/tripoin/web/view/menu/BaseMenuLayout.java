@@ -1,7 +1,9 @@
 package com.tripoin.web.view.menu;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -38,6 +40,7 @@ public class BaseMenuLayout extends CssLayout implements View {
     private CssLayout menuItemsLayout = new CssLayout();
     private LogoutListener logoutListener;
     private List<MenuData> menuDatas;
+    private Map<String, String> mapDataMenu = new LinkedHashMap<String, String>();
 
 	public CssLayout getMenuItemsLayout() {
 		return menuItemsLayout;
@@ -51,8 +54,20 @@ public class BaseMenuLayout extends CssLayout implements View {
 		this.logoutListener = logoutListener;
 	}
 
+	public Map<String, String> getMapDataMenu() {
+		return mapDataMenu;
+	}
+
+	public void setMapDataMenu(Map<String, String> mapDataMenu) {
+		this.mapDataMenu = mapDataMenu;
+	}
+
 	@PostConstruct
 	public void init(){
+		if(mapDataMenu.isEmpty()){
+			mapDataMenu.put("profile", "Account Setings");
+			mapDataMenu.put("changePassword", "Change Password");
+		}
         setId("BaseMenu");
 	}
 
@@ -135,6 +150,7 @@ public class BaseMenuLayout extends CssLayout implements View {
 	             menuItemsLayout.addComponent(label);
 			}
 			if(ParameterConstant.MENU_PAGE.equals(menuData.getFunction())){
+				mapDataMenu.put(menuData.getCode(), menuData.getName());
 				final Button b = new Button(menuData.getName(), new ClickListener() {            	
 					private static final long serialVersionUID = -8962701523482133238L;
 					@Override

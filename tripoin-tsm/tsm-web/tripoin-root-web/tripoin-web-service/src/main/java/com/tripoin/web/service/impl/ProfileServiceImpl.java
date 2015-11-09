@@ -1,8 +1,16 @@
 package com.tripoin.web.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.io.File;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.core.dto.ProfileTransferObject;
 import com.tripoin.web.common.ICommonRest;
@@ -31,6 +39,16 @@ public class ProfileServiceImpl implements IProfileService {
 	@Override
 	public ProfileTransferObject updateProfile(ProfileData profileData) {		
 		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE_UPDATE), profileData, ProfileTransferObject.class);
+	}
+
+	@Override
+	public GeneralTransferObject updatePhotoProfile(File file, Object[] data) {
+		Resource resourceStar = new FileSystemResource(file);
+		MultiValueMap<String, Object> multipartMap = new LinkedMultiValueMap<String, Object>();
+		multipartMap.add(ParameterConstant.TRIPOIN_UPLOAD_IMAGE, resourceStar);
+		stateFullRest.setMultipart(true);
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE_IMAGE), multipartMap, GeneralTransferObject.class);		
+		return generalTransferObject;
 	}
 
 }

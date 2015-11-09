@@ -24,22 +24,24 @@ import org.springframework.web.client.RestTemplate;
 import com.tripoin.core.dto.MenuData;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
+import com.tripoin.web.common.impl.StateFullRestImpl;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class StateFullRestTest implements IStateFullRest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StateFullRestTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(StateFullRestImpl.class);
 
 	private Map<String, String> additionalDataMenu = new LinkedHashMap<String, String>();
 	private List<MenuData> menuDatas = new ArrayList<MenuData>();
-	private final Map<String, String> cookies = new HashMap<String, String>();
+	private final Map<String, String> cookies = new HashMap<>();
 	private String username;
 	private String password;
 	private boolean isOAuth;
 	private final RestTemplate template = new RestTemplate();
 	private HttpStatus statusCode;
+	private boolean isMultipart = false;
 
 	@Override
 	public Map<String, String> getAdditionalDataMenu() {
@@ -96,7 +98,15 @@ public class StateFullRestTest implements IStateFullRest {
 	public void setStatusCode(HttpStatus statusCode) {
 		this.statusCode = statusCode;
 	}
-	
+
+	public boolean isMultipart() {
+		return isMultipart;
+	}
+
+	public void setMultipart(boolean isMultipart) {
+		this.isMultipart = isMultipart;
+	}
+
 	@Value("${tripoin.is.oauth}")
 	public void setIsOAuth(boolean isOAuth) {this.isOAuth = isOAuth;}
 
@@ -146,7 +156,11 @@ public class StateFullRestTest implements IStateFullRest {
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
+		if(isMultipart){
+			headers.setContentType(new MediaType("multipart", "form-data"));
+			isMultipart = false;
+		}else
+			headers.setContentType(MediaType.APPLICATION_JSON);
 		List<String> cookiesList = headers.get("Set-Cookie");
 		if(cookies.isEmpty() || cookies == null || cookiesList == null || cookiesList.isEmpty()) {
 			if(isOAuth){

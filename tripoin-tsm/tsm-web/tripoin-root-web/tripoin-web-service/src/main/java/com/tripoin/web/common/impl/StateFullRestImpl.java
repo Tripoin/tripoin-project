@@ -45,6 +45,7 @@ public class StateFullRestImpl implements IStateFullRest {
 	private boolean isOAuth;
 	private final RestTemplate template = new RestTemplate();
 	private HttpStatus statusCode;
+	private boolean isMultipart = false;
 
 	@Override
 	public Map<String, String> getAdditionalDataMenu() {
@@ -102,6 +103,14 @@ public class StateFullRestImpl implements IStateFullRest {
 		this.statusCode = statusCode;
 	}
 
+	public boolean isMultipart() {
+		return isMultipart;
+	}
+
+	public void setMultipart(boolean isMultipart) {
+		this.isMultipart = isMultipart;
+	}
+
 	@Value("${tripoin.is.oauth}")
 	public void setIsOAuth(boolean isOAuth) {this.isOAuth = isOAuth;}
 
@@ -151,7 +160,11 @@ public class StateFullRestImpl implements IStateFullRest {
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
+		if(isMultipart){
+			headers.setContentType(new MediaType("multipart", "form-data"));
+			isMultipart = false;
+		}else
+			headers.setContentType(MediaType.APPLICATION_JSON);
 		List<String> cookiesList = headers.get("Set-Cookie");
 		if(cookies.isEmpty() || cookies == null || cookiesList == null || cookiesList.isEmpty()) {
 			if(isOAuth){
