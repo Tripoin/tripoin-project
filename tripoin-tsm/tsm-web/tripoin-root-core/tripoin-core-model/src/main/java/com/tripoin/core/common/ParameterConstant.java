@@ -38,5 +38,7 @@ public class ParameterConstant {
 	public static final String TRIPOIN_CONTENT_USERNAME = "\\$\\{TRIPOIN.CONTENT.USERNAME\\}";
 	public static final String TRIPOIN_CONTENT_PASSWORD = "\\$\\{TRIPOIN.CONTENT.PASSWORD\\}";
 	public static final String TRIPOIN_CONTENT_URL = "\\$\\{TRIPOIN.CONTENT.URL\\}";	
+
+	public static final String TRIPOIN_UPLOAD_IMAGE = "TRIPOIN-UPLOAD-IMAGE";
 	
 }
