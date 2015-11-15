@@ -62,7 +62,9 @@ public class ProfileImageEndpoint extends XReturnStatus {
 						fileName = ((UploadedMultipartFile) multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE)).getOriginalFilename();
 						((UploadedMultipartFile) multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE)).transferTo(new File(rootPath.concat(profile.getResourcesUUID()), fileName));
 					}
-				}				
+				}
+				profile.setPhoto(fileName);
+				iGenericManagerJpa.updateObject(profile);
 			}else{
 				generalTransferObject.setResponseCode("2");
 				generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
