@@ -27,6 +27,8 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
+import com.vaadin.server.UserError;
+import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -35,6 +37,7 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
@@ -82,6 +85,7 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
     private Upload upload = new Upload(null, receiver);
     private ExternalResource urlImageProfileResource;
     private String urlResourcesImage;
+    private Notification notification = new Notification("");
     
     @PostConstruct
     public void init() throws Exception {
@@ -249,6 +253,12 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         	lastModified.addStyleName("light");	
         	footer.addComponent(lastModified);
         }
+		
+		notification.setCaption("Error");
+		notification.setStyleName("system closable");
+        notification.setPosition(Position.BOTTOM_CENTER);
+        notification.setDelayMsec(10000);
+        System.out.println("Anjar Ganteng "+birthDate.getValue());
     }
 
     @Override
@@ -267,50 +277,112 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         if (readOnly) {
             form.setReadOnly(false);
             name.setReadOnly(false);
+            name.setComponentError(null);
             birthPlace.setReadOnly(false);
+            birthPlace.setComponentError(null);
             birthDate.setReadOnly(false);
+            birthDate.setComponentError(null);
             gender.setReadOnly(false);
             address.setReadOnly(false);
+            address.setComponentError(null);
             email.setReadOnly(false);
+            email.setComponentError(null);
             phone.setReadOnly(false);
+            phone.setComponentError(null);
             telp.setReadOnly(false);
-            bio.setReadOnly(false);            
+            telp.setComponentError(null);
+            bio.setReadOnly(false);
+            bio.setComponentError(null);
             form.removeStyleName("light");
             form.addStyleName("tripoin-custom-form");
             event.getButton().setCaption("Save");
             event.getButton().addStyleName("primary");
         } else {
         	IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
-        	profileData.setName(name.getValue());
-        	profileData.setBirthplace(birthPlace.getValue());
-        	profileData.setBirthdate(ParameterConstant.FORMAT_DEFAULT.format(birthDate.getValue()));
-        	profileData.setGender(gender.getValue().toString().toUpperCase());
-        	profileData.setAddress(address.getValue());
-        	profileData.setPhone(phone.getValue());
-        	profileData.setTelp(telp.getValue());
-        	profileData.setEmail(email.getValue());
-        	profileData.setBio(bio.getValue());
-        	profileData.setModifiedBy(username.getValue());
-        	profileData.setModifiedIP(identifierPlatform.getIPAddress());
-        	profileData.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
-        	profileData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));        	
-        	profileService.updateProfile(profileData);
-        	
-            form.setReadOnly(true);
-            name.setReadOnly(true);
-            birthPlace.setReadOnly(true);
-            birthDate.setReadOnly(true);
-            gender.setReadOnly(true);
-            address.setReadOnly(true);
-            email.setReadOnly(true);
-            phone.setReadOnly(true);
-            telp.setReadOnly(true);
-            bio.setReadOnly(true);
-            lastModified.setValue(statusModified(profileData.getModifiedTime()));
-            form.addStyleName("light");
-            form.removeStyleName("tripoin-custom-form");
-            event.getButton().setCaption("Edit");
-            event.getButton().removeStyleName("primary");
+        	String allNotif = "";
+            boolean isValid = true;
+        	if(name.getValue()==null || name.getValue().isEmpty()){
+        		name.setComponentError(new UserError("Name not null"));
+        		allNotif=allNotif.concat("Name not null!\n");
+        		isValid=false;
+        	}
+        	if(birthPlace.getValue()==null || birthPlace.getValue().isEmpty()){
+        		birthPlace.setComponentError(new UserError("Birth place not null"));
+        		allNotif=allNotif.concat("Birth place not null!\n");
+        		isValid=false;
+        	}
+        	if(!birthDate.isValid() || birthDate.getValue()==null){
+        		birthDate.setComponentError(new UserError("Birth date incorrectly"));
+        		allNotif=allNotif.concat("Birth date incorrectly!\n");
+        		isValid=false;
+        	}
+        	if(phone.getValue()==null || phone.getValue().isEmpty()){
+        		phone.setComponentError(new UserError("Phone not null"));
+        		allNotif=allNotif.concat("Phone not null!\n");
+        		isValid=false;
+        	}
+        	if(telp.getValue()==null || telp.getValue().isEmpty()){
+        		telp.setComponentError(new UserError("Telp not null"));
+        		allNotif=allNotif.concat("Telp not null!\n");
+        		isValid=false;
+        	}
+        	if(email.getValue()==null || email.getValue().isEmpty()){
+        		email.setComponentError(new UserError("Email not null"));
+        		allNotif=allNotif.concat("Email not null!\n");
+        		isValid=false;
+        	}else if (!email.getValue().matches(EWebUIConstant.REGEX_EMAIL.toString())) {
+        		email.setComponentError(new UserError("Email format not valid"));
+        		allNotif=allNotif.concat("Email format not valid!\n");
+        		isValid=false;
+			}
+        	if(address.getValue()==null || address.getValue().isEmpty()){
+        		address.setComponentError(new UserError("Address not null"));
+        		allNotif=allNotif.concat("Address not null!\n");
+        		isValid=false;
+        	}	
+        	if(isValid){
+            	profileData.setName(name.getValue());
+            	profileData.setBirthplace(birthPlace.getValue());
+            	profileData.setBirthdate(ParameterConstant.FORMAT_DEFAULT.format(birthDate.getValue()));
+            	profileData.setGender(gender.getValue().toString().toUpperCase());
+            	profileData.setAddress(address.getValue());
+            	profileData.setPhone(phone.getValue());
+            	profileData.setTelp(telp.getValue());
+            	profileData.setEmail(email.getValue());
+            	profileData.setBio(bio.getValue());
+            	profileData.setModifiedBy(username.getValue());
+            	profileData.setModifiedIP(identifierPlatform.getIPAddress());
+            	profileData.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
+            	profileData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));        	
+            	profileService.updateProfile(profileData);
+
+                name.setComponentError(null);
+                birthPlace.setComponentError(null);
+                birthDate.setComponentError(null);
+                address.setComponentError(null);
+                email.setComponentError(null);
+                phone.setComponentError(null);
+                telp.setComponentError(null);
+                bio.setComponentError(null);
+                form.setReadOnly(true);
+                name.setReadOnly(true);
+                birthPlace.setReadOnly(true);
+                birthDate.setReadOnly(true);
+                gender.setReadOnly(true);
+                address.setReadOnly(true);
+                email.setReadOnly(true);
+                phone.setReadOnly(true);
+                telp.setReadOnly(true);
+                bio.setReadOnly(true);
+                lastModified.setValue(statusModified(profileData.getModifiedTime()));
+                form.addStyleName("light");
+                form.removeStyleName("tripoin-custom-form");
+                event.getButton().setCaption("Edit");
+                event.getButton().removeStyleName("primary");
+        	} else{
+        		notification.setDescription(allNotif);
+    	        notification.show(Page.getCurrent());				
+			}
         }
 	}
 	
