@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2015 at 06:53 PM
+-- Generation Time: Nov 15, 2015 at 09:40 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS `mst_profile` (
   `user_id` bigint(20) NOT NULL,
   `profile_phone` varchar(255) NOT NULL,
   `profile_bio` text,
+  `profile_resources_uuid` varchar(255) NOT NULL,
   `profile_forgot_uuid` varchar(255) DEFAULT NULL,
   `profile_forgot_expired` timestamp NULL DEFAULT NULL,
   `profile_created_by` varchar(150) DEFAULT 'admin',
@@ -170,11 +171,11 @@ CREATE TABLE IF NOT EXISTS `mst_profile` (
 -- Dumping data for table `mst_profile`
 --
 
-INSERT INTO `mst_profile` (`profile_id`, `profile_email`, `profile_name`, `profile_gender`, `profile_birthplace`, `profile_birthdate`, `profile_address`, `profile_telp`, `profile_photo`, `user_id`, `profile_phone`, `profile_bio`, `profile_forgot_uuid`, `profile_forgot_expired`, `profile_created_by`, `profile_created_ip`, `profile_created_time`, `profile_created_platform`, `profile_modified_by`, `profile_modified_ip`, `profile_modified_time`, `profile_modified_platform`) VALUES
-(1, 'ridla.fadilah@tripoin.co.id', 'Ridla Fadilah', 'MALE', 'Bandung', '1990-12-27', 'Tangerang', '021234567891', '-', 1, '081234567891', '<font face="Courier New">This is Me</font>', '0d0bf53a-0d24-4290-b29b-9190ae5ccf0f', '2015-11-02 13:15:09', 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'ridla', '127.0.0.1', '2015-10-31 08:00:55', 'Computer | Windows | Chrome'),
-(2, 'bangkit.pratolo@tripoin.co.id', 'Bangkit Pratolo', 'MALE', 'Tangerang', '2015-10-12', 'Tangerang', '-', '-', 2, '081234567892', '-', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
-(3, 'achmad.fauzi@tripoin.co.id', 'Achmad Fauzi', 'MALE', 'Tangerang', '2015-10-13', 'Tangerang', '-', '-', 3, '081234567893', '-', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
-(4, 'admin@tripoin.co.id', 'Administrator', 'FEMALE', 'Tangerang', '2015-10-14', 'Tangerang', '-', '-', 4, '081234567894', '-', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `mst_profile` (`profile_id`, `profile_email`, `profile_name`, `profile_gender`, `profile_birthplace`, `profile_birthdate`, `profile_address`, `profile_telp`, `profile_photo`, `user_id`, `profile_phone`, `profile_bio`, `profile_resources_uuid`, `profile_forgot_uuid`, `profile_forgot_expired`, `profile_created_by`, `profile_created_ip`, `profile_created_time`, `profile_created_platform`, `profile_modified_by`, `profile_modified_ip`, `profile_modified_time`, `profile_modified_platform`) VALUES
+(1, 'ridla.fadilah@tripoin.co.id', 'Ridla Fadilah', 'MALE', 'Bandung', '1990-12-27', 'Tangerang', '021234567891', NULL, 1, '081234567891', '<font face="Courier New">This is Me</font>', 'b1c52cdc-78ac-4677-899d-2cacb5cb72e0', '0d0bf53a-0d24-4290-b29b-9190ae5ccf0f', '2015-11-02 13:15:09', 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'ridla', '127.0.0.1', '2015-10-31 08:00:55', 'Computer | Windows | Chrome'),
+(2, 'bangkit.pratolo@tripoin.co.id', 'Bangkit Pratolo', 'MALE', 'Tangerang', '2015-10-12', 'Tangerang', '-', NULL, 2, '081234567892', '-', '399820b9-14c8-4788-bdba-8789dc7ce533', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
+(3, 'achmad.fauzi@tripoin.co.id', 'Achmad Fauzi', 'MALE', 'Tangerang', '2015-10-13', 'Tangerang', '-', NULL, 3, '081234567893', '-', 'a1e87b78-4e1d-4f09-8eeb-8c78c7b8d22b', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
+(4, 'admin@tripoin.co.id', 'Administrator', 'FEMALE', 'Tangerang', '2015-10-14', 'Tangerang', '-', 'vaadin-logo.png84017421666174995.png', 4, '081234567894', '-', 'd42c93af-92e0-49ca-8989-4e6d14c6606c', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'admin', '127.0.0.1', '2015-11-03 16:12:46', 'Computer | Windows | Chrome');
 
 -- --------------------------------------------------------
 
