@@ -22,6 +22,7 @@ public class ProfileData {
 	private String phone;
 	private String photo;
 	private String bio;
+	private String resourcesUUID;
     private String forgotUUID;
     private String forgotExpired;
 	private String createdBy;
@@ -50,6 +51,7 @@ public class ProfileData {
 		this.phone = profile.getPhone();
 		this.photo = profile.getPhoto();
 		this.bio = profile.getBio();
+		this.resourcesUUID = profile.getResourcesUUID();
 		this.forgotUUID = profile.getForgotUUID();
 		if(profile.getForgotExpired() != null)
 			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getModifiedTime());
@@ -67,7 +69,7 @@ public class ProfileData {
 	
 	public ProfileData(int id, String email, String name, String gender,
 			String birthplace, Date birthdate, String address, String telp,
-			String phone, String photo, String bio, String forgotUUID, Date forgotExpired,
+			String phone, String photo, String bio, String resourcesUUID, String forgotUUID, Date forgotExpired,
 			User user, String createdBy, String createdIP,
 			Date createdTime, String createdPlatform, 
 			String modifiedBy, String modifiedIP, Date modifiedTime, String modifiedPlatform) {
@@ -83,6 +85,7 @@ public class ProfileData {
 		this.phone = phone;
 		this.photo = photo;
 		this.bio = bio;
+		this.resourcesUUID = resourcesUUID;
 		this.forgotUUID = forgotUUID;
 		if(forgotExpired != null)
 			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(forgotExpired);
@@ -186,6 +189,14 @@ public class ProfileData {
 		this.bio = bio;
 	}
 
+	public String getResourcesUUID() {
+		return resourcesUUID;
+	}
+
+	public void setResourcesUUID(String resourcesUUID) {
+		this.resourcesUUID = resourcesUUID;
+	}
+
 	public String getForgotUUID() {
 		return forgotUUID;
 	}
@@ -280,7 +291,8 @@ public class ProfileData {
 				+ ", gender=" + gender + ", birthplace=" + birthplace
 				+ ", birthdate=" + birthdate + ", address=" + address
 				+ ", telp=" + telp + ", phone=" + phone + ", photo=" + photo
-				+ ", bio=" + bio + ", forgotUUID=" + forgotUUID + ", forgotExpired=" + forgotExpired
+				+ ", bio=" + bio + ", resourcesUUID=" + resourcesUUID 
+				+ ", forgotUUID=" + forgotUUID + ", forgotExpired=" + forgotExpired
 				+ ", createdBy=" + createdBy + ", createdIP="
 				+ createdIP + ", createdTime=" + createdTime + ", createdPlatform=" + createdPlatform
 				+ ", modifiedBy=" + modifiedBy + ", modifiedIP=" + modifiedIP + ", modifiedTime="

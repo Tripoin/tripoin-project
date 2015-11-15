@@ -40,6 +40,7 @@ public class Profile implements Serializable {
     private String phone;
     private String photo;
     private String bio;
+    private String resourcesUUID;
     private String forgotUUID;
     private Date forgotExpired;
     private String createdBy;
@@ -71,6 +72,7 @@ public class Profile implements Serializable {
     		this.phone = profileData.getPhone();
     		this.photo = profileData.getPhoto();
     		this.bio = profileData.getBio();
+    		this.resourcesUUID = profileData.getResourcesUUID();
     		this.forgotUUID = profileData.getForgotUUID();
     		try {
     			if(profileData.getForgotExpired() != null)
@@ -208,6 +210,15 @@ public class Profile implements Serializable {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
+	
+	@Column(name="profile_resources_uuid")
+	public String getResourcesUUID() {
+		return resourcesUUID;
+	}
+
+	public void setResourcesUUID(String resourcesUUID) {
+		this.resourcesUUID = resourcesUUID;
+	}
 
 	@Column(name="profile_forgot_uuid")
 	public String getForgotUUID() {
@@ -314,7 +325,7 @@ public class Profile implements Serializable {
 		return "Profile [id=" + id + ", email=" + email + ", name=" + name
 				+ ", birthplace=" + birthplace + ", birthdate=" + birthdate
 				+ ", address=" + address + ", telp=" + telp + ", phone=" + phone
-				+ ", photo=" + photo + ", bio=" + bio + ", forgotUUID=" + forgotUUID
+				+ ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID=" + forgotUUID
 				+ ", forgotExpired=" + forgotExpired + ", createdBy=" + createdBy
 				+ ", createdIP=" + createdIP + ", createdTime=" + createdTime
 				+ ", createdPlatform=" + createdPlatform
