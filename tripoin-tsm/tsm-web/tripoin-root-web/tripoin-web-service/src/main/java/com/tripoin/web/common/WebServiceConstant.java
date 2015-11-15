@@ -7,6 +7,7 @@ public class WebServiceConstant {
 
 	private static final String HTTP_CONTEXT_DEFAULT = "/wscontext";
 	private static final String HTTP_CONTEXT_ANONYMOUS = "/anonymous";
+	private static final String HTTP_CONTEXT_RESOURCES = "/resources";
 	
 	private static final String HTTP_ALL = "/all";
 	private static final String HTTP_LOAD = "/load";
@@ -17,6 +18,8 @@ public class WebServiceConstant {
 	/*private static final String HTTP_DELETE = "/delete";*/
 	
 	public static final String HTTP_ONLY = "HttpOnly";
+	
+	public static final String HTTP_RESOURCES_IMAGES = HTTP_CONTEXT_RESOURCES.concat("/images");
 
 	public static final String HTTP_FORGOT_PASSWORD_PATH = "/forgotpassword";
 	public static final String HTTP_FORGOT_PASSWORD = HTTP_CONTEXT_ANONYMOUS.concat(HTTP_FORGOT_PASSWORD_PATH);

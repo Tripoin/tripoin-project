@@ -1,6 +1,5 @@
 package com.tripoin.web.view.profile;
 
-import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -15,6 +14,8 @@ import com.tripoin.core.dto.ProfileData;
 import com.tripoin.util.time.TimeAgo;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
 import com.tripoin.web.common.EWebUIConstant;
+import com.tripoin.web.common.ICommonRest;
+import com.tripoin.web.common.WebServiceConstant;
 import com.tripoin.web.service.IProfileService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.data.Property.ReadOnlyException;
@@ -24,9 +25,8 @@ import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.FileResource;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -59,6 +59,9 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
     @Autowired
     private IProfileService profileService;
     
+    @Autowired
+    private ICommonRest commonRest;
+    
     private ProfileData profileData;
     
     private final FormLayout form = new FormLayout();
@@ -77,6 +80,8 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
     private Label lastModified;
     private ProfileImageUploader receiver = new ProfileImageUploader();
     private Upload upload = new Upload(null, receiver);
+    private ExternalResource urlImageProfileResource;
+    private String urlResourcesImage;
     
     @PostConstruct
     public void init() throws Exception {
@@ -98,8 +103,13 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         
         VerticalLayout uploadLayout = new VerticalLayout();
         uploadLayout.setMargin(false);
-        uploadLayout.setWidth("40%");
-        profilePhoto.setSource(new File(profileData.getPhoto()).exists() ? new FileResource(new File(profileData.getPhoto())) : new ThemeResource("../tripoin-valo/img/profile-pic-new-300px.png")); 
+        uploadLayout.setWidth("40%");        
+        urlResourcesImage = commonRest.getUrl(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
+        String urlImage = urlResourcesImage.concat("profile-default-300px.png"); 
+        if(profileData.getPhoto() != null)
+        	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(profileData.getPhoto());
+        urlImageProfileResource = new ExternalResource(urlImage);        	
+        profilePhoto.setSource(urlImageProfileResource); 
         profilePhoto.setWidth("100%");
         upload.setWidth("100%");
         upload.setImmediate(true);
@@ -117,8 +127,13 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 			private static final long serialVersionUID = -9184461198940643739L;
 			@Override
 			public void uploadFinished(FinishedEvent event) {
-				profileService.updatePhotoProfile(receiver.getFile(), null);
+				profileService.updatePhotoProfile(receiver.getFile(), null);       
+				String urlImage = urlResourcesImage.concat("profile-default-300px.png"); 
+		        if(profileData.getPhoto() != null)
+		        	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(receiver.getFile().getName());
+		        urlImageProfileResource = new ExternalResource(urlImage);        	 
 				receiver.getFile().delete();
+		        profilePhoto.setSource(urlImageProfileResource);
 			}
 		});
         uploadLayout.addComponent(profilePhoto);
