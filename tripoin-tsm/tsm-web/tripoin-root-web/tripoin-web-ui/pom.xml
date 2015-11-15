@@ -417,7 +417,7 @@
 		</dependency>
 		<!-- refer other data -->
 		<dependency>
-			<groupId>com.google.kaptcha</groupId>
+			<groupId>com.google.code.kaptcha</groupId>
 			<artifactId>kaptcha</artifactId>
 			<version>${google.kaptcha.version}</version>
 		</dependency>
@@ -623,8 +623,8 @@
 
 	<repositories>
 		<repository>
-			<id>sonatype-forge</id>
-    		<url>https://repository.sonatype.org/content/groups/forge/</url>
+			<id>nuxeo nexus public</id>
+    		<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
 		</repository>
 		<repository>
 			<id>vaadin-addons</id>
