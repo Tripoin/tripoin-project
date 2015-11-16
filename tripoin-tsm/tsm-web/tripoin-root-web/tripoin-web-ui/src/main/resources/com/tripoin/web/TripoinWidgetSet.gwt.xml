@@ -20,9 +20,9 @@
 		<when-type-assignable
 			class="com.vaadin.client.metadata.ConnectorBundleLoader" />
 	</generate-with>
-    
-
-    
 
     <inherits name="org.vaadin.aceeditor.AceEditorWidgetSet" />
+    
+    <!-- WidgetSetGoogleMap -->
+    <inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
 </module>

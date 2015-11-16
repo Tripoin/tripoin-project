@@ -369,6 +369,11 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.vaadin.tapio</groupId>
+            <artifactId>googlemaps</artifactId>
+            <version>${com.vaadin.tapio.version}</version>
+        </dependency>
 		<!-- refer jetty data -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
