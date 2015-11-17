@@ -7,13 +7,19 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.MenuData;
+import com.tripoin.core.dto.ProfileData;
 import com.tripoin.util.ui.icon.BaseIcon;
+import com.tripoin.web.common.ICommonRest;
+import com.tripoin.web.common.WebServiceConstant;
+import com.tripoin.web.service.IProfileService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -41,7 +47,20 @@ public class BaseMenuLayout extends CssLayout implements View {
     private LogoutListener logoutListener;
     private List<MenuData> menuDatas;
     private Map<String, String> mapDataMenu = new LinkedHashMap<String, String>();
-
+    private Component titleComponent;
+    private Component userMenuComponent;
+    private Component toggleButtonComponent;
+    private Component menuItemsComponent;
+    private ExternalResource urlImageProfileResource;
+    private String urlResourcesImage;
+    private ProfileData profileData;
+    
+    @Autowired
+    private IProfileService profileService;
+    
+    @Autowired
+    private ICommonRest commonRest;
+    
 	public CssLayout getMenuItemsLayout() {
 		return menuItemsLayout;
 	}
@@ -62,6 +81,10 @@ public class BaseMenuLayout extends CssLayout implements View {
 		this.mapDataMenu = mapDataMenu;
 	}
 
+	public void setUrlImageProfileResource(ExternalResource urlImageProfileResource) {
+		this.urlImageProfileResource = urlImageProfileResource;
+	}
+
 	@PostConstruct
 	public void init(){
 		if(mapDataMenu.isEmpty()){
@@ -72,10 +95,15 @@ public class BaseMenuLayout extends CssLayout implements View {
 	}
 
 	public BaseMenuLayout getMenu() {
-        addComponent(buildTitle());        
-        addComponent(buildUserMenu());        
-        addComponent(buildToggleButton());
-        addComponent(buildMenuItems());
+		profileData = profileService.getProfile();
+		titleComponent = buildTitle();
+		userMenuComponent = buildUserMenu();
+		toggleButtonComponent = buildToggleButton();
+		menuItemsComponent = buildMenuItems();
+        addComponent(titleComponent, 0);        
+        addComponent(userMenuComponent, 1);        
+        addComponent(toggleButtonComponent, 2);
+        addComponent(menuItemsComponent, 3);
         return this;
 	}
 	
@@ -93,8 +121,13 @@ public class BaseMenuLayout extends CssLayout implements View {
 	
 	private Component buildUserMenu() {
         final MenuBar settings = new MenuBar();
-        settings.addStyleName("user-menu");
-        settingsItem = settings.addItem("", new ThemeResource("../tripoin-valo/img/profile-pic-new-300px.png"), null);
+        settings.addStyleName("user-menu");      
+        urlResourcesImage = commonRest.getUrl(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
+        String urlImage = urlResourcesImage.concat("profile-default-300px.png");
+        if(profileData.getPhoto() != null)
+           	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(profileData.getPhoto());
+        urlImageProfileResource = new ExternalResource(urlImage);
+        settingsItem = settings.addItem("", urlImageProfileResource, null);
         settingsItem.addItem("Account Settings", new Command() {
 			private static final long serialVersionUID = 8813252433421821224L;
 			@Override

@@ -13,6 +13,7 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.util.time.TimeAgo;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
+import com.tripoin.web.TripoinUI;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -46,6 +47,8 @@ import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.FinishedEvent;
 import com.vaadin.ui.Upload.FinishedListener;
 import com.vaadin.ui.Upload.StartedListener;
+import com.vaadin.ui.Upload.SucceededListener;
+import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Upload.StartedEvent;
 
@@ -132,12 +135,20 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 			@Override
 			public void uploadFinished(FinishedEvent event) {
 				profileService.updatePhotoProfile(receiver.getFile(), null);       
-				String urlImage = urlResourcesImage.concat("profile-default-300px.png"); 
+				String urlImage = urlResourcesImage.concat("profile-default-300px.png");
+				String fileName = receiver.getFile().getName();
 		        if(profileData.getPhoto() != null)
-		        	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(receiver.getFile().getName());
-		        urlImageProfileResource = new ExternalResource(urlImage);        	 
-				receiver.getFile().delete();
+		        	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(fileName);
+		        urlImageProfileResource = new ExternalResource(urlImage); 
 		        profilePhoto.setSource(urlImageProfileResource);
+				TripoinUI.get().updateImageProfile(urlImage);
+			}
+		});
+        upload.addSucceededListener(new SucceededListener() {
+			private static final long serialVersionUID = -7061365876392881684L;
+			@Override
+			public void uploadSucceeded(SucceededEvent event) {
+				receiver.getFile().delete();
 			}
 		});
         uploadLayout.addComponent(profilePhoto);
@@ -258,7 +269,6 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 		notification.setStyleName("system closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(10000);
-        System.out.println("Anjar Ganteng "+birthDate.getValue());
     }
 
     @Override

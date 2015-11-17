@@ -27,9 +27,8 @@ import com.tripoin.web.view.ErrorView;
 import com.tripoin.web.view.home.HomeView;
 import com.tripoin.web.view.login.LoginScreen;
 import com.tripoin.web.view.login.LoginScreen.LoginListener;
-import com.tripoin.web.view.menu.BaseMenuLayout;
 import com.tripoin.web.view.menu.RootMenuLayout;
-import com.tripoin.web.view.menu.BaseMenuLayout.LogoutListener;
+import com.tripoin.web.view.menu.RootMenuLayout.LogoutListener;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -65,12 +64,13 @@ import com.vaadin.ui.themes.ValoTheme;
 public class TripoinUI extends UI implements ErrorHandler {
 	
 	private static final long serialVersionUID = -57029129041123227L;
-    private CssLayout menuItems;
     private CssLayout menuItemsLayout;
-	private RootMenuLayout root = new RootMenuLayout();
-    private ComponentContainer viewDisplay = root.getContentContainer();
+    private ComponentContainer viewDisplay;
     private DiscoveryNavigator navigator;
     private ApplicationContext applicationContext;
+    
+    @Autowired
+	private RootMenuLayout rootMenuLayout;
     
     @Autowired
     private LoginScreen loginScreen;
@@ -80,9 +80,6 @@ public class TripoinUI extends UI implements ErrorHandler {
 	
 	@Autowired
 	private IStateFullRest stateFullRest;
-
-	@Autowired
-	private BaseMenuLayout baseMenuLayout;
 	
 	@Autowired
 	private ILogoutService logoutService;
@@ -143,40 +140,43 @@ public class TripoinUI extends UI implements ErrorHandler {
     protected void mainView() {
     	getPage().setTitle("Tripoin Web Application");
     	setTheme("tripoin-valo");
-    	baseMenuLayout.addLogoutListener(new LogoutListener() {
-			private static final long serialVersionUID = -8249206203052668842L;
+    	rootMenuLayout.addLogoutListener(new LogoutListener() {
+			private static final long serialVersionUID = -1972163138035282956L;
 			@Override
 			public void doLogout() {
 				close();
 			}
 		});
     	if(stateFullRest != null && stateFullRest.getMenuDatas() != null && !stateFullRest.getMenuDatas().isEmpty())
-    		baseMenuLayout.setMenuDatas(stateFullRest.getMenuDatas());
-        if(menuItems == null)
-        	menuItems = baseMenuLayout.getMenu();
+    		rootMenuLayout.setMenuDatas(stateFullRest.getMenuDatas()); 
+    	rootMenuLayout.constructMenu(); 
     	if(menuItemsLayout == null)
-    		menuItemsLayout = baseMenuLayout.getMenuItemsLayout();
-    	baseMenuLayout.updateUser(accessControl.getUsername());
+    		menuItemsLayout = rootMenuLayout.getMenuItemsLayout();
+    	rootMenuLayout.updateUser(accessControl.getUsername());
         if (getPage().getWebBrowser().isIE() && getPage().getWebBrowser().getBrowserMajorVersion() == 9) {
-        	baseMenuLayout.setWidth("320px");
+        	rootMenuLayout.setWidth("320px");
         }
-        root.addMenu(menuItems);
-        root.setWidth("100%"); 
+        rootMenuLayout.setWidth("100%"); 
         addStyleName(ValoTheme.UI_WITH_MENU);
 		removeStyleName("login-screen");
 		removeStyleName("login-information");
 		removeStyleName("login-form");
 		removeStyleName("centering-layout");
-        setContent(root);
+        setContent(rootMenuLayout);
         generateNavigator();
     }
     
+    public void updateImageProfile(String urlImage){
+    	rootMenuLayout.updateImageProfile(urlImage);
+    }
+    
     private void generateNavigator(){
+    	viewDisplay = rootMenuLayout.getContentContainer();
         navigator = new DiscoveryNavigator(this, viewDisplay);
         final String f = Page.getCurrent().getUriFragment();
         if (f == null || f.isEmpty() || EWebUIConstant.HOME_VIEW.toString().equals(f) || HomeView.VIEW_NAME.equals(f) || EWebUIConstant.NAVIGATE_NULL.toString().equals(f)) 
             navigator.navigateTo(HomeView.VIEW_NAME);
-        else if(f.startsWith("!") && baseMenuLayout.getMapDataMenu().containsKey(f.substring(1)))
+        else if(f.startsWith("!") && rootMenuLayout.getMapDataMenu().containsKey(f.substring(1)))
         	navigator.navigateTo(f);
         else{
         	UI.getCurrent().getPage().setUriFragment(null, true);
@@ -206,7 +206,7 @@ public class TripoinUI extends UI implements ErrorHandler {
                         break;
                     }
                 }
-                baseMenuLayout.removeStyleName("valo-menu-visible");
+                rootMenuLayout.removeStyleName("valo-menu-visible");
             }
         });    	
     }
