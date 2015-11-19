@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2015 at 03:52 AM
+-- Generation Time: Nov 19, 2015 at 02:38 PM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -72,13 +72,13 @@ INSERT INTO `mst_menu` (`menu_id`, `menu_code`, `menu_name`, `menu_parent_id`, `
 (17, 'systemAnalyzerView', 'System Analyzer', 15, 2, 2, '1.2', 'MENU-PAGE', 'WEB-MOBILE', 1, 'System Analyzer', 'admin', '127.0.0.1', '2015-07-17 08:57:22', NULL, NULL, NULL, NULL, NULL),
 (18, 'customerIncomeView', 'Customer Income', 15, 2, 3, '1.3', 'MENU-PAGE', 'WEB-MOBILE', 1, 'Customer Income', 'admin', '127.0.0.1', '2015-10-23 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (19, 'masterDataView', 'Master Data', NULL, 1, 7, '7', 'MENU-NON-PAGE', 'WEB', 1, 'Master Data', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(20, 'dataEmployeeView', 'Data Employee', 19, 2, 1, '6.1', 'MENU-PAGE', 'WEB', 1, 'Data Employee', 'admin', '127.0.0.1', '2015-10-24 17:27:24', NULL, NULL, NULL, NULL, NULL),
-(21, 'dataOccupationView', 'Data Occupation', 19, 2, 2, '6.2', 'MENU-PAGE', 'WEB', 1, 'Data Occupation', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(22, 'dataAreaView', 'Data Area', 19, 2, 3, '6.3', 'MENU-PAGE', 'WEB', 1, 'Data Area', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(23, 'dataProjectView', 'Data Project', 19, 2, 4, '6.4', 'MENU-PAGE', 'WEB', 1, 'Data Project', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(24, 'dataCompetitiveInformationSourceView', 'Data Competitive Information Source', 19, 2, 5, '6.5', 'MENU-PAGE', 'WEB', 1, 'Data Competitive Information Source', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(25, 'dataComparisonView', 'Data Comparison', 19, 2, 6, '6.6', 'MENU-PAGE', 'WEB', 1, 'Data Comparison', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(26, 'dataCurrencyView', 'Data Currency', 19, 2, 7, '6.7', 'MENU-PAGE', 'WEB', 1, 'Data Currency', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(20, 'dataEmployeeView', 'Data Employee', 19, 2, 1, '7.1', 'MENU-PAGE', 'WEB', 1, 'Data Employee', 'admin', '127.0.0.1', '2015-10-24 17:27:24', NULL, NULL, NULL, NULL, NULL),
+(21, 'dataOccupationView', 'Data Occupation', 19, 2, 2, '7.2', 'MENU-PAGE', 'WEB', 1, 'Data Occupation', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(22, 'dataAreaView', 'Data Area', 19, 2, 3, '7.3', 'MENU-PAGE', 'WEB', 1, 'Data Area', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(23, 'dataProjectView', 'Data Project', 19, 2, 4, '7.4', 'MENU-PAGE', 'WEB', 1, 'Data Project', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(24, 'dataCompetitiveInformationSourceView', 'Data Competitive Information Source', 19, 2, 5, '7.5', 'MENU-PAGE', 'WEB', 1, 'Data Competitive Information Source', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(25, 'dataComparisonView', 'Data Comparison', 19, 2, 6, '7.6', 'MENU-PAGE', 'WEB', 1, 'Data Comparison', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(26, 'dataCurrencyView', 'Data Currency', 19, 2, 7, '7.7', 'MENU-PAGE', 'WEB', 1, 'Data Currency', 'admin', '127.0.0.1', '2015-10-24 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (27, 'salesTracking', 'Sales Tracking', NULL, 1, 6, '6', 'MENU-PAGE', 'WEB', 1, 'Sales Tracking', 'admin', '127.0.0.1', '2015-11-14 17:00:00', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -177,7 +177,7 @@ INSERT INTO `mst_profile` (`profile_id`, `profile_email`, `profile_name`, `profi
 (1, 'ridla.fadilah@tripoin.co.id', 'Ridla Fadilah', 'MALE', 'Bandung', '1990-12-27', 'Tangerang', '021234567891', NULL, 1, '081234567891', '<font face="Courier New">This is Me</font>', 'b1c52cdc-78ac-4677-899d-2cacb5cb72e0', '0d0bf53a-0d24-4290-b29b-9190ae5ccf0f', '2015-11-02 13:15:09', 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'ridla', '127.0.0.1', '2015-10-31 08:00:55', 'Computer | Windows | Chrome'),
 (2, 'bangkit.pratolo@tripoin.co.id', 'Bangkit Pratolo', 'MALE', 'Tangerang', '2015-10-12', 'Tangerang', '-', NULL, 2, '081234567892', '-', '399820b9-14c8-4788-bdba-8789dc7ce533', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
 (3, 'achmad.fauzi@tripoin.co.id', 'Achmad Fauzi', 'MALE', 'Tangerang', '2015-10-13', 'Tangerang', '-', NULL, 3, '081234567893', '-', 'a1e87b78-4e1d-4f09-8eeb-8c78c7b8d22b', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
-(4, 'admin@tripoin.co.id', 'Administrator', 'FEMALE', 'Tangerang', '2015-10-14', 'Tangerang', '-', 'tomcat.gif7294863172268443412.gif', 4, '081234567894', '-', 'd42c93af-92e0-49ca-8989-4e6d14c6606c', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'admin', '127.0.0.1', '2015-11-03 16:12:46', 'Computer | Windows | Chrome');
+(4, 'admin@tripoin.co.id', 'Administrator', 'FEMALE', 'Tangerang', '2015-10-14', 'Tangerang', '-', 'vaadin-logo.png84017421666174995.png', 4, '081234567894', '-', 'd42c93af-92e0-49ca-8989-4e6d14c6606c', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'admin', '127.0.0.1', '2015-11-03 16:12:46', 'Computer | Windows | Chrome');
 
 -- --------------------------------------------------------
 
