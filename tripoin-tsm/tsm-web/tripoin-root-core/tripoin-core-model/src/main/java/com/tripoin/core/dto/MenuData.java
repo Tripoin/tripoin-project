@@ -3,32 +3,76 @@ package com.tripoin.core.dto;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.pojo.Menu;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "MenuData")
 public class MenuData {
 
+	@XmlElement(name = "ID", namespace = "")
 	private Integer id;
+	
+	@XmlElement(name = "Code", namespace = "")
     private String code;
+	
+	@XmlElement(name = "Name", namespace = "")
     private String name;
+	
+	@XmlElement(name = "MenudDataParent", namespace = "")
     private MenuData menuDataParent;
+	
+	@XmlElement(name = "Level", namespace = "")
     private Integer level;
+	
+	@XmlElement(name = "Order", namespace = "")
     private Integer order;
+	
+	@XmlElement(name = "Tree", namespace = "")
     private String tree;
+	
+	@XmlElement(name = "Function", namespace = "")
     private String function;
+	
+	@XmlElement(name = "ViewType", namespace = "")
     private String viewType;
+	
+	@XmlElement(name = "Status", namespace = "")
 	private Integer status;
+	
+	@XmlElement(name = "Remarks", namespace = "")
 	private String remarks;
+	
+	@XmlElement(name = "CreatedBy", namespace = "")
 	private String createdBy;
+	
+	@XmlElement(name = "CreatedIP", namespace = "")
 	private String createdIP;
+	
+	@XmlElement(name = "CreatedTime", namespace = "")
 	private String createdTime;
+	
+	@XmlElement(name = "CreatedPlatform", namespace = "")
     private String createdPlatform;
+	
+	@XmlElement(name = "ModifiedBy", namespace = "")
 	private String modifiedBy;
+	
+	@XmlElement(name = "ModifiedIP", namespace = "")
 	private String modifiedIP;
+	
+	@XmlElement(name = "ModifiedTime", namespace = "")
 	private String modifiedTime;
+	
+	@XmlElement(name = "ModifiedPlatform", namespace = "")
     private String modifiedPlatform;
 
 	public MenuData() {}

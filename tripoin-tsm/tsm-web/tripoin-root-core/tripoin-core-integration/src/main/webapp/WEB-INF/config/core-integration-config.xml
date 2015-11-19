@@ -15,6 +15,7 @@
 	<import resource="classpath:META-INF/spring/datasource/dataSourceContext-mysql.xml"/>
 	<import resource="classpath:META-INF/spring/applicationContext-jpa.xml"/>
 	<import resource="classpath:META-INF/spring/integration/applicationContext-http-int.xml"/>
+	<import resource="classpath:META-INF/spring/soap/applicationContext-http-soap.xml"/>
 	<import resource="security-integration-config.xml" />				
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>

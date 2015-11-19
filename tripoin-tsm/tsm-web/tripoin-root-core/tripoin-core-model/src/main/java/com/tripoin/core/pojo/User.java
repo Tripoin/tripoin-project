@@ -1,9 +1,11 @@
 package com.tripoin.core.pojo;
 
 
+import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.UserData;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +53,13 @@ public class User implements Serializable {
             this.id = userData.getId();
             this.username = userData.getUsername();
             this.enabled = userData.getEnabled();
-            this.expiredDate = userData.getExpiredDate();
+            if(userData.getExpiredDate() != null){
+				try {
+					this.expiredDate = ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}            	
+            }
             this.role = new Role(userData.getRoleData());
             this.nonLocked = userData.getNonLocked();
             this.auth = userData.getAuth();
@@ -65,7 +73,13 @@ public class User implements Serializable {
             this.id = userData.getId();
             this.username = userData.getUsername();
             this.enabled = userData.getEnabled();
-            this.expiredDate = userData.getExpiredDate();
+            if(userData.getExpiredDate() != null){
+				try {
+					this.expiredDate = ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}            	
+            }
             this.password = password;
             this.role = new Role(userData.getRoleData());
             this.nonLocked = userData.getNonLocked();

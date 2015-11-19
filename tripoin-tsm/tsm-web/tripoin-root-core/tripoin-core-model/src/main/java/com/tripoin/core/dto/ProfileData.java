@@ -2,6 +2,11 @@ package com.tripoin.core.dto;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.pojo.Profile;
 import com.tripoin.core.pojo.User;
@@ -9,30 +14,77 @@ import com.tripoin.core.pojo.User;
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "ProfileData")
 public class ProfileData {
 
+	@XmlElement(name = "ID", namespace = "")
 	private Integer id;
+	
+	@XmlElement(name = "Email", namespace = "")
 	private String email;
+	
+	@XmlElement(name = "Name", namespace = "")
 	private String name;
+	
+	@XmlElement(name = "Gender", namespace = "")
 	private String gender;
+	
+	@XmlElement(name = "Birthplace", namespace = "")
 	private String birthplace;
+	
+	@XmlElement(name = "Birthdate", namespace = "")
 	private String birthdate;
+	
+	@XmlElement(name = "Address", namespace = "")
 	private String address;
+	
+	@XmlElement(name = "Telp", namespace = "")
 	private String telp;
+	
+	@XmlElement(name = "Phone", namespace = "")
 	private String phone;
+	
+	@XmlElement(name = "Photo", namespace = "")
 	private String photo;
+	
+	@XmlElement(name = "Bio", namespace = "")
 	private String bio;
+	
+	@XmlElement(name = "ResourcesUUID", namespace = "")
 	private String resourcesUUID;
+	
+	@XmlElement(name = "ForgotUUID", namespace = "")
     private String forgotUUID;
+	
+	@XmlElement(name = "ForgotExpired", namespace = "")
     private String forgotExpired;
+	
+	@XmlElement(name = "CreatedBy", namespace = "")
 	private String createdBy;
+	
+	@XmlElement(name = "CreatedIP", namespace = "")
 	private String createdIP;
+	
+	@XmlElement(name = "CreatedTime", namespace = "")
 	private String createdTime;
+	
+	@XmlElement(name = "CreatedPlatform", namespace = "")
     private String createdPlatform;
+	
+	@XmlElement(name = "ModifiedBy", namespace = "")
 	private String modifiedBy;
+	
+	@XmlElement(name = "ModifiedIP", namespace = "")
 	private String modifiedIP;
+	
+	@XmlElement(name = "ModifiedTime", namespace = "")
 	private String modifiedTime;
+	
+	@XmlElement(name = "ModifiedPlatform", namespace = "")
     private String modifiedPlatform;
+	
+	@XmlElement(name = "UserData", namespace = "")
 	private UserData userData;
 
 	public ProfileData() {}

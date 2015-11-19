@@ -1,15 +1,29 @@
 package com.tripoin.core.dto;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.tripoin.core.pojo.Role;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "RoleData")
 public class RoleData {
 
+	@XmlElement(name = "ID", namespace = "")
 	private Integer id;
+
+	@XmlElement(name = "Code", namespace = "")
 	private String code;
+
+	@XmlElement(name = "Status", namespace = "")
 	private Integer status;
+
+	@XmlElement(name = "Remarks", namespace = "")
 	private String remarks;	
 
 	public RoleData() {}

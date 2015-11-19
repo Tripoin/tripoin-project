@@ -1,15 +1,25 @@
 package com.tripoin.core.dto;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "GeneralTransferObject")
 public class GeneralTransferObject {
 	
-	private String responseCode;
+	@XmlElement(name = "ResponseCode", namespace = "")
+	protected String responseCode;
 
-	private String responseMsg;
+	@XmlElement(name = "ResponseMsg", namespace = "")
+	protected String responseMsg;
 
-	private String responseDesc;
+	@XmlElement(name = "ResponseDesc", namespace = "")
+	protected String responseDesc;
 
 	public String getResponseCode() {
 		return responseCode;

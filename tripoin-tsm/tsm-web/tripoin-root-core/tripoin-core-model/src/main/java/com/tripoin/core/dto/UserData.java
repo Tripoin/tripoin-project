@@ -1,22 +1,45 @@
 package com.tripoin.core.dto;
 
-import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.pojo.User;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "UserData")
 public class UserData {
 
+	@XmlElement(name = "ID", namespace = "")
 	private Integer id;
+	
+	@XmlElement(name = "Username", namespace = "")
 	private String username;
+	
+	@XmlElement(name = "Enabled", namespace = "")
 	private Integer enabled;
-	private Date expiredDate;
+	
+	@XmlElement(name = "ExpiredDate", namespace = "")
+	private String expiredDate;
+	
+	@XmlElement(name = "NonLocked", namespace = "")
 	private Integer nonLocked;
+	
+	@XmlElement(name = "Auth", namespace = "")
 	private String auth;
+	
+	@XmlElement(name = "Status", namespace = "")
 	private Integer status;
+	
+	@XmlElement(name = "Remarks", namespace = "")
 	private String remarks;
+	
+	@XmlElement(name = "RoleData", namespace = "")
 	private RoleData roleData;
 	
 	public UserData(){}
@@ -26,7 +49,8 @@ public class UserData {
 			this.setId(user.getId());
 			this.setUsername(user.getUsername());
 			this.setEnabled(user.getEnabled());
-			this.setExpiredDate(user.getExpiredDate());
+			if(user.getExpiredDate() != null)
+				this.setExpiredDate(ParameterConstant.FORMAT_DEFAULT.format(user.getExpiredDate()));
 			this.setNonLocked(user.getNonLocked());
 			this.setAuth(user.getAuth());
 			this.setStatus(user.getStatus());
@@ -60,11 +84,11 @@ public class UserData {
 		this.enabled = enabled;
 	}
 	
-	public Date getExpiredDate() {
+	public String getExpiredDate() {
 		return expiredDate;
 	}
 
-	public void setExpiredDate(Date expiredDate) {
+	public void setExpiredDate(String expiredDate) {
 		this.expiredDate = expiredDate;
 	}
 

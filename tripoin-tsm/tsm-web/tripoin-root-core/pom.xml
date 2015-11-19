@@ -72,6 +72,7 @@
         <mockito.core.version>1.9.5</mockito.core.version>
         <hamcrest.version>1.1</hamcrest.version>
         <javax.el.version>2.2.4</javax.el.version>
+        <cxf.version>2.5.0</cxf.version>
     </properties>
     
     <modules>
