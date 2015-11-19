@@ -8,9 +8,10 @@ import java.util.Locale;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -64,6 +65,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class TripoinUI extends UI implements ErrorHandler {
 	
 	private static final long serialVersionUID = -57029129041123227L;
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TripoinUI.class);
     private CssLayout menuItemsLayout;
     private ComponentContainer viewDisplay;
     private DiscoveryNavigator navigator;
@@ -71,6 +73,9 @@ public class TripoinUI extends UI implements ErrorHandler {
     
     @Autowired
 	private RootMenuLayout rootMenuLayout;
+    
+    @Autowired
+    private ErrorView errorView;
     
     @Autowired
     private LoginScreen loginScreen;
@@ -133,7 +138,7 @@ public class TripoinUI extends UI implements ErrorHandler {
         }catch(Exception e){
             StringWriter errors = new StringWriter();
             e.printStackTrace(new PrintWriter(errors));
-        	error(new com.vaadin.server.ErrorEvent(new AccessDeniedException(errors.toString())));
+        	error(new com.vaadin.server.ErrorEvent(e));
         }
     }
 
@@ -182,7 +187,8 @@ public class TripoinUI extends UI implements ErrorHandler {
         	UI.getCurrent().getPage().setUriFragment(null, true);
         	navigator.navigateTo(HomeView.VIEW_NAME);
         }
-        navigator.setErrorView(ErrorView.class);
+        navigator.addView("errorView", errorView);
+        navigator.setErrorView(errorView);
         navigator.addViewChangeListener(new ViewChangeListener() {
 			private static final long serialVersionUID = -1255484519903571054L;
 			@Override
@@ -229,18 +235,16 @@ public class TripoinUI extends UI implements ErrorHandler {
 
 	@Override
 	public void error(com.vaadin.server.ErrorEvent event) {
-		String description = "The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).";
-		AccessDeniedException accessDeniedException = new AccessDeniedException(description);
-		ErrorView errorView;
-        if("false".equals(VaadinServlet.getCurrent().getServletContext().getInitParameter("productionMode"))){
-    		if (event.getThrowable().getCause() instanceof AccessDeniedException)
-                accessDeniedException = (AccessDeniedException) event.getThrowable().getCause();
-    		if (event.getThrowable() instanceof AccessDeniedException)
-                accessDeniedException = (AccessDeniedException) event.getThrowable();        	
+        StringWriter errors = new StringWriter();
+        event.getThrowable().printStackTrace(new PrintWriter(errors));
+    	LOGGER.error("Fault Exception Tripoin UI", event.getThrowable());
+        if("true".equals(VaadinServlet.getCurrent().getServletContext().getInitParameter("productionMode"))){
+        	errorView.setDescription(ErrorView.VIEW_NAME);
+        }else{
+        	errorView.setDescription(errors.toString());        	
         }
-		Notification notification = new Notification("");
-		notification.setCaption("Bad Request");
-        notification.setDescription(description);
+        navigator.navigateTo(ErrorView.VIEW_NAME);
+		Notification notification = new Notification("Bad Request", ErrorView.DESCRIPTION);
 		notification.setStyleName("system closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(7500);
@@ -248,9 +252,6 @@ public class TripoinUI extends UI implements ErrorHandler {
         	notification.show(getPage());
         else
         	notification.show(Page.getCurrent());
-        errorView = new ErrorView();
-        errorView.setDescription(accessDeniedException.getMessage());
-        setContent(errorView);
 	}
     
     public void setAplicationContext(VaadinRequest vaadinRequest){
