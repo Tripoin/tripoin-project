@@ -41,7 +41,6 @@ import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.server.WrappedHttpSession;
 import com.vaadin.server.WrappedSession;
 import com.vaadin.shared.Position;
@@ -227,9 +226,8 @@ public class TripoinUI extends UI implements ErrorHandler {
 		SecurityContextHolder.clearContext();
 		if(stateFullRest != null && stateFullRest.getAdditionalDataMenu() != null && !stateFullRest.getAdditionalDataMenu().isEmpty())
 			stateFullRest.clearAllCookies();
-        VaadinSession.getCurrent().close();
+		
 		getSession().close();
-		getSession().getSession().invalidate();
 		UI.getCurrent().getPage().setLocation("j_spring_security_logout");
 	}
 
