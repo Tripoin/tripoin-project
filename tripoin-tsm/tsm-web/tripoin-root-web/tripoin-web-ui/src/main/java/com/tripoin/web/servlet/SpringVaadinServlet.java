@@ -19,6 +19,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.tripoin.web.servlet.view.ValoThemeSessionInitListener;
 import com.vaadin.server.Constants;
+import com.vaadin.server.SessionDestroyEvent;
+import com.vaadin.server.SessionDestroyListener;
 import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinServlet;
@@ -35,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-public class SpringVaadinServlet extends VaadinServlet {
+public class SpringVaadinServlet extends VaadinServlet implements SessionInitListener, SessionDestroyListener {
 	
     /**
 	 * 
@@ -114,6 +116,7 @@ public class SpringVaadinServlet extends VaadinServlet {
     protected void servletInitialized() throws ServletException {
         super.servletInitialized();
         getService().addSessionInitListener(new ValoThemeSessionInitListener());
+        getService().addSessionDestroyListener(this);
     }
 
 	@Override
@@ -158,5 +161,17 @@ public class SpringVaadinServlet extends VaadinServlet {
             }
         }
     }
+
+	@Override
+	public void sessionDestroy(SessionDestroyEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sessionInit(SessionInitEvent event) throws ServiceException {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

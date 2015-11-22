@@ -93,37 +93,28 @@ public class TripoinUI extends UI implements ErrorHandler {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+    	initializedScreen(vaadinRequest);
+    }
+    
+    @Override
+	protected void refresh(VaadinRequest vaadinRequest) {
+		super.refresh(vaadinRequest);
+		initializedScreen(vaadinRequest);
+	}
+
+	private void initializedScreen(VaadinRequest vaadinRequest){
+    	getSession().setErrorHandler(this);
+        Responsive.makeResponsive(this);
+        setLocale(Locale.US);
         try{
-        	if(WebServiceConstant.HTTP_FORGOT_PASSWORD_PATH.equals(getPage().getLocation().getPath())){
-        		String[] rawParameter = getPage().getLocation().getQuery().split("&");
-        		String username =rawParameter[0].split("=")[1];
-        		String uuid =rawParameter[1].split("=")[1];
-        		GeneralTransferObject generalTransferObject = forgotPasswordService.verifyForgotPassword(username, uuid);
-    			Notification notificationVerifyEmail = new Notification("");  
-        		notificationVerifyEmail.setStyleName("system closable");
-        		notificationVerifyEmail.setPosition(Position.BOTTOM_CENTER);
-                notificationVerifyEmail.setDelayMsec(7500);
-        		if("0".equals(generalTransferObject.getResponseCode())){			
-        			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
-        			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
-        			notificationVerifyEmail.show(Page.getCurrent());        			
-        		}else if("2".equals(generalTransferObject.getResponseCode())){			
-        			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
-        			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_EXPIRED_FORGOT_PASSWORD_DESC.toString());
-        			notificationVerifyEmail.show(Page.getCurrent());          			
-        		}else{			
-        			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
-        			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_NULL_FORGOT_PASSWORD_DESC.toString());
-        			notificationVerifyEmail.show(Page.getCurrent());            			
-        		}
-        	}
-        	getSession().setErrorHandler(this);
-	        Responsive.makeResponsive(this);
-	        setLocale(Locale.US);
-	        
+        	validateForgotPassword();	        
 	        if (accessControl.isUserSignedIn()){
+	        	removeStyleName(ValoTheme.UI_WITH_MENU);
+	    		rootMenuLayout.removeComponenRootMenuLayout();
+	    		rootMenuLayout.initializedRootMenuLayout();
 	            mainView();
 	        }else{
+	        	removeStyleName(ValoTheme.UI_WITH_MENU);
 	        	loginScreen.addLoginListener(new LoginListener() {
 					private static final long serialVersionUID = 5327649431527930757L;
 					@Override
@@ -167,57 +158,81 @@ public class TripoinUI extends UI implements ErrorHandler {
 		removeStyleName("login-form");
 		removeStyleName("centering-layout");
         setContent(rootMenuLayout);
-        generateNavigator();
+    	generateNavigator();
+    }
+    
+    private void generateNavigator(){
+    	if(navigator == null){
+        	viewDisplay = rootMenuLayout.getContentContainer();
+            navigator = new DiscoveryNavigator(this, viewDisplay);
+            final String f = Page.getCurrent().getUriFragment();
+            if (f == null || f.isEmpty() || EWebUIConstant.HOME_VIEW.toString().equals(f) || HomeView.VIEW_NAME.equals(f) || EWebUIConstant.NAVIGATE_NULL.toString().equals(f)) 
+                navigator.navigateTo(HomeView.VIEW_NAME);
+            else if(f.startsWith("!") && rootMenuLayout.getMapDataMenu().containsKey(f.substring(1)))
+            	navigator.navigateTo(f);
+            else{
+            	UI.getCurrent().getPage().setUriFragment(null, true);
+            	navigator.navigateTo(HomeView.VIEW_NAME);
+            }
+            navigator.addView("errorView", errorView);
+            navigator.setErrorView(errorView);
+            navigator.addViewChangeListener(new ViewChangeListener() {
+    			private static final long serialVersionUID = -1255484519903571054L;
+    			@Override
+                public boolean beforeViewChange(final ViewChangeEvent event) {
+                    return true;
+                }
+                @Override
+                public void afterViewChange(final ViewChangeEvent event) {
+                    for (final Iterator<com.vaadin.ui.Component> it = menuItemsLayout.iterator(); it.hasNext();) {
+                        it.next().removeStyleName("selected");
+                    }
+                    for (MenuData menuData : stateFullRest.getMenuDatas()) {
+                        if (event.getViewName().equals(menuData.getCode())) {
+                            for (final Iterator<com.vaadin.ui.Component> it = menuItemsLayout.iterator(); it.hasNext();) {
+                                final com.vaadin.ui.Component c = it.next();
+                                if (c.getCaption() != null && c.getCaption().startsWith(menuData.getName())) {
+                                    c.addStyleName("selected");
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    rootMenuLayout.removeStyleName("valo-menu-visible");
+                }
+            });
+    	}    	
+    }
+    
+    private void validateForgotPassword(){
+    	if(WebServiceConstant.HTTP_FORGOT_PASSWORD_PATH.equals(getPage().getLocation().getPath())){
+    		String[] rawParameter = getPage().getLocation().getQuery().split("&");
+    		String username =rawParameter[0].split("=")[1];
+    		String uuid =rawParameter[1].split("=")[1];
+    		GeneralTransferObject generalTransferObject = forgotPasswordService.verifyForgotPassword(username, uuid);
+			Notification notificationVerifyEmail = new Notification("");  
+    		notificationVerifyEmail.setStyleName("system closable");
+    		notificationVerifyEmail.setPosition(Position.BOTTOM_CENTER);
+            notificationVerifyEmail.setDelayMsec(7500);
+    		if("0".equals(generalTransferObject.getResponseCode())){			
+    			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
+    			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
+    			notificationVerifyEmail.show(Page.getCurrent());        			
+    		}else if("2".equals(generalTransferObject.getResponseCode())){			
+    			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+    			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_EXPIRED_FORGOT_PASSWORD_DESC.toString());
+    			notificationVerifyEmail.show(Page.getCurrent());          			
+    		}else{			
+    			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+    			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_NULL_FORGOT_PASSWORD_DESC.toString());
+    			notificationVerifyEmail.show(Page.getCurrent());            			
+    		}
+    	}
     }
     
     public void updateImageProfile(String urlImage){
     	rootMenuLayout.updateImageProfile(urlImage);
-    }
-    
-    private void generateNavigator(){
-    	viewDisplay = rootMenuLayout.getContentContainer();
-        navigator = new DiscoveryNavigator(this, viewDisplay);
-        final String f = Page.getCurrent().getUriFragment();
-        if (f == null || f.isEmpty() || EWebUIConstant.HOME_VIEW.toString().equals(f) || HomeView.VIEW_NAME.equals(f) || EWebUIConstant.NAVIGATE_NULL.toString().equals(f)) 
-            navigator.navigateTo(HomeView.VIEW_NAME);
-        else if(f.startsWith("!") && rootMenuLayout.getMapDataMenu().containsKey(f.substring(1)))
-        	navigator.navigateTo(f);
-        else{
-        	UI.getCurrent().getPage().setUriFragment(null, true);
-        	navigator.navigateTo(HomeView.VIEW_NAME);
-        }
-        navigator.addView("errorView", errorView);
-        navigator.setErrorView(errorView);
-        navigator.addViewChangeListener(new ViewChangeListener() {
-			private static final long serialVersionUID = -1255484519903571054L;
-			@Override
-            public boolean beforeViewChange(final ViewChangeEvent event) {
-                return true;
-            }
-            @Override
-            public void afterViewChange(final ViewChangeEvent event) {
-                for (final Iterator<com.vaadin.ui.Component> it = menuItemsLayout.iterator(); it.hasNext();) {
-                    it.next().removeStyleName("selected");
-                }
-                for (MenuData menuData : stateFullRest.getMenuDatas()) {
-                    if (event.getViewName().equals(menuData.getCode())) {
-                        for (final Iterator<com.vaadin.ui.Component> it = menuItemsLayout.iterator(); it.hasNext();) {
-                            final com.vaadin.ui.Component c = it.next();
-                            if (c.getCaption() != null && c.getCaption().startsWith(menuData.getName())) {
-                                c.addStyleName("selected");
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                rootMenuLayout.removeStyleName("valo-menu-visible");
-            }
-        });    	
-    }
-
-    public static TripoinUI get() {
-        return (TripoinUI) UI.getCurrent();
     }    
 
 	@Override
@@ -252,6 +267,10 @@ public class TripoinUI extends UI implements ErrorHandler {
         else
         	notification.show(Page.getCurrent());
 	}
+
+    public static TripoinUI get() {
+        return (TripoinUI) UI.getCurrent();
+    }
     
     public void setAplicationContext(VaadinRequest vaadinRequest){
     	WrappedSession session = vaadinRequest.getWrappedSession();

@@ -50,10 +50,6 @@ public class RootMenuLayout extends HorizontalLayout implements View {
     private LogoutListener logoutListener;
     private List<MenuData> menuDatas;
     private Map<String, String> mapDataMenu = new LinkedHashMap<String, String>();
-    private Component titleComponent;
-    private Component userMenuComponent;
-    private Component toggleButtonComponent;
-    private Component menuItemsComponent;
     private ExternalResource urlImageProfileResource;
     private String urlResourcesImage;
     private ProfileData profileData;
@@ -86,6 +82,14 @@ public class RootMenuLayout extends HorizontalLayout implements View {
 
 	@PostConstruct
     public void init() throws Exception {
+		initializedRootMenuLayout();
+    }
+
+    public ComponentContainer getContentContainer() {
+        return contentArea;
+    }
+	
+	public void initializedRootMenuLayout(){
         setSizeFull();
         
         menuArea.setPrimaryStyleName("valo-menu");
@@ -97,19 +101,15 @@ public class RootMenuLayout extends HorizontalLayout implements View {
         addComponent(menuArea);
         addComponent(contentArea);        
         setExpandRatio(contentArea, 1.0f);
-    }
-
-    public ComponentContainer getContentContainer() {
-        return contentArea;
-    }
+	}
 
     public void constructMenu() {
 		profileData = profileService.getProfile();
     	CssLayout menu = new CssLayout();
-		titleComponent = buildTitle();
-		userMenuComponent = buildUserMenu();
-		toggleButtonComponent = buildToggleButton();
-		menuItemsComponent = buildMenuItems();
+    	Component titleComponent = buildTitle();
+    	Component userMenuComponent = buildUserMenu();
+    	Component toggleButtonComponent = buildToggleButton();
+    	Component menuItemsComponent = buildMenuItems();
 		menu.addComponent(titleComponent, 0);        
 		menu.addComponent(userMenuComponent, 1);        
 		menu.addComponent(toggleButtonComponent, 2);
@@ -120,6 +120,23 @@ public class RootMenuLayout extends HorizontalLayout implements View {
         menu.addStyleName("no-horizontal-drag-hints");
         menuArea.addComponent(menu);
     }
+	
+	public void removeComponenRootMenuLayout(){
+		menuArea.removeStyleName("sidebar");
+		menuArea.removeStyleName("valo-menu-part");
+		menuArea.removeStyleName("no-vertical-drag-hints");
+		menuArea.removeStyleName("no-horizontal-drag-hints");
+		menuArea.removeStyleName("valo-menu-title");
+		menuArea.removeStyleName("user-menu");
+		menuArea.removeStyleName("valo-menu-visible");
+		menuArea.removeStyleName(ValoTheme.BUTTON_PRIMARY);
+		menuArea.removeStyleName(ValoTheme.BUTTON_SMALL);
+		menuArea.removeStyleName("valo-menu-toggle");
+		menuArea.removeStyleName("h4");
+		menuArea.removeAllComponents();
+		menuItemsLayout.removeAllComponents();
+		removeAllComponents();
+	}
 	
 	private Component buildTitle() {
         final HorizontalLayout top = new HorizontalLayout();
