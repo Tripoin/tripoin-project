@@ -222,13 +222,14 @@ public class TripoinUI extends UI implements ErrorHandler {
 
 	@Override
 	public void close() {
-		logoutService.doLogout();
-		SecurityContextHolder.clearContext();
-		if(stateFullRest != null && stateFullRest.getAdditionalDataMenu() != null && !stateFullRest.getAdditionalDataMenu().isEmpty())
-			stateFullRest.clearAllCookies();
-		
-		getSession().close();
-		UI.getCurrent().getPage().setLocation("j_spring_security_logout");
+		if(SecurityContextHolder.getContext().getAuthentication() != null){
+			logoutService.doLogout();
+			SecurityContextHolder.clearContext();
+			if(stateFullRest != null && stateFullRest.getAdditionalDataMenu() != null && !stateFullRest.getAdditionalDataMenu().isEmpty())
+				stateFullRest.clearAllCookies();			
+			getSession().close();
+			UI.getCurrent().getPage().setLocation("j_spring_security_logout");			
+		}
 	}
 
 	@Override
