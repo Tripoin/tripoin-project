@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2015 at 02:38 PM
+-- Generation Time: Nov 25, 2015 at 05:14 PM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -23,6 +23,76 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `geo_user_route`
+--
+
+CREATE TABLE IF NOT EXISTS `geo_user_route` (
+`user_route_id` bigint(20) NOT NULL,
+  `user_route_lat` double(30,25) NOT NULL,
+  `user_route_lon` double(30,25) NOT NULL,
+  `user_route_center` smallint(5) NOT NULL DEFAULT '0',
+  `user_route_zoom` int(10) NOT NULL DEFAULT '10',
+  `user_route_drag` smallint(5) NOT NULL DEFAULT '0',
+  `user_route_marker` varchar(255) DEFAULT NULL,
+  `user_route_caption` varchar(255) DEFAULT NULL,
+  `user_route_icon` varchar(255) DEFAULT NULL,
+  `employee_id` bigint(20) NOT NULL,
+  `user_route_created_by` varchar(150) DEFAULT 'admin',
+  `user_route_created_ip` varchar(150) DEFAULT '127.0.0.1',
+  `user_route_created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_route_created_platform` varchar(255) DEFAULT NULL,
+  `user_route_modified_by` varchar(150) DEFAULT NULL,
+  `user_route_modified_ip` varchar(150) DEFAULT NULL,
+  `user_route_modified_time` timestamp NULL DEFAULT NULL,
+  `user_route_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `geo_user_route`
+--
+
+INSERT INTO `geo_user_route` (`user_route_id`, `user_route_lat`, `user_route_lon`, `user_route_center`, `user_route_zoom`, `user_route_drag`, `user_route_marker`, `user_route_caption`, `user_route_icon`, `employee_id`, `user_route_created_by`, `user_route_created_ip`, `user_route_created_time`, `user_route_created_platform`, `user_route_modified_by`, `user_route_modified_ip`, `user_route_modified_time`, `user_route_modified_platform`) VALUES
+(1, -6.2666000000000000000000000, 106.6598310000000000000000000, 0, 10, 0, 'Komplek Pondok Jagung BD 53', 'Prison', NULL, 1, 'admin', '127.0.0.1', '2015-11-23 10:00:00', NULL, NULL, NULL, NULL, NULL),
+(2, -6.2977670000000000000000000, 106.6678370000000000000000000, 0, 10, 0, 'Jalan Kapten Subidjanto DJ', 'Kantin Belakang', NULL, 2, 'admin', '127.0.0.1', '2015-11-24 08:48:15', NULL, NULL, NULL, NULL, NULL),
+(3, -6.2409321898086985000000000, 106.6284942626953100000000000, 0, 10, 0, 'Gading Serpong', 'Summarecon Mall Serpong', NULL, 3, 'admin', '127.0.0.1', '2015-11-24 08:49:21', NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mst_employee`
+--
+
+CREATE TABLE IF NOT EXISTS `mst_employee` (
+`employee_id` bigint(20) NOT NULL,
+  `employee_code` varchar(150) NOT NULL,
+  `employee_nik` varchar(150) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `occupation_id` bigint(20) NOT NULL,
+  `employee_parent_id` bigint(20) DEFAULT NULL,
+  `employee_status` smallint(5) DEFAULT NULL,
+  `employee_remarks` varchar(255) DEFAULT NULL,
+  `employee_created_by` varchar(150) DEFAULT 'admin',
+  `employee_created_ip` varchar(150) DEFAULT '127.0.0.1',
+  `employee_created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `employee_created_platform` varchar(255) DEFAULT NULL,
+  `employee_modified_by` varchar(150) DEFAULT NULL,
+  `employee_modified_ip` varchar(150) DEFAULT NULL,
+  `employee_modified_time` timestamp NULL DEFAULT NULL,
+  `employee_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `mst_employee`
+--
+
+INSERT INTO `mst_employee` (`employee_id`, `employee_code`, `employee_nik`, `user_id`, `occupation_id`, `employee_parent_id`, `employee_status`, `employee_remarks`, `employee_created_by`, `employee_created_ip`, `employee_created_time`, `employee_created_platform`, `employee_modified_by`, `employee_modified_ip`, `employee_modified_time`, `employee_modified_platform`) VALUES
+(1, 'TSM201511230001', 'TSM201511230001', 3, 3, NULL, 1, 'TSM201511230001', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(2, 'TSM201511240001', 'TSM201511240001', 2, 2, 1, 1, 'TSM201511240001', 'admin', '127.0.0.1', '2015-11-23 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(3, 'TSM201511250001', 'TSM201511250001', 1, 1, 2, 1, 'TSM201511250001', 'admin', '127.0.0.1', '2015-11-24 17:00:00', NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mst_menu`
 --
 
@@ -36,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `mst_menu` (
   `menu_tree` varchar(20) NOT NULL,
   `menu_function` varchar(20) NOT NULL DEFAULT 'MENU-PAGE',
   `menu_view_type` varchar(50) NOT NULL DEFAULT 'WEB-MOBILE',
-  `menu_status` smallint(6) DEFAULT '1',
+  `menu_status` smallint(5) DEFAULT '1',
   `menu_remarks` varchar(255) DEFAULT NULL,
   `menu_created_by` varchar(150) DEFAULT 'admin',
   `menu_created_ip` varchar(150) DEFAULT '127.0.0.1',
@@ -140,6 +210,37 @@ INSERT INTO `mst_menu_role` (`menu_role_id`, `menu_id`, `role_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mst_occupation`
+--
+
+CREATE TABLE IF NOT EXISTS `mst_occupation` (
+`occupation_id` bigint(20) NOT NULL,
+  `occupation_code` varchar(150) NOT NULL,
+  `occupation_name` varchar(255) NOT NULL,
+  `occupation_status` smallint(5) DEFAULT NULL,
+  `occupation_remarks` varchar(255) DEFAULT NULL,
+  `occupation_created_by` varchar(150) DEFAULT 'admin',
+  `occupation_created_ip` varchar(150) DEFAULT '127.0.0.1',
+  `occupation_created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `occupation_created_platform` varchar(255) DEFAULT NULL,
+  `occupation_modified_by` varchar(150) DEFAULT NULL,
+  `occupation_modified_ip` varchar(150) DEFAULT NULL,
+  `occupation_modified_time` timestamp NULL DEFAULT NULL,
+  `occupation_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `mst_occupation`
+--
+
+INSERT INTO `mst_occupation` (`occupation_id`, `occupation_code`, `occupation_name`, `occupation_status`, `occupation_remarks`, `occupation_created_by`, `occupation_created_ip`, `occupation_created_time`, `occupation_created_platform`, `occupation_modified_by`, `occupation_modified_ip`, `occupation_modified_time`, `occupation_modified_platform`) VALUES
+(1, 'SALESMAN', 'Salesman', 1, 'Salesman', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(2, 'SALESSUPERVISOR', 'Sales Supervisor', 1, 'Sales Supervisor', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
+(3, 'SALESMANAGER', 'Sales Manager', 1, 'Sales Manager', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mst_profile`
 --
 
@@ -189,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `mst_system_parameter` (
 `system_parameter_id` bigint(20) NOT NULL,
   `system_parameter_code` varchar(100) NOT NULL,
   `system_parameter_value` text NOT NULL,
-  `system_parameter_status` smallint(6) DEFAULT NULL,
+  `system_parameter_status` smallint(5) DEFAULT NULL,
   `system_parameter_remarks` varchar(255) DEFAULT NULL,
   `system_parameter_created_by` varchar(150) DEFAULT 'admin',
   `system_parameter_created_ip` varchar(150) DEFAULT '127.0.0.1',
@@ -220,7 +321,7 @@ INSERT INTO `mst_system_parameter` (`system_parameter_id`, `system_parameter_cod
 CREATE TABLE IF NOT EXISTS `sec_role` (
 `role_id` bigint(20) NOT NULL,
   `role_code` varchar(50) NOT NULL,
-  `role_status` smallint(6) NOT NULL,
+  `role_status` smallint(5) NOT NULL,
   `role_remarks` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
@@ -245,11 +346,11 @@ CREATE TABLE IF NOT EXISTS `sec_user` (
 `user_id` bigint(20) NOT NULL,
   `user_username` varchar(20) NOT NULL,
   `user_password` varchar(255) NOT NULL,
-  `user_enabled` smallint(6) NOT NULL,
+  `user_enabled` smallint(5) NOT NULL,
   `user_expired_date` timestamp NULL DEFAULT NULL,
-  `user_non_locked` smallint(6) DEFAULT NULL,
+  `user_non_locked` smallint(5) DEFAULT NULL,
   `user_auth` varchar(255) DEFAULT NULL,
-  `user_status` smallint(6) NOT NULL,
+  `user_status` smallint(5) NOT NULL,
   `user_remarks` varchar(255) DEFAULT NULL,
   `role_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
@@ -283,6 +384,18 @@ CREATE TABLE IF NOT EXISTS `vcs_user` (
 --
 
 --
+-- Indexes for table `geo_user_route`
+--
+ALTER TABLE `geo_user_route`
+ ADD PRIMARY KEY (`user_route_id`);
+
+--
+-- Indexes for table `mst_employee`
+--
+ALTER TABLE `mst_employee`
+ ADD PRIMARY KEY (`employee_id`);
+
+--
 -- Indexes for table `mst_menu`
 --
 ALTER TABLE `mst_menu`
@@ -293,6 +406,12 @@ ALTER TABLE `mst_menu`
 --
 ALTER TABLE `mst_menu_role`
  ADD PRIMARY KEY (`menu_role_id`);
+
+--
+-- Indexes for table `mst_occupation`
+--
+ALTER TABLE `mst_occupation`
+ ADD PRIMARY KEY (`occupation_id`);
 
 --
 -- Indexes for table `mst_profile`
@@ -329,6 +448,16 @@ ALTER TABLE `vcs_user`
 --
 
 --
+-- AUTO_INCREMENT for table `geo_user_route`
+--
+ALTER TABLE `geo_user_route`
+MODIFY `user_route_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `mst_employee`
+--
+ALTER TABLE `mst_employee`
+MODIFY `employee_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `mst_menu`
 --
 ALTER TABLE `mst_menu`
@@ -338,6 +467,11 @@ MODIFY `menu_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
 --
 ALTER TABLE `mst_menu_role`
 MODIFY `menu_role_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+--
+-- AUTO_INCREMENT for table `mst_occupation`
+--
+ALTER TABLE `mst_occupation`
+MODIFY `occupation_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `mst_system_parameter`
 --
