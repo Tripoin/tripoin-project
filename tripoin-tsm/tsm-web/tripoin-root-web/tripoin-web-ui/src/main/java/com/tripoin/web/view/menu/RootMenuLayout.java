@@ -159,14 +159,16 @@ public class RootMenuLayout extends HorizontalLayout implements View {
            	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(profileData.getPhoto());
         urlImageProfileResource = new ExternalResource(urlImage);
         settingsItem = settings.addItem("", urlImageProfileResource, null);
-        settingsItem.addItem("Account Settings", new Command() {
+		mapDataMenu.put("profile", "Account Settings");
+        settingsItem.addItem(mapDataMenu.get("profile"), new Command() {
 			private static final long serialVersionUID = 8813252433421821224L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
 				UI.getCurrent().getNavigator().navigateTo("profile");
 			}
 		});
-        settingsItem.addItem("Change Password", new Command() {
+		mapDataMenu.put("changePassword", "Change Password");
+        settingsItem.addItem(mapDataMenu.get("changePassword"), new Command() {
 			private static final long serialVersionUID = 8813252433421821224L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
@@ -207,11 +209,12 @@ public class RootMenuLayout extends HorizontalLayout implements View {
 		Label label = null;
 		for(final MenuData menuData : menuDatas){
 			if(menuData.getLevel() == 1){
-				 label = new Label(menuData.getName(), ContentMode.HTML);
-	             label.setPrimaryStyleName("valo-menu-subtitle");
-	             label.addStyleName("h4");
-	             label.setSizeUndefined();
-	             menuItemsLayout.addComponent(label);
+				mapDataMenu.put(menuData.getCode(), menuData.getName());
+				label = new Label(menuData.getName(), ContentMode.HTML);
+	            label.setPrimaryStyleName("valo-menu-subtitle");
+	            label.addStyleName("h4");
+	            label.setSizeUndefined();
+	            menuItemsLayout.addComponent(label);
 			}
 			if(ParameterConstant.MENU_PAGE.equals(menuData.getFunction())){
 				mapDataMenu.put(menuData.getCode(), menuData.getName());

@@ -165,15 +165,6 @@ public class TripoinUI extends UI implements ErrorHandler {
     	if(navigator == null){
         	viewDisplay = rootMenuLayout.getContentContainer();
             navigator = new DiscoveryNavigator(this, viewDisplay);
-            final String f = Page.getCurrent().getUriFragment();
-            if (f == null || f.isEmpty() || EWebUIConstant.HOME_VIEW.toString().equals(f) || HomeView.VIEW_NAME.equals(f) || EWebUIConstant.NAVIGATE_NULL.toString().equals(f)) 
-                navigator.navigateTo(HomeView.VIEW_NAME);
-            else if(f.startsWith("!") && rootMenuLayout.getMapDataMenu().containsKey(f.substring(1)))
-            	navigator.navigateTo(f);
-            else{
-            	UI.getCurrent().getPage().setUriFragment(null, true);
-            	navigator.navigateTo(HomeView.VIEW_NAME);
-            }
             navigator.addView("errorView", errorView);
             navigator.setErrorView(errorView);
             navigator.addViewChangeListener(new ViewChangeListener() {
@@ -202,7 +193,17 @@ public class TripoinUI extends UI implements ErrorHandler {
                     rootMenuLayout.removeStyleName("valo-menu-visible");
                 }
             });
-    	}    	
+    	}
+        final String f = Page.getCurrent().getUriFragment();
+        if (f == null || f.isEmpty() || EWebUIConstant.HOME_VIEW.toString().equals(f) || HomeView.VIEW_NAME.equals(f) || EWebUIConstant.NAVIGATE_NULL.toString().equals(f)){
+        	Page.getCurrent().setUriFragment(null, true);
+        	navigator.navigateTo(HomeView.VIEW_NAME);
+        }else if(f.startsWith("!") && rootMenuLayout.getMapDataMenu().containsKey(f.substring(1)))
+        	navigator.navigateTo(f.substring(1));
+    	else{
+    		Page.getCurrent().setUriFragment(null, true);
+        	navigator.navigateTo(HomeView.VIEW_NAME);
+        }
     }
     
     private void validateForgotPassword(){

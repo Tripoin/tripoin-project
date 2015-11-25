@@ -46,7 +46,7 @@ public class SalesTrackingView extends VerticalLayout implements View, ClickList
     private IStateFullRest stateFullRest;
 
     private GoogleMap googleMap;
-    private GoogleMapMarker kakolaMarker = new GoogleMapMarker("DRAGGABLE: Kakolan vankila", new LatLon(60.44291, 22.242415), true, null);
+    private GoogleMapMarker kakolaMarker = new GoogleMapMarker("DRAGGABLE: Kakolan vankila", new LatLon(-6.266600, 106.659831), true, null);
     private GoogleMapInfoWindow kakolaInfoWindow = new GoogleMapInfoWindow("Kakola used to be a provincial prison.", kakolaMarker);
     
     @PostConstruct
@@ -73,13 +73,13 @@ public class SalesTrackingView extends VerticalLayout implements View, ClickList
         addComponent(panelContent);
 
         googleMap = new GoogleMap(null, null, null);
-        googleMap.setCenter(new LatLon(60.440963, 22.25122));
+        googleMap.setCenter(new LatLon(-6.266600, 106.659831));
         googleMap.setZoom(10);
         googleMap.setSizeFull();
         kakolaMarker.setAnimationEnabled(false);
         googleMap.addMarker(kakolaMarker);
-        googleMap.addMarker("DRAGGABLE: Paavo Nurmi Stadion", new LatLon(60.442423, 22.26044), true, "VAADIN/icon-legend/stadium.png");
-        googleMap.addMarker("NOT DRAGGABLE: Iso-Heikkilä", new LatLon(60.450403, 22.230399), false, null);
+        googleMap.addMarker("DRAGGABLE: Paavo Nurmi Stadion", new LatLon(-6.297767, 106.667837), true, "VAADIN/icon-legend/stadium.png");
+        googleMap.addMarker("NOT DRAGGABLE: Iso-Heikkilä", new LatLon(-6.2409321898086985, 106.62849426269531), false, null);
         googleMap.setMinZoom(4);
         googleMap.setMaxZoom(16);
 
