@@ -45,6 +45,7 @@ public class User implements Serializable {
     private Role role;
     private List<VersionControlSystemUser> versionControlSystemUser;
     private Profile profile;	
+    private Employee employee;
  
     public User(){}
 
@@ -189,6 +190,15 @@ public class User implements Serializable {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}       
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)

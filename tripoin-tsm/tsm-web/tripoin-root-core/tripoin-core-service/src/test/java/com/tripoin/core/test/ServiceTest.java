@@ -16,10 +16,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Menu;
+import com.tripoin.core.pojo.Occupation;
 import com.tripoin.core.pojo.Profile;
 import com.tripoin.core.pojo.SystemParameter;
 import com.tripoin.core.pojo.User;
+import com.tripoin.core.pojo.UserRoute;
 import com.tripoin.core.service.IGenericManagerJpa;
 import com.tripoin.core.service.util.IStanGenerator;
 import com.tripoin.core.service.util.ISystemParameterService;
@@ -58,16 +61,15 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	@Test
-	public void runTest() throws Exception {
+	public void runtTestMain() throws Exception{
+		runTestUserRoute();
+	}
+	
+	public void runTestUser() throws Exception {
 		String username = "tripoin.app.web";	
 		
 		List<User> users = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{username}, null);
 		for(User user : users) LOGGER.debug("User Data : "+user);
-		
-		List<Menu> menus = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? ORDER BY mn.tree ASC", new Object[]{"ROLE_SALESSUPERVISOR"}, null);
-		for(Menu menu : menus) {
-			LOGGER.debug("Menu Data : "+menu);
-		}
 		
 		FilterArgument[] filterArguments = new FilterArgument[] { 
 				new FilterArgument("user.username", ECommonOperator.EQUALS) 
@@ -76,10 +78,50 @@ public class ServiceTest implements ApplicationContextAware  {
 		for(Profile profile : profileList) {
 			LOGGER.debug("Profile Data : "+profile);
 		}
-		
+	}
+	
+	public void runTestMenu() throws Exception {
+		List<Menu> menus = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? ORDER BY mn.tree ASC", new Object[]{"ROLE_ADMIN"}, null);
+		for(Menu menu : menus) {
+			LOGGER.debug("Menu Data : "+menu);
+		}
+	}
+	
+	public void runTestSystemParameter() throws Exception {		
 		List<SystemParameter> systemParameters = systemParameterService.listValue(new Object[]{ParameterConstant.FORGOT_PASSWORD_SUBJECT, ParameterConstant.FORGOT_PASSWORD_BODY});
 		for(SystemParameter systemParameter : systemParameters) {
 			LOGGER.debug("System Parameter : "+systemParameter);
+		}
+	}
+	
+	public void runTestOccupation() throws Exception {		
+		List<Occupation> occupationList = iGenericManagerJpa.loadObjects(Occupation.class);
+		for(Occupation occupation : occupationList) {
+			LOGGER.debug("Occupation Data : "+occupation);
+		}
+	}
+	
+	public void runTestEmployee() throws Exception {
+		String username = "ridla";
+		
+		FilterArgument[] filterArguments = new FilterArgument[] { 
+				new FilterArgument("user.username", ECommonOperator.EQUALS) 
+		};
+		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { username }, null, null);
+		for(Employee employee : employeeList) {
+			LOGGER.debug("Employee Data : "+employee);
+		}
+	}
+	
+	public void runTestUserRoute() throws Exception {
+		String nik = "TSM201511250001";
+		
+		FilterArgument[] filterArguments = new FilterArgument[] { 
+				new FilterArgument("employee.nik", ECommonOperator.EQUALS) 
+		};
+		List<UserRoute> userRouteList = iGenericManagerJpa.loadObjectsFilterArgument(UserRoute.class, filterArguments, new Object[] { nik }, null, null);
+		for(UserRoute userRoute : userRouteList) {
+			LOGGER.debug("User Route Data : "+userRoute);
 		}
 	}
 

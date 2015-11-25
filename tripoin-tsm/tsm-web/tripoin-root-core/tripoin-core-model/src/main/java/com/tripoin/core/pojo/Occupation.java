@@ -7,14 +7,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -22,8 +18,8 @@ import javax.validation.constraints.NotNull;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Entity
-@Table(name="mst_menu")
-public class Menu implements Serializable {
+@Table(name="mst_occupation")
+public class Occupation implements Serializable {
 
     /**
 	 * 
@@ -32,12 +28,6 @@ public class Menu implements Serializable {
 	private Integer id;
     private String code;
     private String name;
-    private Menu menuParent;
-    private Integer level;
-    private Integer order;
-    private String tree;
-    private String function;
-    private String viewType;
     private Integer status;
     private String remarks;
     private String createdBy;
@@ -48,11 +38,11 @@ public class Menu implements Serializable {
     private String modifiedIP;
     private Date modifiedTime;
     private String modifiedPlatform;
-    private List<Role> roles;
+    private List<Employee> employees;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="menu_id")
+	@Column(name="occupation_id")
     @NotNull
     public Integer getId() {
         return id;
@@ -62,7 +52,7 @@ public class Menu implements Serializable {
         this.id = id;
     }
 
-	@Column(name="menu_code", length=150)
+	@Column(name="occupation_code", length=150)
 	public String getCode() {
 		return code;
 	}
@@ -71,7 +61,7 @@ public class Menu implements Serializable {
 		this.code = code;
 	}
 
-	@Column(name="menu_name", length=255)
+	@Column(name="occupation_name", length=255)
 	public String getName() {
 		return name;
 	}
@@ -80,62 +70,7 @@ public class Menu implements Serializable {
 		this.name = name;
 	}
 
-    @ManyToOne
-    @JoinColumn(name = "menu_parent_id")
-	public Menu getMenuParent() {
-		return menuParent;
-	}
-
-	public void setMenuParent(Menu menuParent) {
-		this.menuParent = menuParent;
-	}
-
-	@Column(name="menu_level")
-	public Integer getLevel() {
-		return level;
-	}
-
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
-
-	@Column(name="menu_order")
-	public Integer getOrder() {
-		return order;
-	}
-
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
-
-	@Column(name="menu_tree")
-	public String getTree() {
-		return tree;
-	}
-
-	public void setTree(String tree) {
-		this.tree = tree;
-	}
-
-	@Column(name="menu_function")
-	public String getFunction() {
-		return function;
-	}
-
-	public void setFunction(String function) {
-		this.function = function;
-	}
-
-	@Column(name="menu_view_type", length=50)
-	public String getViewType() {
-		return viewType;
-	}
-
-	public void setViewType(String viewType) {
-		this.viewType = viewType;
-	}
-
-	@Column(name="menu_status")
+	@Column(name="occupation_status")
 	public Integer getStatus() {
 		return status;
 	}
@@ -144,7 +79,7 @@ public class Menu implements Serializable {
 		this.status = status;
 	}
 
-	@Column(name="menu_remarks", length=255)
+	@Column(name="occupation_remarks", length=255)
 	public String getRemarks() {
 		return remarks;
 	}
@@ -153,7 +88,7 @@ public class Menu implements Serializable {
 		this.remarks = remarks;
 	}
 
-	@Column(name="menu_created_by", length=150)
+	@Column(name="occupation_created_by", length=150)
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -162,7 +97,7 @@ public class Menu implements Serializable {
 		this.createdBy = createdBy;
 	}
 
-	@Column(name="menu_created_ip", length=150)
+	@Column(name="occupation_created_ip", length=150)
 	public String getCreatedIP() {
 		return createdIP;
 	}
@@ -171,7 +106,7 @@ public class Menu implements Serializable {
 		this.createdIP = createdIP;
 	}
 
-	@Column(name="menu_created_time")
+	@Column(name="occupation_created_time")
 	public Date getCreatedTime() {
 		return createdTime;
 	}
@@ -180,7 +115,7 @@ public class Menu implements Serializable {
 		this.createdTime = createdTime;
 	}
 
-	@Column(name="menu_created_platform")
+	@Column(name="occupation_created_platform")
 	public String getCreatedPlatform() {
 		return createdPlatform;
 	}
@@ -189,7 +124,7 @@ public class Menu implements Serializable {
 		this.createdPlatform = createdPlatform;
 	}
 
-	@Column(name="menu_modified_by", length=150)
+	@Column(name="occupation_modified_by", length=150)
 	public String getModifiedBy() {
 		return modifiedBy;
 	}
@@ -198,7 +133,7 @@ public class Menu implements Serializable {
 		this.modifiedBy = modifiedBy;
 	}
 
-	@Column(name="menu_modified_ip", length=150)
+	@Column(name="occupation_modified_ip", length=150)
 	public String getModifiedIP() {
 		return modifiedIP;
 	}
@@ -207,7 +142,7 @@ public class Menu implements Serializable {
 		this.modifiedIP = modifiedIP;
 	}
 
-	@Column(name="menu_modified_time")
+	@Column(name="occupation_modified_time")
 	public Date getModifiedTime() {
 		return modifiedTime;
 	}
@@ -216,7 +151,7 @@ public class Menu implements Serializable {
 		this.modifiedTime = modifiedTime;
 	}
 
-	@Column(name="menu_modified_platform")
+	@Column(name="occupation_modified_platform")
     public String getModifiedPlatform() {
 		return modifiedPlatform;
 	}
@@ -224,32 +159,25 @@ public class Menu implements Serializable {
 	public void setModifiedPlatform(String modifiedPlatform) {
 		this.modifiedPlatform = modifiedPlatform;
 	}
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "mst_menu_role", joinColumns = 
-		{@JoinColumn(name = "menu_id")}, 
-		inverseJoinColumns = 
-		{@JoinColumn(name = "role_id")})
-	public List<Role> getRoles() {
-		return roles;
+	
+	@OneToMany(mappedBy = "occupation", cascade=CascadeType.ALL)
+	public List<Employee> getEmployees() {
+		return employees;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}	
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
 
 	@Override
 	public String toString() {
-		return "Menu [id=" + id + ", code=" + code + ", name=" + name
-				+ ", menuParent=" + menuParent + ", level=" + level
-				+ ", order=" + order + ", tree=" + tree + ", function=" + function
-				+ ", viewType=" + viewType + ", status=" + status 
+		return "Occupation [id=" + id + ", code=" + code + ", name=" + name
+				+ ", status=" + status 
 				+ ", remarks=" + remarks + ", createdBy=" + createdBy
 				+ ", createdIP=" + createdIP + ", createdTime=" + createdTime
 				+ ", createdPlatform=" + createdPlatform
 				+ ", modifiedBy=" + modifiedBy + ", modifiedIP=" + modifiedIP
-				+ ", modifiedTime=" + modifiedTime + ", modifiedPlatform=" + modifiedPlatform
-				+ ", roles=" + roles + "]";
+				+ ", modifiedTime=" + modifiedTime + ", modifiedPlatform=" + modifiedPlatform + "]";
 	}
 	
 }
