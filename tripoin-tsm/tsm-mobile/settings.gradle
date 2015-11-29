@@ -1,0 +1,1 @@
+include ':app', ':tripoin-dao', ':tripoin-util', ':tripoin-service', ':tripoin-rest', ':tripoin-common', ':tripoin-model', ':tripoin-component', ':tripoin-phonenetwork'
