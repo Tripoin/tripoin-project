@@ -16,7 +16,7 @@ public class WebServiceConstant {
 	private static final String HTTP_UPDATE = "/update";
 	private static final String HTTP_VERIFY = "/verify";
 	private static final String HTTP_IMAGE = "/image";
-	/*private static final String HTTP_DELETE = "/delete";*/
+	private static final String HTTP_DELETE = "/delete";
 	
 	public static final String HTTP_ONLY = "HttpOnly";
 	
@@ -37,7 +37,15 @@ public class WebServiceConstant {
 	public static final String HTTP_PROFILE_IMAGE = HTTP_CONTEXT_REST.concat("/profile").concat(HTTP_IMAGE);
 	public static final String HTTP_USER = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_LOAD);
 	public static final String HTTP_USER_ALL = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_LOAD).concat(HTTP_ALL);
-	public static final String HTTP_USER_SAVE = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_SAVE);
 	public static final String HTTP_USER_UPDATE = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_UPDATE);
-
+	public static final String HTTP_EMPLOYEE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_LOAD);
+	public static final String HTTP_EMPLOYEE_ALL = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_LOAD).concat(HTTP_ALL);
+	public static final String HTTP_EMPLOYEE_SAVE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_SAVE);
+	public static final String HTTP_EMPLOYEE_UPDATE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_UPDATE);
+	public static final String HTTP_OCCUPATION = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_LOAD);
+	public static final String HTTP_OCCUPATION_ALL = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_LOAD).concat(HTTP_ALL);
+	public static final String HTTP_OCCUPATION_SAVE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_SAVE);
+	public static final String HTTP_OCCUPATION_UPDATE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_UPDATE);
+	public static final String HTTP_OCCUPATION_DELETE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_DELETE);
+	
 }

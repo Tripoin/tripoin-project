@@ -374,6 +374,11 @@
             <artifactId>googlemaps</artifactId>
             <version>${com.vaadin.tapio.version}</version>
         </dependency>
+        <dependency>
+		    <groupId>org.vaadin.addons</groupId>
+		    <artifactId>vaadin-grid-util</artifactId>
+		    <version>${vaadin.grid.util.version}</version>
+		</dependency>
 		<!-- refer jetty data -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -630,6 +635,10 @@
 		<repository>
 			<id>nuxeo nexus public</id>
     		<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+		</repository>
+		<repository>
+			<id>addons-vaadin</id>
+			<url>http://vaadin.com/nexus/content/repositories/vaadin-addons/org/vaadin/addons</url>
 		</repository>
 		<repository>
 			<id>vaadin-addons</id>

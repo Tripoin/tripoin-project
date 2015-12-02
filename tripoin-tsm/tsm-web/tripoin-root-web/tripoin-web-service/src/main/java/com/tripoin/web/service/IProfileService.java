@@ -1,6 +1,7 @@
 package com.tripoin.web.service;
 
 import java.io.File;
+import java.util.Map;
 
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.ProfileData;
@@ -15,6 +16,6 @@ public interface IProfileService {
     
     public ProfileTransferObject updateProfile(ProfileData profileData);
 
-	public GeneralTransferObject updatePhotoProfile(File file, Object[] data);
+	public GeneralTransferObject updatePhotoProfile(File file, Map<String, Object> data);
 
 }

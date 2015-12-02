@@ -46,6 +46,8 @@
 		<vaadin.sass.compiler.version>0.9.12</vaadin.sass.compiler.version>
 		<vaadin.spring.version>1.0.0.beta3</vaadin.spring.version>
 		<vaadin.addons.aceeditor.version>0.8.14</vaadin.addons.aceeditor.version>
+		<com.vaadin.tapio.version>1.1.2</com.vaadin.tapio.version>
+		<vaadin.grid.util.version>1.0.8</vaadin.grid.util.version>
 		
         <!-- Convenience property to set the Jetty Lib -->
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
@@ -68,7 +70,6 @@
 		<eclipse.lifecycle.mapping.version>1.0.0</eclipse.lifecycle.mapping.version>
 		<google.kaptcha.version>2.3</google.kaptcha.version>
 		<httpclient.version>4.3.1</httpclient.version>
-		<com.vaadin.tapio.version>1.1.2</com.vaadin.tapio.version>
     </properties>
 
 	<build>

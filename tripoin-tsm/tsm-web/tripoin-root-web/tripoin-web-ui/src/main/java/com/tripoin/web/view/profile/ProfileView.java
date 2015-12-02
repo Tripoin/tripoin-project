@@ -2,6 +2,8 @@ package com.tripoin.web.view.profile;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -10,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.util.time.TimeAgo;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
@@ -133,11 +136,16 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         upload.addFinishedListener(new FinishedListener() {
 			private static final long serialVersionUID = -9184461198940643739L;
 			@Override
-			public void uploadFinished(FinishedEvent event) {
-				profileService.updatePhotoProfile(receiver.getFile(), null);       
+			public void uploadFinished(FinishedEvent event) {       
 				String urlImage = urlResourcesImage.concat("profile-default-300px.png");
 				String fileName = receiver.getFile().getName();
-		        if(profileData.getPhoto() != null)
+	        	IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
+				Map<String, Object> data = new HashMap<String, Object>();
+				data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY"), username.getValue());
+				data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP"), identifierPlatform.getIPAddress());
+				data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM"), identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
+				GeneralTransferObject generalTransferObject = profileService.updatePhotoProfile(receiver.getFile(), data);
+		        if(ParameterConstant.RESPONSE_SUCCESS.equals(generalTransferObject.getResponseMsg()))
 		        	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(fileName);
 		        urlImageProfileResource = new ExternalResource(urlImage); 
 		        profilePhoto.setSource(urlImageProfileResource);

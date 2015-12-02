@@ -1,6 +1,7 @@
 package com.tripoin.web.service.impl;
 
 import java.io.File;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -42,10 +43,12 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public GeneralTransferObject updatePhotoProfile(File file, Object[] data) {
+	public GeneralTransferObject updatePhotoProfile(File file, Map<String, Object> data) {
 		Resource resourceStar = new FileSystemResource(file);
 		MultiValueMap<String, Object> multipartMap = new LinkedMultiValueMap<String, Object>();
 		multipartMap.add(ParameterConstant.TRIPOIN_UPLOAD_IMAGE, resourceStar);
+		for(String key : data.keySet())
+			multipartMap.add(key, data.get(key));
 		stateFullRest.setMultipart(true);
 		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE_IMAGE), multipartMap, GeneralTransferObject.class);		
 		return generalTransferObject;

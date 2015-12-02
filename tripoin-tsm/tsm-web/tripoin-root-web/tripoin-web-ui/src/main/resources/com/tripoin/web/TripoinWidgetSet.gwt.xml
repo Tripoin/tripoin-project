@@ -25,4 +25,7 @@
     
     <!-- WidgetSetGoogleMap -->
     <inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
+    
+    <!-- WidgetSetGrid -->
+    <inherits name="org.vaadin.gridutil.WidgetSet" />
 </module>
