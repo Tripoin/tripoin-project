@@ -50,6 +50,32 @@
             <artifactId>tripoin-core-dao</artifactId>
             <version>1.0.0</version>
         </dependency>	
+        <!-- refer Hibernate c3p0 connection pool -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.core.c3p0.version}</version>			
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-commons-annotations</artifactId>
+					<groupId>org.hibernate.common</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+        <!-- refer c3p0 connection pool -->
+		<!-- <dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
+		</dependency> -->        
 		<!-- refer apache cxf -->
 		<dependency>
  			<artifactId>cxf-api</artifactId>
@@ -226,5 +252,12 @@
    			<scope>test</scope>
 		</dependency>
     </dependencies>
+	
+	<repositories>
+		<repository>
+			<id>JBoss repository</id>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
 
 </project>

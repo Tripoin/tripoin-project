@@ -12,6 +12,10 @@
         <level value="ERROR"/>
     </logger>
     
+    <logger name="com.mchange">
+        <level value="ERROR"/>
+    </logger>
+    
     <!-- <logger name="org.springframework">
         <level value="ALL"/>
     </logger> -->

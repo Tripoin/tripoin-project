@@ -16,7 +16,8 @@
 		<hibernate.core.version>4.1.5.SP1</hibernate.core.version>               
 		<hibernate.common.version>4.0.1.Final</hibernate.common.version>
 		<hibernate.validator.version>5.1.0.CR1</hibernate.validator.version>
-		<hibernate.jpa.version>1.0.1.Final</hibernate.jpa.version>		
+		<hibernate.jpa.version>1.0.1.Final</hibernate.jpa.version>              
+		<hibernate.core.c3p0.version>4.3.7.Final</hibernate.core.c3p0.version>		
 		
         <!-- Convenience property to set the MyBatis version -->
 		<mybatis.version>3.1.1</mybatis.version>
@@ -73,6 +74,7 @@
         <hamcrest.version>1.1</hamcrest.version>
         <javax.el.version>2.2.4</javax.el.version>
         <cxf.version>2.5.0</cxf.version>
+        <c3p0.version>0.9.1.2</c3p0.version>
     </properties>
     
     <modules>
