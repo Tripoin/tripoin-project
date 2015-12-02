@@ -62,7 +62,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestUserRoute();
+		runTestEmployee();
 	}
 	
 	public void runTestUser() throws Exception {
@@ -105,7 +105,7 @@ public class ServiceTest implements ApplicationContextAware  {
 		String username = "ridla";
 		
 		FilterArgument[] filterArguments = new FilterArgument[] { 
-				new FilterArgument("user.username", ECommonOperator.EQUALS) 
+				new FilterArgument("profile.user.username", ECommonOperator.EQUALS) 
 		};
 		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { username }, null, null);
 		for(Employee employee : employeeList) {

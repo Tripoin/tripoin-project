@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
+        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
+	
+	<int:channel id="responseChannelEmployeeLoad"/>
+	<int:channel id="requestChannelEmployeeLoad"/>
+	<int:channel id="routeChannelEmployeeLoad"/>
+		
+	<int:channel id="responseChannelEmployeeLoadAll"/>
+	<int:channel id="requestChannelEmployeeLoadAll"/>
+		
+	<int:channel id="responseChannelEmployeeSave"/>
+	<int:channel id="requestChannelEmployeeSave"/>
+	<int:channel id="routeChannelEmployeeSave"/>
+		
+	<int:channel id="responseChannelEmployeeUpdate"/>
+	<int:channel id="requestChannelEmployeeUpdate"/>
+	<int:channel id="routeChannelEmployeeUpdate"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelEmployeeLoad"
+		reply-channel="responseChannelEmployeeLoad"
+		supported-methods="POST" 
+		path="/wscontext/employee/load, /wscontext/employee/load/{employee}"
+		request-payload-type="com.tripoin.core.dto.EmployeeData">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelEmployeeLoad" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelEmployeeLoad"/>
+	</int:router>	
+	<int:service-activator ref="employeeLoadEndpoint" method="loadEmployee" input-channel="requestChannelEmployeeLoad" output-channel="responseChannelEmployeeLoad"/>
+			
+	<int-http:inbound-gateway request-channel="requestChannelEmployeeLoadAll"
+		reply-channel="responseChannelEmployeeLoadAll"
+		supported-methods="GET" 
+		path="/wscontext/employee/load/all">
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>	
+	<int:service-activator ref="employeeLoadEndpoint" method="loadAllEmployees" input-channel="requestChannelEmployeeLoadAll" output-channel="responseChannelEmployeeLoadAll"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelEmployeeSave"
+		reply-channel="responseChannelEmployeeSave"
+		supported-methods="POST" 
+		path="/wscontext/employee/save, /wscontext/employee/save/{employee}"
+		request-payload-type="com.tripoin.core.dto.EmployeeData">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelEmployeeSave" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelEmployeeSave"/>
+	</int:router>	
+	<int:service-activator ref="employeeSaveEndpoint" method="saveEmployee" input-channel="requestChannelEmployeeSave" output-channel="responseChannelEmployeeSave"/>
+		
+	<int-http:inbound-gateway request-channel="requestChannelEmployeeUpdate"
+		reply-channel="responseChannelEmployeeUpdate"
+		supported-methods="POST" 
+		path="/wscontext/employee/update, /wscontext/employee/update/{employee}"
+		request-payload-type="com.tripoin.core.dto.EmployeeData">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelEmployeeUpdate" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelEmployeeUpdate"/>
+	</int:router>	
+	<int:service-activator ref="employeeUpdateEndpoint" method="updateEmployee" input-channel="requestChannelEmployeeUpdate" output-channel="responseChannelEmployeeUpdate"/>
+	
+</beans>

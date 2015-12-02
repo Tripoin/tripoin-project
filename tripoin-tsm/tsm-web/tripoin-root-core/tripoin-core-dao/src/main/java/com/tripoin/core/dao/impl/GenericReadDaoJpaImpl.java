@@ -20,7 +20,6 @@ public class GenericReadDaoJpaImpl extends ABaseReadDaoJpa {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> loadObjectsFilterArgument(Class<T> objectType, FilterArgument[] filterArguments, Object[] values, SortArgument sortArgument, PageArgument pageArgument) throws Exception {
-		System.out.println(jqlStatement.getJQL(objectType, filterArguments, values, sortArgument));
 		Query query = getEntityManager().createQuery(jqlStatement.getJQL(objectType, filterArguments, values, sortArgument));
 		if (values != null && values.length > 0) {
 			jqlStatement.setParameterStatement(query, values);

@@ -50,10 +50,8 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 			List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT pr FROM Profile pr WHERE pr.user.username = ?", new Object[]{currentUserName}, null);
 			List<ProfileData> profileDatas = new ArrayList<ProfileData>();
 			if(profileList != null){
-				for(Profile profile : profileList){
-					ProfileData profileData = new ProfileData(profile);
-					profileDatas.add(profileData);
-				}
+				for(Profile profile : profileList)
+					profileDatas.add(new ProfileData(profile));
 				profileTransferObject.setProfileDatas(profileDatas);
 			}
 			profileTransferObject.setResponseCode("0");

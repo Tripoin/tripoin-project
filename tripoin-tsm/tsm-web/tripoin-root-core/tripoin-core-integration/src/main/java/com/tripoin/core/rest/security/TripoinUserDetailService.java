@@ -1,7 +1,10 @@
 package com.tripoin.core.rest.security;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +19,8 @@ import com.tripoin.core.service.IGenericManagerJpa;
  */
 public class TripoinUserDetailService implements UserDetailsService {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(TripoinUserDetailService.class);
+
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
 	
@@ -28,8 +33,10 @@ public class TripoinUserDetailService implements UserDetailsService {
 				users = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{argument}, null);
 			if(users.size() > 0)
 				securityUser = new SecurityUser(users.get(0));
+		} catch (SQLException se){
+			LOGGER.error("Tripoin Error Connection Database",se);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Tripoin Error",e);
 		}
 		return securityUser;
 	}

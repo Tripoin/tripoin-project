@@ -18,17 +18,9 @@
 	<int:channel id="responseChannelUserLoad"/>
 	<int:channel id="requestChannelUserLoad"/>
 	
-	<int:channel id="responseChannelUserSave"/>
-	<int:channel id="requestChannelUserSave"/>
-	<int:channel id="routeChannelUserSave"/>
-	
 	<int:channel id="responseChannelUserUpdate"/>
 	<int:channel id="requestChannelUserUpdate"/>
 	<int:channel id="routeChannelUserUpdate"/>
-	
-	<int:channel id="responseChannelUserDelete"/>
-	<int:channel id="requestChannelUserDelete"/>
-	<int:channel id="routeChannelUserDelete"/>
 	
 	<int-http:inbound-gateway request-channel="requestChannelUserLoadAll"
 		reply-channel="responseChannelUserLoadAll"
@@ -45,18 +37,6 @@
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>	
 	<int:service-activator ref="userLoadEndpoint" method="loadUser" input-channel="requestChannelUserLoad" output-channel="responseChannelUserLoad"/>
-		
-	<int-http:inbound-gateway request-channel="requestChannelUserSave"
-		reply-channel="responseChannelUserSave"
-		supported-methods="POST" 
-		path="/wscontext/user/save, /wscontext/user/save/{user}"
-		request-payload-type="com.tripoin.core.dto.UserData">	
-		<int-http:request-mapping consumes="application/json" produces="application/json"/>
-	</int-http:inbound-gateway>
-	<int:router input-channel="routeChannelProductSave" expression="headers.http_requestMethod">
-	    <int:mapping value="POST" channel="requestChannelUserSave"/>
-	</int:router>	
-	<int:service-activator ref="userSaveEndpoint" method="saveUser" input-channel="requestChannelUserSave" output-channel="responseChannelUserSave"/>
 	
 	<int-http:inbound-gateway request-channel="requestChannelUserUpdate"
 		reply-channel="responseChannelUserUpdate"
@@ -69,17 +49,5 @@
 	    <int:mapping value="POST" channel="requestChannelUserUpdate"/>
 	</int:router>	
 	<int:service-activator ref="userUpdateEndpoint" method="updateUser" input-channel="requestChannelUserUpdate" output-channel="responseChannelUserUpdate"/>
-	
-	<int-http:inbound-gateway request-channel="requestChannelUserDelete"
-		reply-channel="responseChannelUserDelete"
-		supported-methods="POST" 
-		path="/wscontext/user/delete, /wscontext/user/delete/{user}"
-		request-payload-type="com.tripoin.core.dto.UserData">	
-		<int-http:request-mapping consumes="application/json" produces="application/json"/>
-	</int-http:inbound-gateway>
-	<int:router input-channel="routeChannelUserDelete" expression="headers.http_requestMethod">
-	    <int:mapping value="POST" channel="requestChannelUserDelete"/>
-	</int:router>	
-	<int:service-activator ref="userDeleteEndpoint" method="deleteUser" input-channel="requestChannelUserDelete" output-channel="responseChannelUserDelete"/>
 	
 </beans>

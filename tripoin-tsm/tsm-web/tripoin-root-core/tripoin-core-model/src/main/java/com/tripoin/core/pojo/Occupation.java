@@ -1,6 +1,7 @@
 package com.tripoin.core.pojo;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.OccupationData;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -40,6 +44,34 @@ public class Occupation implements Serializable {
     private String modifiedPlatform;
     private List<Employee> employees;
 
+    public Occupation() {}
+    
+	public Occupation(OccupationData occupationData) {
+		super();
+		this.id = occupationData.getId();
+		this.code = occupationData.getCode();
+		this.name = occupationData.getName();
+		this.status = occupationData.getStatus();
+		this.remarks = occupationData.getRemarks();
+		this.createdBy = occupationData.getCreatedBy();
+		this.createdIP = occupationData.getCreatedIP();
+		try {
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(occupationData.getCreatedTime());
+		} catch (ParseException e) {
+			this.createdTime = new Date();
+		}
+		this.createdPlatform = occupationData.getCreatedPlatform();
+		this.modifiedBy = occupationData.getModifiedBy();
+		this.modifiedIP = occupationData.getModifiedIP();
+		try {
+			if(occupationData.getModifiedTime() != null)
+				this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.parse(occupationData.getModifiedTime());
+		} catch (ParseException e) {
+			this.modifiedTime = new Date();
+		}
+		this.modifiedPlatform = occupationData.getModifiedPlatform();
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="occupation_id")
@@ -52,7 +84,7 @@ public class Occupation implements Serializable {
         this.id = id;
     }
 
-	@Column(name="occupation_code", length=150)
+	@Column(name="occupation_code", unique=true, length=150)
 	public String getCode() {
 		return code;
 	}

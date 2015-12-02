@@ -1,6 +1,7 @@
 package com.tripoin.core.rest.endpoint.profile;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,21 +59,40 @@ public class ProfileImageEndpoint extends XReturnStatus {
 			if(profileList != null){
 				Profile profile = profileList.get(0);
 				for (String elementName : multipartRequest.keySet()) {
-					if (ParameterConstant.TRIPOIN_UPLOAD_IMAGE.equals(elementName)){
+					if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.equals(elementName)){
 						fileName = ((UploadedMultipartFile) multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE)).getOriginalFilename();
+						File tempDir = new File(rootPath.concat(profile.getResourcesUUID()));
+						if(!tempDir.exists())
+							tempDir.mkdirs();
 						((UploadedMultipartFile) multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE)).transferTo(new File(rootPath.concat(profile.getResourcesUUID()), fileName));
+					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY").equals(elementName)){
+						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY")))
+							profile.setModifiedBy(value);
+					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP").equals(elementName)){
+						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP")))
+							profile.setModifiedIP(value);
+					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM").equals(elementName)){
+						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM")))
+							profile.setModifiedPlatform(value);
 					}
 				}
 				profile.setPhoto(fileName);
+				if(profile.getModifiedBy() == null)
+					profile.setModifiedBy(currentUserName);
+				profile.setModifiedTime(new Date());
+	        	if(profile.getModifiedIP() == null)
+	        		profile.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
+	        	if(profile.getModifiedPlatform() == null)
+	        		profile.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);
 				iGenericManagerJpa.updateObject(profile);
+				generalTransferObject.setResponseCode("0");
+				generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+				generalTransferObject.setResponseDesc("Update Photo Profile Success : ".concat(fileName));
 			}else{
 				generalTransferObject.setResponseCode("2");
 				generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 				generalTransferObject.setResponseDesc("Update Photo Profile User Not Found : ".concat(this.currentUserName));				
-			}
-			generalTransferObject.setResponseCode("0");
-			generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			generalTransferObject.setResponseDesc("Update Photo Profile Success : ".concat(fileName));			
+			}			
 		}catch (Exception e){
 			LOGGER.error("Update Photo Profile System Error : "+e.getLocalizedMessage(), e);
 			generalTransferObject.setResponseCode("1");

@@ -44,11 +44,12 @@ public class ProfileUpdateEndpoint extends XReturnStatus {
         	ProfileData profileData = inMessage.getPayload();
         	if(profileData != null && profileData.getId() == null){
                 FilterArgument[] filterArguments = new FilterArgument[] { 
-        				new FilterArgument("user.username", ECommonOperator.EQUALS) 
+        				new FilterArgument("profile.user.username", ECommonOperator.EQUALS) 
         		};
         		List<Profile> profileList = iGenericManagerJpa.loadObjectsFilterArgument(Profile.class, filterArguments, new Object[] { profileData.getUserData().getUsername() }, null, null);    		
         		profileData.setId(profileList.get(0).getId());        		
-        	}
+        	}else
+        		throw new Exception();
     		
     		iGenericManagerJpa.updateObject(new Profile(profileData));
             List<ProfileData> profileDatas = new ArrayList<ProfileData>();

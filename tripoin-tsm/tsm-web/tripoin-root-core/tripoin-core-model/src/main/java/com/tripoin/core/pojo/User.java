@@ -44,8 +44,7 @@ public class User implements Serializable {
     private String remarks;
     private Role role;
     private List<VersionControlSystemUser> versionControlSystemUser;
-    private Profile profile;	
-    private Employee employee;
+    private Profile profile;
  
     public User(){}
 
@@ -101,7 +100,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "user_username", length = 20)
+    @Column(name = "user_username", unique=true, length = 20)
     public String getUsername() {
         return username;
     }
@@ -190,15 +189,6 @@ public class User implements Serializable {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
-	}       
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
 	}
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)

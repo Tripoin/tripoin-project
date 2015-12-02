@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,7 +53,8 @@ public class Profile implements Serializable {
     private String modifiedIP;
     private Date modifiedTime; 
     private String modifiedPlatform;
-    private User user;
+    private User user;	
+    private Employee employee;
     
     public Profile() {}
     
@@ -113,7 +116,7 @@ public class Profile implements Serializable {
         this.id = id;
     }
 
-	@Column(name="profile_email", length=150)
+	@Column(name="profile_email", unique=true, length=150)
     @NotNull
 	public String getEmail() {
 		return email;
@@ -183,7 +186,7 @@ public class Profile implements Serializable {
 		this.telp = telp;
 	}
 
-	@Column(name="profile_phone", length=20)
+	@Column(name="profile_phone", unique=true, length=20)
     @NotNull
 	public String getPhone() {
 		return phone;
@@ -318,6 +321,15 @@ public class Profile implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}       
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile", cascade = CascadeType.ALL)
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	@Override

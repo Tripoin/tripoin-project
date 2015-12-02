@@ -1,6 +1,7 @@
 package com.tripoin.core.pojo;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.MenuData;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -50,6 +54,40 @@ public class Menu implements Serializable {
     private String modifiedPlatform;
     private List<Role> roles;
 
+    public Menu() {}
+    
+	public Menu(MenuData menuData) {
+		super();
+		this.id = menuData.getId();
+		this.code = menuData.getCode();
+		this.name = menuData.getName();
+		this.menuParent = new Menu(menuData.getMenuParent());
+		this.level = menuData.getLevel();
+		this.order = menuData.getOrder();
+		this.tree = menuData.getTree();
+		this.function = menuData.getFunction();
+		this.viewType = menuData.getViewType();
+		this.status = menuData.getStatus();
+		this.remarks = menuData.getRemarks();
+		this.createdBy = menuData.getCreatedBy();
+		this.createdIP = menuData.getCreatedIP();
+		try {
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(menuData.getCreatedTime());
+		} catch (ParseException e) {
+			this.createdTime = new Date();
+		}
+		this.createdPlatform = menuData.getCreatedPlatform();
+		this.modifiedBy = menuData.getModifiedBy();
+		this.modifiedIP = menuData.getModifiedIP();
+		try {
+			if(menuData.getModifiedTime() != null)
+				this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.parse(menuData.getModifiedTime());
+		} catch (ParseException e) {
+			this.modifiedTime = new Date();
+		}
+		this.modifiedPlatform = menuData.getModifiedPlatform();
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="menu_id")
@@ -62,7 +100,7 @@ public class Menu implements Serializable {
         this.id = id;
     }
 
-	@Column(name="menu_code", length=150)
+	@Column(name="menu_code", unique=true, length=150)
 	public String getCode() {
 		return code;
 	}

@@ -11,6 +11,9 @@ public class ParameterConstant {
 	
 	private static final String formatDefault = "dd-MM-yyyy HH:mm:ss.S";	
 	public static SimpleDateFormat FORMAT_DEFAULT = new SimpleDateFormat(formatDefault);
+
+	public static final String IP_ADDRESSV4_DEFAULT = "127.0.0.1";
+	public static final String PLATFORM_DEFAULT = "Computer | Unknown Operating System | Unknown Browser";
 	
 	public static final String RESPONSE_SUCCESS = "SUCCESS";
 	public static final String RESPONSE_FAILURE = "FAILURE";
@@ -40,5 +43,6 @@ public class ParameterConstant {
 	public static final String TRIPOIN_CONTENT_URL = "\\$\\{TRIPOIN.CONTENT.URL\\}";	
 
 	public static final String TRIPOIN_UPLOAD_IMAGE = "TRIPOIN-UPLOAD-IMAGE";
+	public static final String TRIPOIN_UPLOAD_DATA = "TRIPOIN-UPLOAD-DATA";
 	
 }

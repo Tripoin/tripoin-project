@@ -1,6 +1,7 @@
 package com.tripoin.core.pojo;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.EmployeeData;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -41,10 +45,41 @@ public class Employee implements Serializable {
     private String modifiedIP;
     private Date modifiedTime;
     private String modifiedPlatform;
-    private User user;
+    private Profile profile;
     private Occupation occupation;
     private Employee employeeParent;
     private List<UserRoute> userRoutes;
+
+    public Employee() {}
+    
+	public Employee(EmployeeData employeeData) {
+		super();
+		this.id = employeeData.getId();
+		this.code = employeeData.getCode();
+		this.nik = employeeData.getNik();
+		this.status = employeeData.getStatus();
+		this.remarks = employeeData.getRemarks();
+		this.createdBy = employeeData.getCreatedBy();
+		this.createdIP = employeeData.getCreatedIP();
+		try {
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(employeeData.getCreatedTime());
+		} catch (ParseException e) {
+			this.createdTime = new Date();
+		}
+		this.createdPlatform = employeeData.getCreatedPlatform();
+		this.modifiedBy = employeeData.getModifiedBy();
+		this.modifiedIP = employeeData.getModifiedIP();
+		try {
+			if(employeeData.getModifiedTime() != null)
+				this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.parse(employeeData.getModifiedTime());
+		} catch (ParseException e) {
+			this.modifiedTime = new Date();
+		}
+		this.modifiedPlatform = employeeData.getModifiedPlatform();
+		this.profile = new Profile(employeeData.getProfileData());
+		this.occupation = new Occupation(employeeData.getOccupationData());
+		this.employeeParent = new Employee(employeeData.getEmployeeDataParent());
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -58,7 +93,7 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
-	@Column(name="employee_code", length=150)
+	@Column(name="employee_code", unique=true, length=150)
 	public String getCode() {
 		return code;
 	}
@@ -67,7 +102,7 @@ public class Employee implements Serializable {
 		this.code = code;
 	}
 
-	@Column(name="employee_nik", length=150)
+	@Column(name="employee_nik", unique=true, length=150)
 	public String getNik() {
 		return nik;
 	}
@@ -167,13 +202,13 @@ public class Employee implements Serializable {
 	}
 
 	@OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-	public User getUser() {
-		return user;
+    @JoinColumn(name = "profile_id", nullable = false)
+	public Profile getProfile() {
+		return profile;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
     @ManyToOne
@@ -214,7 +249,7 @@ public class Employee implements Serializable {
 				+ createdPlatform + ", modifiedBy=" + modifiedBy
 				+ ", modifiedIP=" + modifiedIP + ", modifiedTime="
 				+ modifiedTime + ", modifiedPlatform=" + modifiedPlatform
-				+ ", user=" + user + ", occupation=" + occupation
+				+ ", profile=" + profile + ", occupation=" + occupation
 				+ ", employeeParent=" + employeeParent + "]";
 	}
 	

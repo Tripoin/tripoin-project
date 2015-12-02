@@ -27,7 +27,7 @@ public class MenuData {
 	@XmlElement(name = "Name", namespace = "")
     private String name;
 	
-	@XmlElement(name = "MenudDataParent", namespace = "")
+	@XmlElement(name = "MenuDataParent", namespace = "")
     private MenuData menuDataParent;
 	
 	@XmlElement(name = "Level", namespace = "")

@@ -55,7 +55,7 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name="role_code", length=50)
+	@Column(name="role_code", unique=true, length=50)
 	public String getCode() {
 		return code;
 	}
