@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.tripoin.util.ui.geo.shared.GeolocatorConnector;
 import com.vaadin.client.ui.button.ButtonConnector;
 import com.vaadin.client.ui.csslayout.CssLayoutConnector;
 import com.vaadin.client.ui.label.LabelConnector;
@@ -34,6 +35,7 @@ public final class OptimizedConnectorBundleLoaderFactory extends ConnectorBundle
         eagerConnectors.add(PanelConnector.class.getName());
         eagerConnectors.add(LabelConnector.class.getName());
         eagerConnectors.add(WindowConnector.class.getName());
+        eagerConnectors.add(GeolocatorConnector.class.getName());
     }
 
     @Override

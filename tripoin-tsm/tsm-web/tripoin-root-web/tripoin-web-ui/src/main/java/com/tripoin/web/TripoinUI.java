@@ -234,7 +234,7 @@ public class TripoinUI extends UI implements ErrorHandler {
     
     public void updateImageProfile(String urlImage){
     	rootMenuLayout.updateImageProfile(urlImage);
-    }    
+    }
 
 	@Override
 	public void close() {

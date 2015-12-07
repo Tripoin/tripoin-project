@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.gwt.geolocation.client.PositionError;
+import com.tripoin.util.ui.geo.Geolocator;
+import com.tripoin.util.ui.geo.PositionCallback;
+import com.tripoin.util.ui.geo.shared.Position;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.service.IUserService;
 import com.tripoin.web.servlet.VaadinView;
@@ -20,6 +24,7 @@ import com.vaadin.tapio.googlemaps.client.events.MarkerClickListener;
 import com.vaadin.tapio.googlemaps.client.events.MarkerDragListener;
 import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapInfoWindow;
 import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
@@ -48,6 +53,7 @@ public class SalesTrackingView extends VerticalLayout implements View, ClickList
     private GoogleMap googleMap;
     private GoogleMapMarker kakolaMarker = new GoogleMapMarker("DRAGGABLE: Kakolan vankila", new LatLon(-6.266600, 106.659831), true, null);
     private GoogleMapInfoWindow kakolaInfoWindow = new GoogleMapInfoWindow("Kakola used to be a provincial prison.", kakolaMarker);
+    
     
     @PostConstruct
     public void init() throws Exception {        
@@ -154,7 +160,47 @@ public class SalesTrackingView extends VerticalLayout implements View, ClickList
                         + window.getContent() + "\" closed");
                 consoleLayout.addComponent(consoleEntry, 0);
             }
-        });
+        });        
+
+        Button currentLocationButton = new Button("Position");
+        currentLocationButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1024740312420785083L;
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Geolocator.detect(new PositionCallback() {
+					@Override
+					public void onSuccess(Position position) {
+						System.out.println("Your Location ["+position.getLatitude()+", "+position.getLongitude()+"]");
+						Label consoleEntry = new Label("Your Location ["+position.getLatitude()+", "+position.getLongitude()+"]");
+		                consoleLayout.addComponent(consoleEntry, 0);	
+					}					
+					@Override
+					public void onFailure(int errorCode) {
+						String message = "";
+				        switch (errorCode) {
+				          case PositionError.UNKNOWN_ERROR:
+				            message = "Unknown Error";
+				            break;
+				          case PositionError.PERMISSION_DENIED:
+				            message = "Permission Denied";
+				            break;
+				          case PositionError.POSITION_UNAVAILABLE:
+				            message = "Position Unavailable";
+				            break;
+				          case PositionError.TIMEOUT:
+				            message = "Time-out";
+				            break;
+				          default:
+				            message = "Unknown error code.";
+				        }
+						System.out.println(message);
+						Label consoleEntry = new Label(message);
+		                consoleLayout.addComponent(consoleEntry, 0);
+					}
+				});
+			}
+		});    
+        mapContent.addComponent(currentLocationButton);
     }
 
     @Override

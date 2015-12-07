@@ -23,6 +23,11 @@
 	</developers>
 
 	<dependencies>
+		<!-- <dependency>
+    		<groupId>com.google.code.gwt-mobile-webkit</groupId>
+    		<artifactId>gwt-html5-geolocation</artifactId>
+    		<version>0.9.5</version>
+  		</dependency> -->
 		<!-- refer tripoin -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -531,9 +536,10 @@
 							<!-- Remove draftCompile when project is ready -->
 							<draftCompile>false</draftCompile>
 							<compileReport>true</compileReport>
-							<style>OBF</style>
+							<style>DETAILED</style>
 							<strict>true</strict>
-							<runTarget>http://localhost:8080/</runTarget>
+							<force>true</force>
+							<runTarget>http://localhost:8080/</runTarget>	
 						</configuration>
 						<executions>
 							<execution>
@@ -545,10 +551,10 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>resources</goal>
-									<goal>update-theme</goal>
-									<goal>update-widgetset</goal>
 									<goal>compile-theme</goal>
 									<goal>compile</goal>
+									<!-- <goal>update-theme</goal>
+									<goal>update-widgetset</goal> -->
 								</goals>
 							</execution>
 						</executions>
@@ -576,10 +582,10 @@
 												</versionRange>
 												<goals>
 													<goal>resources</goal>
-													<goal>update-widgetset</goal>
-													<goal>compile</goal>
-													<goal>update-theme</goal>
 													<goal>compile-theme</goal>
+													<goal>compile</goal>
+													<!-- <goal>update-theme</goal>
+													<goal>update-widgetset</goal> -->
 												</goals>
 											</pluginExecutionFilter>
 											<action>
@@ -632,6 +638,10 @@
 	</build>
 
 	<repositories>
+		<repository>
+			<id>gwt-mobile-webkit</id>
+			<url>http://gwt-mobile-webkit.googlecode.com/svn/repo</url>
+		</repository>
 		<repository>
 			<id>nuxeo nexus public</id>
     		<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
