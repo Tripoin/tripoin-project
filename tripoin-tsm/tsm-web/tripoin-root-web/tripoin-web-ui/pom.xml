@@ -132,6 +132,10 @@
 					<groupId>com.vaadin</groupId>
 					<artifactId>vaadin-server</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>vaadin-client</artifactId>
+					<groupId>com.vaadin</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- refer spring portlet -->
@@ -378,11 +382,23 @@
             <groupId>com.vaadin.tapio</groupId>
             <artifactId>googlemaps</artifactId>
             <version>${com.vaadin.tapio.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>junit</artifactId>
+            		<groupId>junit</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
 		    <groupId>org.vaadin.addons</groupId>
 		    <artifactId>vaadin-grid-util</artifactId>
 		    <version>${vaadin.grid.util.version}</version>
+		    <exclusions>
+		    	<exclusion>
+		    		<artifactId>vaadin-server</artifactId>
+		    		<groupId>com.vaadin</groupId>
+		    	</exclusion>
+		    </exclusions>
 		</dependency>
 		<!-- refer jetty data -->
 		<dependency>
