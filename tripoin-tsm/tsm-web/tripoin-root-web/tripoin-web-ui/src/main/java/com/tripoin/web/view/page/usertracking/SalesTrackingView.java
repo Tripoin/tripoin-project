@@ -1,12 +1,24 @@
 package com.tripoin.web.view.page.usertracking;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.code.geocoder.Geocoder;
+import com.google.code.geocoder.GeocoderRequestBuilder;
+import com.google.code.geocoder.model.GeocodeResponse;
+import com.google.code.geocoder.model.GeocoderAddressComponent;
+import com.google.code.geocoder.model.GeocoderRequest;
+import com.google.code.geocoder.model.GeocoderResult;
+import com.google.code.geocoder.model.LatLng;
 import com.google.gwt.geolocation.client.PositionError;
+import com.tripoin.util.ui.geo.EGeoTypes;
 import com.tripoin.util.ui.geo.Geolocator;
 import com.tripoin.util.ui.geo.PositionCallback;
 import com.tripoin.util.ui.geo.shared.Position;
@@ -53,10 +65,11 @@ public class SalesTrackingView extends VerticalLayout implements View, ClickList
     private GoogleMap googleMap;
     private GoogleMapMarker kakolaMarker = new GoogleMapMarker("DRAGGABLE: Kakolan vankila", new LatLon(-6.266600, 106.659831), true, null);
     private GoogleMapInfoWindow kakolaInfoWindow = new GoogleMapInfoWindow("Kakola used to be a provincial prison.", kakolaMarker);
-    
+    private String address = "";
+    private final Geocoder geocoder = new Geocoder();
     
     @PostConstruct
-    public void init() throws Exception {        
+    public void init() throws Exception {
         setMargin(true);
         addStyleName("tripoin-custom-screen");
         HorizontalLayout row = new HorizontalLayout();
@@ -170,8 +183,26 @@ public class SalesTrackingView extends VerticalLayout implements View, ClickList
 				Geolocator.detect(new PositionCallback() {
 					@Override
 					public void onSuccess(Position position) {
-						System.out.println("Your Location ["+position.getLatitude()+", "+position.getLongitude()+"]");
-						Label consoleEntry = new Label("Your Location ["+position.getLatitude()+", "+position.getLongitude()+"]");
+						LatLng latLng = new LatLng(new BigDecimal(position.getLatitude()), new BigDecimal(position.getLongitude()));
+						GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLocation(latLng).getGeocoderRequest();
+						try {
+							GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
+							List<GeocoderResult> geocoderResults = geocoderResponse.getResults();
+							for(int i=0; i<geocoderResults.size(); i++){
+								GeocoderResult geocoderResult = geocoderResults.get(i);
+								List<GeocoderAddressComponent> geocoderAddressComponents = geocoderResult.getAddressComponents();
+								for(int j=0; j<geocoderAddressComponents.size(); j++){
+									GeocoderAddressComponent geocoderAddressComponent = geocoderAddressComponents.get(j);
+									System.out.println("Addres : ["+geocoderAddressComponent.getShortName()+"]");
+									for(int l=0; l<geocoderAddressComponent.getTypes().size(); l++)
+										if(EGeoTypes.ROUTE.toString().equals(geocoderAddressComponent.getTypes().get(l)))
+											address = geocoderAddressComponent.getShortName();
+								}
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						Label consoleEntry = new Label("Your Location ["+position.getLatitude()+", "+position.getLongitude()+"] : "+address);
 		                consoleLayout.addComponent(consoleEntry, 0);	
 					}					
 					@Override
