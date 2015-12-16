@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
@@ -61,14 +60,14 @@ public class DataOccupationView extends VerticalLayout implements View {
         HorizontalLayout row = new HorizontalLayout();
         row.setMargin(false);
         row.setWidth("100%");
-        addComponent(row);
         final FormLayout formTitle = new FormLayout();
         formTitle.setMargin(false);
         formTitle.addStyleName("light");        
         Label title = new Label("Data Occupation");
         title.addStyleName("h1");
         formTitle.addComponent(title);        
-        row.addComponent(formTitle);   
+        row.addComponent(formTitle);
+        addComponent(row);   
         
         final FormLayout groupSearch = searchContent();
         groupSearch.setStyleName("tripoin-custom-form");
@@ -145,9 +144,9 @@ public class DataOccupationView extends VerticalLayout implements View {
 				private static final long serialVersionUID = -6491823805538480108L;
 				@Override
 				public void select(SelectionEvent event) {
-					List<EmployeeData> listEmployeeDatas = new ArrayList<EmployeeData>();
+					List<OccupationData> listOccupationDatas = new ArrayList<OccupationData>();
 					for(Object object : event.getSelected()){
-						listEmployeeDatas.add((EmployeeData)object);
+						listOccupationDatas.add((OccupationData)object);
 					}
 				}
 			});

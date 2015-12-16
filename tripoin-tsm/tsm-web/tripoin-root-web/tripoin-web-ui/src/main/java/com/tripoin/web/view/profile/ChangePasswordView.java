@@ -98,14 +98,17 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
         
         oldPassword.setRequired(true);
         oldPassword.setWidth("45%");
+        oldPassword.addStyleName("small");
         form.addComponent(oldPassword);        
         
         newPassword.setRequired(true);
         newPassword.setWidth("45%");
+        newPassword.addStyleName("small");
         form.addComponent(newPassword);        
         
         reTypePassword.setRequired(true);
         reTypePassword.setWidth("45%");
+        reTypePassword.addStyleName("small");
         form.addComponent(reTypePassword);  
 
         Button save = new Button("Save", this);
