@@ -21,6 +21,7 @@ import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
@@ -65,13 +66,17 @@ public class DataEmployeeView extends VerticalLayout implements View {
         title.addStyleName("h1");
         formTitle.addComponent(title);        
         row.addComponent(formTitle); 
-        addComponent(row);       
-
+        addComponent(row);
+        
+        final FormLayout groupSearch = searchContent();
+        groupSearch.setStyleName("tripoin-custom-form");
+        groupSearch.setMargin(new MarginInfo(false, false, true, false));
+		groupSearch.setSpacing(true);
+		groupSearch.setWidth("100%");
+		addComponent(groupSearch);
+		
         VerticalLayout contentLayout = new VerticalLayout();
         contentLayout.setWidth("100%");
-        com.vaadin.ui.Component groupSearch = searchContent();
-        contentLayout.addComponent(groupSearch); 
-        
         CssLayout layout = new CssLayout();
         layout.addStyleName("card");
         HorizontalLayout panelCaption = new HorizontalLayout();
@@ -197,11 +202,8 @@ public class DataEmployeeView extends VerticalLayout implements View {
         return menubarPaging;
     }
 	
-	private com.vaadin.ui.Component searchContent(){
+	private FormLayout searchContent(){
 		FormLayout groupSearch = new FormLayout();
-		groupSearch.setSpacing(true);
-		groupSearch.setWidth("100%");
-		groupSearch.setStyleName("tripoin-custom-form");
 		Label section = new Label();
         section.addStyleName("h3");
         section.addStyleName("colored");
