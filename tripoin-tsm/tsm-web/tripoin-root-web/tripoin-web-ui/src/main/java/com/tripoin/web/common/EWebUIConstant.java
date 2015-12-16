@@ -42,16 +42,33 @@ public enum EWebUIConstant {
 	HOME_VIEW(""),
 	NAVIGATE_NULL("#!"),
 	
-	TYPE_FILE_IMAGE("image");
+	TYPE_FILE_IMAGE("image"),
 	
-	private String operator;	
+	ROW_PER_PAGE(20);
+
+	private String operator;
+	private Integer operatorInteger;	
 	
 	private EWebUIConstant(String operator){
 		this.operator = operator ;
+	}	
+	
+	private EWebUIConstant(Integer operatorInteger){
+		this.operatorInteger = operatorInteger ;
 	}
 	
+	public String getOperator() {
+		return operator;
+	}
+
+	public Integer getOperatorInteger() {
+		return operatorInteger;
+	}
+
 	@Override
 	public String toString() {
+		if(operator == null)
+			return operatorInteger.toString();
 		return operator;
 	}
 	

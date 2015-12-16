@@ -21,7 +21,6 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -78,8 +77,7 @@ public class DataOccupationView extends VerticalLayout implements View {
 				@Override
 				public void itemClick(ItemClickEvent event) {
 					if(event.isDoubleClick()){
-						System.out.println(event.getPropertyId());
-						UI.getCurrent().getNavigator().navigateTo("profile");
+						
 					}
 				}
 			});

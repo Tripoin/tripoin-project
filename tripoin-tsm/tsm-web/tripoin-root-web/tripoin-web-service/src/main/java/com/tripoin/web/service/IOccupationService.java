@@ -17,7 +17,7 @@ public interface IOccupationService {
     
     public OccupationTransferObject updateOccupation(OccupationData occupationData);
     
-    public OccupationTransferObject saveeOccupation(OccupationData occupationData);
+    public OccupationTransferObject saveOccupation(OccupationData occupationData);
 
 	public GeneralTransferObject deleteOccupation(OccupationData occupationData);
 

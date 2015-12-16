@@ -5,19 +5,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
-import com.tripoin.core.dto.OccupationData;
-import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
-import com.tripoin.web.service.IOccupationService;
+import com.tripoin.web.service.IEmployeeService;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-@Service("occupationService")
-public class OccupationServiceImpl implements IOccupationService {
+@Service("employeeService")
+public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Autowired
 	private ICommonRest commonRest;
@@ -26,30 +26,30 @@ public class OccupationServiceImpl implements IOccupationService {
 	private IStateFullRest stateFullRest;
 
 	@Override
-	public OccupationData getOccupation() {
+	public EmployeeData getEmployee() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<OccupationData> getAllOccupationDatas() {		
-		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), OccupationTransferObject.class).getOccupationDatas();
+	public List<EmployeeData> getAllEmployeeDatas() {
+		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), EmployeeTransferObject.class).getEmployeeDatas();
 	}
 
 	@Override
-	public OccupationTransferObject updateOccupation(OccupationData occupationData) {
+	public EmployeeTransferObject updateEmployee(EmployeeData employeeData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public OccupationTransferObject saveOccupation(OccupationData occupationData) {
+	public EmployeeTransferObject saveEmployee(EmployeeData employeeData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public GeneralTransferObject deleteOccupation(OccupationData occupationData) {
+	public GeneralTransferObject deleteEmployee(EmployeeData employeeData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

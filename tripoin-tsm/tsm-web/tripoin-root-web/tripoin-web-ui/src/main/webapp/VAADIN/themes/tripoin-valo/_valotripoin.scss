@@ -16,6 +16,10 @@ $v-layout-margin-top: round($v-unit-size / 1.5) !default;
     }
   }
   
+  .v-grid-cell-focused:before {
+    display: none !important;
+  }
+  
   .v-ui[width-range~="0-800px"] {
     .main-screen {
       padding-top: $v-unit-size;
