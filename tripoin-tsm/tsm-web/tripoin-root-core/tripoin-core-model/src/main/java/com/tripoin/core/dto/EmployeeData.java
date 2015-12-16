@@ -78,16 +78,18 @@ public class EmployeeData {
 		this.remarks = employee.getRemarks();
 		this.createdBy = employee.getCreatedBy();
 		this.createdIP = employee.getCreatedIP();
-		this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(employee.getCreatedTime());
+		if(employee.getCreatedTime() != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(employee.getCreatedTime());
 		this.createdPlatform = employee.getCreatedPlatform();
 		this.modifiedBy = employee.getModifiedBy();
 		this.modifiedIP = employee.getModifiedIP();
-		if(modifiedTime != null)
+		if(employee.getModifiedTime() != null)
 			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(employee.getModifiedTime());
 		this.modifiedPlatform = employee.getModifiedPlatform();
 		this.profileData = new ProfileData(employee.getProfile());
 		this.occupationData = new OccupationData(employee.getOccupation());
-		this.employeeDataParent = new EmployeeData(employee.getEmployeeParent());
+		if(employee.getEmployeeParent() != null)
+			this.employeeDataParent = new EmployeeData(employee.getEmployeeParent());
 	}
 	
 	public EmployeeData(Integer id, String code, String nik, Integer status,
@@ -103,7 +105,8 @@ public class EmployeeData {
 		this.remarks = remarks;
 		this.createdBy = createdBy;
 		this.createdIP = createdIP;
-		this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
+		if(createdTime != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
 		this.createdPlatform = createdPlatform;
 		this.modifiedBy = modifiedBy;
 		this.modifiedIP = modifiedIP;
@@ -112,7 +115,8 @@ public class EmployeeData {
 		this.modifiedPlatform = modifiedPlatform;
 		this.profileData = new ProfileData(profile);
 		this.occupationData = new OccupationData(occupation);
-		this.employeeDataParent = new EmployeeData(employeeParent);
+		if(employeeParent != null)
+			this.employeeDataParent = new EmployeeData(employeeParent);
 	}
 
 	public Integer getId() {

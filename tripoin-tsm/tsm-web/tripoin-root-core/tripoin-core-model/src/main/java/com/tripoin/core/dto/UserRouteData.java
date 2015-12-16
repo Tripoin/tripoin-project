@@ -5,6 +5,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.pojo.UserRoute;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
@@ -65,6 +68,31 @@ public class UserRouteData {
 	
 	@XmlElement(name = "EmployeeData", namespace = "")
 	private EmployeeData employeeData;
+
+	public UserRouteData(UserRoute userRoute) {
+		super();
+		this.id = userRoute.getId();
+		this.latitude = userRoute.getLatitude();
+		this.longitude = userRoute.getLongitude();
+		this.center = userRoute.getCenter();
+		this.zoom = userRoute.getZoom();
+		this.drag = userRoute.getDrag();
+		this.marker = userRoute.getMarker();
+		this.caption = userRoute.getCaption();
+		this.icon = userRoute.getIcon();
+		this.createdBy = userRoute.getCreatedBy();
+		this.createdIP = userRoute.getCreatedIP();
+		if(userRoute.getCreatedTime() != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(userRoute.getCreatedTime());
+		this.createdPlatform = userRoute.getCreatedPlatform();
+		this.modifiedBy = userRoute.getModifiedBy();
+		this.modifiedIP = userRoute.getModifiedIP();
+		if(userRoute.getCreatedTime() != null)
+			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(userRoute.getModifiedTime());
+		this.modifiedPlatform = userRoute.getModifiedPlatform();
+		if(userRoute.getEmployee() != null)
+			this.employeeData = new EmployeeData(userRoute.getEmployee());
+	}
 
 	public Integer getId() {
 		return id;

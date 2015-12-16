@@ -66,11 +66,12 @@ public class OccupationData {
 		this.remarks = occupation.getRemarks();
 		this.createdBy = occupation.getCreatedBy();
 		this.createdIP = occupation.getCreatedIP();
-		this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(occupation.getCreatedTime());
+		if(occupation.getCreatedTime() != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(occupation.getCreatedTime());
 		this.createdPlatform = occupation.getCreatedPlatform();
 		this.modifiedBy = occupation.getModifiedBy();
 		this.modifiedIP = occupation.getModifiedIP();
-		if(modifiedTime != null)
+		if(occupation.getModifiedTime() != null)
 			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(occupation.getModifiedTime());
 		this.modifiedPlatform = occupation.getModifiedPlatform();
 	}
@@ -87,7 +88,8 @@ public class OccupationData {
 		this.remarks = remarks;
 		this.createdBy = createdBy;
 		this.createdIP = createdIP;
-		this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
+		if(createdTime != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
 		this.createdPlatform = createdPlatform;
 		this.modifiedBy = modifiedBy;
 		this.modifiedIP = modifiedIP;

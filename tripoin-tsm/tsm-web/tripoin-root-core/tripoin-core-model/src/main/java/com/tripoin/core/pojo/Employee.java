@@ -62,7 +62,8 @@ public class Employee implements Serializable {
 		this.createdBy = employeeData.getCreatedBy();
 		this.createdIP = employeeData.getCreatedIP();
 		try {
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(employeeData.getCreatedTime());
+			if(employeeData.getCreatedTime() != null)
+				this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(employeeData.getCreatedTime());
 		} catch (ParseException e) {
 			this.createdTime = new Date();
 		}
@@ -78,7 +79,8 @@ public class Employee implements Serializable {
 		this.modifiedPlatform = employeeData.getModifiedPlatform();
 		this.profile = new Profile(employeeData.getProfileData());
 		this.occupation = new Occupation(employeeData.getOccupationData());
-		this.employeeParent = new Employee(employeeData.getEmployeeDataParent());
+		if(employeeData.getEmployeeDataParent() != null)
+			this.employeeParent = new Employee(employeeData.getEmployeeDataParent());
 	}
 
 	@Id

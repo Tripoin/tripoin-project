@@ -61,7 +61,8 @@ public class Menu implements Serializable {
 		this.id = menuData.getId();
 		this.code = menuData.getCode();
 		this.name = menuData.getName();
-		this.menuParent = new Menu(menuData.getMenuParent());
+		if(menuData.getMenuParent() != null)
+			this.menuParent = new Menu(menuData.getMenuParent());
 		this.level = menuData.getLevel();
 		this.order = menuData.getOrder();
 		this.tree = menuData.getTree();
@@ -72,7 +73,8 @@ public class Menu implements Serializable {
 		this.createdBy = menuData.getCreatedBy();
 		this.createdIP = menuData.getCreatedIP();
 		try {
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(menuData.getCreatedTime());
+			if(menuData.getCreatedTime() != null)
+				this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(menuData.getCreatedTime());
 		} catch (ParseException e) {
 			this.createdTime = new Date();
 		}

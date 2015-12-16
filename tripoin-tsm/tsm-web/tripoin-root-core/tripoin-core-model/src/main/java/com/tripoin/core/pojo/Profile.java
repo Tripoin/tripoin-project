@@ -86,7 +86,8 @@ public class Profile implements Serializable {
     		this.createdBy = profileData.getCreatedBy();
     		this.createdIP = profileData.getCreatedIP();
     		try {
-				this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(profileData.getCreatedTime());
+    			if(profileData.getCreatedTime() != null)
+    				this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(profileData.getCreatedTime());
 			} catch (ParseException e) {
 				this.createdTime = new Date();
 			}
@@ -100,7 +101,8 @@ public class Profile implements Serializable {
 				this.modifiedTime = new Date();
 			}
     		this.modifiedPlatform = profileData.getModifiedPlatform();
-    		this.user = new User(profileData.getUserData());
+    		if(profileData.getUserData() != null)
+				this.user = new User(profileData.getUserData());
     	}
     }
 

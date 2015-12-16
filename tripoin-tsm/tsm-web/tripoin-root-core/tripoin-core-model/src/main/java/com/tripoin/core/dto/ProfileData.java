@@ -107,16 +107,18 @@ public class ProfileData {
 		this.forgotUUID = profile.getForgotUUID();
 		if(profile.getForgotExpired() != null)
 			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getModifiedTime());
-		this.userData = new UserData(profile.getUser());
 		this.createdBy = profile.getCreatedBy();
 		this.createdIP = profile.getCreatedIP();
-		this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(profile.getCreatedTime());
+		if(profile.getCreatedTime() != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(profile.getCreatedTime());
 		this.createdPlatform = profile.getCreatedPlatform();
 		this.modifiedBy = profile.getModifiedBy();
 		this.modifiedIP = profile.getModifiedIP();
 		if(profile.getModifiedTime() != null)
 			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(profile.getModifiedTime());
 		this.modifiedPlatform = profile.getModifiedPlatform();
+		if(profile.getUser() != null)
+			this.userData = new UserData(profile.getUser());
 	}
 	
 	public ProfileData(int id, String email, String name, String gender,
@@ -131,7 +133,8 @@ public class ProfileData {
 		this.name = name;
 		this.gender = gender;
 		this.birthplace = birthplace;
-		this.birthdate = ParameterConstant.FORMAT_DEFAULT.format(birthdate);
+		if(birthdate != null)
+			this.birthdate = ParameterConstant.FORMAT_DEFAULT.format(birthdate);
 		this.address = address;
 		this.telp = telp;
 		this.phone = phone;
@@ -143,14 +146,16 @@ public class ProfileData {
 			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(forgotExpired);
 		this.createdBy = createdBy;
 		this.createdIP = createdIP;
-		this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
+		if(createdTime != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
 		this.createdPlatform = createdPlatform;
 		this.modifiedBy = modifiedBy;
 		this.modifiedIP = modifiedIP;
 		if(modifiedTime != null)
 			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(modifiedTime);
 		this.modifiedPlatform = modifiedPlatform;
-		this.userData = new UserData(user);
+		if(user != null)
+			this.userData = new UserData(user);
 	}
 
 	public Integer getId() {

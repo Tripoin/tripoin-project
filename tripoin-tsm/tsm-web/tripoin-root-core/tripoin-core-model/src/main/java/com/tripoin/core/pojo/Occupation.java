@@ -56,7 +56,8 @@ public class Occupation implements Serializable {
 		this.createdBy = occupationData.getCreatedBy();
 		this.createdIP = occupationData.getCreatedIP();
 		try {
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(occupationData.getCreatedTime());
+			if(occupationData.getCreatedTime() != null)
+				this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(occupationData.getCreatedTime());
 		} catch (ParseException e) {
 			this.createdTime = new Date();
 		}

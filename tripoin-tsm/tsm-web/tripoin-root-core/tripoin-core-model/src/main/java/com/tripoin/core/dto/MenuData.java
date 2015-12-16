@@ -93,7 +93,8 @@ public class MenuData {
 			this.remarks = menu.getRemarks();
 			this.createdBy = menu.getCreatedBy();
 			this.createdIP = menu.getCreatedIP();
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(menu.getCreatedTime());
+			if(menu.getCreatedTime() != null)
+				this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(menu.getCreatedTime());
 			this.createdPlatform = menu.getCreatedPlatform();
 			this.modifiedBy = menu.getModifiedBy();
 			this.modifiedIP = menu.getModifiedIP();
@@ -124,7 +125,8 @@ public class MenuData {
 		this.remarks = remarks;
 		this.createdBy = createdBy;
 		this.createdIP = createdIP;
-		this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
+		if(createdTime != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
 		this.createdPlatform = createdPlatform;
 		this.modifiedBy = modifiedBy;
 		this.modifiedIP = modifiedIP;
