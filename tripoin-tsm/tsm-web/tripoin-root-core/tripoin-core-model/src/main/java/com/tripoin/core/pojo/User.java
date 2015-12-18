@@ -1,10 +1,8 @@
 package com.tripoin.core.pojo;
 
-
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.UserData;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -26,13 +24,15 @@ import javax.persistence.Table;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Entity
-@Table(name = "sec_user")
-public class User implements Serializable {
+@Table(name=User.TABLE_NAME)
+public class User implements IBaseModel {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -5005939533336216605L;
+    public static final String TABLE_NAME = "sec_user";
+	
 	private Integer id;
     private String username;
     private String password;
@@ -199,6 +199,11 @@ public class User implements Serializable {
     public void setVersionFilter(List<VersionControlSystemUser> versionControlSystemUser) {
         this.versionControlSystemUser = versionControlSystemUser;
     }
+
+	@Override
+	public String tableName() {
+		return TABLE_NAME;
+	}
 
     @Override
     public String toString() {

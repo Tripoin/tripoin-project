@@ -8,10 +8,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
@@ -45,6 +54,14 @@ public class ServiceTest implements ApplicationContextAware  {
 	@Autowired
 	private IStanGenerator stanManager;
 	
+	@Autowired
+	@Qualifier(value="transactionManager")
+	private PlatformTransactionManager transactionManager ;
+	
+	@Autowired
+	@Qualifier(value="web-async-task-executor")
+	private ThreadPoolTaskExecutor taskExecutor; 
+	
 	private ApplicationContext applicationContext;
 	
 	public <T> T getBean(Class<T> beanType) {
@@ -62,7 +79,19 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestEmployee();
+		
+		taskExecutor.execute(new Runnable() {			
+			@Override
+			public void run() {
+				try {
+					runTestMenu();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});		
+		System.out.println("RIDLA----------------------------------------");
+		Thread.sleep(30000);
 	}
 	
 	public void runTestUser() throws Exception {
@@ -79,7 +108,7 @@ public class ServiceTest implements ApplicationContextAware  {
 			LOGGER.debug("Profile Data : "+profile);
 		}
 	}
-	
+
 	public void runTestMenu() throws Exception {
 		List<Menu> menus = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? ORDER BY mn.tree ASC", new Object[]{"ROLE_ADMIN"}, null);
 		for(Menu menu : menus) {

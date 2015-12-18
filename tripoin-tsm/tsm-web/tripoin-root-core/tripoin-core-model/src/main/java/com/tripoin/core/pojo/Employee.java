@@ -1,6 +1,5 @@
 package com.tripoin.core.pojo;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -25,13 +24,15 @@ import com.tripoin.core.dto.EmployeeData;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Entity
-@Table(name="mst_employee")
-public class Employee implements Serializable {
+@Table(name=Employee.TABLE_NAME)
+public class Employee implements IBaseModel {
 
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = -5575840012553613210L;
+	private static final long serialVersionUID = -5575840012553613210L;	
+    public static final String TABLE_NAME = "mst_employee";
+    
 	private Integer id;
     private String code;
     private String nik;
@@ -48,7 +49,7 @@ public class Employee implements Serializable {
     private Profile profile;
     private Occupation occupation;
     private Employee employeeParent;
-    private List<UserRoute> userRoutes;
+    private List<UserRoute> userRoutes;    
 
     public Employee() {}
     
@@ -240,6 +241,11 @@ public class Employee implements Serializable {
 
 	public void setUserRoutes(List<UserRoute> userRoutes) {
 		this.userRoutes = userRoutes;
+	}
+
+	@Override
+	public String tableName() {
+		return TABLE_NAME;
 	}
 
 	@Override

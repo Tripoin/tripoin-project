@@ -17,7 +17,7 @@ import com.tripoin.core.pojo.Stan;
 public class StanDaoImpl implements InitializingBean, IStanDao {
 	
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 	
 	private static final RowMapper<Stan> stanMapper = new StanMapper();
 	

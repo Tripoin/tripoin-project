@@ -1,6 +1,5 @@
 package com.tripoin.core.pojo;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,13 +18,15 @@ import com.tripoin.core.dto.RoleData;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Entity
-@Table(name="sec_role")
-public class Role implements Serializable {
+@Table(name=Role.TABLE_NAME)
+public class Role implements IBaseModel {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3911430996032351640L;
+    public static final String TABLE_NAME = "sec_role";
+	
 	private Integer id;
 	private String code;
 	private List<User> users;
@@ -98,6 +99,11 @@ public class Role implements Serializable {
 
 	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
+	}
+
+	@Override
+	public String tableName() {
+		return TABLE_NAME;
 	}
 
 	@Override

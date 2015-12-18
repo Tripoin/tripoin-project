@@ -47,10 +47,10 @@ public class JQLStatement implements Serializable {
 	public <T> String getJQL(Class<T> objectType, FilterArgument[] filterArguments, Object[] values, SortArgument sortArgument){
 		String jqlQuery = ECommonOperator.FROM.toString().concat(objectType.getName()).concat(ECommonOperator.OBJECT_SPACE_CONSTANT.toString());
 		if (filterArguments != null)
-			jqlQuery += getOperator(filterArguments);
+			jqlQuery = jqlQuery.concat(getOperator(filterArguments));
 		
 		if (sortArgument != null )
-			jqlQuery += getSort(sortArgument);
+			jqlQuery = jqlQuery.concat(getSort(sortArgument));
 		
 		return jqlQuery;
 	}

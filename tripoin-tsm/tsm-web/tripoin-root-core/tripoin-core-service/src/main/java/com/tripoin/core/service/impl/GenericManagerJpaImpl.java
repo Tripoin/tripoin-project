@@ -43,7 +43,6 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 		return genericReadDao.loadObjects(objectType);
 	}
 
-    @Transactional
 	@Override
 	public <T> List<T> loadObjectsFilterArgument(Class<T> objectType, FilterArgument[] filterArguments, Object[] values, SortArgument sortArgument, PageArgument pageArgument) throws Exception {
 		return genericReadDao.loadObjectsFilterArgument(objectType, filterArguments, values, sortArgument, pageArgument);
@@ -59,6 +58,12 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 	@Override
 	public void saveObject(Object objectType) throws Exception {
 		genericInsertDao.saveObject(objectType);
+	}
+
+    @Transactional
+	@Override
+	public void saveObjectAndSync(Object objectType) throws Exception {
+		genericInsertDao.saveObjectAndSync(objectType);
 	}
 
     @Transactional

@@ -1,6 +1,5 @@
 package com.tripoin.core.pojo;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -26,13 +25,15 @@ import com.tripoin.core.dto.MenuData;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Entity
-@Table(name="mst_menu")
-public class Menu implements Serializable {
+@Table(name=Menu.TABLE_NAME)
+public class Menu implements IBaseModel {
 
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = -5575840012553613210L;
+	private static final long serialVersionUID = -5575840012553613210L;	
+    public static final String TABLE_NAME = "mst_menu";
+    
 	private Integer id;
     private String code;
     private String name;
@@ -277,6 +278,11 @@ public class Menu implements Serializable {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}	
+
+	@Override
+	public String tableName() {
+		return TABLE_NAME;
+	}
 
 	@Override
 	public String toString() {

@@ -18,7 +18,7 @@ import com.tripoin.core.pojo.SystemParameter;
 public class SystemParameterDaoImpl implements ISystemParameterDao {
 
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 	
 	private static final RowMapper<SystemParameter> systemParameterMapper = new SystemParameterMapper();
 	

@@ -1,6 +1,5 @@
 package com.tripoin.core.pojo;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,13 +16,15 @@ import javax.validation.constraints.NotNull;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Entity
-@Table(name="geo_user_route")
-public class UserRoute implements Serializable {
+@Table(name=UserRoute.TABLE_NAME)
+public class UserRoute implements IBaseModel {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -5575840012553613210L;
+    public static final String TABLE_NAME = "geo_user_route";
+	
 	private Integer id;
     private Double latitude;
     private Double longitude;
@@ -207,6 +208,11 @@ public class UserRoute implements Serializable {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+
+	@Override
+	public String tableName() {
+		return TABLE_NAME;
 	}
 
 	@Override

@@ -23,7 +23,10 @@
 	
 	<import resource="applicationContext-scan.xml"/>
 	
-     <!-- Enable @Transactional support -->
+	<!-- Enable @AspectJ support -->
+	<aop:aspectj-autoproxy />
+	
+    <!-- Enable @Transactional support -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<!-- ************ JPA configuration *********** -->		
