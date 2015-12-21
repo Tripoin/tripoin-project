@@ -1,4 +1,4 @@
-package com.tripoin.web.view.page.masterdata;
+package com.tripoin.web.view.page.masterdata.occupation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.OccupationData;
+import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.data.util.BeanItemContainer;
@@ -21,6 +22,9 @@ import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
@@ -32,7 +36,9 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -40,18 +46,21 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Component
 @Scope("prototype")
-@VaadinView(value = "dataOccupationView", cached = true)
+@VaadinView(value = DataOccupationView.BEAN_NAME, cached = false)
 public class DataOccupationView extends VerticalLayout implements View {
 
 	private static final long serialVersionUID = -4592518571070450190L;
+	public static final String BEAN_NAME = "dataOccupationView";
 	
 	@Autowired
 	private IOccupationService occupationService;
 	
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);	
-	private Grid grid;
+	private Grid grid = new Grid();
 	private Object[] headerGrid = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
     		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
+    private Notification notification = new Notification("");
+	private List<OccupationData> occupationDatasSelect;
 
 	@PostConstruct
 	public void init() throws Exception {        
@@ -93,13 +102,35 @@ public class DataOccupationView extends VerticalLayout implements View {
         	private static final long serialVersionUID = 4272237366468831374L;
         	@Override
             public void menuSelected(MenuItem selectedItem) {
-        		// TODO
-        		
+        		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
             }
         });
         addItem.addItem("Export", null).setEnabled(false);
         addItem.addSeparator();
-        addItem.addItem("Delete", FontAwesome.TRASH_O, null).setEnabled(false);
+        addItem.addItem("Delete", FontAwesome.TRASH_O, new Command() {
+			private static final long serialVersionUID = -6262114274661510612L;
+			@Override
+            public void menuSelected(MenuItem selectedItem) {
+				OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect);
+				occupationContainer.removeAllItems();
+	        	occupationContainer.addAll(occupationService.getAllOccupationDatas());
+	        	occupationContainer.removeContainerProperty("id");
+	        	occupationContainer.removeContainerProperty("status");
+	        	occupationContainer.removeContainerProperty("code");
+	        	grid.getSelectionModel().reset();
+	        	grid.setContainerDataSource(occupationContainer);	        	
+				if("2".equals(occupationTransferObject.getResponseCode())){
+					String listOccupation = "Occupation : ";
+					for(OccupationData occupationData : occupationTransferObject.getOccupationDatas())
+						listOccupation = listOccupation.concat(occupationData.getName()).concat(", ");
+					listOccupation = listOccupation.concat("#END-OCCUPATION#").replace(", #END-OCCUPATION#", "");
+		            notification.setCaption("Error Data Occupation");
+					notification.setDescription("Some Occupation data already being used\n"
+							.concat(listOccupation));
+					notification.show(Page.getCurrent());
+				}
+            }
+        });
         panelCaption.addComponent(dropdown);
         panelCaption.setExpandRatio(dropdown, 1);
         MenuBar menuBarPaging = getPaging();
@@ -107,59 +138,60 @@ public class DataOccupationView extends VerticalLayout implements View {
 
         layout.addComponent(panelCaption);
         layout.setWidth("100%");
-        if(grid == null){
-        	grid = new Grid();
-        	List<OccupationData> occupationDatas = occupationService.getAllOccupationDatas();
-        	occupationContainer.removeAllItems();
-        	occupationContainer.addAll(occupationDatas);
-        	occupationContainer.removeContainerProperty("id");
-        	occupationContainer.removeContainerProperty("status");
-        	occupationContainer.removeContainerProperty("code");
-            grid.setContainerDataSource(occupationContainer);
-            grid.setColumnOrder(headerGrid);
-            grid.getColumn("name").setHeaderCaption("Occupation Name");
-            grid.getColumn("remarks").setHeaderCaption("Description");
-            grid.getColumn("createdIP").setHeaderCaption("Created IP Address");
-            grid.getColumn("modifiedIP").setHeaderCaption("Modified IP Address");
-            grid.addItemClickListener(new ItemClickListener() {
-				private static final long serialVersionUID = -2614893307330224109L;
-				@Override
-				public void itemClick(ItemClickEvent event) {
-					boolean isSelectEdited = false;
-					for(Object object : headerGrid){
-						if(object.equals(event.getPropertyId())){
-							grid.getSelectionModel().reset();
-							grid.select(event.getItemId());
-							isSelectEdited = true;
-							break;
-						}
-					}
-					if(isSelectEdited){
-						isSelectEdited = false;
-						// TODO
+
+    	occupationContainer.removeAllItems();
+    	occupationContainer.addAll(occupationService.getAllOccupationDatas());
+    	occupationContainer.removeContainerProperty("id");
+    	occupationContainer.removeContainerProperty("status");
+    	occupationContainer.removeContainerProperty("code");
+        grid.setContainerDataSource(occupationContainer);
+        grid.setColumnOrder(headerGrid);
+        grid.getColumn("name").setHeaderCaption("Occupation Name");
+        grid.getColumn("remarks").setHeaderCaption("Description");
+        grid.getColumn("createdIP").setHeaderCaption("Created IP Address");
+        grid.getColumn("modifiedIP").setHeaderCaption("Modified IP Address");
+        grid.addItemClickListener(new ItemClickListener() {
+			private static final long serialVersionUID = -2614893307330224109L;
+			@Override
+			public void itemClick(ItemClickEvent event) {
+				boolean isSelectEdited = false;
+				for(Object object : headerGrid){
+					if(object.equals(event.getPropertyId())){
+						grid.getSelectionModel().reset();
+						grid.select(event.getItemId());
+						isSelectEdited = true;
+						break;
 					}
 				}
-			});
-            grid.addSelectionListener(new SelectionListener() {
-				private static final long serialVersionUID = -6491823805538480108L;
-				@Override
-				public void select(SelectionEvent event) {
-					List<OccupationData> listOccupationDatas = new ArrayList<OccupationData>();
-					for(Object object : event.getSelected()){
-						listOccupationDatas.add((OccupationData)object);
-					}
+				if(isSelectEdited){
+					isSelectEdited = false;
+					VaadinSession.getCurrent().getSession().setAttribute("occupationData", (OccupationData)event.getItemId());
+	        		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
 				}
-			});
-            grid.setReadOnly(true);
-            grid.setEditorEnabled(false);
-            grid.setHeaderVisible(true);
-            grid.setFrozenColumnCount(2);
-            grid.setSelectionMode(SelectionMode.MULTI);
-            grid.setSizeUndefined();
-            grid.setWidth("100%");
-            grid.addStyleName("small");
-            layout.addComponent(grid);
-        }
+			}
+		});
+        grid.addSelectionListener(new SelectionListener() {
+			private static final long serialVersionUID = -6491823805538480108L;
+			@Override
+			public void select(SelectionEvent event) {
+				occupationDatasSelect = new ArrayList<OccupationData>();
+				for(Object object : event.getSelected())
+					occupationDatasSelect.add((OccupationData)object);
+			}
+		});
+        grid.setReadOnly(true);
+        grid.setEditorEnabled(false);
+        grid.setHeaderVisible(true);
+        grid.setFrozenColumnCount(2);
+        grid.setSelectionMode(SelectionMode.MULTI);
+        grid.setSizeUndefined();
+        grid.setWidth("100%");
+        grid.addStyleName("small");
+        layout.addComponent(grid);
+        
+		notification.setStyleName("system closable");
+        notification.setPosition(Position.BOTTOM_CENTER);
+        notification.setDelayMsec(10000);
         contentLayout.addComponent(layout);        
         addComponent(contentLayout);
     }
@@ -206,7 +238,7 @@ public class DataOccupationView extends VerticalLayout implements View {
 		return groupSearch;
 	}
 
-    @Override
+	@Override
     public void enter(ViewChangeEvent event) {
 
     }

@@ -15,10 +15,12 @@ public interface IOccupationService {
     
     public List<OccupationData> getAllOccupationDatas();
     
-    public OccupationTransferObject updateOccupation(OccupationData occupationData);
+    public List<OccupationData> getAllOccupationDatasPaging(Integer firstPage, Integer maxPage);
     
-    public OccupationTransferObject saveOccupation(OccupationData occupationData);
+    public GeneralTransferObject updateOccupation(OccupationData occupationData);
+    
+    public GeneralTransferObject saveOccupation(OccupationData occupationData);
 
-	public GeneralTransferObject deleteOccupation(OccupationData occupationData);
+	public OccupationTransferObject deleteOccupation(List<OccupationData> occupationDatas);
 
 }

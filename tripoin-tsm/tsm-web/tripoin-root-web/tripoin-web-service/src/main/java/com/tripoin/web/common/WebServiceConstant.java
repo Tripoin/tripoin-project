@@ -12,6 +12,7 @@ public class WebServiceConstant {
 	
 	private static final String HTTP_ALL = "/all";
 	private static final String HTTP_LOAD = "/load";
+	private static final String HTTP_PAGE = "/paging";
 	private static final String HTTP_SAVE = "/save";
 	private static final String HTTP_UPDATE = "/update";
 	private static final String HTTP_VERIFY = "/verify";
@@ -47,5 +48,6 @@ public class WebServiceConstant {
 	public static final String HTTP_OCCUPATION_SAVE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_SAVE);
 	public static final String HTTP_OCCUPATION_UPDATE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_UPDATE);
 	public static final String HTTP_OCCUPATION_DELETE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_DELETE);
+	public static final String HTTP_OCCUPATION_ALL_PAGE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_LOAD).concat(HTTP_PAGE);
 	
 }

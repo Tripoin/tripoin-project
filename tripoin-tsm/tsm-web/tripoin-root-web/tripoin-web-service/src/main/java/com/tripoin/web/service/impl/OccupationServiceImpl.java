@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
@@ -27,8 +28,7 @@ public class OccupationServiceImpl implements IOccupationService {
 
 	@Override
 	public OccupationData getOccupation() {
-		// TODO Auto-generated method stub
-		return null;
+		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION), OccupationTransferObject.class).getOccupationDatas().get(0);
 	}
 
 	@Override
@@ -37,21 +37,25 @@ public class OccupationServiceImpl implements IOccupationService {
 	}
 
 	@Override
-	public OccupationTransferObject updateOccupation(OccupationData occupationData) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<OccupationData> getAllOccupationDatasPaging(Integer firstPage, Integer maxPage) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL_PAGE), ParameterConstant.PAGING_ROW_FIRST.concat(firstPage.toString()).concat("&").concat(ParameterConstant.PAGING_ROW_FIRST).concat(maxPage.toString()), OccupationTransferObject.class).getOccupationDatas();
 	}
 
 	@Override
-	public OccupationTransferObject saveOccupation(OccupationData occupationData) {
-		// TODO Auto-generated method stub
-		return null;
+	public GeneralTransferObject updateOccupation(OccupationData occupationData) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_UPDATE), occupationData, GeneralTransferObject.class);
 	}
 
 	@Override
-	public GeneralTransferObject deleteOccupation(OccupationData occupationData) {
-		// TODO Auto-generated method stub
-		return null;
+	public GeneralTransferObject saveOccupation(OccupationData occupationData) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_SAVE), occupationData, GeneralTransferObject.class);
+	}
+
+	@Override
+	public OccupationTransferObject deleteOccupation(List<OccupationData> occupationDatas) {
+		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
+		occupationTransferObject.setOccupationDatas(occupationDatas);
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_DELETE), occupationTransferObject, OccupationTransferObject.class);
 	}
 
 }
