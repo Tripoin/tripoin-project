@@ -62,7 +62,7 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 
     @Transactional
 	@Override
-	public void saveObjectAndSync(Object objectType) throws Exception {
+	public void saveObjectAndSync(final Object objectType) throws Exception {
 		genericInsertDao.saveObjectAndSync(objectType);
 	}
 
@@ -76,6 +76,16 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 	@Override
 	public void deleteObject(Object objectType) throws Exception {
 		genericDeleteDao.deleteObject(objectType);		
+	}
+
+	@Override
+	public void deleteObjectAndSync(Object objectType) throws Exception {
+		genericDeleteDao.deleteObjectAndSync(objectType);
+	}
+
+	@Override
+	public void deleteObjectListAndSync(List<Object> objectTypeList) throws Exception {
+		genericDeleteDao.deleteObjectListAndSync(objectTypeList);
 	}
 
 }

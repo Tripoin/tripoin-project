@@ -11,7 +11,7 @@ public class VersionControlSystemTable implements Serializable {
 	private static final long serialVersionUID = -3920232227298104572L;
 	private Long id;
 	private String code;
-	private Long value;
+	private Long totalRow;
 	private int status;
 	private String remarks;
 	private String createdBy;
@@ -25,14 +25,14 @@ public class VersionControlSystemTable implements Serializable {
 
 	public VersionControlSystemTable() {}
 
-	public VersionControlSystemTable(Long id, String code, Long value, int status,
+	public VersionControlSystemTable(Long id, String code, Long totalRow, int status,
 			String remarks, String createdBy, String createdIP,
 			Date createdTime, String createdPlatform, String modifiedBy,
 			String modifiedIP, Date modifiedTime, String modifiedPlatform) {
 		super();
 		this.id = id;
 		this.code = code;
-		this.value = value;
+		this.totalRow = totalRow;
 		this.status = status;
 		this.remarks = remarks;
 		this.createdBy = createdBy;
@@ -61,12 +61,12 @@ public class VersionControlSystemTable implements Serializable {
 		this.code = code;
 	}
 
-	public Long getValue() {
-		return value;
+	public Long getTotalRow() {
+		return totalRow;
 	}
 
-	public void setValue(Long value) {
-		this.value = value;
+	public void setTotalRow(Long totalRow) {
+		this.totalRow = totalRow;
 	}
 
 	public int getStatus() {
@@ -151,8 +151,8 @@ public class VersionControlSystemTable implements Serializable {
 
 	@Override
 	public String toString() {
-		return "VersionControlSystemTable [id=" + id + ", code=" + code + ", value="
-				+ value + ", status=" + status + ", remarks=" + remarks
+		return "VersionControlSystemTable [id=" + id + ", code=" + code + ", totalRow="
+				+ totalRow + ", status=" + status + ", remarks=" + remarks
 				+ ", createdBy=" + createdBy + ", createdIP=" + createdIP
 				+ ", createdTime=" + createdTime + ", createdPlatform="
 				+ createdPlatform + ", modifiedBy=" + modifiedBy

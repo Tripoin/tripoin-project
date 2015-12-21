@@ -110,7 +110,6 @@ public class Profile implements IBaseModel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="profile_id")
-    @NotNull
     public Integer getId() {
         return id;
     }

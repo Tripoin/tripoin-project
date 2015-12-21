@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.OccupationData;
@@ -77,7 +76,6 @@ public class Occupation implements IBaseModel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="occupation_id")
-    @NotNull
     public Integer getId() {
         return id;
     }

@@ -19,6 +19,10 @@
 	<int:channel id="responseChannelOccupationLoadAll"/>
 	<int:channel id="requestChannelOccupationLoadAll"/>
 		
+	<int:channel id="responseChannelOccupationLoadPaging"/>
+	<int:channel id="requestChannelOccupationLoadPaging"/>
+	<int:channel id="routeChannelOccupationLoadPaging"/>
+		
 	<int:channel id="responseChannelOccupationSave"/>
 	<int:channel id="requestChannelOccupationSave"/>
 	<int:channel id="routeChannelOccupationSave"/>
@@ -51,6 +55,18 @@
 	</int-http:inbound-gateway>	
 	<int:service-activator ref="occupationLoadEndpoint" method="loadAllOccupations" input-channel="requestChannelOccupationLoadAll" output-channel="responseChannelOccupationLoadAll"/>
 	
+	<int-http:inbound-gateway request-channel="requestChannelOccupationLoadPaging"
+		reply-channel="responseChannelOccupationLoadPaging"
+		supported-methods="POST" 
+		path="/wscontext/occupation/load/paging, /wscontext/occupation/load/paging/{occupation}"
+		request-payload-type="java.lang.String">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelOccupationLoadPaging" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelOccupationLoadPaging"/>
+	</int:router>	
+	<int:service-activator ref="occupationLoadEndpoint" method="loadOccupationPaging" input-channel="requestChannelOccupationLoadPaging" output-channel="responseChannelOccupationLoadPaging"/>
+	
 	<int-http:inbound-gateway request-channel="requestChannelOccupationSave"
 		reply-channel="responseChannelOccupationSave"
 		supported-methods="POST" 
@@ -79,7 +95,7 @@
 		reply-channel="responseChannelOccupationDelete"
 		supported-methods="POST" 
 		path="/wscontext/occupation/delete, /wscontext/occupation/delete/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationData">	
+		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelOccupationDelete" expression="headers.http_requestMethod">

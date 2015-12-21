@@ -16,7 +16,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.MenuData;
@@ -94,7 +93,6 @@ public class Menu implements IBaseModel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="menu_id")
-    @NotNull
     public Integer getId() {
         return id;
     }

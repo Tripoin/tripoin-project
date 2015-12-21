@@ -37,16 +37,16 @@ public class VersionControlSystemTableDaoImpl implements IVersionControlSystemTa
 
 	@Override
 	public int updateValue(Long value, String code) {
-		return jdbcTemplate.update("UPDATE FROM vcs_table SET vcs_table_value = ? WHERE vcs_table_code = ?", new Object[]{value, code});
+		return jdbcTemplate.update("UPDATE vcs_table SET vcs_table_total_row = ? WHERE vcs_table_code = ?", new Object[]{value, code});
 	}
 
 	@Override
 	public int insertValue(String code, Long value, Long status, String remarks) {
-		return jdbcTemplate.update("INSERT INTO vcs_table(vcs_table_code,  vcs_table_value,  vcs_table_status,  vcs_table_remarks) VALUES (?, ?, ?, ?)", new Object[]{code, value, status, remarks});
+		return jdbcTemplate.update("INSERT INTO vcs_table(vcs_table_code,  vcs_table_total_row,  vcs_table_status,  vcs_table_remarks) VALUES (?, ?, ?, ?)", new Object[]{code, value, status, remarks});
 	}
 
 	@Override
-	public int insertValueAndSync(String code, Long status, String remarks) {		
+	public int insertValueAndSync(String code, Long status, String remarks) {
 		Map<String, Object> dataMap = jdbcTemplate.queryForMap("SELECT COUNT(*) TOTAL_ROW FROM ".concat(code));
 		int result = updateValue(new Long(dataMap.get("TOTAL_ROW").toString()), code);
 		if(result == 0) return insertValue(code, new Long(dataMap.get("TOTAL_ROW").toString()), status, remarks);

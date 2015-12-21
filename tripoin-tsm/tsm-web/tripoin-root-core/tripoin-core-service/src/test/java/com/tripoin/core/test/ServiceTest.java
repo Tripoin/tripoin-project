@@ -11,20 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.Occupation;
@@ -79,19 +77,32 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Test
 	public void runtTestMain() throws Exception{
-		
+		List<Employee> employeeList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Employee em WHERE em.occupation.code = ?", new Object[] { "TES" }, new PageArgument(null, null, 1));
+		for(Employee employee : employeeList) {
+			LOGGER.debug("Employee Data : "+employee);
+		}
+	}
+	
+	public void runTestThread() throws Exception {
 		taskExecutor.execute(new Runnable() {			
 			@Override
 			public void run() {
-				try {
-					runTestMenu();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				final TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+				transactionTemplate.execute(new TransactionCallback<Object>() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						try {
+							runTestMenu();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						return null;
+					}
+				});
 			}
-		});		
-		System.out.println("RIDLA----------------------------------------");
-		Thread.sleep(30000);
+		});
+		LOGGER.debug("####################### END TASK #######################");
+		Thread.sleep(20000);
 	}
 	
 	public void runTestUser() throws Exception {

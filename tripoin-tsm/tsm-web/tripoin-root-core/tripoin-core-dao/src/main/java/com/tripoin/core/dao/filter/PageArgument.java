@@ -16,6 +16,8 @@ public class PageArgument implements Serializable {
 
 	private Integer maxPage;
 	
+	private Integer maxResultPage;
+	
 	public PageArgument() {}
 	
 	public PageArgument(Integer firstPage) {
@@ -27,6 +29,13 @@ public class PageArgument implements Serializable {
 		super();
 		this.firstPage = firstPage;
 		this.maxPage = maxPage;
+	}
+
+	public PageArgument(Integer firstPage, Integer maxPage, Integer maxResultPage) {
+		super();
+		this.firstPage = firstPage;
+		this.maxPage = maxPage;
+		this.maxResultPage = maxResultPage;
 	}
 
 	public Integer getFirstPage() {
@@ -45,10 +54,18 @@ public class PageArgument implements Serializable {
 		this.maxPage = maxPage;
 	}
 
+	public Integer getMaxResultPage() {
+		return maxResultPage;
+	}
+
+	public void setMaxResultPage(Integer maxResultPage) {
+		this.maxResultPage = maxResultPage;
+	}
+
 	@Override
 	public String toString() {
 		return "PageArgument [firstPage=" + firstPage + ", maxPage=" + maxPage
-				+ "]";
+				+ ", maxResultPage=" + maxResultPage + "]";
 	}
 	
 }

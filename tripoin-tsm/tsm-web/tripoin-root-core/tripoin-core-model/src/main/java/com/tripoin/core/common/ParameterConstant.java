@@ -44,5 +44,8 @@ public class ParameterConstant {
 
 	public static final String TRIPOIN_UPLOAD_IMAGE = "TRIPOIN-UPLOAD-IMAGE";
 	public static final String TRIPOIN_UPLOAD_DATA = "TRIPOIN-UPLOAD-DATA";
+
+	public static final String PAGING_ROW_FIRST = "PAGING-ROW-FIRST=";
+	public static final String PAGING_ROW_END = "PAGING-ROW-END=";
 	
 }

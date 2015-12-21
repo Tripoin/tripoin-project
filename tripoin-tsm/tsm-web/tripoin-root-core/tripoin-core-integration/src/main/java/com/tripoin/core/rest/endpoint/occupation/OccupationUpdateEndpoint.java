@@ -1,6 +1,5 @@
 package com.tripoin.core.rest.endpoint.occupation;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +20,8 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
-import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.core.pojo.Occupation;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -41,8 +40,8 @@ public class OccupationUpdateEndpoint extends XReturnStatus {
 	private String currentUserName;
 
     @Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
-    public Message<OccupationTransferObject> updateOccupation(Message<OccupationData> inMessage) {
-    	OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
+    public Message<GeneralTransferObject> updateOccupation(Message<OccupationData> inMessage) {
+    	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -68,21 +67,18 @@ public class OccupationUpdateEndpoint extends XReturnStatus {
         		occupation.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);    		
     		iGenericManagerJpa.updateObject(occupation);
     		
-            List<OccupationData> occupationDatas = new ArrayList<OccupationData>();
-            occupationDatas.add(new OccupationData(occupation));
-            occupationTransferObject.setOccupationDatas(occupationDatas);
-            occupationTransferObject.setResponseCode("0");
-            occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-            occupationTransferObject.setResponseDesc("Update Employee Data Success");
+            generalTransferObject.setResponseCode("0");
+            generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+            generalTransferObject.setResponseDesc("Update Employee Data Success");
         } catch (Exception e) {
             LOGGER.error("Update Employee System Error : " + e.getMessage(), e);
-            occupationTransferObject.setResponseCode("1");
-            occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-            occupationTransferObject.setResponseDesc("Update Employee System Error : " + e.getMessage());
+            generalTransferObject.setResponseCode("1");
+            generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+            generalTransferObject.setResponseDesc("Update Employee System Error : " + e.getMessage());
         }
 
-        setReturnStatusAndMessage(occupationTransferObject, responseHeaderMap);
-        Message<OccupationTransferObject> message = new GenericMessage<OccupationTransferObject>(occupationTransferObject, responseHeaderMap);
+        setReturnStatusAndMessage(generalTransferObject, responseHeaderMap);
+        Message<GeneralTransferObject> message = new GenericMessage<GeneralTransferObject>(generalTransferObject, responseHeaderMap);
         return message;
     }
 

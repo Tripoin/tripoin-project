@@ -20,11 +20,11 @@ public class OccupationTransferObject extends GeneralTransferObject {
 	@XmlElement(name = "TotalRow", namespace = "")
 	private Integer totalRow;
 	
-	@XmlElement(name = "FirstRow", namespace = "")
-	private Integer firstRow;
+	@XmlElement(name = "FirstPage", namespace = "")
+	private Integer firstPage;
 	
-	@XmlElement(name = "LastRow", namespace = "")
-	private Integer lastRow;
+	@XmlElement(name = "MaxPage", namespace = "")
+	private Integer maxPage;
 
 	public List<OccupationData> getOccupationDatas() {
 		return occupationDatas;
@@ -42,27 +42,27 @@ public class OccupationTransferObject extends GeneralTransferObject {
 		this.totalRow = totalRow;
 	}
 
-	public Integer getFirstRow() {
-		return firstRow;
+	public Integer getFirstPage() {
+		return firstPage;
 	}
 
-	public void setFirstRow(Integer firstRow) {
-		this.firstRow = firstRow;
+	public void setFirstPage(Integer firstPage) {
+		this.firstPage = firstPage;
 	}
 
-	public Integer getLastRow() {
-		return lastRow;
+	public Integer getMaxPage() {
+		return maxPage;
 	}
 
-	public void setLastRow(Integer lastRow) {
-		this.lastRow = lastRow;
+	public void setMaxPage(Integer maxPage) {
+		this.maxPage = maxPage;
 	}
 
 	@Override
 	public String toString() {
 		return "OccupationTransferObject [occupationDatas=" + occupationDatas
-				+ ", totalRow=" + totalRow + ", firstRow=" + firstRow
-				+ ", lastRow=" + lastRow + "]";
+				+ ", totalRow=" + totalRow + ", firstPage=" + firstPage
+				+ ", maxPage=" + maxPage + "]";
 	}
 	
 }

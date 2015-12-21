@@ -17,11 +17,14 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.core.pojo.Occupation;
+import com.tripoin.core.pojo.VersionControlSystemTable;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.core.service.util.IVersionControlSystemTableService;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -33,6 +36,12 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
+	
+	@Autowired
+	private IVersionControlSystemTableService iVersionControlSystemTableService;
+	
+	private Integer firstPage = 0;
+	private Integer maxPage = 1;
 
 	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<OccupationTransferObject> loadOccupation(Message<OccupationData> inMessage){	
@@ -87,6 +96,55 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 			occupationTransferObject.setResponseCode("1");
 			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			occupationTransferObject.setResponseDesc("Load All Occupation System Error : "+e.getLocalizedMessage());
+		}
+		
+		setReturnStatusAndMessage(occupationTransferObject, responseHeaderMap);
+		Message<OccupationTransferObject> message = new GenericMessage<OccupationTransferObject>(occupationTransferObject, responseHeaderMap);
+		return message;		
+	}
+
+	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	public Message<OccupationTransferObject> loadOccupationPaging(Message<?> inMessage){	
+		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
+		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
+		
+		try{			
+			if(inMessage.getPayload() != null){
+				String[] params = ((String)inMessage.getPayload()).split("&");
+				try {
+					firstPage = Integer.parseInt(params[0].replaceAll(ParameterConstant.PAGING_ROW_FIRST, ""));
+					maxPage = Integer.parseInt(params[1].replaceAll(ParameterConstant.PAGING_ROW_END, ""));					
+				} catch (Exception e) {
+					LOGGER.error("Load Paging Occupation System Error : "+e.getLocalizedMessage(), e);
+					firstPage = 0;
+					maxPage = 1;
+				}
+			}
+			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, null, null, null, new PageArgument(firstPage, maxPage));
+			List<OccupationData> occupationDatas = new ArrayList<OccupationData>();
+			if(occupationList != null){
+				for(Occupation occupation : occupationList)
+					occupationDatas.add(new OccupationData(occupation));
+				occupationTransferObject.setOccupationDatas(occupationDatas);
+			}
+			VersionControlSystemTable versionControlSystemTable = iVersionControlSystemTableService.loadValue(Occupation.TABLE_NAME);
+			if(versionControlSystemTable == null){
+				LOGGER.error("Load Paging Occupation System Error : Version Control System Table is Null");
+				occupationTransferObject.setTotalRow(1);
+				occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+				occupationTransferObject.setResponseDesc("Load Paging Occupation System Error : Version Control System Table is Null");
+			}
+			occupationTransferObject.setTotalRow(versionControlSystemTable.getTotalRow().intValue());
+			occupationTransferObject.setFirstPage(firstPage);
+			occupationTransferObject.setMaxPage(maxPage);
+			occupationTransferObject.setResponseCode("0");
+			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+			occupationTransferObject.setResponseDesc("Load Paging Occupation Data Success");			
+		}catch (Exception e){
+			LOGGER.error("Load Paging Occupation System Error : "+e.getLocalizedMessage(), e);
+			occupationTransferObject.setResponseCode("1");
+			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			occupationTransferObject.setResponseDesc("Load Paging Occupation System Error : "+e.getLocalizedMessage());
 		}
 		
 		setReturnStatusAndMessage(occupationTransferObject, responseHeaderMap);

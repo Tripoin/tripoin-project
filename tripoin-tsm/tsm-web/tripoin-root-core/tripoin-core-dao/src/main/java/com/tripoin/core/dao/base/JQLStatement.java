@@ -40,7 +40,9 @@ public class JQLStatement implements Serializable {
 		if(pageArgument.getFirstPage() != null && pageArgument.getFirstPage() > 0)
 			query.setFirstResult(pageArgument.getFirstPage());
 		if(pageArgument.getMaxPage() != null && pageArgument.getMaxPage() > pageArgument.getFirstPage())
-			query.setMaxResults(pageArgument.getMaxPage());				
+			query.setMaxResults(pageArgument.getMaxPage());
+		if(pageArgument.getMaxResultPage() != null && pageArgument.getMaxResultPage() > 0)
+			query.setMaxResults(pageArgument.getMaxResultPage());
 		return query;
 	}
 

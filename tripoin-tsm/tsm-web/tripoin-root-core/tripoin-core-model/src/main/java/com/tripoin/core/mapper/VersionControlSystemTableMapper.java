@@ -15,7 +15,7 @@ public class VersionControlSystemTableMapper implements RowMapper<VersionControl
 		VersionControlSystemTable vcsTable = new VersionControlSystemTable();
 		vcsTable.setId(rs.getLong("vcs_table_id"));
 		vcsTable.setCode(rs.getString("vcs_table_code"));
-		vcsTable.setValue(rs.getLong("vcs_table_value"));
+		vcsTable.setTotalRow(rs.getLong("vcs_table_page_count"));
 		vcsTable.setStatus(rs.getInt("vcs_table_status"));
 		vcsTable.setRemarks(rs.getString("vcs_table_remarks"));
 		vcsTable.setCreatedBy(rs.getString("vcs_table_created_by"));

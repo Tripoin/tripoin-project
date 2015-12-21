@@ -21,6 +21,6 @@ public interface IGenericInsertDaoJpa {
 	 * @param objectType
 	 * @throws Exception
 	 */
-	public void saveObjectAndSync(Object objectType) throws Exception;	
+	public void saveObjectAndSync(final Object objectType) throws Exception;	
 	
 }
