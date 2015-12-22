@@ -9,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
+import com.tripoin.core.pojo.Occupation;
+import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
+import com.tripoin.web.service.IPaginationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -55,12 +59,21 @@ public class DataOccupationView extends VerticalLayout implements View {
 	@Autowired
 	private IOccupationService occupationService;
 	
+	@Autowired
+	private IPaginationService paginationService;
+	
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);	
 	private Grid grid = new Grid();
 	private Object[] headerGrid = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
     		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
     private Notification notification = new Notification("");
+    private MenuBar menuBarPaging;
 	private List<OccupationData> occupationDatasSelect;
+	private OccupationTransferObject occupationTransferObject;
+	private Integer positionPage;
+	private Integer maxRow;
+	private Integer minRow;
+	private Integer totalPage;
 
 	@PostConstruct
 	public void init() throws Exception {        
@@ -76,8 +89,8 @@ public class DataOccupationView extends VerticalLayout implements View {
         title.addStyleName("h1");
         formTitle.addComponent(title);        
         row.addComponent(formTitle);
-        addComponent(row);   
-        
+        addComponent(row);
+                
         final FormLayout groupSearch = searchContent();
         groupSearch.setStyleName("tripoin-custom-form");
         groupSearch.setMargin(new MarginInfo(false, false, true, false));
@@ -89,6 +102,7 @@ public class DataOccupationView extends VerticalLayout implements View {
         contentLayout.setWidth("100%");
         CssLayout layout = new CssLayout();
         layout.addStyleName("card");
+        layout.setWidth("100%");
         HorizontalLayout panelCaption = new HorizontalLayout();
         panelCaption.addStyleName("v-panel-caption");
         panelCaption.setWidth("100%");
@@ -112,13 +126,10 @@ public class DataOccupationView extends VerticalLayout implements View {
 			@Override
             public void menuSelected(MenuItem selectedItem) {
 				OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect);
-				occupationContainer.removeAllItems();
-	        	occupationContainer.addAll(occupationService.getAllOccupationDatas());
-	        	occupationContainer.removeContainerProperty("id");
-	        	occupationContainer.removeContainerProperty("status");
-	        	occupationContainer.removeContainerProperty("code");
 	        	grid.getSelectionModel().reset();
-	        	grid.setContainerDataSource(occupationContainer);	        	
+	        	calculatePage();
+		        constructDataContainer();
+		        menuBarPaging = getPaging();	        	
 				if("2".equals(occupationTransferObject.getResponseCode())){
 					String listOccupation = "Occupation : ";
 					for(OccupationData occupationData : occupationTransferObject.getOccupationDatas())
@@ -133,18 +144,13 @@ public class DataOccupationView extends VerticalLayout implements View {
         });
         panelCaption.addComponent(dropdown);
         panelCaption.setExpandRatio(dropdown, 1);
-        MenuBar menuBarPaging = getPaging();
+        layout.addComponent(panelCaption);
+        
+        calculatePage();
+        constructDataContainer();
+        menuBarPaging = getPaging();
         panelCaption.addComponent(menuBarPaging);
 
-        layout.addComponent(panelCaption);
-        layout.setWidth("100%");
-
-    	occupationContainer.removeAllItems();
-    	occupationContainer.addAll(occupationService.getAllOccupationDatas());
-    	occupationContainer.removeContainerProperty("id");
-    	occupationContainer.removeContainerProperty("status");
-    	occupationContainer.removeContainerProperty("code");
-        grid.setContainerDataSource(occupationContainer);
         grid.setColumnOrder(headerGrid);
         grid.getColumn("name").setHeaderCaption("Occupation Name");
         grid.getColumn("remarks").setHeaderCaption("Description");
@@ -188,34 +194,102 @@ public class DataOccupationView extends VerticalLayout implements View {
         grid.setWidth("100%");
         grid.addStyleName("small");
         layout.addComponent(grid);
+        contentLayout.addComponent(layout);        
+        addComponent(contentLayout);
         
 		notification.setStyleName("system closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(10000);
-        contentLayout.addComponent(layout);        
-        addComponent(contentLayout);
     }
 	
-	private static MenuBar getPaging() {
+	private void calculatePage(){
+		try {
+			GeneralPagingTransferObject generalPagingTransferObject = paginationService.getPagination(new GeneralPagingTransferObject(Occupation.TABLE_NAME));
+			totalPage = new Double(generalPagingTransferObject.getTotalRow()/EWebUIConstant.ROW_PER_PAGE.getInt()).intValue();
+	        if(generalPagingTransferObject.getTotalRow()%EWebUIConstant.ROW_PER_PAGE.getInt()>0)totalPage++;	
+		} catch (Exception e) {
+			totalPage = 1;
+		}
+		if(Page.getCurrent().getUriFragment().split("/").length>1){
+	        String fragmentUriPage = Page.getCurrent().getUriFragment().split("/")[1].replaceAll(EWebUIConstant.REGEX_FRONT_CONTAINS_DIGIT.toString(), "");
+	        try {
+	        	if(fragmentUriPage.isEmpty()) throw new Exception();
+				positionPage = Integer.parseInt(fragmentUriPage);
+			} catch (Exception e) {
+				positionPage = 1;
+			}
+		}else positionPage = 1;
+        maxRow = positionPage * EWebUIConstant.ROW_PER_PAGE.getInt();
+        minRow = maxRow - EWebUIConstant.ROW_PER_PAGE.getInt();
+	}
+	
+	private void constructDataContainer(){
+        occupationTransferObject = occupationService.getAllOccupationDatasPaging(minRow, maxRow);        
+		occupationContainer.removeAllItems();
+    	occupationContainer.addAll(occupationTransferObject.getOccupationDatas());
+    	occupationContainer.removeContainerProperty("id");
+    	occupationContainer.removeContainerProperty("status");
+    	occupationContainer.removeContainerProperty("code");
+    	grid.setContainerDataSource(occupationContainer);
+    	occupationTransferObject = null;		
+	}
+	
+	private MenuBar getPaging() {
         MenuBar menubarPaging = new MenuBar();
         menubarPaging.addStyleName("borderless");
         menubarPaging.addStyleName("small");
         menubarPaging.setAutoOpen(true);
-        
-        // TODO
-        menubarPaging.addItem("", FontAwesome.BACKWARD, null);
-        menubarPaging.addItem("", FontAwesome.CARET_LEFT, null);
-        menubarPaging.addItem("3", null);
-        menubarPaging.addItem("4", null);
-        MenuItem currentPageItem = menubarPaging.addItem("5", null);
-        currentPageItem.setCheckable(true);
-        currentPageItem.setChecked(true);
-        menubarPaging.addItem("6", null);
-        menubarPaging.addItem("7", null);
-        menubarPaging.addItem("", FontAwesome.CARET_RIGHT, null);
-        menubarPaging.addItem("", FontAwesome.FORWARD, null);
-        //
-
+        if(totalPage > 1){
+    		Command eventPageClick = new Command() {
+    			private static final long serialVersionUID = 2102926468458330518L;
+    			@Override
+    			public void menuSelected(MenuItem selectedItem) {
+					selectedItem.setCheckable(true);
+					selectedItem.setChecked(true);
+    				if("".equals(selectedItem.getText()) || selectedItem.getText().isEmpty() || selectedItem.getText() == null){
+    					if(FontAwesome.BACKWARD == selectedItem.getIcon())
+    						positionPage = 1;
+    					else if(FontAwesome.CARET_LEFT == selectedItem.getIcon()){
+    						positionPage--;
+    						if(positionPage<1)
+    							positionPage = 1;
+    					}else if(FontAwesome.CARET_RIGHT == selectedItem.getIcon()){
+    						positionPage++;
+    						if(positionPage>totalPage)
+    							positionPage = totalPage;					
+    					}else
+    						positionPage = totalPage;	
+    				}else{
+    					try {
+    						positionPage = Integer.parseInt(selectedItem.getText());
+    					} catch (Exception e) {
+    						positionPage = 1;
+    					}
+    				}
+    				if(positionPage>0)
+    					Page.getCurrent().setUriFragment("!".concat(BEAN_NAME).concat("/") + positionPage.toString(), true);    				
+    			}
+    		};
+            Integer posMin = positionPage-(new Double(EWebUIConstant.BUTTON_PAGING.getInt()/2).intValue());
+            if(posMin<1) posMin = 1; 
+            Integer posMax = positionPage+(new Double(EWebUIConstant.BUTTON_PAGING.getInt()/2).intValue());
+            if(posMax>totalPage) posMax = totalPage; 
+            if(positionPage>1){
+            	if(posMin>1) menubarPaging.addItem("", FontAwesome.BACKWARD, eventPageClick);
+                menubarPaging.addItem("", FontAwesome.CARET_LEFT, eventPageClick);        	
+            }      
+            for(Integer i=posMin; i<=posMax; i++){
+            	if(i==positionPage){
+            		MenuItem currentPageItem = menubarPaging.addItem(i.toString(), eventPageClick);
+                    currentPageItem.setCheckable(true);
+                    currentPageItem.setChecked(true);
+            	}else menubarPaging.addItem(i.toString(), eventPageClick);
+            } 
+            if(positionPage<totalPage){
+                menubarPaging.addItem("", FontAwesome.CARET_RIGHT, eventPageClick);
+            	if(posMax<totalPage) menubarPaging.addItem("", FontAwesome.FORWARD, eventPageClick);        	
+            }
+        }
         return menubarPaging;
     }
 	

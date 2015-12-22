@@ -28,11 +28,12 @@ public class WebServiceConstant {
 	public static final String HTTP_FORGOT_PASSWORD_VERIFY = HTTP_CONTEXT_ANONYMOUS.concat("/forgotpassword").concat(HTTP_VERIFY);
 	
 	public static final String HTTP_LOGIN_MENU_SOAP = HTTP_CONTEXT_SOAP.concat("/loginMenuService");
-	
+		
 	public static final String HTTP_CONNECTION = HTTP_CONTEXT_REST.concat("/connection");	
 	public static final String HTTP_LOGIN = HTTP_CONTEXT_REST.concat("/login");	
 	public static final String HTTP_LOGIN_MENU = HTTP_CONTEXT_REST.concat("/login-menu");
 	public static final String HTTP_LOGOUT = HTTP_CONTEXT_REST.concat("/logout");
+	public static final String HTTP_PAGINATION = HTTP_CONTEXT_REST.concat("/pagination");
 	public static final String HTTP_PROFILE = HTTP_CONTEXT_REST.concat("/profile").concat(HTTP_LOAD);
 	public static final String HTTP_PROFILE_UPDATE = HTTP_CONTEXT_REST.concat("/profile").concat(HTTP_UPDATE);
 	public static final String HTTP_PROFILE_IMAGE = HTTP_CONTEXT_REST.concat("/profile").concat(HTTP_IMAGE);

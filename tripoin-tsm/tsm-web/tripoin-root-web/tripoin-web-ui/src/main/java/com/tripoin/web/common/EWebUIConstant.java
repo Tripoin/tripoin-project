@@ -34,6 +34,12 @@ public enum EWebUIConstant {
 	REGEX_CONTAINS_WHITESPACE("((?=\\S+$).{6,20})"),
 	REGEX_CONTAINS_MINMAX(".{6,20}"),
 	REGEX_AUTHORIZATION("Basic |\\[|\\]"),
+	/**
+	 * take the number in front of and replace any existing character behind
+	 * example : 3214h3kjagd-089741
+	 * result  : 3214
+	 */
+	REGEX_FRONT_CONTAINS_DIGIT("[^\\d+].*"),
 	
 	AUTHORIZATION("Authorization"),
 	
@@ -44,7 +50,8 @@ public enum EWebUIConstant {
 	
 	TYPE_FILE_IMAGE("image"),
 	
-	ROW_PER_PAGE(20);
+	BUTTON_PAGING(5),	
+	ROW_PER_PAGE(10);
 
 	private String operator;
 	private Integer operatorInteger;	
@@ -57,11 +64,11 @@ public enum EWebUIConstant {
 		this.operatorInteger = operatorInteger ;
 	}
 	
-	public String getOperator() {
+	public String getString() {
 		return operator;
 	}
 
-	public Integer getOperatorInteger() {
+	public Integer getInt() {
 		return operatorInteger;
 	}
 

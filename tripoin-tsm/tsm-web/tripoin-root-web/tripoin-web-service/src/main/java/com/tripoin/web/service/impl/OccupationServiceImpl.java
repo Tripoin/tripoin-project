@@ -37,8 +37,8 @@ public class OccupationServiceImpl implements IOccupationService {
 	}
 
 	@Override
-	public List<OccupationData> getAllOccupationDatasPaging(Integer firstPage, Integer maxPage) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL_PAGE), ParameterConstant.PAGING_ROW_FIRST.concat(firstPage.toString()).concat("&").concat(ParameterConstant.PAGING_ROW_FIRST).concat(maxPage.toString()), OccupationTransferObject.class).getOccupationDatas();
+	public OccupationTransferObject getAllOccupationDatasPaging(Integer minRow, Integer maxRow) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL_PAGE), ParameterConstant.PAGING_MIN_ROW.concat(minRow.toString()).concat("&").concat(ParameterConstant.PAGING_MAX_ROW).concat(maxRow.toString()), OccupationTransferObject.class);
 	}
 
 	@Override
