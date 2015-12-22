@@ -127,7 +127,7 @@ public class DataOccupationView extends VerticalLayout implements View {
             public void menuSelected(MenuItem selectedItem) {
 				OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect);
 	        	grid.getSelectionModel().reset();
-	        	calculatePage();
+	        	calculatePage(Occupation.TABLE_NAME);
 		        constructDataContainer();
 		        menuBarPaging = getPaging();	        	
 				if("2".equals(occupationTransferObject.getResponseCode())){
@@ -146,7 +146,7 @@ public class DataOccupationView extends VerticalLayout implements View {
         panelCaption.setExpandRatio(dropdown, 1);
         layout.addComponent(panelCaption);
         
-        calculatePage();
+        calculatePage(Occupation.TABLE_NAME);
         constructDataContainer();
         menuBarPaging = getPaging();
         panelCaption.addComponent(menuBarPaging);
@@ -202,9 +202,9 @@ public class DataOccupationView extends VerticalLayout implements View {
         notification.setDelayMsec(10000);
     }
 	
-	private void calculatePage(){
+	private void calculatePage(String dataModel){
 		try {
-			GeneralPagingTransferObject generalPagingTransferObject = paginationService.getPagination(new GeneralPagingTransferObject(Occupation.TABLE_NAME));
+			GeneralPagingTransferObject generalPagingTransferObject = paginationService.getPagination(new GeneralPagingTransferObject(dataModel));
 			totalPage = new Double(generalPagingTransferObject.getTotalRow()/EWebUIConstant.ROW_PER_PAGE.getInt()).intValue();
 	        if(generalPagingTransferObject.getTotalRow()%EWebUIConstant.ROW_PER_PAGE.getInt()>0)totalPage++;	
 		} catch (Exception e) {
@@ -215,6 +215,8 @@ public class DataOccupationView extends VerticalLayout implements View {
 	        try {
 	        	if(fragmentUriPage.isEmpty()) throw new Exception();
 				positionPage = Integer.parseInt(fragmentUriPage);
+				if(positionPage>totalPage)positionPage = totalPage;
+				if(positionPage<1) throw new Exception();
 			} catch (Exception e) {
 				positionPage = 1;
 			}
