@@ -28,6 +28,7 @@
 	<import resource="applicationContext-http-int-login.xml" />
 	<import resource="applicationContext-http-int-logout.xml" />
 	<import resource="applicationContext-http-int-occupation.xml" />
+	<import resource="applicationContext-http-int-pagination.xml" />
 	<import resource="applicationContext-http-int-profile.xml" />
 	<import resource="applicationContext-http-int-upload.xml" />
     <import resource="applicationContext-http-int-user.xml" />

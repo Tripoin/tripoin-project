@@ -12,60 +12,42 @@ public class PageArgument implements Serializable {
 	 */
 	private static final long serialVersionUID = -5841873263824709623L;
 	
-	private Integer firstPage;
+	private Integer minRow;
 
-	private Integer maxPage;
-	
-	private Integer maxResultPage;
+	private Integer maxRow;
 	
 	public PageArgument() {}
 	
-	public PageArgument(Integer firstPage) {
+	public PageArgument(Integer minRow) {
 		super();
-		this.firstPage = firstPage;
+		this.minRow = minRow;
 	}
 
-	public PageArgument(Integer firstPage, Integer maxPage) {
+	public PageArgument(Integer minRow, Integer maxRow) {
 		super();
-		this.firstPage = firstPage;
-		this.maxPage = maxPage;
+		this.minRow = minRow;
+		this.maxRow = maxRow;
 	}
 
-	public PageArgument(Integer firstPage, Integer maxPage, Integer maxResultPage) {
-		super();
-		this.firstPage = firstPage;
-		this.maxPage = maxPage;
-		this.maxResultPage = maxResultPage;
+	public Integer getMinRow() {
+		return minRow;
 	}
 
-	public Integer getFirstPage() {
-		return firstPage;
+	public void setMinRow(Integer minRow) {
+		this.minRow = minRow;
 	}
 
-	public void setFirstPage(Integer firstPage) {
-		this.firstPage = firstPage;
+	public Integer getMaxRow() {
+		return maxRow;
 	}
 
-	public Integer getMaxPage() {
-		return maxPage;
-	}
-
-	public void setMaxPage(Integer maxPage) {
-		this.maxPage = maxPage;
-	}
-
-	public Integer getMaxResultPage() {
-		return maxResultPage;
-	}
-
-	public void setMaxResultPage(Integer maxResultPage) {
-		this.maxResultPage = maxResultPage;
+	public void setMaxRow(Integer maxRow) {
+		this.maxRow = maxRow;
 	}
 
 	@Override
 	public String toString() {
-		return "PageArgument [firstPage=" + firstPage + ", maxPage=" + maxPage
-				+ ", maxResultPage=" + maxResultPage + "]";
+		return "PageArgument [minRow=" + minRow + ", maxRow=" + maxRow + "]";
 	}
 	
 }

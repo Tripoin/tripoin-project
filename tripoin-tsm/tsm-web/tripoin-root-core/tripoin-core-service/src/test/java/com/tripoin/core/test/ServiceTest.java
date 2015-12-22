@@ -77,10 +77,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Test
 	public void runtTestMain() throws Exception{
-		List<Employee> employeeList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Employee em WHERE em.occupation.code = ?", new Object[] { "TES" }, new PageArgument(null, null, 1));
-		for(Employee employee : employeeList) {
-			LOGGER.debug("Employee Data : "+employee);
-		}
+		runTestOccupation();
 	}
 	
 	public void runTestThread() throws Exception {
@@ -135,7 +132,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	public void runTestOccupation() throws Exception {		
-		List<Occupation> occupationList = iGenericManagerJpa.loadObjects(Occupation.class);
+		List<Occupation> occupationList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Occupation", null, new PageArgument(0, 10));
 		for(Occupation occupation : occupationList) {
 			LOGGER.debug("Occupation Data : "+occupation);
 		}

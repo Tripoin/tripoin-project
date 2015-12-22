@@ -72,7 +72,7 @@ public class OccupationDeleteEndpoint extends XReturnStatus {
 	        		occupationList = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArguments, new Object[] { occupationData.getCode() }, null, null);
 	        		occupationData.setId(occupationList.get(0).getId());        		
 	        	}    		
-	        	employeeList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Employee em WHERE em.occupation.code = ?", new Object[] { occupationData.getCode() }, new PageArgument(null, null, 1));
+	        	employeeList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Employee em WHERE em.occupation.code = ?", new Object[] { occupationData.getCode() }, new PageArgument(0, 1));
 	        	if(employeeList.size() == 0)
 	        		iGenericManagerJpa.deleteObject(new Occupation(occupationData));
 	        	else

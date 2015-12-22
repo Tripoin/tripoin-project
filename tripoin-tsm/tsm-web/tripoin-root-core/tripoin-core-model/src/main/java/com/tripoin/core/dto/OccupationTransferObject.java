@@ -16,15 +16,6 @@ public class OccupationTransferObject extends GeneralTransferObject {
 	
 	@XmlElement(name = "OccupationDatas", namespace = "")
 	private List<OccupationData> occupationDatas;
-	
-	@XmlElement(name = "TotalRow", namespace = "")
-	private Integer totalRow;
-	
-	@XmlElement(name = "FirstPage", namespace = "")
-	private Integer firstPage;
-	
-	@XmlElement(name = "MaxPage", namespace = "")
-	private Integer maxPage;
 
 	public List<OccupationData> getOccupationDatas() {
 		return occupationDatas;
@@ -34,35 +25,9 @@ public class OccupationTransferObject extends GeneralTransferObject {
 		this.occupationDatas = occupationDatas;
 	}
 
-	public Integer getTotalRow() {
-		return totalRow;
-	}
-
-	public void setTotalRow(Integer totalRow) {
-		this.totalRow = totalRow;
-	}
-
-	public Integer getFirstPage() {
-		return firstPage;
-	}
-
-	public void setFirstPage(Integer firstPage) {
-		this.firstPage = firstPage;
-	}
-
-	public Integer getMaxPage() {
-		return maxPage;
-	}
-
-	public void setMaxPage(Integer maxPage) {
-		this.maxPage = maxPage;
-	}
-
 	@Override
 	public String toString() {
-		return "OccupationTransferObject [occupationDatas=" + occupationDatas
-				+ ", totalRow=" + totalRow + ", firstPage=" + firstPage
-				+ ", maxPage=" + maxPage + "]";
+		return "OccupationTransferObject [occupationDatas=" + occupationDatas + "]";
 	}
 	
 }
