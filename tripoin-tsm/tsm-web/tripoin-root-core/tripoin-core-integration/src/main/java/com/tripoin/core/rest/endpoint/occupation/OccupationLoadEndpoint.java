@@ -118,8 +118,8 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, null, null, null, new PageArgument(minRow, maxRow));
 			List<OccupationData> occupationDatas = new ArrayList<OccupationData>();
 			if(occupationList != null){
-				for(Occupation occupation : occupationList)
-					occupationDatas.add(new OccupationData(occupation));
+				for(int i=occupationList.size()-1; i>=0; i--)
+					occupationDatas.add(new OccupationData(occupationList.get(i)));					
 				occupationTransferObject.setOccupationDatas(occupationDatas);
 			}
 			occupationTransferObject.setResponseCode("0");
