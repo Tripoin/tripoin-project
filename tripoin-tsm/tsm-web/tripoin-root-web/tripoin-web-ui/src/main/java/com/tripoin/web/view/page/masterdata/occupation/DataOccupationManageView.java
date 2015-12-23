@@ -30,7 +30,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickListener;
 
@@ -55,6 +54,7 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
     private Notification notification = new Notification("");
     private boolean isFailure = true;
 	private OccupationData occupationData;
+	private Integer positionPage = 1;
 
 	@PostConstruct
 	public void init() throws Exception {        
@@ -102,7 +102,7 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
 			private static final long serialVersionUID = 7353418766196233887L;
 			@Override
 			public void buttonClick(ClickEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(DataOccupationView.BEAN_NAME);
+				Page.getCurrent().setUriFragment("!".concat(DataOccupationView.BEAN_NAME).concat("/") + positionPage.toString(), true);
 			}
 		});
 
@@ -121,6 +121,8 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
         }else{
         	occupationData = (OccupationData)VaadinSession.getCurrent().getSession().getAttribute("occupationData");
         	VaadinSession.getCurrent().getSession().removeAttribute("occupationData");
+        	positionPage = (Integer)VaadinSession.getCurrent().getSession().getAttribute("occupationPositionPage");
+        	VaadinSession.getCurrent().getSession().removeAttribute("occupationPositionPage");
         	occupationName.setValue(occupationData.getName());
         	occupationDescription.setValue(occupationData.getRemarks());
         	submit.setCaption("Update");
@@ -169,7 +171,7 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
 					notification.setDescription("Occupation name already exist.");
 				else{
 					isFailure = false;
-					UI.getCurrent().getNavigator().navigateTo(DataOccupationView.BEAN_NAME);
+					Page.getCurrent().setUriFragment("!".concat(DataOccupationView.BEAN_NAME).concat("/") + positionPage.toString(), true);
 				}
 			}			
 		}

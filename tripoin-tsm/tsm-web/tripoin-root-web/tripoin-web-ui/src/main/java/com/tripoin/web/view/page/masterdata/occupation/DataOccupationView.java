@@ -68,6 +68,7 @@ public class DataOccupationView extends VerticalLayout implements View {
     		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
     private Notification notification = new Notification("");
     private MenuBar menuBarPaging;
+    private HorizontalLayout panelCaption;
 	private List<OccupationData> occupationDatasSelect;
 	private OccupationTransferObject occupationTransferObject;
 	private Integer positionPage;
@@ -103,7 +104,7 @@ public class DataOccupationView extends VerticalLayout implements View {
         CssLayout layout = new CssLayout();
         layout.addStyleName("card");
         layout.setWidth("100%");
-        HorizontalLayout panelCaption = new HorizontalLayout();
+        panelCaption = new HorizontalLayout();
         panelCaption.addStyleName("v-panel-caption");
         panelCaption.setWidth("100%");
         MenuBar dropdown = new MenuBar();
@@ -125,20 +126,24 @@ public class DataOccupationView extends VerticalLayout implements View {
 			private static final long serialVersionUID = -6262114274661510612L;
 			@Override
             public void menuSelected(MenuItem selectedItem) {
-				OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect);
-	        	grid.getSelectionModel().reset();
-	        	calculatePage(Occupation.TABLE_NAME);
-		        constructDataContainer();
-		        menuBarPaging = getPaging();	        	
-				if("2".equals(occupationTransferObject.getResponseCode())){
-					String listOccupation = "Occupation : ";
-					for(OccupationData occupationData : occupationTransferObject.getOccupationDatas())
-						listOccupation = listOccupation.concat(occupationData.getName()).concat(", ");
-					listOccupation = listOccupation.concat("#END-OCCUPATION#").replace(", #END-OCCUPATION#", "");
-		            notification.setCaption("Error Data Occupation");
-					notification.setDescription("Some Occupation data already being used\n"
-							.concat(listOccupation));
-					notification.show(Page.getCurrent());
+				if(occupationDatasSelect != null && occupationDatasSelect.size() > 0){
+					OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect);
+					occupationDatasSelect = null;
+		        	grid.getSelectionModel().reset();
+		        	calculatePage(Occupation.TABLE_NAME);
+			        constructDataContainer();
+			        panelCaption.replaceComponent(menuBarPaging, getPaging());
+			        Page.getCurrent().setUriFragment("!".concat(BEAN_NAME).concat("/") + positionPage.toString(), true);
+					if("2".equals(occupationTransferObject.getResponseCode())){
+						String listOccupation = "Occupation : ";
+						for(OccupationData occupationData : occupationTransferObject.getOccupationDatas())
+							listOccupation = listOccupation.concat(occupationData.getName()).concat(", ");
+						listOccupation = listOccupation.concat("#END-OCCUPATION#").replace(", #END-OCCUPATION#", "");
+			            notification.setCaption("Error Data Occupation");
+						notification.setDescription("Some Occupation data already being used\n"
+								.concat(listOccupation));
+						notification.show(Page.getCurrent());
+					}					
 				}
             }
         });
@@ -172,6 +177,7 @@ public class DataOccupationView extends VerticalLayout implements View {
 				if(isSelectEdited){
 					isSelectEdited = false;
 					VaadinSession.getCurrent().getSession().setAttribute("occupationData", (OccupationData)event.getItemId());
+					VaadinSession.getCurrent().getSession().setAttribute("occupationPositionPage", positionPage);
 	        		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
 				}
 			}
@@ -203,11 +209,14 @@ public class DataOccupationView extends VerticalLayout implements View {
     }
 	
 	private void calculatePage(String dataModel){
+		GeneralPagingTransferObject generalPagingTransferObject;
 		try {
-			GeneralPagingTransferObject generalPagingTransferObject = paginationService.getPagination(new GeneralPagingTransferObject(dataModel));
+			generalPagingTransferObject = paginationService.getPagination(new GeneralPagingTransferObject(dataModel));
 			totalPage = new Double(generalPagingTransferObject.getTotalRow()/EWebUIConstant.ROW_PER_PAGE.getInt()).intValue();
 	        if(generalPagingTransferObject.getTotalRow()%EWebUIConstant.ROW_PER_PAGE.getInt()>0)totalPage++;	
 		} catch (Exception e) {
+			generalPagingTransferObject = new GeneralPagingTransferObject();
+			generalPagingTransferObject.setTotalRow(1);
 			totalPage = 1;
 		}
 		if(Page.getCurrent().getUriFragment().split("/").length>1){
@@ -221,8 +230,14 @@ public class DataOccupationView extends VerticalLayout implements View {
 				positionPage = 1;
 			}
 		}else positionPage = 1;
-        maxRow = positionPage * EWebUIConstant.ROW_PER_PAGE.getInt();
-        minRow = maxRow - EWebUIConstant.ROW_PER_PAGE.getInt();
+		/**
+		 * Use this if no sorting
+		 * maxRow = positionPage * EWebUIConstant.ROW_PER_PAGE.getInt();
+		 * minRow = maxRow - EWebUIConstant.ROW_PER_PAGE.getInt();
+        **/
+        minRow = generalPagingTransferObject.getTotalRow() - (positionPage * EWebUIConstant.ROW_PER_PAGE.getInt());
+        maxRow = minRow + EWebUIConstant.ROW_PER_PAGE.getInt();
+        
 	}
 	
 	private void constructDataContainer(){
