@@ -59,7 +59,7 @@
 		reply-channel="responseChannelOccupationLoadPaging"
 		supported-methods="POST" 
 		path="/wscontext/occupation/load/paging, /wscontext/occupation/load/paging/{occupation}"
-		request-payload-type="java.lang.String">	
+		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelOccupationLoadPaging" expression="headers.http_requestMethod">

@@ -19,27 +19,27 @@ public class VersionControlSystemTableServiceImpl implements IVersionControlSyst
 	private IVersionControlSystemTableDao iVersionControlSystemTableDao;
 
 	@Override
-	public VersionControlSystemTable loadValue(String code) {
+	public VersionControlSystemTable loadValue(String code) throws Exception {
 		return iVersionControlSystemTableDao.loadValue(code);
 	}
 
 	@Override
-	public List<VersionControlSystemTable> listValue(Object[] code) {
+	public List<VersionControlSystemTable> listValue(Object[] code) throws Exception {
 		return iVersionControlSystemTableDao.listValue(code);
 	}
 
 	@Override
-	public int updateValue(Long value, String code) {
+	public int updateValue(Long value, String code) throws Exception {
 		return iVersionControlSystemTableDao.updateValue(value, code);
 	}
 
 	@Override
-	public int insertValue(String code, Long value, Long status, String remarks) {
+	public int insertValue(String code, Long value, Long status, String remarks) throws Exception {
 		return iVersionControlSystemTableDao.insertValue(code, value, status, remarks);
 	}
 
 	@Override
-	public int insertValueAndSync(String code, Long status, String remarks) {
+	public int insertValueAndSync(String code, Long status, String remarks) throws Exception {
 		return iVersionControlSystemTableDao.insertValueAndSync(code, status, remarks);
 	}
 

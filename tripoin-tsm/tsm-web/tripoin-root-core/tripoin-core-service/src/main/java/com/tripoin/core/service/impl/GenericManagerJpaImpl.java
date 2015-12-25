@@ -23,13 +23,13 @@ import com.tripoin.core.service.IGenericManagerJpa;
 public class GenericManagerJpaImpl implements IGenericManagerJpa {
 
 	@Autowired
-	private IGenericDeleteDaoJpa genericDeleteDao;
+	private IGenericReadDaoJpa genericReadDao;
 	@Autowired
 	private IGenericInsertDaoJpa genericInsertDao;
 	@Autowired
-	private IGenericReadDaoJpa genericReadDao;
-	@Autowired
 	private IGenericUpdateDaoJpa genericUpdateDao;
+	@Autowired
+	private IGenericDeleteDaoJpa genericDeleteDao;
 
     @Transactional
 	@Override
@@ -52,6 +52,12 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 	@Override
 	public <T> List<T> loadObjectsJQLStatement(String jql, Object[] values, PageArgument pageArgument) throws Exception {
 		return genericReadDao.loadObjectsJQLStatement(jql, values, pageArgument);
+	}
+
+    @Transactional
+	@Override
+	public Object getObjectSQLNative(String sql, FilterArgument[] filterArguments, Object[] values) throws Exception {
+		return genericReadDao.getObjectSQLNative(sql, filterArguments, values);
 	}
 
     @Transactional

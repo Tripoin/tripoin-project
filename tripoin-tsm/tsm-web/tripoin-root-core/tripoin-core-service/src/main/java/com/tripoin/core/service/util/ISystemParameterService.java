@@ -9,8 +9,8 @@ import com.tripoin.core.pojo.SystemParameter;
  */
 public interface ISystemParameterService {	
 	
-	public SystemParameter getParameter(String name);
+	public SystemParameter getParameter(String name) throws Exception;
 	
-	public List<SystemParameter> listValue(Object[] code);
+	public List<SystemParameter> listValue(Object[] code) throws Exception;
 	
 }

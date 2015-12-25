@@ -1,5 +1,6 @@
 package com.tripoin.core.rest.endpoint.occupation;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +22,10 @@ import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.core.pojo.Occupation;
+import com.tripoin.core.pojo.VersionControlSystemTable;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.core.service.util.IVersionControlSystemTableService;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -35,8 +38,15 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
 	
-	private Integer minRow = 0;
-	private Integer maxRow = 1;
+	@Autowired
+	private IVersionControlSystemTableService iVersionControlSystemTableService;
+	
+	private VersionControlSystemTable versionControlSystemTable;
+	private Integer positionPage;
+	private Integer rowPerPage;
+	private Integer totalPage;
+	private Integer minRow;
+	private Integer maxRow;
 
 	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<OccupationTransferObject> loadOccupation(Message<OccupationData> inMessage){	
@@ -99,23 +109,48 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 	}
 
 	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
-	public Message<OccupationTransferObject> loadOccupationPaging(Message<?> inMessage){	
+	public Message<OccupationTransferObject> loadOccupationPaging(Message<OccupationTransferObject> inMessage){	
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
 		
 		try{			
+			String query = "FROM Occupation occupation";
+			Object[] data = null;
 			if(inMessage.getPayload() != null){
-				String[] params = ((String)inMessage.getPayload()).split("&");
-				try {
-					minRow = Integer.parseInt(params[0].replaceAll(ParameterConstant.PAGING_MIN_ROW, ""));
-					maxRow = Integer.parseInt(params[1].replaceAll(ParameterConstant.PAGING_MAX_ROW, ""));					
+				occupationTransferObject = inMessage.getPayload();				
+				try {					
+					if(occupationTransferObject.getFindOccupationData() != null){
+						if(occupationTransferObject.getFindOccupationData().getName() != null){
+							query = query.concat(" WHERE occupation.name LIKE '%'||?||'%'");
+							data = new Object[]{occupationTransferObject.getFindOccupationData().getName()};
+							FilterArgument[] filterArguments = new FilterArgument[]{
+								new FilterArgument("occupationName", ECommonOperator.LIKE_BOTH_SIDE)
+							};
+							versionControlSystemTable = new VersionControlSystemTable();
+							versionControlSystemTable.setTotalRow(((BigInteger)iGenericManagerJpa.getObjectSQLNative("SELECT COUNT(occupation_id) FROM mst_occupation WHERE occupation_name LIKE :occupationName", filterArguments, new Object[]{occupationTransferObject.getFindOccupationData().getName()})).longValue());							
+						}else versionControlSystemTable = iVersionControlSystemTableService.loadValue(Occupation.TABLE_NAME);
+					}else versionControlSystemTable = iVersionControlSystemTableService.loadValue(Occupation.TABLE_NAME);						
+					positionPage = occupationTransferObject.getPositionPage();
+					rowPerPage = occupationTransferObject.getRowPerPage();		
+					if(rowPerPage == null || rowPerPage == 0) rowPerPage = ParameterConstant.ROW_PER_PAGE;
+					totalPage = new Double(versionControlSystemTable.getTotalRow()/rowPerPage).intValue();
 				} catch (Exception e) {
 					LOGGER.error("Load Paging Occupation System Error : "+e.getLocalizedMessage(), e);
-					minRow = 0;
-					maxRow = 1;
+					rowPerPage = ParameterConstant.ROW_PER_PAGE;
+					versionControlSystemTable = new VersionControlSystemTable();
+					versionControlSystemTable.setTotalRow(new Long(rowPerPage));
+					totalPage = 0;
 				}
+				if(positionPage == null || positionPage <= 0) positionPage = 1;
+				if(versionControlSystemTable.getTotalRow()%rowPerPage>0)totalPage++;	
+				if(positionPage > totalPage) positionPage = totalPage;				
+		        minRow = versionControlSystemTable.getTotalRow().intValue() - (positionPage * rowPerPage);
+		        maxRow = minRow + rowPerPage;
+		        occupationTransferObject.setPositionPage(positionPage);
+		        occupationTransferObject.setRowPerPage(rowPerPage);
+		        occupationTransferObject.setTotalPage(totalPage);
 			}
-			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, null, null, null, new PageArgument(minRow, maxRow));
+			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsJQLStatement(query, data, new PageArgument(minRow, maxRow));
 			List<OccupationData> occupationDatas = new ArrayList<OccupationData>();
 			if(occupationList != null){
 				for(int i=occupationList.size()-1; i>=0; i--)

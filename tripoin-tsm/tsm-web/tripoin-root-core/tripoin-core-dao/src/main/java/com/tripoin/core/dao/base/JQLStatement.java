@@ -36,6 +36,20 @@ public class JQLStatement implements Serializable {
 		return query;
 	}
 	
+	public Query setParameterStatement(Query query, FilterArgument[] filterArguments, Object[] values){
+		for (int i=0; i<values.length; i++) {
+			if(ECommonOperator.LIKE_BOTH_SIDE.equals(filterArguments[i].getCondition()))
+				query.setParameter(filterArguments[i].getField(), "%"+values[i]+"%");
+			else if(ECommonOperator.LIKE_SIDE_LEFT.equals(filterArguments[i].getCondition()))
+					query.setParameter(filterArguments[i].getField(), values[i]+"%");
+			else if(ECommonOperator.LIKE_SIDE_RIGHT.equals(filterArguments[i].getCondition()))
+				query.setParameter(filterArguments[i].getField(), "%"+values[i]);
+			else
+				query.setParameter(filterArguments[i].getField(), values[i]);
+		}
+		return query;
+	}
+	
 	public Query pageStatement(Query query, PageArgument pageArgument) throws Exception {
 		if(pageArgument.getMinRow() != null && pageArgument.getMinRow() > 0)
 			query.setFirstResult(pageArgument.getMinRow());

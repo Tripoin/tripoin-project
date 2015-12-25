@@ -20,6 +20,8 @@ public class ParameterConstant {
 
 	public static final String FEMALE = "Female";
 	public static final String MALE = "Male";
+	
+	public static final Integer ROW_PER_PAGE = 20;
 
 	public static final String VIEW_TYPE = "VIEW-TYPE=";
 	public static final String VIEW_WEB_MOBILE = "WEB-MOBILE";
@@ -44,8 +46,5 @@ public class ParameterConstant {
 
 	public static final String TRIPOIN_UPLOAD_IMAGE = "TRIPOIN-UPLOAD-IMAGE";
 	public static final String TRIPOIN_UPLOAD_DATA = "TRIPOIN-UPLOAD-DATA";
-
-	public static final String PAGING_MIN_ROW = "PAGING-MIN-ROW=";
-	public static final String PAGING_MAX_ROW = "PAGING-MAX-ROW=";
 	
 }

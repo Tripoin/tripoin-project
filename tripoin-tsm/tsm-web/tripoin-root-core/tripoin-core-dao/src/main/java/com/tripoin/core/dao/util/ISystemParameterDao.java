@@ -9,8 +9,8 @@ import com.tripoin.core.pojo.SystemParameter;
  */
 public interface ISystemParameterDao {
 	
-	public SystemParameter loadValue(String code);
+	public SystemParameter loadValue(String code) throws Exception;
 	
-	public List<SystemParameter> listValue(Object[] code);
+	public List<SystemParameter> listValue(Object[] code) throws Exception;
 
 }

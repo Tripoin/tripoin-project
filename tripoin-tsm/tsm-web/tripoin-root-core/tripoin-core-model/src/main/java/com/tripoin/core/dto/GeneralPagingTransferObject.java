@@ -15,14 +15,14 @@ public class GeneralPagingTransferObject extends GeneralTransferObject {
 	@XmlElement(name = "PageName", namespace = "")
 	protected String pageName;
 	
-	@XmlElement(name = "MinRow", namespace = "")
-	private Integer minRow;
+	@XmlElement(name = "PositionPage", namespace = "")
+	private Integer positionPage;
 	
-	@XmlElement(name = "MaxRow", namespace = "")
-	private Integer maxRow;
+	@XmlElement(name = "TotalPage", namespace = "")
+	private Integer totalPage;
 	
-	@XmlElement(name = "TotalRow", namespace = "")
-	protected Integer totalRow;
+	@XmlElement(name = "RowPerPage", namespace = "")
+	protected Integer rowPerPage;
 
 	public GeneralPagingTransferObject(){}
 	
@@ -38,35 +38,35 @@ public class GeneralPagingTransferObject extends GeneralTransferObject {
 		this.pageName = pageName;
 	}
 
-	public Integer getMinRow() {
-		return minRow;
+	public Integer getPositionPage() {
+		return positionPage;
 	}
 
-	public void setMinRow(Integer minRow) {
-		this.minRow = minRow;
+	public void setPositionPage(Integer positionPage) {
+		this.positionPage = positionPage;
 	}
 
-	public Integer getMaxRow() {
-		return maxRow;
+	public Integer getTotalPage() {
+		return totalPage;
 	}
 
-	public void setMaxRow(Integer maxRow) {
-		this.maxRow = maxRow;
+	public void setTotalPage(Integer totalPage) {
+		this.totalPage = totalPage;
 	}
 
-	public Integer getTotalRow() {
-		return totalRow;
+	public Integer getRowPerPage() {
+		return rowPerPage;
 	}
 
-	public void setTotalRow(Integer totalRow) {
-		this.totalRow = totalRow;
+	public void setRowPerPage(Integer rowPerPage) {
+		this.rowPerPage = rowPerPage;
 	}
 
 	@Override
 	public String toString() {
 		return "GeneralPagingTransferObject [pageName=" + pageName
-				+ ", minRow=" + minRow + ", maxRow=" + maxRow + ", totalRow="
-				+ totalRow + "]";
+				+ ", positionPage=" + positionPage + ", totalPage=" + totalPage
+				+ ", rowPerPage=" + rowPerPage + "]";
 	}
 
 }

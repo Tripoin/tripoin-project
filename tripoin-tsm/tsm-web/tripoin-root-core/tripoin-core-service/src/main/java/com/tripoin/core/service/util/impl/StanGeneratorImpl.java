@@ -16,7 +16,7 @@ public class StanGeneratorImpl implements IStanGenerator {
 	@Autowired
 	IStanDao stanDao;
 	
-	public void updateStan(Stan stan) {
+	public void updateStan(Stan stan) throws Exception {
 		Long stanCounter = stan.getStanCounter();
 		if(stanCounter >= stan.getStanMax()-stanCounter)
 			stanCounter = Long.parseLong("0");
@@ -25,7 +25,7 @@ public class StanGeneratorImpl implements IStanGenerator {
 	}
 
 	@Override
-	public Stan getSystemTraceAuditNumber(Long userId) {
+	public Stan getSystemTraceAuditNumber(Long userId) throws Exception {
 		Stan stan = stanDao.loadStan(userId);
 		updateStan(stan);
 		return stan;

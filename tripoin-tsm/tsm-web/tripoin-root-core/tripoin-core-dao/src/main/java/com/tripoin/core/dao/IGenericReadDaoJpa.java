@@ -58,4 +58,18 @@ public interface IGenericReadDaoJpa {
 	 */
 	public <T> List<T> loadObjectsJQLStatement(String jql, Object[] values, PageArgument pageArgument) throws Exception;
 	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>FilterArgument[] filterArguments = new FilterArgument[]{</code><br>
+	 * <code>&emsp;&emsp;new FilterArgument("username", ECommonOperator.LIKE_BOTH_SIDE)</code><br>
+	 * <code>}</code><br>
+	 * <code>getObjectSQLNative("SELECT COUNT(*) FROM sec_user WHERE sec_user LIKE :username", filterArguments, new Object[]{"admin"})</code><br><br>
+	 * @param sql
+	 * @param filterArguments
+	 * @param values
+	 * @return
+	 * @throws Exception
+	 */
+	public Object getObjectSQLNative(String sql, FilterArgument[] filterArguments, Object[] values) throws Exception;
+	
 }

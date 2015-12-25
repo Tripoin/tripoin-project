@@ -26,11 +26,11 @@ public class StanDaoImpl implements InitializingBean, IStanDao {
 		
 	}	
 	
-	public void updateStan(Long stanCounter, Long stanId){
+	public void updateStan(Long stanCounter, Long stanId) throws Exception{
 		jdbcTemplate.update("UPDATE trx_stan SET stan_counter = ? WHERE stan_id = ?", new Object[]{stanCounter, stanId});
 	}
 	
-	public Stan loadStan(Long userId){
+	public Stan loadStan(Long userId) throws Exception{
 		Stan stan = (Stan)jdbcTemplate.queryForObject("SELECT * FROM trx_stan WHERE user_id = ?", new Object[]{userId}, stanMapper);
 		return stan;
 	}	

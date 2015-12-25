@@ -12,10 +12,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "OccupationTransferObject")
-public class OccupationTransferObject extends GeneralTransferObject {
+public class OccupationTransferObject extends GeneralPagingTransferObject {
 	
 	@XmlElement(name = "OccupationDatas", namespace = "")
 	private List<OccupationData> occupationDatas;
+	
+	@XmlElement(name = "FindOccupationData", namespace = "")
+	private OccupationData findOccupationData;
 
 	public List<OccupationData> getOccupationDatas() {
 		return occupationDatas;
@@ -25,9 +28,18 @@ public class OccupationTransferObject extends GeneralTransferObject {
 		this.occupationDatas = occupationDatas;
 	}
 
+	public OccupationData getFindOccupationData() {
+		return findOccupationData;
+	}
+
+	public void setFindOccupationData(OccupationData findOccupationData) {
+		this.findOccupationData = findOccupationData;
+	}
+
 	@Override
 	public String toString() {
-		return "OccupationTransferObject [occupationDatas=" + occupationDatas + "]";
+		return "OccupationTransferObject [occupationDatas=" + occupationDatas
+				+ ", findOccupationData=" + findOccupationData + "]";
 	}
 	
 }

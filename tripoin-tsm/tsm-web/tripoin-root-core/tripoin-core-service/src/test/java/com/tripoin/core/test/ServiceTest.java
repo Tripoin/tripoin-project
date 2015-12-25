@@ -1,5 +1,6 @@
 package com.tripoin.core.test;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -51,6 +53,9 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Autowired
 	private IStanGenerator stanManager;
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	@Qualifier(value="transactionManager")
@@ -77,7 +82,15 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestOccupation();
+		runTestUser();
+	}
+	
+	public void runTestSQLNative() throws Exception {
+		FilterArgument[] filterArguments = new FilterArgument[]{
+			new FilterArgument("occupationName", ECommonOperator.LIKE_SIDE_LEFT)
+		};
+		Integer totalRow = ((BigInteger)iGenericManagerJpa.getObjectSQLNative("SELECT COUNT(occupation_id) FROM mst_occupation WHERE occupation_name LIKE :occupationName", filterArguments, new Object[]{"occupation"})).intValue();
+		LOGGER.debug(totalRow.toString());		
 	}
 	
 	public void runTestThread() throws Exception {
@@ -103,7 +116,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	public void runTestUser() throws Exception {
-		String username = "tripoin.app.web";	
+		String username = "tripoin";	
 		
 		List<User> users = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{username}, null);
 		for(User user : users) LOGGER.debug("User Data : "+user);

@@ -24,29 +24,29 @@ public class VersionControlSystemTableDaoImpl implements IVersionControlSystemTa
 	private static final RowMapper<VersionControlSystemTable> versionControlSystemTableMapper = new VersionControlSystemTableMapper();
 	
 	@Override
-	public VersionControlSystemTable loadValue(String code) {
+	public VersionControlSystemTable loadValue(String code) throws Exception {
 		VersionControlSystemTable versionControlSystemTable = (VersionControlSystemTable)jdbcTemplate.queryForObject("SELECT * FROM vcs_table WHERE vcs_table_code = ?", new Object[]{code}, versionControlSystemTableMapper);
 		return versionControlSystemTable;
 	}
 
 	@Override
-	public List<VersionControlSystemTable> listValue(Object[] code) {
+	public List<VersionControlSystemTable> listValue(Object[] code) throws Exception {
 		List<VersionControlSystemTable> versionControlSystemTableList = jdbcTemplate.query("SELECT * FROM vcs_table WHERE vcs_table_code = ? OR vcs_table_code = ?", code, versionControlSystemTableMapper);
 		return versionControlSystemTableList;
 	}
 
 	@Override
-	public int updateValue(Long value, String code) {
+	public int updateValue(Long value, String code) throws Exception {
 		return jdbcTemplate.update("UPDATE vcs_table SET vcs_table_total_row = ? WHERE vcs_table_code = ?", new Object[]{value, code});
 	}
 
 	@Override
-	public int insertValue(String code, Long value, Long status, String remarks) {
+	public int insertValue(String code, Long value, Long status, String remarks) throws Exception {
 		return jdbcTemplate.update("INSERT INTO vcs_table(vcs_table_code,  vcs_table_total_row,  vcs_table_status,  vcs_table_remarks) VALUES (?, ?, ?, ?)", new Object[]{code, value, status, remarks});
 	}
 
 	@Override
-	public int insertValueAndSync(String code, Long status, String remarks) {
+	public int insertValueAndSync(String code, Long status, String remarks) throws Exception {
 		Map<String, Object> dataMap = jdbcTemplate.queryForMap("SELECT COUNT(*) TOTAL_ROW FROM ".concat(code));
 		int result = updateValue(new Long(dataMap.get("TOTAL_ROW").toString()), code);
 		if(result == 0) return insertValue(code, new Long(dataMap.get("TOTAL_ROW").toString()), status, remarks);

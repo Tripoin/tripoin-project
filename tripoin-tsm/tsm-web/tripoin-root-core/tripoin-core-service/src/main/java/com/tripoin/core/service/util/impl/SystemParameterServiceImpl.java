@@ -19,12 +19,12 @@ public class SystemParameterServiceImpl implements ISystemParameterService {
 	private ISystemParameterDao iSystemParameterDao;
 
 	@Override
-	public SystemParameter getParameter(String name) {
+	public SystemParameter getParameter(String name) throws Exception {
 		return iSystemParameterDao.loadValue(name);
 	}
 
 	@Override
-	public List<SystemParameter> listValue(Object[] code) {
+	public List<SystemParameter> listValue(Object[] code) throws Exception {
 		return iSystemParameterDao.listValue(code);
 	}
 
