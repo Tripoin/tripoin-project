@@ -199,10 +199,7 @@ public class TripoinUI extends UI implements ErrorHandler {
         	Page.getCurrent().setUriFragment(null, true);
         	navigator.navigateTo(HomeView.VIEW_NAME);
         }else if(f.startsWith("!") && rootMenuLayout.getMapDataMenu().containsKey(f.split("/")[0].substring(1))){
-        	String filterUrl = "";
-        	if(f.split("/").length>1)
-        		filterUrl = f.split("/")[1].replaceAll(EWebUIConstant.REGEX_FRONT_CONTAINS_DIGIT.toString(), "");
-        	navigator.navigateTo(f.split("/")[0].concat("/").concat(filterUrl));
+        	navigator.navigateTo(f.split("/")[0].substring(1));
         }else{
     		Page.getCurrent().setUriFragment(null, true);
         	navigator.navigateTo(HomeView.VIEW_NAME);

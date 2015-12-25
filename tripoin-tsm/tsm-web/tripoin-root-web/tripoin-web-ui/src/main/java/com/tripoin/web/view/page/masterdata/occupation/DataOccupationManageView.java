@@ -12,6 +12,8 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
+import com.tripoin.web.common.EWebSessionConstant;
+import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.event.ShortcutAction;
@@ -30,6 +32,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickListener;
 
@@ -54,78 +57,72 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
     private Notification notification = new Notification("");
     private boolean isFailure = true;
 	private OccupationData occupationData;
-	private Integer positionPage = 1;
 
 	@PostConstruct
 	public void init() throws Exception {        
         setMargin(true);
         addStyleName("tripoin-custom-screen");
         HorizontalLayout row = new HorizontalLayout();
+        addComponent(row);
         row.setMargin(false);
         row.setWidth("100%");
-        final FormLayout formTitle = new FormLayout();
+        final FormLayout formTitle = new FormLayout();       
+        row.addComponent(formTitle);
         formTitle.setMargin(false);
         formTitle.addStyleName("light");        
         Label title = new Label("Data Occupation");
+        formTitle.addComponent(title); 
         title.addStyleName("h1");
-        formTitle.addComponent(title);        
-        row.addComponent(formTitle);
-        addComponent(row);		
 
         final FormLayout form = new FormLayout();
-        form.setStyleName("tripoin-custom-form");
-        form.setMargin(false);
         addComponent(form);
-        
+        form.setStyleName("tripoin-custom-form");
+        form.setMargin(false);        
         Label section = new Label(" ");
+        form.addComponent(section);   
         section.addStyleName("h3");
         section.addStyleName("colored");
-        section.setWidth("80%");
-        form.addComponent(section);       
-        
+        section.setWidth("80%");  
+
+        form.addComponent(occupationName);
         occupationName.setRequired(true);
         occupationName.setWidth("45%");
         occupationName.addStyleName("small");
-        occupationName.focus();
-        form.addComponent(occupationName);        
-        
+        occupationName.focus();        
+
+        form.addComponent(occupationDescription);
         occupationDescription.setWidth("45%");
         occupationDescription.addStyleName("small");
-        form.addComponent(occupationDescription);
 
+        HorizontalLayout footer = new HorizontalLayout();
+        form.addComponent(footer);
+        footer.setMargin(new MarginInfo(true, false, true, false));
+        footer.setSpacing(true);
+        footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         submit = new Button();
+        footer.addComponent(submit);
         submit.addStyleName("primary");
         submit.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         submit.addClickListener(this);
         cancel = new Button("Cancel");
+        footer.addComponent(cancel);
         cancel.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 7353418766196233887L;
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Page.getCurrent().setUriFragment("!".concat(DataOccupationView.BEAN_NAME).concat("/") + positionPage.toString(), true);
+				UI.getCurrent().getNavigator().navigateTo(DataOccupationView.BEAN_NAME);
 			}
-		});
-
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.setMargin(new MarginInfo(true, false, true, false));
-        footer.setSpacing(true);
-        footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
-        form.addComponent(footer);
-        footer.addComponent(submit);
-        footer.addComponent(cancel);
-        
-        if(VaadinSession.getCurrent().getSession().getAttribute("occupationData") == null){
+		});        
+        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString()) == null){
         	occupationData = new OccupationData();
 			occupationData.setStatus(1);
-        	submit.setCaption("Save");
+        	submit.setCaption(EWebUIConstant.BUTTON_SAVE.toString());
         }else{
-        	occupationData = (OccupationData)VaadinSession.getCurrent().getSession().getAttribute("occupationData");
+        	occupationData = (OccupationData)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString());
         	VaadinSession.getCurrent().getSession().removeAttribute("occupationData");
-        	positionPage = (Integer)VaadinSession.getCurrent().getSession().getAttribute("occupationPositionPage");
-        	VaadinSession.getCurrent().getSession().removeAttribute("occupationPositionPage");
         	occupationName.setValue(occupationData.getName());
         	occupationDescription.setValue(occupationData.getRemarks());
-        	submit.setCaption("Update");
+        	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());
         }
         notification.setCaption("Error Data Occupation");
 		notification.setStyleName("system closable");
@@ -142,6 +139,10 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
     	
     }
 
+	public Button getSubmit() {
+		return submit;
+	}
+
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(occupationName.getValue() == null || "".equals(occupationName.getValue()) || occupationName.getValue().isEmpty()){
@@ -152,7 +153,7 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
 			IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
 			occupationData.setName(occupationName.getValue());
 			occupationData.setRemarks(occupationDescription.getValue());
-			if("Save".equals(event.getButton().getCaption())){
+			if(EWebUIConstant.BUTTON_SAVE.toString().equals(event.getButton().getCaption())){
 				occupationData.setCode(occupationName.getValue().replace(" ", "").toUpperCase());
 				occupationData.setCreatedIP(identifierPlatform.getIPAddress());
 				occupationData.setCreatedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
@@ -171,7 +172,7 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
 					notification.setDescription("Occupation name already exist.");
 				else{
 					isFailure = false;
-					Page.getCurrent().setUriFragment("!".concat(DataOccupationView.BEAN_NAME).concat("/") + positionPage.toString(), true);
+					UI.getCurrent().getNavigator().navigateTo(DataOccupationView.BEAN_NAME);
 				}
 			}			
 		}

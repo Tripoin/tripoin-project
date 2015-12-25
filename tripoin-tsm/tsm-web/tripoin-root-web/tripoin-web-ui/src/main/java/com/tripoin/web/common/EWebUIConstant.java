@@ -50,6 +50,10 @@ public enum EWebUIConstant {
 	
 	TYPE_FILE_IMAGE("image"),
 	
+	BUTTON_SAVE("Save"),
+	BUTTON_UPDATE("Update"),
+	BUTTON_DELETE("Delete"),
+	
 	BUTTON_PAGING(5),	
 	ROW_PER_PAGE(10);
 

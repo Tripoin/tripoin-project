@@ -15,7 +15,7 @@ public interface IOccupationService {
     
     public List<OccupationData> getAllOccupationDatas();
     
-    public OccupationTransferObject getAllOccupationDatasPaging(Integer minRow, Integer maxRow);
+    public OccupationTransferObject getAllOccupationDatas(OccupationTransferObject occupationTransferObject);
     
     public GeneralTransferObject updateOccupation(OccupationData occupationData);
     

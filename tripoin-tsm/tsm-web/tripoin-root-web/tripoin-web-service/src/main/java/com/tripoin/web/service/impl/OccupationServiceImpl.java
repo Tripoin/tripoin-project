@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
@@ -37,8 +36,8 @@ public class OccupationServiceImpl implements IOccupationService {
 	}
 
 	@Override
-	public OccupationTransferObject getAllOccupationDatasPaging(Integer minRow, Integer maxRow) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL_PAGE), ParameterConstant.PAGING_MIN_ROW.concat(minRow.toString()).concat("&").concat(ParameterConstant.PAGING_MAX_ROW).concat(maxRow.toString()), OccupationTransferObject.class);
+	public OccupationTransferObject getAllOccupationDatas(OccupationTransferObject occupationTransferObject) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL_PAGE), occupationTransferObject, OccupationTransferObject.class);
 	}
 
 	@Override

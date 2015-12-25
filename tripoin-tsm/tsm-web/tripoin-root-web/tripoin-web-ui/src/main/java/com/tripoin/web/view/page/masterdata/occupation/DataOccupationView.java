@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
-import com.tripoin.core.pojo.Occupation;
+import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
-import com.tripoin.web.service.IPaginationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -30,6 +28,8 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
@@ -50,7 +50,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Component
 @Scope("prototype")
-@VaadinView(value = DataOccupationView.BEAN_NAME, cached = false)
+@VaadinView(value = DataOccupationView.BEAN_NAME, cached = true)
 public class DataOccupationView extends VerticalLayout implements View {
 
 	private static final long serialVersionUID = -4592518571070450190L;
@@ -59,9 +59,6 @@ public class DataOccupationView extends VerticalLayout implements View {
 	@Autowired
 	private IOccupationService occupationService;
 	
-	@Autowired
-	private IPaginationService paginationService;
-	
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);	
 	private Grid grid = new Grid();
 	private Object[] headerGrid = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
@@ -69,11 +66,12 @@ public class DataOccupationView extends VerticalLayout implements View {
     private Notification notification = new Notification("");
     private MenuBar menuBarPaging;
     private HorizontalLayout panelCaption;
-	private List<OccupationData> occupationDatasSelect;
+    private TextField nameOccupationSearch;
+	private OccupationTransferObject occupationTransferObjectSearch = new OccupationTransferObject();
 	private OccupationTransferObject occupationTransferObject;
+	private List<OccupationData> occupationDatasSelect;
+	private OccupationData findOccupationData;
 	private Integer positionPage;
-	private Integer maxRow;
-	private Integer minRow;
 	private Integer totalPage;
 
 	@PostConstruct
@@ -81,30 +79,33 @@ public class DataOccupationView extends VerticalLayout implements View {
         setMargin(true);
         addStyleName("tripoin-custom-screen");
         HorizontalLayout row = new HorizontalLayout();
+        addComponent(row);
         row.setMargin(false);
         row.setWidth("100%");
-        final FormLayout formTitle = new FormLayout();
+        final FormLayout formTitle = new FormLayout();       
+        row.addComponent(formTitle);
         formTitle.setMargin(false);
         formTitle.addStyleName("light");        
         Label title = new Label("Data Occupation");
+        formTitle.addComponent(title); 
         title.addStyleName("h1");
-        formTitle.addComponent(title);        
-        row.addComponent(formTitle);
-        addComponent(row);
                 
         final FormLayout groupSearch = searchContent();
+		addComponent(groupSearch);
         groupSearch.setStyleName("tripoin-custom-form");
         groupSearch.setMargin(new MarginInfo(false, false, true, false));
 		groupSearch.setSpacing(true);
 		groupSearch.setWidth("100%");
-		addComponent(groupSearch);
-		
-        VerticalLayout contentLayout = new VerticalLayout();
-        contentLayout.setWidth("100%");
+        
+        VerticalLayout contentLayout = new VerticalLayout();      
+        addComponent(contentLayout);
+        contentLayout.setWidth("100%"); 
         CssLayout layout = new CssLayout();
+        contentLayout.addComponent(layout); 
         layout.addStyleName("card");
         layout.setWidth("100%");
         panelCaption = new HorizontalLayout();
+        layout.addComponent(panelCaption);
         panelCaption.addStyleName("v-panel-caption");
         panelCaption.setWidth("100%");
         MenuBar dropdown = new MenuBar();
@@ -122,7 +123,7 @@ public class DataOccupationView extends VerticalLayout implements View {
         });
         addItem.addItem("Export", null).setEnabled(false);
         addItem.addSeparator();
-        addItem.addItem("Delete", FontAwesome.TRASH_O, new Command() {
+        addItem.addItem(EWebUIConstant.BUTTON_DELETE.toString(), FontAwesome.TRASH_O, new Command() {
 			private static final long serialVersionUID = -6262114274661510612L;
 			@Override
             public void menuSelected(MenuItem selectedItem) {
@@ -130,10 +131,8 @@ public class DataOccupationView extends VerticalLayout implements View {
 					OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect);
 					occupationDatasSelect = null;
 		        	grid.getSelectionModel().reset();
-		        	calculatePage(Occupation.TABLE_NAME);
 			        constructDataContainer();
-			        panelCaption.replaceComponent(menuBarPaging, getPaging());
-			        Page.getCurrent().setUriFragment("!".concat(BEAN_NAME).concat("/") + positionPage.toString(), true);
+			        getPaging();
 					if("2".equals(occupationTransferObject.getResponseCode())){
 						String listOccupation = "Occupation : ";
 						for(OccupationData occupationData : occupationTransferObject.getOccupationDatas())
@@ -149,13 +148,15 @@ public class DataOccupationView extends VerticalLayout implements View {
         });
         panelCaption.addComponent(dropdown);
         panelCaption.setExpandRatio(dropdown, 1);
-        layout.addComponent(panelCaption);
-        
-        calculatePage(Occupation.TABLE_NAME);
-        constructDataContainer();
-        menuBarPaging = getPaging();
+        menuBarPaging = new MenuBar();
         panelCaption.addComponent(menuBarPaging);
+        menuBarPaging.addStyleName("borderless");
+        menuBarPaging.addStyleName("small");
+        menuBarPaging.setAutoOpen(true);
+        constructDataContainer();
+        getPaging();
 
+        layout.addComponent(grid);
         grid.setColumnOrder(headerGrid);
         grid.getColumn("name").setHeaderCaption("Occupation Name");
         grid.getColumn("remarks").setHeaderCaption("Description");
@@ -176,9 +177,8 @@ public class DataOccupationView extends VerticalLayout implements View {
 				}
 				if(isSelectEdited){
 					isSelectEdited = false;
-					VaadinSession.getCurrent().getSession().setAttribute("occupationData", (OccupationData)event.getItemId());
-					VaadinSession.getCurrent().getSession().setAttribute("occupationPositionPage", positionPage);
-	        		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
+					VaadinSession.getCurrent().getSession().setAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString(), (OccupationData)event.getItemId());					
+					UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
 				}
 			}
 		});
@@ -199,49 +199,24 @@ public class DataOccupationView extends VerticalLayout implements View {
         grid.setSizeUndefined();
         grid.setWidth("100%");
         grid.addStyleName("small");
-        layout.addComponent(grid);
-        contentLayout.addComponent(layout);        
-        addComponent(contentLayout);
         
 		notification.setStyleName("system closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(10000);
     }
 	
-	private void calculatePage(String dataModel){
-		GeneralPagingTransferObject generalPagingTransferObject;
-		try {
-			generalPagingTransferObject = paginationService.getPagination(new GeneralPagingTransferObject(dataModel));
-			totalPage = new Double(generalPagingTransferObject.getTotalRow()/EWebUIConstant.ROW_PER_PAGE.getInt()).intValue();
-	        if(generalPagingTransferObject.getTotalRow()%EWebUIConstant.ROW_PER_PAGE.getInt()>0)totalPage++;	
-		} catch (Exception e) {
-			generalPagingTransferObject = new GeneralPagingTransferObject();
-			generalPagingTransferObject.setTotalRow(1);
-			totalPage = 1;
-		}
-		if(Page.getCurrent().getUriFragment().split("/").length>1){
-	        String fragmentUriPage = Page.getCurrent().getUriFragment().split("/")[1].replaceAll(EWebUIConstant.REGEX_FRONT_CONTAINS_DIGIT.toString(), "");
-	        try {
-	        	if(fragmentUriPage.isEmpty()) throw new Exception();
-				positionPage = Integer.parseInt(fragmentUriPage);
-				if(positionPage>totalPage)positionPage = totalPage;
-				if(positionPage<1) throw new Exception();
-			} catch (Exception e) {
-				positionPage = 1;
-			}
-		}else positionPage = 1;
-		/**
-		 * Use this if no sorting
-		 * maxRow = positionPage * EWebUIConstant.ROW_PER_PAGE.getInt();
-		 * minRow = maxRow - EWebUIConstant.ROW_PER_PAGE.getInt();
-        **/
-        minRow = generalPagingTransferObject.getTotalRow() - (positionPage * EWebUIConstant.ROW_PER_PAGE.getInt());
-        maxRow = minRow + EWebUIConstant.ROW_PER_PAGE.getInt();
-        
-	}
-	
 	private void constructDataContainer(){
-        occupationTransferObject = occupationService.getAllOccupationDatasPaging(minRow, maxRow);        
+    	grid.getSelectionModel().reset();
+		if(nameOccupationSearch.getValue() != null && !nameOccupationSearch.getValue().isEmpty()){
+			findOccupationData = new OccupationData();
+			findOccupationData.setName(nameOccupationSearch.getValue());
+		}
+		occupationTransferObjectSearch.setPositionPage(positionPage);
+		occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getInt());
+		occupationTransferObjectSearch.setFindOccupationData(findOccupationData);
+        occupationTransferObject = occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
+        positionPage = occupationTransferObject.getPositionPage();
+        totalPage = occupationTransferObject.getTotalPage();
 		occupationContainer.removeAllItems();
     	occupationContainer.addAll(occupationTransferObject.getOccupationDatas());
     	occupationContainer.removeContainerProperty("id");
@@ -251,11 +226,8 @@ public class DataOccupationView extends VerticalLayout implements View {
     	occupationTransferObject = null;		
 	}
 	
-	private MenuBar getPaging() {
-        MenuBar menubarPaging = new MenuBar();
-        menubarPaging.addStyleName("borderless");
-        menubarPaging.addStyleName("small");
-        menubarPaging.setAutoOpen(true);
+	private void getPaging() {
+        menuBarPaging.removeItems();
         if(totalPage > 1){
     		Command eventPageClick = new Command() {
     			private static final long serialVersionUID = 2102926468458330518L;
@@ -283,8 +255,10 @@ public class DataOccupationView extends VerticalLayout implements View {
     						positionPage = 1;
     					}
     				}
-    				if(positionPage>0)
-    					Page.getCurrent().setUriFragment("!".concat(BEAN_NAME).concat("/") + positionPage.toString(), true);    				
+    				if(positionPage>0){
+    			        constructDataContainer();
+    			        getPaging();
+    				}    					    				
     			}
     		};
             Integer posMin = positionPage-(new Double(EWebUIConstant.BUTTON_PAGING.getInt()/2).intValue());
@@ -292,46 +266,82 @@ public class DataOccupationView extends VerticalLayout implements View {
             Integer posMax = positionPage+(new Double(EWebUIConstant.BUTTON_PAGING.getInt()/2).intValue());
             if(posMax>totalPage) posMax = totalPage; 
             if(positionPage>1){
-            	if(posMin>1) menubarPaging.addItem("", FontAwesome.BACKWARD, eventPageClick);
-                menubarPaging.addItem("", FontAwesome.CARET_LEFT, eventPageClick);        	
+            	if(posMin>1) menuBarPaging.addItem("", FontAwesome.BACKWARD, eventPageClick);
+                menuBarPaging.addItem("", FontAwesome.CARET_LEFT, eventPageClick);        	
             }      
             for(Integer i=posMin; i<=posMax; i++){
             	if(i==positionPage){
-            		MenuItem currentPageItem = menubarPaging.addItem(i.toString(), eventPageClick);
+            		MenuItem currentPageItem = menuBarPaging.addItem(i.toString(), eventPageClick);
                     currentPageItem.setCheckable(true);
                     currentPageItem.setChecked(true);
-            	}else menubarPaging.addItem(i.toString(), eventPageClick);
+            	}else menuBarPaging.addItem(i.toString(), eventPageClick);
             } 
             if(positionPage<totalPage){
-                menubarPaging.addItem("", FontAwesome.CARET_RIGHT, eventPageClick);
-            	if(posMax<totalPage) menubarPaging.addItem("", FontAwesome.FORWARD, eventPageClick);        	
+                menuBarPaging.addItem("", FontAwesome.CARET_RIGHT, eventPageClick);
+            	if(posMax<totalPage) menuBarPaging.addItem("", FontAwesome.FORWARD, eventPageClick);        	
             }
         }
-        return menubarPaging;
     }
 	
 	private FormLayout searchContent(){
 		FormLayout groupSearch = new FormLayout();
 		Label section = new Label();
+        groupSearch.addComponent(section);
         section.addStyleName("h3");
         section.addStyleName("colored");
         section.setWidth("100%");
-        groupSearch.addComponent(section);
-        TextField nameTF = new TextField("Name");
-        nameTF.addStyleName("small");
-        nameTF.setWidth("50%");
-        groupSearch.addComponent(nameTF);        
+        nameOccupationSearch = new TextField("Name");
+        groupSearch.addComponent(nameOccupationSearch); 
+        nameOccupationSearch.addStyleName("small");
+        nameOccupationSearch.setWidth("50%");    
+		ClickListener eventSearchClick = new ClickListener() {
+			private static final long serialVersionUID = -825124355144374247L;
+			@Override
+			public void buttonClick(ClickEvent event) {
+				if("Search".equals(event.getButton().getCaption())){
+					if(nameOccupationSearch.getValue() != null && !nameOccupationSearch.getValue().isEmpty()){
+						constructDataContainer();
+				        getPaging();
+					}					
+				}else{
+			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString()) != null)
+			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString());
+			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString()) != null)			        	
+			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString());
+			        positionPage = 1;
+			        findOccupationData = null;
+			        nameOccupationSearch.setValue("");
+			        constructDataContainer();
+			        getPaging();
+				}
+			}
+		};   
+		HorizontalLayout footerSearch = new HorizontalLayout();
+        groupSearch.addComponent(footerSearch);
+		footerSearch.setSpacing(true);
         Button search = new Button("Search");
+		footerSearch.addComponent(search);
         search.addStyleName("primary");
         search.addStyleName("small");
+        search.addClickListener(eventSearchClick);
         search.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        groupSearch.addComponent(search);
+        Button reset = new Button("Reset");
+		footerSearch.addComponent(reset);
+        reset.addStyleName("small");
+        reset.addClickListener(eventSearchClick);
+        reset.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 		return groupSearch;
 	}
 
 	@Override
     public void enter(ViewChangeEvent event) {
-
+		if(event.getOldView() instanceof DataOccupationManageView){
+			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
+			if(EWebUIConstant.BUTTON_SAVE.toString().equals(oldView.getSubmit().getCaption())){
+		        constructDataContainer();
+		        getPaging();				
+			}
+		}
     }
-    
+
 }
