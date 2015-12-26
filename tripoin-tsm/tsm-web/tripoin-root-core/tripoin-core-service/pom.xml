@@ -258,6 +258,10 @@
 			<id>JBoss repository</id>
 			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
 		</repository>
+		<repository>
+			<id>default</id>
+			<url>http://central.maven.org/maven2</url>
+		</repository>
 	</repositories>
 
 </project>
