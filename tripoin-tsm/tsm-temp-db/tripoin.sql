@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2015 at 05:14 PM
+-- Generation Time: Dec 21, 2015 at 06:31 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS `geo_user_route` (
 --
 
 INSERT INTO `geo_user_route` (`user_route_id`, `user_route_lat`, `user_route_lon`, `user_route_center`, `user_route_zoom`, `user_route_drag`, `user_route_marker`, `user_route_caption`, `user_route_icon`, `employee_id`, `user_route_created_by`, `user_route_created_ip`, `user_route_created_time`, `user_route_created_platform`, `user_route_modified_by`, `user_route_modified_ip`, `user_route_modified_time`, `user_route_modified_platform`) VALUES
-(1, -6.2666000000000000000000000, 106.6598310000000000000000000, 0, 10, 0, 'Komplek Pondok Jagung BD 53', 'Prison', NULL, 1, 'admin', '127.0.0.1', '2015-11-23 10:00:00', NULL, NULL, NULL, NULL, NULL),
-(2, -6.2977670000000000000000000, 106.6678370000000000000000000, 0, 10, 0, 'Jalan Kapten Subidjanto DJ', 'Kantin Belakang', NULL, 2, 'admin', '127.0.0.1', '2015-11-24 08:48:15', NULL, NULL, NULL, NULL, NULL),
+(1, -6.2666000000000000000000000, 106.6598310000000000000000000, 0, 10, 0, 'Komplek Pondok Jagung BD 53', 'Prison', NULL, 3, 'admin', '127.0.0.1', '2015-11-23 10:00:00', NULL, NULL, NULL, NULL, NULL),
+(2, -6.2977670000000000000000000, 106.6678370000000000000000000, 0, 10, 0, 'Jalan Kapten Subidjanto DJ', 'Kantin Belakang', NULL, 3, 'admin', '127.0.0.1', '2015-11-24 08:48:15', NULL, NULL, NULL, NULL, NULL),
 (3, -6.2409321898086985000000000, 106.6284942626953100000000000, 0, 10, 0, 'Gading Serpong', 'Summarecon Mall Serpong', NULL, 3, 'admin', '127.0.0.1', '2015-11-24 08:49:21', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `mst_employee` (
 `employee_id` bigint(20) NOT NULL,
   `employee_code` varchar(150) NOT NULL,
   `employee_nik` varchar(150) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
+  `profile_id` bigint(20) NOT NULL,
   `occupation_id` bigint(20) NOT NULL,
   `employee_parent_id` bigint(20) DEFAULT NULL,
   `employee_status` smallint(5) DEFAULT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `mst_employee` (
 -- Dumping data for table `mst_employee`
 --
 
-INSERT INTO `mst_employee` (`employee_id`, `employee_code`, `employee_nik`, `user_id`, `occupation_id`, `employee_parent_id`, `employee_status`, `employee_remarks`, `employee_created_by`, `employee_created_ip`, `employee_created_time`, `employee_created_platform`, `employee_modified_by`, `employee_modified_ip`, `employee_modified_time`, `employee_modified_platform`) VALUES
+INSERT INTO `mst_employee` (`employee_id`, `employee_code`, `employee_nik`, `profile_id`, `occupation_id`, `employee_parent_id`, `employee_status`, `employee_remarks`, `employee_created_by`, `employee_created_ip`, `employee_created_time`, `employee_created_platform`, `employee_modified_by`, `employee_modified_ip`, `employee_modified_time`, `employee_modified_platform`) VALUES
 (1, 'TSM201511230001', 'TSM201511230001', 3, 3, NULL, 1, 'TSM201511230001', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (2, 'TSM201511240001', 'TSM201511240001', 2, 2, 1, 1, 'TSM201511240001', 'admin', '127.0.0.1', '2015-11-23 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (3, 'TSM201511250001', 'TSM201511250001', 1, 1, 2, 1, 'TSM201511250001', 'admin', '127.0.0.1', '2015-11-24 17:00:00', NULL, NULL, NULL, NULL, NULL);
@@ -370,6 +370,28 @@ INSERT INTO `sec_user` (`user_id`, `user_username`, `user_password`, `user_enabl
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `vcs_table`
+--
+
+CREATE TABLE IF NOT EXISTS `vcs_table` (
+`vcs_table_id` bigint(20) NOT NULL,
+  `vcs_table_code` varchar(100) NOT NULL,
+  `vcs_table_total_row` bigint(20) NOT NULL,
+  `vcs_table_status` smallint(5) DEFAULT NULL,
+  `vcs_table_remarks` varchar(255) DEFAULT NULL,
+  `vcs_table_created_by` varchar(150) DEFAULT 'admin',
+  `vcs_table_created_ip` varchar(150) DEFAULT '127.0.0.1',
+  `vcs_table_created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `vcs_table_created_platform` varchar(255) DEFAULT NULL,
+  `vcs_table_modified_by` varchar(150) DEFAULT NULL,
+  `vcs_table_modified_ip` varchar(150) DEFAULT NULL,
+  `vcs_table_modified_time` timestamp NULL DEFAULT NULL,
+  `vcs_table_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `vcs_user`
 --
 
@@ -393,13 +415,13 @@ ALTER TABLE `geo_user_route`
 -- Indexes for table `mst_employee`
 --
 ALTER TABLE `mst_employee`
- ADD PRIMARY KEY (`employee_id`);
+ ADD PRIMARY KEY (`employee_id`), ADD UNIQUE KEY `employee_code` (`employee_code`), ADD UNIQUE KEY `employee_nik` (`employee_nik`);
 
 --
 -- Indexes for table `mst_menu`
 --
 ALTER TABLE `mst_menu`
- ADD PRIMARY KEY (`menu_id`), ADD UNIQUE KEY `menu_code` (`menu_code`), ADD UNIQUE KEY `menu_code_2` (`menu_code`);
+ ADD PRIMARY KEY (`menu_id`), ADD UNIQUE KEY `menu_code` (`menu_code`);
 
 --
 -- Indexes for table `mst_menu_role`
@@ -411,13 +433,13 @@ ALTER TABLE `mst_menu_role`
 -- Indexes for table `mst_occupation`
 --
 ALTER TABLE `mst_occupation`
- ADD PRIMARY KEY (`occupation_id`);
+ ADD PRIMARY KEY (`occupation_id`), ADD UNIQUE KEY `occupation_code` (`occupation_code`);
 
 --
 -- Indexes for table `mst_profile`
 --
 ALTER TABLE `mst_profile`
- ADD PRIMARY KEY (`profile_id`), ADD UNIQUE KEY `profile_phone` (`profile_phone`), ADD UNIQUE KEY `profile_email` (`profile_email`,`profile_phone`);
+ ADD PRIMARY KEY (`profile_id`), ADD UNIQUE KEY `profile_phone` (`profile_phone`), ADD UNIQUE KEY `profile_email` (`profile_email`), ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `mst_system_parameter`
@@ -436,6 +458,12 @@ ALTER TABLE `sec_role`
 --
 ALTER TABLE `sec_user`
  ADD PRIMARY KEY (`user_id`), ADD UNIQUE KEY `user_username` (`user_username`);
+
+--
+-- Indexes for table `vcs_table`
+--
+ALTER TABLE `vcs_table`
+ ADD PRIMARY KEY (`vcs_table_id`), ADD UNIQUE KEY `system_parameter_code` (`vcs_table_code`);
 
 --
 -- Indexes for table `vcs_user`
@@ -487,6 +515,11 @@ MODIFY `role_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 ALTER TABLE `sec_user`
 MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `vcs_table`
+--
+ALTER TABLE `vcs_table`
+MODIFY `vcs_table_id` bigint(20) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
