@@ -1,7 +1,9 @@
 package com.tripoin.web.view.page.masterdata.occupation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
+import com.tripoin.util.report.ReportsUtil;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
@@ -25,9 +28,11 @@ import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -36,6 +41,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -141,16 +147,40 @@ public class DataOccupationView extends ABaseGridView {
 	
 	@Override
 	protected void setItemMenuGrid(){        
-        addItemMenuGrid.addItem("Create", new Command() {
+        itemMenuGrid.addItem("Create", new Command() {
         	private static final long serialVersionUID = 4272237366468831374L;
         	@Override
             public void menuSelected(MenuItem selectedItem) {
         		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
             }
         });
-        addItemMenuGrid.addItem("Export", null).setEnabled(false);
-        addItemMenuGrid.addSeparator();
-        addItemMenuGrid.addItem(EWebUIConstant.BUTTON_DELETE.toString(), FontAwesome.TRASH_O, new Command() {
+        /**
+         * If ItemMenu not used
+         * addItemMenuGrid.addItem("Export", null).setEnabled(false);
+         */
+        itemMenuGrid.addItem("Export", new Command() {
+			private static final long serialVersionUID = 5989159535771225427L;
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				Map<String, Object> params = new HashMap<String, Object>();
+				ReportsUtil reportUtil = ReportsUtil.getInstance();
+				StreamResource resources = reportUtil.createPdfReport(occupationDatasSelect, "Occupation.jrxml", params, "Report-Occupation");
+				
+		        Window window = new Window();
+			    window.setCaption("Preview PDF");
+			    Embedded c = new Embedded("", resources);
+			    c.setType(2);
+			    c.setSizeFull();
+			    resources.setMIMEType("application/pdf");
+			    window.setContent(c);
+			    window.setModal(true);
+			    window.setWidth("90%");
+			    window.setHeight("90%");
+			    UI.getCurrent().addWindow(window);
+			}
+		});
+        itemMenuGrid.addSeparator();
+        itemMenuGrid.addItem(EWebUIConstant.BUTTON_DELETE.toString(), FontAwesome.TRASH_O, new Command() {
 			private static final long serialVersionUID = -6262114274661510612L;
 			@Override
             public void menuSelected(MenuItem selectedItem) {

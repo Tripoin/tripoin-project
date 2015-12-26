@@ -27,7 +27,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 	protected Grid grid = new Grid();
     protected MenuBar menuBarPaging;
     protected HorizontalLayout panelCaption;
-    protected MenuItem addItemMenuGrid;
+    protected MenuItem itemMenuGrid;
     protected Notification notification;
     protected static final Integer NOTIFICATION_TIME = 10000;
     protected Integer positionPage;
@@ -67,16 +67,16 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
         panelCaption.addStyleName("v-panel-caption");
         panelCaption.setWidth("100%");
         
-        MenuBar moreMenuGrid = new MenuBar();
-        moreMenuGrid.setAutoOpen(true);
-        moreMenuGrid.addStyleName("borderless");
-        moreMenuGrid.addStyleName("small");
-        addItemMenuGrid = moreMenuGrid.addItem("", FontAwesome.COG, null);
-        addItemMenuGrid.setStyleName("icon-only");
+        MenuBar menuBarGrid = new MenuBar();
+        menuBarGrid.setAutoOpen(true);
+        menuBarGrid.addStyleName("borderless");
+        menuBarGrid.addStyleName("small");
+        itemMenuGrid = menuBarGrid.addItem("", FontAwesome.COG, null);
+        itemMenuGrid.setStyleName("icon-only");
         setItemMenuGrid();
         
-        panelCaption.addComponent(moreMenuGrid);
-        panelCaption.setExpandRatio(moreMenuGrid, 1);
+        panelCaption.addComponent(menuBarGrid);
+        panelCaption.setExpandRatio(menuBarGrid, 1);
         menuBarPaging = new MenuBar();
         panelCaption.addComponent(menuBarPaging);
         menuBarPaging.addStyleName("borderless");

@@ -32,6 +32,30 @@
 				<exclusion>
 					<groupId>javax.validation</groupId>
 					<artifactId>validation-api</artifactId>
+				</exclusion>				
+				<exclusion>
+					<artifactId>commons-beanutils</artifactId>
+					<groupId>commons-beanutils</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-collections</artifactId>
+					<groupId>commons-collections</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-daemon</artifactId>
+					<groupId>commons-daemon</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-dbcp2</artifactId>
+					<groupId>org.apache.commons</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -40,6 +64,108 @@
 			<artifactId>tripoin-util-common</artifactId>
 			<version>${tripoin.util.version}</version>
 			<exclusions>
+				<exclusion>
+					<artifactId>aopalliance</artifactId>
+					<groupId>aopalliance</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>aspectjrt</artifactId>
+					<groupId>org.aspectj</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>aspectjweaver</artifactId>
+					<groupId>org.aspectj</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cglib</artifactId>
+					<groupId>cglib</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context-support</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-expression</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.tripoin.util</groupId>
+			<artifactId>tripoin-util-ui</artifactId>
+			<version>${tripoin.util.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-server</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>vaadin-client</artifactId>
+					<groupId>com.vaadin</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>vaadin-sass-compiler</artifactId>
+					<groupId>com.vaadin</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>junit</artifactId>
+					<groupId>junit</groupId>
+				</exclusion>
+    			<exclusion>
+    				<artifactId>commons-codec</artifactId>
+    				<groupId>commons-codec</groupId>
+    			</exclusion>
+    			<exclusion>
+    				<artifactId>commons-logging</artifactId>
+    				<groupId>commons-logging</groupId>
+    			</exclusion>
+    			<exclusion>
+    				<artifactId>slf4j-api</artifactId>
+    				<groupId>org.slf4j</groupId>
+    			</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.tripoin.util</groupId>
+			<artifactId>tripoin-util-report</artifactId>
+			<version>${tripoin.util.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-server</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>vaadin-sass-compiler</artifactId>
+					<groupId>com.vaadin</groupId>
+				</exclusion>
 				<exclusion>
 					<artifactId>aopalliance</artifactId>
 					<groupId>aopalliance</groupId>
@@ -116,41 +242,22 @@
 					<artifactId>commons-lang</artifactId>
 					<groupId>commons-lang</groupId>
 				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.tripoin.util</groupId>
-			<artifactId>tripoin-util-ui</artifactId>
-			<version>${tripoin.util.version}</version>
-			<exclusions>
 				<exclusion>
-					<groupId>com.vaadin</groupId>
-					<artifactId>vaadin-server</artifactId>
+					<artifactId>jackson-annotations</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
 				</exclusion>
 				<exclusion>
-					<artifactId>vaadin-client</artifactId>
-					<groupId>com.vaadin</groupId>
+					<artifactId>jackson-core</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
 				</exclusion>
 				<exclusion>
-					<artifactId>vaadin-sass-compiler</artifactId>
-					<groupId>com.vaadin</groupId>
+					<artifactId>jackson-databind</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
 				</exclusion>
 				<exclusion>
-					<artifactId>junit</artifactId>
-					<groupId>junit</groupId>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
 				</exclusion>
-    			<exclusion>
-    				<artifactId>commons-codec</artifactId>
-    				<groupId>commons-codec</groupId>
-    			</exclusion>
-    			<exclusion>
-    				<artifactId>commons-logging</artifactId>
-    				<groupId>commons-logging</groupId>
-    			</exclusion>
-    			<exclusion>
-    				<artifactId>slf4j-api</artifactId>
-    				<groupId>org.slf4j</groupId>
-    			</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- refer spring portlet -->
