@@ -24,7 +24,7 @@ import com.tripoin.web.common.WebServiceConstant;
 import com.tripoin.web.service.IForgotPasswordService;
 import com.tripoin.web.service.ILogoutService;
 import com.tripoin.web.servlet.DiscoveryNavigator;
-import com.tripoin.web.view.ErrorView;
+import com.tripoin.web.view.error.ErrorView;
 import com.tripoin.web.view.home.HomeView;
 import com.tripoin.web.view.login.LoginScreen;
 import com.tripoin.web.view.login.LoginScreen.LoginListener;

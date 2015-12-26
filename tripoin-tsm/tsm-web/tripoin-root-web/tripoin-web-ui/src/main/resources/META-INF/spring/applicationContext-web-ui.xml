@@ -24,7 +24,7 @@
     <bean id="loginScreen" class="com.tripoin.web.view.login.LoginScreen" scope="prototype"/>   
     <bean id="forgotPasswordScreen" class="com.tripoin.web.view.security.ForgotPasswordScreen" scope="prototype"/>	
     <bean id="rootMenuLayout" class="com.tripoin.web.view.menu.RootMenuLayout" scope="prototype"/>
-    <bean id="errorView" class="com.tripoin.web.view.ErrorView" scope="prototype"/>	 
+    <bean id="errorView" class="com.tripoin.web.view.error.ErrorView" scope="prototype"/>	 
     <bean id="homeView" class="com.tripoin.web.view.home.HomeView" scope="prototype"/>
 	<bean id="tripoinUI" class="com.tripoin.web.TripoinUI" scope="prototype"/>   
     

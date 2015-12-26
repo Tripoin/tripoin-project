@@ -1,4 +1,4 @@
-package com.tripoin.web.view;
+package com.tripoin.web.view.error;
 
 import javax.annotation.PostConstruct;
 

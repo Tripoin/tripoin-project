@@ -16,24 +16,15 @@ import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.navigator.View;
+import com.tripoin.web.view.ABaseManageView;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.shared.Position;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickListener;
 
 /**
@@ -42,77 +33,44 @@ import com.vaadin.ui.Button.ClickListener;
 @Component
 @Scope("prototype")
 @VaadinView(value = DataOccupationManageView.BEAN_NAME, cached = false)
-public class DataOccupationManageView extends VerticalLayout implements View, ClickListener {
+public class DataOccupationManageView extends ABaseManageView {
 
 	private static final long serialVersionUID = -4592518571070450190L;
 	public static final String BEAN_NAME = "dataOccupationManageView";
+	public static final String PAGE_NAME = "Data Occupation";
 	
 	@Autowired
 	private IOccupationService occupationService;
 
     private final TextField occupationName = new TextField("Occupation Name");
     private final TextField occupationDescription = new TextField("Description");
-    private Button submit;
-    private Button cancel;
-    private Notification notification = new Notification("");
-    private boolean isFailure = true;
 	private OccupationData occupationData;
 
 	@PostConstruct
 	public void init() throws Exception {        
-        setMargin(true);
-        addStyleName("tripoin-custom-screen");
-        HorizontalLayout row = new HorizontalLayout();
-        addComponent(row);
-        row.setMargin(false);
-        row.setWidth("100%");
-        final FormLayout formTitle = new FormLayout();       
-        row.addComponent(formTitle);
-        formTitle.setMargin(false);
-        formTitle.addStyleName("light");        
-        Label title = new Label("Data Occupation");
-        formTitle.addComponent(title); 
-        title.addStyleName("h1");
+        super.init(PAGE_NAME); 
 
-        final FormLayout form = new FormLayout();
-        addComponent(form);
-        form.setStyleName("tripoin-custom-form");
-        form.setMargin(false);        
-        Label section = new Label(" ");
-        form.addComponent(section);   
-        section.addStyleName("h3");
-        section.addStyleName("colored");
-        section.setWidth("80%");  
-
-        form.addComponent(occupationName);
-        occupationName.setRequired(true);
-        occupationName.setWidth("45%");
-        occupationName.addStyleName("small");
-        occupationName.focus();        
-
-        form.addComponent(occupationDescription);
-        occupationDescription.setWidth("45%");
-        occupationDescription.addStyleName("small");
-
-        HorizontalLayout footer = new HorizontalLayout();
-        form.addComponent(footer);
-        footer.setMargin(new MarginInfo(true, false, true, false));
-        footer.setSpacing(true);
-        footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
-        submit = new Button();
-        footer.addComponent(submit);
-        submit.addStyleName("primary");
-        submit.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        submit.addClickListener(this);
-        cancel = new Button("Cancel");
-        footer.addComponent(cancel);
         cancel.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 7353418766196233887L;
 			@Override
 			public void buttonClick(ClickEvent event) {
 				UI.getCurrent().getNavigator().navigateTo(DataOccupationView.BEAN_NAME);
 			}
-		});        
+		}); 
+    }
+	
+	protected void setFormLayoutView(){
+        form.addComponent(occupationName);
+        occupationName.setRequired(true);
+        occupationName.setWidth("45%");
+        occupationName.addStyleName("small");
+        occupationName.focus();
+        form.addComponent(occupationDescription);
+        occupationDescription.setWidth("45%");
+        occupationDescription.addStyleName("small");		
+	}
+
+	protected void initiateSessionData(){       
         if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString()) == null){
         	occupationData = new OccupationData();
 			occupationData.setStatus(1);
@@ -123,22 +81,9 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
         	occupationName.setValue(occupationData.getName());
         	occupationDescription.setValue(occupationData.getRemarks());
         	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());
-        }
-        notification.setCaption("Error Data Occupation");
-		notification.setStyleName("system closable");
-        notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(10000);
-    }
-
-	public void setOccupationData(OccupationData occupationData) {
-		this.occupationData = occupationData;
+        }	
 	}
-
-    @Override
-    public void enter(ViewChangeEvent event) {
-    	
-    }
-
+	
 	public Button getSubmit() {
 		return submit;
 	}
@@ -165,6 +110,7 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
 				occupationData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
 				generalTransferObject = occupationService.updateOccupation(occupationData);
 			}
+			occupationData = null;
 			if(generalTransferObject != null){
 				if("1".equals(generalTransferObject.getResponseCode()))
 					notification.setDescription("Save Occupation error, please try again later!");
@@ -180,5 +126,10 @@ public class DataOccupationManageView extends VerticalLayout implements View, Cl
 		if(isFailure)
 	        notification.show(Page.getCurrent());
 	}
+
+    @Override
+    public void enter(ViewChangeEvent event) {
+    	
+    }
     
 }
