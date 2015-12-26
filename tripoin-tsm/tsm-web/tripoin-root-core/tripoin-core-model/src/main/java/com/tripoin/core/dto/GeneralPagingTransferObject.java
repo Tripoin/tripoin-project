@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class GeneralPagingTransferObject extends GeneralTransferObject {
 	
 	@XmlElement(name = "PageName", namespace = "")
-	protected String pageName;
+	private String pageName;
 	
 	@XmlElement(name = "PositionPage", namespace = "")
 	private Integer positionPage;
@@ -22,13 +22,13 @@ public class GeneralPagingTransferObject extends GeneralTransferObject {
 	private Integer totalPage;
 	
 	@XmlElement(name = "RowPerPage", namespace = "")
-	protected Integer rowPerPage;
+	private Integer rowPerPage;
 
 	public GeneralPagingTransferObject(){}
 	
 	public GeneralPagingTransferObject(String pageName) {
 		this.pageName = pageName;
-	}
+	}	
 
 	public String getPageName() {
 		return pageName;
