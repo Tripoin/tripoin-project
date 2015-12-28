@@ -13,6 +13,8 @@
 		
 	<import resource="classpath:META-INF/spring/applicationContext-web-service.xml"/>
 	<import resource="classpath:META-INF/spring/applicationContext-web-ui.xml"/>
-	<import resource="security-web-config.xml"/>	
+	<import resource="security-web-config.xml"/>
+	
+	<bean id="jasperReportCompiler" class="com.tripoin.util.report.JasperReportCompiler"/>	
 		 	
 </beans>
