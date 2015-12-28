@@ -161,7 +161,7 @@ public class DataOccupationView extends ABaseGridView {
 			private static final long serialVersionUID = 5989159535771225427L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				exportDataReport(occupationDatasSelect, "Occupation.jrxml", null, "Report-Occupation-");
+				exportDataReport(occupationDatasSelect, "Occupation.jasper", null, "Report-Occupation-");
 			}
 		});
         menuItemExportSelected.setEnabled(false);

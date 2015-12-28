@@ -168,10 +168,18 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
         }
     }
 	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>exportDataReport(data, "report.jasper", null, "Report-Monthly-");</code><br>
+	 * @param data
+	 * @param reportFilename
+	 * @param params
+	 * @param outputFilename
+	 */
 	protected void exportDataReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){
 		if(data != null && !data.isEmpty()){
 			ReportsUtil reportUtil = ReportsUtil.getInstance();
-			StreamResource resources = reportUtil.createPdfReport(data, "Occupation.jrxml", params, "Report-Occupation");
+			StreamResource resources = reportUtil.createPdfReport(data, reportFilename, params, outputFilename);
 			if(resources != null){
 		        Window window = new Window();
 			    window.setCaption("Report Preview");
