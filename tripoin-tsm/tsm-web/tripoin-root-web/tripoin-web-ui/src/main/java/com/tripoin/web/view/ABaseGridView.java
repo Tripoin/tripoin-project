@@ -1,19 +1,27 @@
 package com.tripoin.web.view;
 
+import java.util.Collection;
+import java.util.Map;
+
+import com.tripoin.util.report.ReportsUtil;
 import com.tripoin.web.common.EWebUIConstant;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.StreamResource;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -24,14 +32,14 @@ import com.vaadin.ui.MenuBar.MenuItem;
 public abstract class ABaseGridView extends VerticalLayout implements View, ClickListener {
 
 	private static final long serialVersionUID = -570015212316455087L;
+    private MenuBar menuBarPaging;
+    private HorizontalLayout panelCaption;
+    private static final Integer NOTIFICATION_TIME = 10000;
+    private Integer positionPage;
+    private Integer totalPage;
 	protected Grid grid = new Grid();
-    protected MenuBar menuBarPaging;
-    protected HorizontalLayout panelCaption;
     protected MenuItem itemMenuGrid;
     protected Notification notification;
-    protected static final Integer NOTIFICATION_TIME = 10000;
-    protected Integer positionPage;
-    protected Integer totalPage;
 
 	public void init(String PAGE_NAME) throws Exception {
         setMargin(true);
@@ -159,6 +167,42 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
             }
         }
     }
+	
+	protected void exportDataReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){
+		if(data != null && !data.isEmpty()){
+			ReportsUtil reportUtil = ReportsUtil.getInstance();
+			StreamResource resources = reportUtil.createPdfReport(data, "Occupation.jrxml", params, "Report-Occupation");
+			if(resources != null){
+		        Window window = new Window();
+			    window.setCaption("Report Preview");
+			    Embedded c = new Embedded("", resources);
+			    c.setType(2);
+			    c.setSizeFull();
+			    resources.setMIMEType("application/pdf");
+			    window.setContent(c);
+			    window.setModal(true);
+			    window.setWidth("90%");
+			    window.setHeight("90%");
+			    UI.getCurrent().addWindow(window);
+			}					
+		}
+	}
+
+	public Integer getPositionPage() {
+		return positionPage;
+	}
+
+	public void setPositionPage(Integer positionPage) {
+		this.positionPage = positionPage;
+	}
+
+	public Integer getTotalPage() {
+		return totalPage;
+	}
+
+	public void setTotalPage(Integer totalPage) {
+		this.totalPage = totalPage;
+	}
 
 	protected abstract void constructDataContainer();
 	
