@@ -28,6 +28,9 @@
     	<property name="order" value="0"/>
 	</bean> 
 	
+	<bean id="jasperReportCompiler" class="com.tripoin.util.report.JasperReportCompiler"/>	
+	<bean id="reportGenerator" class="com.tripoin.util.report.ReportGenerator"/>	
+	
 	<mvc:annotation-driven />
 	 	
 </beans>
