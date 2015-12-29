@@ -3,8 +3,8 @@ package com.tripoin.web.view;
 import java.util.Collection;
 import java.util.Map;
 
-import com.tripoin.util.report.ReportsUtil;
 import com.tripoin.web.common.EWebUIConstant;
+import com.tripoin.web.common.ReportUtil;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
@@ -170,23 +170,23 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 	
 	/**
 	 * <b>Sample Code:</b><br>
-	 * <code>exportDataReport(data, "report.jasper", null, "Report-Monthly-");</code><br>
+	 * <code>exportStreamDataReport(data, "report.jasper", null, "Report-Monthly");</code><br>
+	 * @param reportUtil
 	 * @param data
 	 * @param reportFilename
 	 * @param params
 	 * @param outputFilename
 	 */
-	protected void exportDataReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){
+	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){
 		if(data != null && !data.isEmpty()){
-			ReportsUtil reportUtil = ReportsUtil.getInstance();
-			StreamResource resources = reportUtil.createPdfReport(data, reportFilename, params, outputFilename);
+			StreamResource resources = reportUtil.exportStreamPdfReport(data, reportFilename, params, outputFilename);
 			if(resources != null){
+			    resources.setMIMEType("application/pdf");
 		        Window window = new Window();
 			    window.setCaption("Report Preview");
 			    Embedded c = new Embedded("", resources);
 			    c.setType(2);
 			    c.setSizeFull();
-			    resources.setMIMEType("application/pdf");
 			    window.setContent(c);
 			    window.setModal(true);
 			    window.setWidth("90%");

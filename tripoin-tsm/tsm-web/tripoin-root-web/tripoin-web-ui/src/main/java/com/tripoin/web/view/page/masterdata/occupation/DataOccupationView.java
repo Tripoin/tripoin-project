@@ -13,6 +13,7 @@ import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
+import com.tripoin.web.common.ReportUtil;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseGridView;
@@ -54,6 +55,9 @@ public class DataOccupationView extends ABaseGridView {
 	
 	@Autowired
 	private IOccupationService occupationService;
+	
+	@Autowired
+	private ReportUtil reportUtil;
 	
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);	
 	private Object[] headerGrid = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
@@ -161,7 +165,7 @@ public class DataOccupationView extends ABaseGridView {
 			private static final long serialVersionUID = 5989159535771225427L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				exportDataReport(occupationDatasSelect, "Occupation.jasper", null, "Report-Occupation-");
+				exportStreamDataReport(reportUtil, occupationDatasSelect, "Occupation.jasper", null, "Report-Occupation");
 			}
 		});
         menuItemExportSelected.setEnabled(false);

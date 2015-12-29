@@ -46,6 +46,7 @@ public class StateFullRestImpl implements IStateFullRest {
 	private final RestTemplate template = new RestTemplate();
 	private HttpStatus statusCode;
 	private boolean isMultipart = false;
+	private boolean isOctetStream = false;
 
 	@Override
 	public Map<String, String> getAdditionalDataMenu() {
@@ -107,8 +108,18 @@ public class StateFullRestImpl implements IStateFullRest {
 		return isMultipart;
 	}
 
+	@Override
 	public void setMultipart(boolean isMultipart) {
 		this.isMultipart = isMultipart;
+	}
+
+	public boolean isOctetStream() {
+		return isOctetStream;
+	}
+
+	@Override
+	public void setOctetStream(boolean isOctetStream) {
+		this.isOctetStream = isOctetStream;
 	}
 
 	@Value("${tripoin.is.oauth}")
@@ -159,7 +170,11 @@ public class StateFullRestImpl implements IStateFullRest {
 
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		if(isOctetStream){
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_XHTML_XML, MediaType.TEXT_HTML, MediaType.ALL));
+			isOctetStream = false;
+		}else
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		if(isMultipart){
 			headers.setContentType(new MediaType("multipart", "form-data"));
 			isMultipart = false;

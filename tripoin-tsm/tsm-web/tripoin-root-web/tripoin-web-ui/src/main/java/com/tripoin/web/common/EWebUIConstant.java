@@ -54,6 +54,8 @@ public enum EWebUIConstant {
 	BUTTON_UPDATE("Update"),
 	BUTTON_DELETE("Delete"),
 	
+	REPORT_PDF(".pdf"),
+	
 	BUTTON_PAGING(5),	
 	ROW_PER_PAGE(10);
 

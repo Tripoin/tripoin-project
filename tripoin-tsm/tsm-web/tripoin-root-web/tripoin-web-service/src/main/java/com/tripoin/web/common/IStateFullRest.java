@@ -133,5 +133,12 @@ public interface IStateFullRest {
 	 * @param isMultipart
 	 */
 	public void setMultipart(boolean isMultipart);
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>setOctetStream(true)</code><br>
+	 * @param isOctetStream
+	 */
+	public void setOctetStream(boolean isOctetStream);
 
 }
