@@ -136,9 +136,9 @@ public interface IStateFullRest {
 	
 	/**
 	 * <b>Sample Code:</b><br>
-	 * <code>setOctetStream(true)</code><br>
-	 * @param isOctetStream
+	 * <code>setDownloadedFile(true)</code><br>
+	 * @param isDownloadedFile
 	 */
-	public void setOctetStream(boolean isOctetStream);
+	public void setDownloadedFile(boolean isDownloadedFile);
 
 }

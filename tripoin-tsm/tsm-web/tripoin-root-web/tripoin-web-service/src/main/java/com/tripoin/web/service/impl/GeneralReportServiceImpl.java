@@ -23,7 +23,7 @@ public class GeneralReportServiceImpl implements IGeneralReportService {
 
 	@Override
 	public byte[] getSelectedReport(GeneralReportTransferObject generalReportTransferObject) {
-		stateFullRest.setOctetStream(true);
+		stateFullRest.setDownloadedFile(true);
 		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_REPORT_SELECTED), generalReportTransferObject, byte[].class);
 	}
 

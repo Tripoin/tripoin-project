@@ -155,12 +155,14 @@ public class DataOccupationView extends ABaseGridView {
         		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
             }
         });
-        /**
-         * If ItemMenu not used
-         * addItemMenuGrid.addItem("Export", null).setEnabled(false);
-         */
         menuItemExport = itemMenuGrid.addItem("Export", null);
-        menuItemExport.addItem("Export All", null);
+        menuItemExport.addItem("Export All", new Command() {
+			private static final long serialVersionUID = 5989159535771225427L;
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				exportStreamDataReport(reportUtil, null, "OccupationAll.jasper", null, "Report-Occupation-All");
+			}
+		});
         menuItemExportSelected = menuItemExport.addItem("Export Selected", new Command() {
 			private static final long serialVersionUID = 5989159535771225427L;
 			@Override

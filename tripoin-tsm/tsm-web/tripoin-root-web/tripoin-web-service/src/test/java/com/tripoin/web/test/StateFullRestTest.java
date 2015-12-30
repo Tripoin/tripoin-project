@@ -42,7 +42,7 @@ public class StateFullRestTest implements IStateFullRest {
 	private final RestTemplate template = new RestTemplate();
 	private HttpStatus statusCode;
 	private boolean isMultipart = false;
-	private boolean isOctetStream = false;
+	private boolean isDownloadedFile = false;
 
 	@Override
 	public Map<String, String> getAdditionalDataMenu() {
@@ -100,22 +100,14 @@ public class StateFullRestTest implements IStateFullRest {
 		this.statusCode = statusCode;
 	}
 
-	public boolean isMultipart() {
-		return isMultipart;
-	}
-
 	@Override
 	public void setMultipart(boolean isMultipart) {
 		this.isMultipart = isMultipart;
 	}
 
-	public boolean isOctetStream() {
-		return isOctetStream;
-	}
-
 	@Override
-	public void setOctetStream(boolean isOctetStream) {
-		this.isOctetStream = isOctetStream;
+	public void setDownloadedFile(boolean isDownloadedFile) {
+		this.isDownloadedFile = isDownloadedFile;
 	}
 
 	@Value("${tripoin.is.oauth}")
@@ -166,9 +158,10 @@ public class StateFullRestTest implements IStateFullRest {
 
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
-		if(isOctetStream){
+		List<String> cookiesList = headers.get("Set-Cookie");
+		if(isDownloadedFile){
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_XHTML_XML, MediaType.TEXT_HTML, MediaType.ALL));
-			isOctetStream = false;
+			isDownloadedFile = false;
 		}else
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		if(isMultipart){
@@ -176,13 +169,13 @@ public class StateFullRestTest implements IStateFullRest {
 			isMultipart = false;
 		}else
 			headers.setContentType(MediaType.APPLICATION_JSON);
-		List<String> cookiesList = headers.get("Set-Cookie");
 		if(cookies.isEmpty() || cookies == null || cookiesList == null || cookiesList.isEmpty()) {
 			if(isOAuth){
 				return encodeUserCredentials(headers, username, password);	
 			}
 		}
 		headers.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));
+		
 		return headers;
 	}
 	

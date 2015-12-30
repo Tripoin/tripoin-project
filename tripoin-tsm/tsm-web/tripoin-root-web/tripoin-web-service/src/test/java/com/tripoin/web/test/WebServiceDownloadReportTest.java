@@ -59,7 +59,7 @@ public class WebServiceDownloadReportTest implements ApplicationContextAware {
 		o.setRemarks("Occupation Test");
 		generalReportTransferObject.setDataSelection(oc);
 		generalReportTransferObject.setTemplateReportName("Occupation.jasper");
-		stateFullRestTest.setOctetStream(true);
+		stateFullRestTest.setDownloadedFile(true);
 		stateFullRestTest.setUsername("tripoin.app.web");
 		stateFullRestTest.setPassword("72jsoH!=jn3oskqPHJ#@");
 		Byte[] generalTransferObject = stateFullRestTest.get(commonRest.getUrl(WebServiceConstant.HTTP_REPORT_SELECTED), Byte[].class);

@@ -2,11 +2,16 @@ package com.tripoin.web.view;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.http.MediaType;
 
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ReportUtil;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
+import com.vaadin.server.ResourceReference;
 import com.vaadin.server.StreamResource;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
@@ -33,6 +38,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 
 	private static final long serialVersionUID = -570015212316455087L;
     private MenuBar menuBarPaging;
+    private MenuBar menuBarGrid;
     private HorizontalLayout panelCaption;
     private static final Integer NOTIFICATION_TIME = 10000;
     private Integer positionPage;
@@ -75,7 +81,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
         panelCaption.addStyleName("v-panel-caption");
         panelCaption.setWidth("100%");
         
-        MenuBar menuBarGrid = new MenuBar();
+        menuBarGrid = new MenuBar();
         menuBarGrid.setAutoOpen(true);
         menuBarGrid.addStyleName("borderless");
         menuBarGrid.addStyleName("small");
@@ -178,21 +184,29 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 	 * @param outputFilename
 	 */
 	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){
-		if(data != null && !data.isEmpty()){
-			StreamResource resources = reportUtil.exportStreamPdfReport(data, reportFilename, params, outputFilename);
-			if(resources != null){
-			    resources.setMIMEType("application/pdf");
-		        Window window = new Window();
-			    window.setCaption("Report Preview");
-			    Embedded c = new Embedded("", resources);
-			    c.setType(2);
-			    c.setSizeFull();
-			    window.setContent(c);
+		outputFilename = outputFilename.concat("-").concat(UUID.randomUUID().toString()).concat(EWebUIConstant.REPORT_PDF.toString());
+		final StreamResource resource = reportUtil.exportStreamPdfReport(data, reportFilename, params, outputFilename);	    
+    	if(resource != null){
+			if(data != null && !data.isEmpty()){
+				resource.setMIMEType("application/pdf");
+		    	resource.getStream().setParameter("Content-Disposition", "attachment; filename=\"".concat(outputFilename).concat("\""));
+		    	final Window window = new Window("Report Preview");
+			    final Embedded embedded = new Embedded();
+			    embedded.setType(2);
+			    embedded.setSizeFull();
+		    	embedded.setSource(resource);
+			    window.setContent(embedded);
 			    window.setModal(true);
+			    window.center();
 			    window.setWidth("90%");
 			    window.setHeight("90%");
-			    UI.getCurrent().addWindow(window);
-			}					
+			    UI.getCurrent().addWindow(window);		
+			}else{
+				resource.setMIMEType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+				setResource("export", resource);			
+				ResourceReference resourceReference = ResourceReference.create(resource, this, "export");
+				Page.getCurrent().open(resourceReference.getURL(), "_blank", false);			
+			}
 		}
 	}
 

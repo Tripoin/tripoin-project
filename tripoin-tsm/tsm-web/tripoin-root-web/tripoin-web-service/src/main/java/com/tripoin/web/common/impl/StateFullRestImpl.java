@@ -46,7 +46,7 @@ public class StateFullRestImpl implements IStateFullRest {
 	private final RestTemplate template = new RestTemplate();
 	private HttpStatus statusCode;
 	private boolean isMultipart = false;
-	private boolean isOctetStream = false;
+	private boolean isDownloadedFile = false;
 
 	@Override
 	public Map<String, String> getAdditionalDataMenu() {
@@ -104,22 +104,14 @@ public class StateFullRestImpl implements IStateFullRest {
 		this.statusCode = statusCode;
 	}
 
-	public boolean isMultipart() {
-		return isMultipart;
-	}
-
 	@Override
 	public void setMultipart(boolean isMultipart) {
 		this.isMultipart = isMultipart;
 	}
 
-	public boolean isOctetStream() {
-		return isOctetStream;
-	}
-
 	@Override
-	public void setOctetStream(boolean isOctetStream) {
-		this.isOctetStream = isOctetStream;
+	public void setDownloadedFile(boolean isDownloadedFile) {
+		this.isDownloadedFile = isDownloadedFile;
 	}
 
 	@Value("${tripoin.is.oauth}")
@@ -170,9 +162,10 @@ public class StateFullRestImpl implements IStateFullRest {
 
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
-		if(isOctetStream){
+		List<String> cookiesList = headers.get("Set-Cookie");
+		if(isDownloadedFile){
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_XHTML_XML, MediaType.TEXT_HTML, MediaType.ALL));
-			isOctetStream = false;
+			isDownloadedFile = false;
 		}else
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		if(isMultipart){
@@ -180,13 +173,13 @@ public class StateFullRestImpl implements IStateFullRest {
 			isMultipart = false;
 		}else
 			headers.setContentType(MediaType.APPLICATION_JSON);
-		List<String> cookiesList = headers.get("Set-Cookie");
 		if(cookies.isEmpty() || cookies == null || cookiesList == null || cookiesList.isEmpty()) {
 			if(isOAuth){
 				return encodeUserCredentials(headers, username, password);	
 			}
 		}
 		headers.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));
+		
 		return headers;
 	}
 	
@@ -228,6 +221,7 @@ public class StateFullRestImpl implements IStateFullRest {
 		StringBuilder sb = new StringBuilder();
 		if (!cookies.isEmpty()) {
 			for(Entry<String, String> entry : cookies.entrySet()){
+				LOGGER.error(entry.getKey()+"="+entry.getValue());
 				sb.append(entry.getKey());
 				sb.append("=");
 				sb.append(entry.getValue());
