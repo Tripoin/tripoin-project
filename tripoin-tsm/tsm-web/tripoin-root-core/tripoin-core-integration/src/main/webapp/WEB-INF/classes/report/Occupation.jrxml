@@ -21,7 +21,7 @@
 	<title>
 		<band height="64" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" x="144" y="0" width="288" height="50" uuid="93b4869e-6898-42fa-ad00-c707056bce3c"/>
+				<reportElement style="Title" x="133" y="0" width="288" height="50" uuid="93b4869e-6898-42fa-ad00-c707056bce3c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Open Sans" size="30" isBold="false"/>
 				</textElement>
