@@ -162,7 +162,6 @@ public class StateFullRestImpl implements IStateFullRest {
 
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
-		List<String> cookiesList = headers.get("Set-Cookie");
 		if(isDownloadedFile){
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_XHTML_XML, MediaType.TEXT_HTML, MediaType.ALL));
 			isDownloadedFile = false;
@@ -173,7 +172,7 @@ public class StateFullRestImpl implements IStateFullRest {
 			isMultipart = false;
 		}else
 			headers.setContentType(MediaType.APPLICATION_JSON);
-		if(cookies.isEmpty() || cookies == null || cookiesList == null || cookiesList.isEmpty()) {
+		if(cookies.isEmpty() || cookies == null) {
 			if(isOAuth){
 				return encodeUserCredentials(headers, username, password);	
 			}
@@ -221,7 +220,6 @@ public class StateFullRestImpl implements IStateFullRest {
 		StringBuilder sb = new StringBuilder();
 		if (!cookies.isEmpty()) {
 			for(Entry<String, String> entry : cookies.entrySet()){
-				LOGGER.error(entry.getKey()+"="+entry.getValue());
 				sb.append(entry.getKey());
 				sb.append("=");
 				sb.append(entry.getValue());

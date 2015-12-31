@@ -21,13 +21,14 @@ public class ReportUtil {
 	@Autowired
 	private IGeneralReportService iGeneralReportService;
 	
-    public StreamResource exportStreamPdfReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){    	
-    	return createStreamReport(data, reportFilename, params, outputFilename);
+    public StreamResource exportStreamReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EWebUIConstant typeFile){    	
+    	return createStreamReport(data, reportFilename, params, outputFilename, typeFile);
     }
     
-    private StreamResource createStreamReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){
+    private StreamResource createStreamReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EWebUIConstant typeFile){
     	final GeneralReportTransferObject generalReportTransferObject = new GeneralReportTransferObject();
     	generalReportTransferObject.setTemplateReportName(reportFilename);
+    	generalReportTransferObject.setTypeFile(typeFile.getOperator());
     	generalReportTransferObject.setDataSelection(data);
     	return new StreamResource(new StreamResource.StreamSource() {
 			private static final long serialVersionUID = -7890689648689132725L;
@@ -36,6 +37,8 @@ public class ReportUtil {
                 ByteArrayOutputStream pdfBuffer = new ByteArrayOutputStream();
                 try {
                 	pdfBuffer.write(iGeneralReportService.getSelectedReport(generalReportTransferObject));
+				} catch (NullPointerException ne) {
+					LOGGER.error("Response Web Service Generate Report : Null");
 				} catch (Exception e) {
 					LOGGER.error("Create Stream Resource Failure",e);
 				}

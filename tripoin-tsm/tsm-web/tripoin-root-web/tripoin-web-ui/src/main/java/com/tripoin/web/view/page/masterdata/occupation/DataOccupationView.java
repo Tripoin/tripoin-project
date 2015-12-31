@@ -81,7 +81,7 @@ public class DataOccupationView extends ABaseGridView {
 			findOccupationData.setName(nameOccupationSearch.getValue());
 		}
 		occupationTransferObjectSearch.setPositionPage(getPositionPage());
-		occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getInt());
+		occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
 		occupationTransferObjectSearch.setFindOccupationData(findOccupationData);
         occupationTransferObject = occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
         setPositionPage(occupationTransferObject.getPositionPage());
@@ -160,14 +160,14 @@ public class DataOccupationView extends ABaseGridView {
 			private static final long serialVersionUID = 5989159535771225427L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				exportStreamDataReport(reportUtil, null, "OccupationAll.jasper", null, "Report-Occupation-All");
+				exportStreamDataReport(reportUtil, null, "OccupationAll.jasper", null, "Report-Occupation-All", EWebUIConstant.REPORT_PDF);
 			}
 		});
         menuItemExportSelected = menuItemExport.addItem("Export Selected", new Command() {
 			private static final long serialVersionUID = 5989159535771225427L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				exportStreamDataReport(reportUtil, occupationDatasSelect, "Occupation.jasper", null, "Report-Occupation");
+				exportStreamDataReport(reportUtil, occupationDatasSelect, "Occupation.jasper", null, "Report-Occupation", EWebUIConstant.REPORT_PDF);
 			}
 		});
         menuItemExportSelected.setEnabled(false);

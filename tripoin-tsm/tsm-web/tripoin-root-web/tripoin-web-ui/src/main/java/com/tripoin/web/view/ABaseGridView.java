@@ -152,9 +152,9 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
     				}    					    				
     			}
     		};
-            Integer posMin = positionPage-(new Double(EWebUIConstant.BUTTON_PAGING.getInt()/2).intValue());
+            Integer posMin = positionPage-(new Double(EWebUIConstant.BUTTON_PAGING.getOperatorInt()/2).intValue());
             if(posMin<1) posMin = 1; 
-            Integer posMax = positionPage+(new Double(EWebUIConstant.BUTTON_PAGING.getInt()/2).intValue());
+            Integer posMax = positionPage+(new Double(EWebUIConstant.BUTTON_PAGING.getOperatorInt()/2).intValue());
             if(posMax>totalPage) posMax = totalPage; 
             if(positionPage>1){
             	if(posMin>1) menuBarPaging.addItem("", FontAwesome.BACKWARD, eventPageClick);
@@ -176,19 +176,20 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 	
 	/**
 	 * <b>Sample Code:</b><br>
-	 * <code>exportStreamDataReport(data, "report.jasper", null, "Report-Monthly");</code><br>
+	 * <code>exportStreamDataReport(data, "report.jasper", null, "Report-Monthly", EWebUIConstant.REPORT_PDF);</code><br>
 	 * @param reportUtil
 	 * @param data
 	 * @param reportFilename
 	 * @param params
 	 * @param outputFilename
+	 * @param typeFile
 	 */
-	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename){
-		outputFilename = outputFilename.concat("-").concat(UUID.randomUUID().toString()).concat(EWebUIConstant.REPORT_PDF.toString());
-		final StreamResource resource = reportUtil.exportStreamPdfReport(data, reportFilename, params, outputFilename);	    
+	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EWebUIConstant typeFile){
+		outputFilename = outputFilename.concat("-").concat(UUID.randomUUID().toString()).concat(typeFile.toString());
+		final StreamResource resource = reportUtil.exportStreamReport(data, reportFilename, params, outputFilename, typeFile);	    
     	if(resource != null){
 			if(data != null && !data.isEmpty()){
-				resource.setMIMEType("application/pdf");
+				resource.setMIMEType(typeFile.getOperand());
 		    	resource.getStream().setParameter("Content-Disposition", "attachment; filename=\"".concat(outputFilename).concat("\""));
 		    	final Window window = new Window("Report Preview");
 			    final Embedded embedded = new Embedded();

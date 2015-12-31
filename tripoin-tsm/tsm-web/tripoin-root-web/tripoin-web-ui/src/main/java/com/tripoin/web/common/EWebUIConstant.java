@@ -54,27 +54,40 @@ public enum EWebUIConstant {
 	BUTTON_UPDATE("Update"),
 	BUTTON_DELETE("Delete"),
 	
-	REPORT_PDF(".pdf"),
+	REPORT_PDF(".pdf", "application/pdf"),
+	REPORT_EXCEL(".xls", "application/vnd.ms-excel"),
+	REPORT_CSV(".csv", "text/csv"),
+	REPORT_TEXT(".txt", "text/plain"),
 	
 	BUTTON_PAGING(5),	
 	ROW_PER_PAGE(10);
 
 	private String operator;
-	private Integer operatorInteger;	
+	private Integer operatorInteger;
+	private String operand;
 	
 	private EWebUIConstant(String operator){
 		this.operator = operator ;
+	}	
+	
+	private EWebUIConstant(String operator, String operand){
+		this.operator = operator ;
+		this.operand = operand;
 	}	
 	
 	private EWebUIConstant(Integer operatorInteger){
 		this.operatorInteger = operatorInteger ;
 	}
 	
-	public String getString() {
+	public String getOperator() {
 		return operator;
 	}
+	
+	public String getOperand(){
+		return operand;
+	}
 
-	public Integer getInt() {
+	public Integer getOperatorInt() {
 		return operatorInteger;
 	}
 

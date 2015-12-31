@@ -158,7 +158,6 @@ public class StateFullRestTest implements IStateFullRest {
 
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
-		List<String> cookiesList = headers.get("Set-Cookie");
 		if(isDownloadedFile){
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_XHTML_XML, MediaType.TEXT_HTML, MediaType.ALL));
 			isDownloadedFile = false;
@@ -169,7 +168,7 @@ public class StateFullRestTest implements IStateFullRest {
 			isMultipart = false;
 		}else
 			headers.setContentType(MediaType.APPLICATION_JSON);
-		if(cookies.isEmpty() || cookies == null || cookiesList == null || cookiesList.isEmpty()) {
+		if(cookies.isEmpty() || cookies == null) {
 			if(isOAuth){
 				return encodeUserCredentials(headers, username, password);	
 			}
