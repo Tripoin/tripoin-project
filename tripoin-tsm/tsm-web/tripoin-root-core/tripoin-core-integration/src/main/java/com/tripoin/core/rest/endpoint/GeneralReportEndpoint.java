@@ -27,6 +27,7 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.GeneralReportTransferObject;
 import com.tripoin.util.report.ReportGenerator;
+import com.tripoin.util.report.common.EReportUtilConstant;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -69,11 +70,11 @@ public class GeneralReportEndpoint extends XReturnStatus {
 							if(generalReportTransferObject.getDataSelection() != null && !generalReportTransferObject.getDataSelection().isEmpty()){
 								JRDataSource dataSource = new JRBeanCollectionDataSource(generalReportTransferObject.getDataSelection());		    		
 					    		params.put("beanCollectionDataSource", dataSource);
-					    		reportGenerator.printReportToFile(generalReportTransferObject.getTemplateReportName(), dataSource, params, outputStreamData);
+					    		reportGenerator.printReportToFile(generalReportTransferObject.getTemplateReportName(), dataSource, params, outputStreamData, EReportUtilConstant.getEnum(generalReportTransferObject.getTypeFile()));
 					    	}else{
 								Connection connection = dataSourceReport.getConnection();		    		
 					    		params.put("dataSourceConnecion", connection);
-					    		reportGenerator.printReportToFile(generalReportTransferObject.getTemplateReportName(), connection, params, outputStreamData);
+					    		reportGenerator.printReportToFile(generalReportTransferObject.getTemplateReportName(), connection, params, outputStreamData, EReportUtilConstant.getEnum(generalReportTransferObject.getTypeFile()));
 							}
 						} catch (Exception e) {
 							LOGGER.error("Generate Report System Error : "+e.getLocalizedMessage(), e);
@@ -96,6 +97,8 @@ public class GeneralReportEndpoint extends XReturnStatus {
 		}
 		setReturnStatusAndMessage(generalReportTransferObject, responseHeaderMap);
 		Message<byte[]> message = new GenericMessage<byte[]>(outputStreamData.toByteArray(), responseHeaderMap);
+		generalReportTransferObject = null;
+		outputStreamData = null;
 		return message;		
 	}
 	

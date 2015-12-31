@@ -20,6 +20,9 @@ public class GeneralReportTransferObject extends GeneralTransferObject {
 	
 	@XmlElement(name = "TemplateReportName", namespace = "")
 	private String templateReportName;
+	
+	@XmlElement(name = "TypeFile", namespace = "")
+	private String typeFile;
 
 	@XmlElement(name = "DataSelection", namespace = "")
 	private Collection<?> dataSelection;
@@ -29,9 +32,10 @@ public class GeneralReportTransferObject extends GeneralTransferObject {
 
 	public GeneralReportTransferObject(){}
 	
-	public GeneralReportTransferObject(String reportName, String templateReportName){
+	public GeneralReportTransferObject(String reportName, String templateReportName, String typeFile){
 		this.reportName = reportName;
 		this.templateReportName = reportName;
+		this.typeFile = typeFile;
 	}
 
 	public String getReportName() {
@@ -48,6 +52,14 @@ public class GeneralReportTransferObject extends GeneralTransferObject {
 
 	public void setTemplateReportName(String templateReportName) {
 		this.templateReportName = templateReportName;
+	}
+
+	public String getTypeFile() {
+		return typeFile;
+	}
+
+	public void setTypeFile(String typeFile) {
+		this.typeFile = typeFile;
 	}
 
 	public Collection<?> getDataSelection() {
@@ -69,9 +81,9 @@ public class GeneralReportTransferObject extends GeneralTransferObject {
 	@Override
 	public String toString() {
 		return "GeneralReportTransferObject [reportName=" + reportName
-				+ ", templateReportName=" + templateReportName
-				+ ", dataSelection=" + dataSelection + ", dataFilter="
-				+ dataFilter + "]";
+				+ ", templateReportName=" + templateReportName + ", typeFile="
+				+ typeFile + ", dataSelection=" + dataSelection
+				+ ", dataFilter=" + dataFilter + "]";
 	}
 
 }
