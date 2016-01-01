@@ -85,6 +85,14 @@ public class ServiceTest implements ApplicationContextAware  {
 		runTestUser();
 	}
 	
+	public void runTestTotalRowData() throws Exception {
+		FilterArgument[] filterArguments = new FilterArgument[]{
+			new FilterArgument("name", ECommonOperator.LIKE_SIDE_LEFT)
+		};
+		Long totalRow = iGenericManagerJpa.totalRowData(Occupation.class, filterArguments, new Object[]{"occupation"}, null, null);
+		LOGGER.debug(totalRow.toString());
+	}
+	
 	public void runTestSQLNative() throws Exception {
 		FilterArgument[] filterArguments = new FilterArgument[]{
 			new FilterArgument("occupationName", ECommonOperator.LIKE_SIDE_LEFT)

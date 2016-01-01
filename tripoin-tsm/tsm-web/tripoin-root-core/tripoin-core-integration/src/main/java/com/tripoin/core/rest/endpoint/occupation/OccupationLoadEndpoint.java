@@ -21,6 +21,7 @@ import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
+import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.core.pojo.Occupation;
 import com.tripoin.core.pojo.VersionControlSystemTable;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
@@ -114,21 +115,18 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
 		
 		try{			
-			String query = "FROM Occupation occupation";
-			Object[] data = null;
+			Object[] values = null;
+			FilterArgument[] filterArguments = null;
 			if(inMessage.getPayload() != null){
 				occupationTransferObject = inMessage.getPayload();				
 				try {					
 					if(occupationTransferObject.getFindOccupationData() != null){
-						if(occupationTransferObject.getFindOccupationData().getName() != null){
-							query = query.concat(" WHERE occupation.name LIKE '%'||?||'%'");
-							data = new Object[]{occupationTransferObject.getFindOccupationData().getName()};
-							FilterArgument[] filterArguments = new FilterArgument[]{
-								new FilterArgument("occupationName", ECommonOperator.LIKE_BOTH_SIDE)
-							};
-							versionControlSystemTable = new VersionControlSystemTable();
-							versionControlSystemTable.setTotalRow(((BigInteger)iGenericManagerJpa.getObjectSQLNative("SELECT COUNT(occupation_id) FROM mst_occupation WHERE occupation_name LIKE :occupationName", filterArguments, new Object[]{occupationTransferObject.getFindOccupationData().getName()})).longValue());							
-						}else versionControlSystemTable = iVersionControlSystemTableService.loadValue(Occupation.TABLE_NAME);
+						filterArguments = new FilterArgument[]{
+							new FilterArgument(EnumFieldOccupation.NAME_OCCUPATION.toString(), ECommonOperator.LIKE_BOTH_SIDE)
+						};
+						values = new Object[]{occupationTransferObject.getFindOccupationData().get(EnumFieldOccupation.NAME_OCCUPATION.toString())};
+						versionControlSystemTable = new VersionControlSystemTable();
+						versionControlSystemTable.setTotalRow(((BigInteger)iGenericManagerJpa.getObjectSQLNative("SELECT COUNT(occupation_id) FROM mst_occupation WHERE occupation_name LIKE :".concat(EnumFieldOccupation.NAME_OCCUPATION.toString()), filterArguments, values)).longValue());						
 					}else versionControlSystemTable = iVersionControlSystemTableService.loadValue(Occupation.TABLE_NAME);						
 					positionPage = occupationTransferObject.getPositionPage();
 					rowPerPage = occupationTransferObject.getRowPerPage();		
@@ -150,7 +148,7 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 		        occupationTransferObject.setRowPerPage(rowPerPage);
 		        occupationTransferObject.setTotalPage(totalPage);
 			}
-			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsJQLStatement(query, data, new PageArgument(minRow, maxRow));
+			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArguments, values, null, new PageArgument(minRow, maxRow));
 			List<OccupationData> occupationDatas = new ArrayList<OccupationData>();
 			if(occupationList != null){
 				for(int i=occupationList.size()-1; i>=0; i--)
@@ -169,6 +167,8 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 		
 		setReturnStatusAndMessage(occupationTransferObject, responseHeaderMap);
 		Message<OccupationTransferObject> message = new GenericMessage<OccupationTransferObject>(occupationTransferObject, responseHeaderMap);
+		occupationTransferObject = null;
+		versionControlSystemTable = null;
 		return message;		
 	}
 	

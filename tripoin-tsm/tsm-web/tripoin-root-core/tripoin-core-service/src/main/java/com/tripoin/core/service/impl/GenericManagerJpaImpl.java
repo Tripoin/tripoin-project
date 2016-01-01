@@ -56,6 +56,12 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 
     @Transactional
 	@Override
+	public <T> Long totalRowData(Class<T> objectType, FilterArgument[] filterArguments, Object[] values, SortArgument sortArgument, PageArgument pageArgument) throws Exception {
+    	return genericReadDao.totalRowData(objectType, filterArguments, values, sortArgument, pageArgument);
+	}
+
+    @Transactional
+	@Override
 	public Object getObjectSQLNative(String sql, FilterArgument[] filterArguments, Object[] values) throws Exception {
 		return genericReadDao.getObjectSQLNative(sql, filterArguments, values);
 	}

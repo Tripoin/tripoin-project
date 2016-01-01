@@ -63,6 +63,22 @@ public interface IGenericReadDaoJpa {
 	 * <code>FilterArgument[] filterArguments = new FilterArgument[]{</code><br>
 	 * <code>&emsp;&emsp;new FilterArgument("username", ECommonOperator.LIKE_BOTH_SIDE)</code><br>
 	 * <code>}</code><br>
+	 * <code>totalRowData(User.class, filterArguments, new Object[]{value}, new SortArgument(new String[]{"username"}, false), new PageArgument(0,2))</code><br>
+	 * @param objectType
+	 * @param filterArguments
+	 * @param values
+	 * @param sortArgument
+	 * @param pageArgument
+	 * @return
+	 * @throws Exception
+	 */
+	public <T> Long totalRowData(Class<T> objectType, FilterArgument[] filterArguments, Object[] values, SortArgument sortArgument, PageArgument pageArgument) throws Exception;
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>FilterArgument[] filterArguments = new FilterArgument[]{</code><br>
+	 * <code>&emsp;&emsp;new FilterArgument("username", ECommonOperator.LIKE_BOTH_SIDE)</code><br>
+	 * <code>}</code><br>
 	 * <code>getObjectSQLNative("SELECT COUNT(*) FROM sec_user WHERE sec_user LIKE :username", filterArguments, new Object[]{"admin"})</code><br><br>
 	 * @param sql
 	 * @param filterArguments

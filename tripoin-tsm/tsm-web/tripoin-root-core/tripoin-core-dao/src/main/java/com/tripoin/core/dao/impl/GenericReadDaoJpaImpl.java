@@ -44,6 +44,19 @@ public class GenericReadDaoJpaImpl extends ABaseReadDaoJpa {
 		List<T> result = query.getResultList();
 		return result;
 	}
+	
+	@Override
+	public <T> Long totalRowData(Class<T> objectType, FilterArgument[] filterArguments, Object[] values, SortArgument sortArgument, PageArgument pageArgument) throws Exception {
+		Query query = getEntityManager().createQuery("SELECT COUNT(*)".concat(jqlStatement.getJQL(objectType, filterArguments, values, sortArgument)));
+		if (values != null && values.length > 0) {
+			jqlStatement.setParameterStatement(query, values);
+		}			
+		if(pageArgument != null){
+			query = jqlStatement.pageStatement(query, pageArgument);
+		}		
+		Long result = (Long)query.getSingleResult();
+		return result;
+	}
 
 	@Override
 	public Object getObjectSQLNative(String sql, FilterArgument[] filterArguments, Object[] values) throws Exception {

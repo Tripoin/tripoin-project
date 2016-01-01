@@ -1,6 +1,7 @@
 package com.tripoin.core.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,7 +19,7 @@ public class OccupationTransferObject extends GeneralPagingTransferObject {
 	private List<OccupationData> occupationDatas;
 	
 	@XmlElement(name = "FindOccupationData", namespace = "")
-	private OccupationData findOccupationData;
+	private Map<String, Object> findOccupationData;
 
 	public List<OccupationData> getOccupationDatas() {
 		return occupationDatas;
@@ -28,11 +29,11 @@ public class OccupationTransferObject extends GeneralPagingTransferObject {
 		this.occupationDatas = occupationDatas;
 	}
 
-	public OccupationData getFindOccupationData() {
+	public Map<String, Object> getFindOccupationData() {
 		return findOccupationData;
 	}
 
-	public void setFindOccupationData(OccupationData findOccupationData) {
+	public void setFindOccupationData(Map<String, Object> findOccupationData) {
 		this.findOccupationData = findOccupationData;
 	}
 
@@ -40,6 +41,14 @@ public class OccupationTransferObject extends GeneralPagingTransferObject {
 	public String toString() {
 		return "OccupationTransferObject [occupationDatas=" + occupationDatas
 				+ ", findOccupationData=" + findOccupationData + "]";
+	}
+
+	public enum EnumFieldOccupation {
+		NAME_OCCUPATION("name");
+		
+		private String operator;		
+		private EnumFieldOccupation(String operator){this.operator=operator;}
+		public String toString() {return operator;}
 	}
 	
 }
