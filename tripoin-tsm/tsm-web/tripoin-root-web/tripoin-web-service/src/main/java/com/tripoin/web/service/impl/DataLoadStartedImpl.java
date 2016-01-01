@@ -3,11 +3,14 @@ package com.tripoin.web.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.tripoin.core.dto.OccupationData;
@@ -22,6 +25,8 @@ import com.vaadin.data.util.BeanItemContainer;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBean, IDataLoadStarted {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataLoadStartedImpl.class);
 
 	@Autowired
 	private ICommonRest commonRest;
@@ -41,7 +46,14 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		setOccupationContainer(getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas());
+		try {
+			setOccupationContainer(getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas());
+		} catch (Exception e) {
+			if(HttpStatus.NOT_FOUND.equals(getStatusCode())){
+				LOGGER.warn("Response : ".concat(getStatusCode().value()+" ").concat(getStatusCode().getReasonPhrase()));
+				throw new Exception("Please check Web Service, and restart this Web Container");
+			}else LOGGER.error("Response : ".concat(getStatusCode().value()+" ").concat(getStatusCode().getReasonPhrase()),e);			
+		}				 
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -65,10 +66,14 @@ public abstract class ABaseHttpRest {
 			response = new ResponseEntity<>(hcee.getStatusCode());
 			LOGGER.warn("HttpClientErrorException : ".concat(hcee.getMessage()));
 			clearAllCookies();
+		}catch(ResourceAccessException e){
+			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			LOGGER.warn("Exception : ".concat("Connection refused, please check Web Service"));
+			clearAllCookies();
 		}catch(Exception e){
 			response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			LOGGER.error("Exception : ".concat(e.getMessage()), e);
-			clearAllCookies();			
+			clearAllCookies();		
 		}
 		setStatusCode(response.getStatusCode());
 		return response.getBody();
