@@ -1,7 +1,9 @@
 package com.tripoin.web.view.page.masterdata.occupation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
+import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ReportUtil;
@@ -62,11 +65,11 @@ public class DataOccupationView extends ABaseGridView {
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);	
 	private Object[] headerGrid = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
     		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
-    private TextField nameOccupationSearch;
+    private TextField nameOccupationSearchTextField;
 	private OccupationTransferObject occupationTransferObjectSearch = new OccupationTransferObject();
 	private OccupationTransferObject occupationTransferObject;
 	private List<OccupationData> occupationDatasSelect;
-	private OccupationData findOccupationData;
+	private Map<String, Object> findOccupationData;
 
 	@PostConstruct
 	public void init() throws Exception {  
@@ -76,9 +79,9 @@ public class DataOccupationView extends ABaseGridView {
 	@Override
 	protected void constructDataContainer(){
     	grid.getSelectionModel().reset();
-		if(nameOccupationSearch.getValue() != null && !nameOccupationSearch.getValue().isEmpty()){
-			findOccupationData = new OccupationData();
-			findOccupationData.setName(nameOccupationSearch.getValue());
+		if(nameOccupationSearchTextField.getValue() != null && !nameOccupationSearchTextField.getValue().isEmpty()){
+			findOccupationData = new HashMap<String, Object>();
+			findOccupationData.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), nameOccupationSearchTextField.getValue());
 		}
 		occupationTransferObjectSearch.setPositionPage(getPositionPage());
 		occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
@@ -94,56 +97,6 @@ public class DataOccupationView extends ABaseGridView {
     	grid.setContainerDataSource(occupationContainer);
     	occupationTransferObject = null;
         findOccupationData = null;
-	}
-	
-	@Override
-	protected FormLayout searchContent(){
-		FormLayout groupSearch = new FormLayout();
-		Label section = new Label();
-        groupSearch.addComponent(section);
-        section.addStyleName("h3");
-        section.addStyleName("colored");
-        section.setWidth("100%");
-        nameOccupationSearch = new TextField("Name");
-        groupSearch.addComponent(nameOccupationSearch); 
-        nameOccupationSearch.addStyleName("small");
-        nameOccupationSearch.setWidth("50%");    
-		ClickListener eventSearchClick = new ClickListener() {
-			private static final long serialVersionUID = -825124355144374247L;
-			@Override
-			public void buttonClick(ClickEvent event) {
-				if("Search".equals(event.getButton().getCaption())){
-					if(nameOccupationSearch.getValue() != null && !nameOccupationSearch.getValue().isEmpty()){
-						constructDataContainer();
-				        getPaging();
-					}					
-				}else{
-			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString()) != null)
-			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString());
-			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString()) != null)			        	
-			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString());
-			        setPositionPage(1);
-			        nameOccupationSearch.setValue("");
-			        constructDataContainer();
-			        getPaging();
-				}
-			}
-		};   
-		HorizontalLayout footerSearch = new HorizontalLayout();
-        groupSearch.addComponent(footerSearch);
-		footerSearch.setSpacing(true);
-        Button search = new Button("Search");
-		footerSearch.addComponent(search);
-        search.addStyleName("primary");
-        search.addStyleName("small");
-        search.addClickListener(eventSearchClick);
-        search.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        Button reset = new Button("Reset");
-		footerSearch.addComponent(reset);
-        reset.addStyleName("small");
-        reset.addClickListener(eventSearchClick);
-        reset.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-		return groupSearch;
 	}
 	
 	@Override
@@ -242,6 +195,56 @@ public class DataOccupationView extends ABaseGridView {
 			}
 		});
 	}
+	
+	@Override
+	protected FormLayout searchContent(){
+		FormLayout groupSearch = new FormLayout();
+		Label section = new Label();
+        groupSearch.addComponent(section);
+        section.addStyleName("h3");
+        section.addStyleName("colored");
+        section.setWidth("100%");
+        nameOccupationSearchTextField = new TextField("Name");
+        groupSearch.addComponent(nameOccupationSearchTextField); 
+        nameOccupationSearchTextField.addStyleName("small");
+        nameOccupationSearchTextField.setWidth("50%");    
+		ClickListener eventSearchClick = new ClickListener() {
+			private static final long serialVersionUID = -825124355144374247L;
+			@Override
+			public void buttonClick(ClickEvent event) {
+				if("Search".equals(event.getButton().getCaption())){
+					if(nameOccupationSearchTextField.getValue() != null && !nameOccupationSearchTextField.getValue().isEmpty()){
+						constructDataContainer();
+				        getPaging();
+					}					
+				}else{
+			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString()) != null)
+			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString());
+			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString()) != null)			        	
+			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString());
+			        nameOccupationSearchTextField.setValue("");
+			        setPositionPage(1);			        
+			        constructDataContainer();
+			        getPaging();
+				}
+			}
+		};   
+		HorizontalLayout footerSearch = new HorizontalLayout();
+        groupSearch.addComponent(footerSearch);
+		footerSearch.setSpacing(true);
+        Button search = new Button("Search");
+		footerSearch.addComponent(search);
+        search.addStyleName("primary");
+        search.addStyleName("small");
+        search.addClickListener(eventSearchClick);
+        search.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        Button reset = new Button("Reset");
+		footerSearch.addComponent(reset);
+        reset.addStyleName("small");
+        reset.addClickListener(eventSearchClick);
+        reset.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+		return groupSearch;
+	}
 
 	@Override
     public void enter(ViewChangeEvent event) {
@@ -249,7 +252,7 @@ public class DataOccupationView extends ABaseGridView {
 			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
 			if(EWebUIConstant.BUTTON_SAVE.toString().equals(oldView.getSubmit().getCaption())){
 				setPositionPage(1);
-		        nameOccupationSearch.setValue("");
+		        nameOccupationSearchTextField.setValue("");
 		        constructDataContainer();
 		        getPaging();				
 			}

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.dto.GeneralTransferObject;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -15,10 +14,10 @@ public interface IEmployeeService {
     
     public List<EmployeeData> getAllEmployeeDatas();
     
+    public EmployeeTransferObject getAllEmployeeDatas(EmployeeTransferObject employeeTransferObject);
+    
     public EmployeeTransferObject updateEmployee(EmployeeData employeeData);
     
     public EmployeeTransferObject saveEmployee(EmployeeData employeeData);
-
-	public GeneralTransferObject deleteEmployee(EmployeeData employeeData);
 
 }

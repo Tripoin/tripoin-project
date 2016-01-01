@@ -45,6 +45,7 @@ public class WebServiceConstant {
 	public static final String HTTP_EMPLOYEE_ALL = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_LOAD).concat(HTTP_ALL);
 	public static final String HTTP_EMPLOYEE_SAVE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_SAVE);
 	public static final String HTTP_EMPLOYEE_UPDATE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_UPDATE);
+	public static final String HTTP_EMPLOYEE_ALL_PAGE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_LOAD).concat(HTTP_PAGE);
 	public static final String HTTP_OCCUPATION = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_LOAD);
 	public static final String HTTP_OCCUPATION_ALL = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_LOAD).concat(HTTP_ALL);
 	public static final String HTTP_OCCUPATION_SAVE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_SAVE);

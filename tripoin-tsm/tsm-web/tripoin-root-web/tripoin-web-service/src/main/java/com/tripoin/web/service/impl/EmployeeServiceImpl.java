@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -27,8 +26,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public EmployeeData getEmployee() {
-		// TODO Auto-generated method stub
-		return null;
+		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE), EmployeeTransferObject.class).getEmployeeDatas().get(0);
 	}
 
 	@Override
@@ -37,21 +35,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	}
 
 	@Override
+	public EmployeeTransferObject getAllEmployeeDatas(EmployeeTransferObject employeeTransferObject) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL_PAGE), employeeTransferObject, EmployeeTransferObject.class);
+	}
+
+	@Override
 	public EmployeeTransferObject updateEmployee(EmployeeData employeeData) {
-		// TODO Auto-generated method stub
-		return null;
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_UPDATE), employeeData, EmployeeTransferObject.class);
 	}
 
 	@Override
 	public EmployeeTransferObject saveEmployee(EmployeeData employeeData) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public GeneralTransferObject deleteEmployee(EmployeeData employeeData) {
-		// TODO Auto-generated method stub
-		return null;
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_SAVE), employeeData, EmployeeTransferObject.class);
 	}
 
 }
