@@ -15,6 +15,7 @@
 	<import resource="classpath:META-INF/spring/applicationContext-web-ui.xml"/>
 	<import resource="security-web-config.xml"/>
 	
-	<bean id="reportUtil" class="com.tripoin.web.common.ReportUtil"/>	
+	<bean id="reportUtil" class="com.tripoin.web.common.ReportUtil"/>
+	<bean id="dataLoadStarted" class="com.tripoin.web.service.impl.DataLoadStartedImpl"/>	
 		 	
 </beans>

@@ -11,9 +11,11 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
+import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
+import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseGridView;
@@ -27,9 +29,11 @@ import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -53,11 +57,14 @@ public class DataEmployeeView extends ABaseGridView {
 	@Autowired
 	private IEmployeeService employeeService;
 	
-	private BeanItemContainer<EmployeeData> employeeContainer = new BeanItemContainer<>(EmployeeData.class);	
+	@Autowired
+	private IDataLoadStarted dataLoadStarted;	
+	
+	private BeanItemContainer<EmployeeData> employeeContainer = new BeanItemContainer<>(EmployeeData.class);
 	private Object[] headerGrid = new Object[]{"nik", "profileData.name", "occupationData.name", "employeeDataParent.profileData.name"};
 	private TextField nikTextField;
 	private TextField nameTextField;
-    private TextField occupationTextField;
+    private ComboBox occupationComboBox;
     private TextField supervisorTextField;
 	private EmployeeTransferObject employeeTransferObjectSearch = new EmployeeTransferObject();
 	private EmployeeTransferObject employeeTransferObject;
@@ -79,9 +86,9 @@ public class DataEmployeeView extends ABaseGridView {
     		if(findEmployeeData==null)findEmployeeData = new HashMap<String, Object>();
     		findEmployeeData.put(EnumFieldEmployee.NAME_EMPLOYE.toString(), nameTextField.getValue());
     	}
-    	if(occupationTextField.getValue() != null && !occupationTextField.getValue().isEmpty()){
+    	if(occupationComboBox.getValue() != null){
     		if(findEmployeeData==null)findEmployeeData = new HashMap<String, Object>();
-    		findEmployeeData.put(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString(), occupationTextField.getValue());
+    		findEmployeeData.put(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString(), ((OccupationData)occupationComboBox.getValue()).getName());
     	}
     	if(supervisorTextField.getValue() != null && !supervisorTextField.getValue().isEmpty()){
     		if(findEmployeeData==null)findEmployeeData = new HashMap<String, Object>();
@@ -184,10 +191,16 @@ public class DataEmployeeView extends ABaseGridView {
         groupSearch.addComponent(nameTextField);
         nameTextField.addStyleName("small");
         nameTextField.setWidth("50%");
-        occupationTextField = new TextField("Occupation");
-        groupSearch.addComponent(occupationTextField);
-        occupationTextField.addStyleName("small");
-        occupationTextField.setWidth("50%");
+        occupationComboBox = new ComboBox("Occupation");
+        groupSearch.addComponent(occupationComboBox);
+        occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer());
+        occupationComboBox.setItemCaptionMode(ItemCaptionMode.PROPERTY);
+        occupationComboBox.setItemCaptionPropertyId("name");
+        occupationComboBox.setInputPrompt("Select Occupation");
+        occupationComboBox.addStyleName("small");
+        occupationComboBox.setTextInputAllowed(false);
+        occupationComboBox.setNullSelectionAllowed(false);
+        occupationComboBox.setWidth("50%");
         supervisorTextField = new TextField("Supervisor");
         groupSearch.addComponent(supervisorTextField);
         supervisorTextField.addStyleName("small");
@@ -206,7 +219,7 @@ public class DataEmployeeView extends ABaseGridView {
 			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA_SEARCH.toString());
 			        nikTextField.setValue("");
 			        nameTextField.setValue("");
-			        occupationTextField.setValue("");
+			        occupationComboBox.setValue(null);
 			        supervisorTextField.setValue("");
 			        setPositionPage(1);
 			        constructDataContainer();

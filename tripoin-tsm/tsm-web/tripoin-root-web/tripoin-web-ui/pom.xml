@@ -211,20 +211,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.vaadin</groupId>
-					<artifactId>vaadin-shared</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.vaadin</groupId>
-					<artifactId>vaadin-sass-compiler</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client</artifactId>
 			<exclusions>
 				<exclusion>
