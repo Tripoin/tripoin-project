@@ -53,7 +53,6 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 	public Message<OccupationTransferObject> loadOccupation(Message<OccupationData> inMessage){	
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
-		
 		try{
         	OccupationData occupationDataPayload = inMessage.getPayload();
         	FilterArgument[] filterArguments = new FilterArgument[] { 
@@ -65,6 +64,8 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 				for(Occupation occupation : occupationList)
 					occupationDatas.add(new OccupationData(occupation));
 				occupationTransferObject.setOccupationDatas(occupationDatas);
+				occupationList = null;
+				occupationDatas = null;
 			}
 			occupationTransferObject.setResponseCode("0");
 			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
@@ -74,18 +75,17 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 			occupationTransferObject.setResponseCode("1");
 			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			occupationTransferObject.setResponseDesc("Load Occupation System Error : "+e.getLocalizedMessage());
-		}
-		
+		}		
 		setReturnStatusAndMessage(occupationTransferObject, responseHeaderMap);
 		Message<OccupationTransferObject> message = new GenericMessage<OccupationTransferObject>(occupationTransferObject, responseHeaderMap);
+		occupationTransferObject = null;
 		return message;		
 	}
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_ANONYMOUS_SECURE})
 	public Message<OccupationTransferObject> loadAllOccupations(Message<?> inMessage){	
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
-		
 		try{
 			List<Occupation> occupationList = iGenericManagerJpa.loadObjects(Occupation.class);
 			List<OccupationData> occupationDatas = new ArrayList<OccupationData>();
@@ -93,6 +93,8 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 				for(Occupation occupation : occupationList)
 					occupationDatas.add(new OccupationData(occupation));
 				occupationTransferObject.setOccupationDatas(occupationDatas);
+				occupationList = null;
+				occupationDatas = null;
 			}
 			occupationTransferObject.setResponseCode("0");
 			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
@@ -102,10 +104,10 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 			occupationTransferObject.setResponseCode("1");
 			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			occupationTransferObject.setResponseDesc("Load All Occupation System Error : "+e.getLocalizedMessage());
-		}
-		
+		}		
 		setReturnStatusAndMessage(occupationTransferObject, responseHeaderMap);
 		Message<OccupationTransferObject> message = new GenericMessage<OccupationTransferObject>(occupationTransferObject, responseHeaderMap);
+		occupationTransferObject = null;
 		return message;		
 	}
 
@@ -113,7 +115,6 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 	public Message<OccupationTransferObject> loadOccupationPaging(Message<OccupationTransferObject> inMessage){	
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
-		
 		try{			
 			Object[] values = null;
 			FilterArgument[] filterArguments = null;
@@ -154,6 +155,8 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 				for(int i=occupationList.size()-1; i>=0; i--)
 					occupationDatas.add(new OccupationData(occupationList.get(i)));					
 				occupationTransferObject.setOccupationDatas(occupationDatas);
+				occupationList = null;
+				occupationDatas = null;
 			}
 			occupationTransferObject.setResponseCode("0");
 			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
@@ -163,8 +166,7 @@ public class OccupationLoadEndpoint extends XReturnStatus {
 			occupationTransferObject.setResponseCode("1");
 			occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			occupationTransferObject.setResponseDesc("Load Paging Occupation System Error : "+e.getLocalizedMessage());
-		}
-		
+		}		
 		setReturnStatusAndMessage(occupationTransferObject, responseHeaderMap);
 		Message<OccupationTransferObject> message = new GenericMessage<OccupationTransferObject>(occupationTransferObject, responseHeaderMap);
 		occupationTransferObject = null;
