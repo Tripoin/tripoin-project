@@ -19,7 +19,6 @@ import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseGridView;
-import com.tripoin.web.view.page.masterdata.occupation.DataOccupationManageView;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.SelectionEvent;
@@ -131,7 +130,7 @@ public class DataEmployeeView extends ABaseGridView {
         	private static final long serialVersionUID = 4272237366468831374L;
         	@Override
             public void menuSelected(MenuItem selectedItem) {
-        		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
+        		UI.getCurrent().getNavigator().navigateTo(DataEmployeeManageView.BEAN_NAME);
             }
         });
         itemMenuGrid.addItem("Export", null).setEnabled(false);
@@ -162,7 +161,7 @@ public class DataEmployeeView extends ABaseGridView {
 				if(isSelectEdited){
 					isSelectEdited = false;
 					VaadinSession.getCurrent().getSession().setAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString(), (EmployeeData)event.getItemId());					
-					UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
+					UI.getCurrent().getNavigator().navigateTo(DataEmployeeManageView.BEAN_NAME);
 				}
 			}
 		});
@@ -194,8 +193,7 @@ public class DataEmployeeView extends ABaseGridView {
         occupationComboBox = new ComboBox("Occupation");
         groupSearch.addComponent(occupationComboBox);
         occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer());
-        occupationComboBox.setItemCaptionMode(ItemCaptionMode.PROPERTY);
-        occupationComboBox.setItemCaptionPropertyId("name");
+        occupationComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         occupationComboBox.setInputPrompt("Select Occupation");
         occupationComboBox.addStyleName("small");
         occupationComboBox.setTextInputAllowed(false);
@@ -213,10 +211,6 @@ public class DataEmployeeView extends ABaseGridView {
 					constructDataContainer();
 			        getPaging();					
 				}else{
-			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_EMPLOYEE_POSITION_PAGE.toString()) != null)
-			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_EMPLOYEE_POSITION_PAGE.toString());
-			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA_SEARCH.toString()) != null)			        	
-			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA_SEARCH.toString());
 			        nikTextField.setValue("");
 			        nameTextField.setValue("");
 			        occupationComboBox.setValue(null);

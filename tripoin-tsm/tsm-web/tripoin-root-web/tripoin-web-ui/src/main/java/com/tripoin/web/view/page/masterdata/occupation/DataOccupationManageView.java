@@ -77,7 +77,7 @@ public class DataOccupationManageView extends ABaseManageView {
         	submit.setCaption(EWebUIConstant.BUTTON_SAVE.toString());
         }else{
         	occupationData = (OccupationData)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString());
-        	VaadinSession.getCurrent().getSession().removeAttribute("occupationData");
+        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString());
         	occupationName.setValue(occupationData.getName());
         	occupationDescription.setValue(occupationData.getRemarks());
         	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());

@@ -33,7 +33,7 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
 	
 	private boolean isOAuth;
 	private String username;
-	private String password;	
+	private String password;
 
 	@Value("${tripoin.is.oauth}")
 	public void setIsOAuth(boolean isOAuth) {this.isOAuth = isOAuth;}

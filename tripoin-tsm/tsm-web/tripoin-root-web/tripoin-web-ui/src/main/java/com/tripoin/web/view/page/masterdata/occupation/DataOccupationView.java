@@ -218,10 +218,6 @@ public class DataOccupationView extends ABaseGridView {
 				        getPaging();
 					}					
 				}else{
-			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString()) != null)
-			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_POSITION_PAGE.toString());
-			        if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString()) != null)			        	
-			        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA_SEARCH.toString());
 			        nameOccupationSearchTextField.setValue("");
 			        setPositionPage(1);			        
 			        constructDataContainer();

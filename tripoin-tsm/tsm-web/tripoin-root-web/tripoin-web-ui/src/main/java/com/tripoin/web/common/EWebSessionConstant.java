@@ -6,11 +6,7 @@ package com.tripoin.web.common;
 public enum EWebSessionConstant {
 
 	SESSION_OCUPATION_DATA("occupationData"),
-	SESSION_OCUPATION_DATA_SEARCH("occupationDataSearch"),
-	SESSION_OCUPATION_POSITION_PAGE("occupationPositionPage"),
-	SESSION_EMPLOYEE_DATA("employeeData"),
-	SESSION_EMPLOYEE_DATA_SEARCH("employeeDataSearch"),
-	SESSION_EMPLOYEE_POSITION_PAGE("employeePositionPage");
+	SESSION_EMPLOYEE_DATA("employeeData");
 
 	private String operator;	
 	
