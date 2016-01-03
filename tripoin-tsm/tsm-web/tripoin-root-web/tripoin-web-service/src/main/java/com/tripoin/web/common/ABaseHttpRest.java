@@ -122,7 +122,7 @@ public abstract class ABaseHttpRest {
 				sb.append(entry.getValue());
 				sb.append(";");
 			}
-			sb.append(sb.toString().replaceAll("Path", ""));
+			sb = new StringBuilder(sb.toString().replaceAll("Path;", ""));
 			sb.deleteCharAt(sb.length() - 1);
 		}
 		return sb.toString();

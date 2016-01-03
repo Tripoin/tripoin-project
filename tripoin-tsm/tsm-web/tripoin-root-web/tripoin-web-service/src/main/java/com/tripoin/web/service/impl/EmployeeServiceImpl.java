@@ -26,7 +26,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public EmployeeData getEmployee() {
-		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE), EmployeeTransferObject.class).getEmployeeDatas().get(0);
+		List<EmployeeData> employeeDatas = stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE), EmployeeTransferObject.class).getEmployeeDatas();
+		if(employeeDatas == null || employeeDatas.isEmpty())
+			return null;
+		return employeeDatas.get(0);
 	}
 
 	@Override

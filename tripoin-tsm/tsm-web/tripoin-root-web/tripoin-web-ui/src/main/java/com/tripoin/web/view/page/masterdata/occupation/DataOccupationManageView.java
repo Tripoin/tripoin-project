@@ -62,11 +62,11 @@ public class DataOccupationManageView extends ABaseManageView {
 	protected void setFormLayoutView(){
         form.addComponent(occupationName);
         occupationName.setRequired(true);
-        occupationName.setWidth("45%");
+        occupationName.setWidth("50%");
         occupationName.addStyleName("small");
         occupationName.focus();
         form.addComponent(occupationDescription);
-        occupationDescription.setWidth("45%");
+        occupationDescription.setWidth("50%");
         occupationDescription.addStyleName("small");		
 	}
 

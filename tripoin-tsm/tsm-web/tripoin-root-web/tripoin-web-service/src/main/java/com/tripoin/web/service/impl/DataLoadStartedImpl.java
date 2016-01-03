@@ -47,21 +47,18 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		try {
-			setOccupationContainer(getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas());
+			buildOccupationContainer();
 		} catch (Exception e) {
 			if(HttpStatus.NOT_FOUND.equals(getStatusCode())){
 				LOGGER.warn("Response : ".concat(getStatusCode().value()+" ").concat(getStatusCode().getReasonPhrase()));
 				throw new Exception("Please check Web Service, and restart this Web Container");
 			}else LOGGER.error("Response : ".concat(getStatusCode().value()+" ").concat(getStatusCode().getReasonPhrase()),e);			
-		}				 
+		}
 	}
-
+	
 	@Override
-	public BeanItemContainer<OccupationData> getOccupationContainer() {
-		return occupationContainer;
-	}
-
-	public void setOccupationContainer(List<OccupationData> occupationDatas) {
+	public void buildOccupationContainer() {
+		List<OccupationData> occupationDatas = getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas();
 		this.occupationContainer.removeAllItems();
 		this.occupationContainer.addAll(occupationDatas);
     	this.occupationContainer.removeContainerProperty("id");
@@ -76,6 +73,11 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
     	this.occupationContainer.removeContainerProperty("modifiedIP");
     	this.occupationContainer.removeContainerProperty("modifiedTime");
     	this.occupationContainer.removeContainerProperty("modifiedPlatform");
+	}
+	
+	@Override
+	public BeanItemContainer<OccupationData> getOccupationContainer() {
+		return occupationContainer;
 	}
 	
 	@Override

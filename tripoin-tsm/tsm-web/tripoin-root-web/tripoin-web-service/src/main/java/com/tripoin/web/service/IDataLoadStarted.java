@@ -7,7 +7,9 @@ import com.vaadin.data.util.BeanItemContainer;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public interface IDataLoadStarted {
+    
+	public void buildOccupationContainer();
 	
 	public BeanItemContainer<OccupationData> getOccupationContainer();
-    
+	
 }

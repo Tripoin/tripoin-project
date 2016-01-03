@@ -19,7 +19,7 @@ import com.vaadin.ui.VerticalLayout;
 public abstract class ABaseManageView extends VerticalLayout implements View, ClickListener {
 
 	private static final long serialVersionUID = -570015212316455087L;
-	protected FormLayout form;
+	protected FormLayout form = new FormLayout();
     protected Button submit;
     protected Button cancel;
     protected Notification notification;
@@ -29,27 +29,31 @@ public abstract class ABaseManageView extends VerticalLayout implements View, Cl
 	public void init(String PAGE_NAME) throws Exception {
         setMargin(true);
         addStyleName("tripoin-custom-screen");
-        HorizontalLayout row = new HorizontalLayout();
-        addComponent(row);
-        row.setMargin(false);
-        row.setWidth("100%");
+        HorizontalLayout headerLayout = new HorizontalLayout();
+        addComponent(headerLayout);
+        headerLayout.setMargin(false);
+        headerLayout.setWidth("100%");
         final FormLayout formTitle = new FormLayout();       
-        row.addComponent(formTitle);
+        headerLayout.addComponent(formTitle);
         formTitle.setMargin(false);
         formTitle.addStyleName("light");        
         Label title = new Label(PAGE_NAME);
         formTitle.addComponent(title); 
         title.addStyleName("h1");
 
-        form = new FormLayout();
-        addComponent(form);
-        form.setStyleName("tripoin-custom-form");
-        form.setMargin(false);        
+        FormLayout formHeaderLayout = new FormLayout();
+        addComponent(formHeaderLayout);
+        formHeaderLayout.setStyleName("tripoin-custom-form");
+        formHeaderLayout.setMargin(false);        
         Label section = new Label(" ");
-        form.addComponent(section);   
+        formHeaderLayout.addComponent(section); 
         section.addStyleName("h3");
         section.addStyleName("colored");
         section.setWidth("80%");
+        
+        addComponent(form);
+        form.setStyleName("tripoin-custom-form");
+        form.setMargin(false); 
         setFormLayoutView();
         form.addComponent(footerForm());
         initiateSessionData();

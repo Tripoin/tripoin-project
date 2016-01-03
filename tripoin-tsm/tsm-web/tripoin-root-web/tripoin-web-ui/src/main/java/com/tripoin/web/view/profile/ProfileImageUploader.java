@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.tripoin.web.common.EWebUIConstant;
 import com.vaadin.ui.Upload.Receiver;
 
@@ -16,22 +19,24 @@ public class ProfileImageUploader implements Receiver {
 
 	private static final long serialVersionUID = -2352906512234981812L;
 	private File file;
+	private String extensionFile;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileImageUploader.class);
     
     public OutputStream receiveUpload(String filename, String mimeType) {
         FileOutputStream fos = null;
         try {
         	String typeFile = mimeType.split("/")[0];
-        	String extensionFile = filename.substring(filename.lastIndexOf("."));
+        	extensionFile = filename.substring(filename.lastIndexOf("."));
         	if(EWebUIConstant.TYPE_FILE_IMAGE.toString().equals(typeFile))
                 file = File.createTempFile(filename, extensionFile);
         	try {
 				fos = new FileOutputStream(file);
 			} catch (final FileNotFoundException e) {
-				e.printStackTrace();
+				LOGGER.warn("File not found Exception");
 				return null;
 			}
         } catch (IOException e) {
-        	e.printStackTrace();
+        	LOGGER.warn("IOException",e);
         	return null;
         }
         return fos;
@@ -43,6 +48,14 @@ public class ProfileImageUploader implements Receiver {
 
 	public void setFile(File file) {
 		this.file = file;
+	}
+
+	public String getExtensionFile() {
+		return extensionFile;
+	}
+
+	public void setExtensionFile(String extensionFile) {
+		this.extensionFile = extensionFile;
 	}
 
 }

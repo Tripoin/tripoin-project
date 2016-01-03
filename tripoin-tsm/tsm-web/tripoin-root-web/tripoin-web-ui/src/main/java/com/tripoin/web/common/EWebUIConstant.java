@@ -60,7 +60,9 @@ public enum EWebUIConstant {
 	REPORT_TEXT(".txt", "text/plain"),
 	
 	BUTTON_PAGING(5),	
-	ROW_PER_PAGE(10);
+	ROW_PER_PAGE(10),
+	
+	MAX_SIZE_IMAGE_BYTE(1000000);
 
 	private String operator;
 	private Integer operatorInteger;

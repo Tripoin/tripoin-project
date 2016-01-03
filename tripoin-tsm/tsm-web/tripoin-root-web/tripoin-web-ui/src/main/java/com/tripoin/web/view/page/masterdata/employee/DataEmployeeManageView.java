@@ -26,6 +26,12 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.RichTextArea;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickListener;
@@ -49,7 +55,18 @@ public class DataEmployeeManageView extends ABaseManageView {
 	private IDataLoadStarted dataLoadStarted;	
 
     private final TextField employeeNameTextField = new TextField("Name");
-    private ComboBox occupationComboBox;
+    private final TextField nikTextField = new TextField("NIK");
+    private final ComboBox occupationComboBox = new ComboBox("Occupation");
+    private final ComboBox parentEmployeeComboBox = new ComboBox("Head");
+    private final TextField usernameTextField = new TextField("Username");
+    private final TextField birthPlaceTextField = new TextField();
+    private final DateField birthDateDateField = new DateField();
+    private final OptionGroup genderOptionGroup = new OptionGroup("Gender");
+    private final TextField phoneTextField = new TextField("Mobile Phone");
+    private final TextField telpTextField = new TextField("Home Phone");
+    private final TextField emailTextField = new TextField("Email");
+    private final TextArea addressTextArea = new TextArea("Address");
+    private final RichTextArea bioTextArea = new RichTextArea("Bio");
 	private EmployeeData employeeData;
 
 	@PostConstruct
@@ -66,32 +83,98 @@ public class DataEmployeeManageView extends ABaseManageView {
     }
 	
 	protected void setFormLayoutView(){
+        Label section = new Label("Personal Info");
+        form.addComponent(section);
+        section.addStyleName("h3");
+        section.addStyleName("colored");
+
         form.addComponent(employeeNameTextField);
         employeeNameTextField.setRequired(true);
-        employeeNameTextField.setWidth("45%");
+        employeeNameTextField.setWidth("50%");
         employeeNameTextField.addStyleName("small");
         employeeNameTextField.focus();
-        occupationComboBox = new ComboBox("Occupation");
+
+        form.addComponent(nikTextField);
+        nikTextField.setWidth("50%");
+        nikTextField.setRequired(true);
+        
         form.addComponent(occupationComboBox);
         occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer());
         occupationComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         occupationComboBox.addStyleName("small");
         occupationComboBox.setTextInputAllowed(false);
         occupationComboBox.setNullSelectionAllowed(false);
-        occupationComboBox.setWidth("45%");
+        occupationComboBox.setRequired(true);
+        occupationComboBox.setWidth("50%");
+        
+        form.addComponent(parentEmployeeComboBox);
+        parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer());
+        parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
+        parentEmployeeComboBox.addStyleName("small");
+        parentEmployeeComboBox.setNullSelectionAllowed(false);
+        parentEmployeeComboBox.setRequired(true);
+        parentEmployeeComboBox.setWidth("50%");
+
+        form.addComponent(usernameTextField);
+        usernameTextField.setWidth("50%");
+        usernameTextField.setRequired(true);
+
+        HorizontalLayout placeDateOfBirth = new HorizontalLayout();
+        form.addComponent(placeDateOfBirth);
+        placeDateOfBirth.setCaption("Place, Date of Birth");
+        birthPlaceTextField.setWidth("45%");
+        birthPlaceTextField.setRequired(true);
+        birthDateDateField.setRequired(true);
+        placeDateOfBirth.addComponent(birthPlaceTextField);
+        placeDateOfBirth.addComponent(birthDateDateField);
+
+        form.addComponent(genderOptionGroup);
+        genderOptionGroup.addItem(ParameterConstant.FEMALE);
+        genderOptionGroup.addItem(ParameterConstant.MALE);
+        genderOptionGroup.addStyleName("horizontal");
+        genderOptionGroup.setRequired(true);
+
+        section = new Label("Contact Info");
+        form.addComponent(section);
+        section.addStyleName("h3");
+        section.addStyleName("colored");
+
+        form.addComponent(phoneTextField);
+        phoneTextField.setWidth("50%");
+        phoneTextField.setRequired(true);
+
+        form.addComponent(telpTextField);
+        telpTextField.setWidth("50%");
+
+        form.addComponent(emailTextField);
+        emailTextField.setWidth("50%");
+        emailTextField.setRequired(true);
+
+        form.addComponent(addressTextArea);
+        addressTextArea.setWidth("50%");
+        addressTextArea.setRequired(true);
+
+        section = new Label("Additional Info");
+        form.addComponent(section);
+        section.addStyleName("h3");
+        section.addStyleName("colored");
+
+        form.addComponent(bioTextArea);
+        bioTextArea.setWidth("100%");
 	}
 
 	protected void initiateSessionData(){       
         if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString()) == null){
         	employeeData = new EmployeeData();
 			employeeData.setStatus(1);
+			occupationComboBox.setInputPrompt("Select Occupation");
+			parentEmployeeComboBox.setInputPrompt("Select Head");
         	submit.setCaption(EWebUIConstant.BUTTON_SAVE.toString());
         }else{
         	employeeData = (EmployeeData)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
         	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
         	employeeNameTextField.setValue(employeeData.getProfileData().getName());
-        	occupationComboBox.setNullSelectionItemId(employeeData.getOccupationData());
-        	occupationComboBox.setValue(employeeData.getOccupationData());
+        	occupationComboBox.select(employeeData.getOccupationData());
         	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());
         }	
 	}

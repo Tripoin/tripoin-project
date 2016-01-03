@@ -3,6 +3,8 @@ package com.tripoin.web.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.tripoin.core.dto.GeneralTransferObject;
@@ -11,6 +13,7 @@ import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
+import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IOccupationService;
 
 /**
@@ -24,6 +27,13 @@ public class OccupationServiceImpl implements IOccupationService {
 	
 	@Autowired
 	private IStateFullRest stateFullRest;
+	
+	@Autowired
+	private IDataLoadStarted dataLoadStarted;
+	
+	@Autowired
+	@Qualifier(value="web-app-async-task-executor")
+	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Override
 	public OccupationData getOccupation() {
@@ -42,19 +52,36 @@ public class OccupationServiceImpl implements IOccupationService {
 
 	@Override
 	public GeneralTransferObject updateOccupation(OccupationData occupationData) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_UPDATE), occupationData, GeneralTransferObject.class);
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_UPDATE), occupationData, GeneralTransferObject.class);
+		threadBuildOccupationContainer(generalTransferObject);
+		return generalTransferObject;
 	}
 
 	@Override
 	public GeneralTransferObject saveOccupation(OccupationData occupationData) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_SAVE), occupationData, GeneralTransferObject.class);
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_SAVE), occupationData, GeneralTransferObject.class);
+		threadBuildOccupationContainer(generalTransferObject);
+		return generalTransferObject;
 	}
 
 	@Override
 	public OccupationTransferObject deleteOccupation(List<OccupationData> occupationDatas) {
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		occupationTransferObject.setOccupationDatas(occupationDatas);
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_DELETE), occupationTransferObject, OccupationTransferObject.class);
+		occupationTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_DELETE), occupationTransferObject, OccupationTransferObject.class);
+		threadBuildOccupationContainer(occupationTransferObject);
+		return occupationTransferObject;
+	}
+	
+	private void threadBuildOccupationContainer(GeneralTransferObject generalTransferObject){
+		if("0".equals(generalTransferObject.getResponseCode())){
+			taskExecutor.execute(new Runnable() {				
+				@Override
+				public void run() {
+					dataLoadStarted.buildOccupationContainer();
+				}
+			});
+		}
 	}
 
 }

@@ -1,17 +1,23 @@
 package com.tripoin.web.view.profile;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.util.time.TimeAgo;
@@ -20,6 +26,7 @@ import com.tripoin.web.TripoinUI;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.WebServiceConstant;
+import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.service.IProfileService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.data.Property.ReadOnlyException;
@@ -30,6 +37,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
 import com.vaadin.shared.Position;
@@ -37,16 +45,19 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Upload;
+import com.vaadin.ui.Upload.FailedEvent;
+import com.vaadin.ui.Upload.FailedListener;
 import com.vaadin.ui.Upload.FinishedEvent;
 import com.vaadin.ui.Upload.FinishedListener;
 import com.vaadin.ui.Upload.StartedListener;
@@ -60,135 +71,131 @@ import com.vaadin.ui.Upload.StartedEvent;
  */
 @Component
 @Scope("prototype")
-@VaadinView(value = "profile", cached = false)
+@VaadinView(value = ProfileView.BEAN_NAME, cached = false)
 public class ProfileView extends VerticalLayout implements View, ClickListener, Button.ClickListener {
 
 	private static final long serialVersionUID = -4592518571070450190L;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileView.class);
+	public static final String BEAN_NAME = "profile";
+	public static final String PAGE_NAME = "Account Settings";
 
     @Autowired
     private IProfileService profileService;
+
+    @Autowired
+    private IEmployeeService employeeService;
     
     @Autowired
     private ICommonRest commonRest;
     
     private ProfileData profileData;
-    
-    private final FormLayout form = new FormLayout();
-    private Embedded profilePhoto = new Embedded();
-    private final TextField name = new TextField("Name");
-    private final TextField username = new TextField("Username");
-    private final TextField birthPlace = new TextField();
-    private final DateField birthDate = new DateField();
-    private final OptionGroup gender = new OptionGroup("Gender");
-    private final TextField phone = new TextField("Mobile Phone");
-    private final TextField telp = new TextField("Home Phone");
-    private final TextField email = new TextField("Email");
-    private final TextArea address = new TextArea("Address");
-    private final RichTextArea bio = new RichTextArea("Bio");
-    private Button edit;
-    private Label lastModified;
-    private ProfileImageUploader receiver = new ProfileImageUploader();
-    private Upload upload = new Upload(null, receiver);
+    private EmployeeData employeeData;
+
+    private final FormLayout personalInfoFormLayout = new FormLayout();
+    private final FormLayout otherInfoFormLayout = new FormLayout();
+    private String urlResources;
     private ExternalResource urlImageProfileResource;
-    private String urlResourcesImage;
+    private ProfileImageUploader receiverImage = new ProfileImageUploader();
+    private Image profilePhotoImage = new Image();
+    private Upload profilePhotoUpload = new Upload(null, receiverImage);
+    private final TextField nameTextField = new TextField("Name");
+    private final TextField nikTextField = new TextField("NIK");
+    private final TextField occupationTextField = new TextField("Occupation");
+    private final TextField headTextField = new TextField("Head");
+    private final TextField usernameTextField = new TextField("Username");
+    private final TextField birthPlaceTextField = new TextField();
+    private final DateField birthDateDateField = new DateField();
+    private final OptionGroup genderOptionGroup = new OptionGroup("Gender");
+    private final TextField phoneTextField = new TextField("Mobile Phone");
+    private final TextField telpTextField = new TextField("Home Phone");
+    private final TextField emailTextField = new TextField("Email");
+    private final TextArea addressTextArea = new TextArea("Address");
+    private final RichTextArea bioTextArea = new RichTextArea("Bio");
+    private Button submitButton;
+    private Label lastModifiedLabel;
     private Notification notification = new Notification("");
     
     @PostConstruct
     public void init() throws Exception {
-		profileData = profileService.getProfile();
-		
         setMargin(true);
         addStyleName("tripoin-custom-screen");
-        HorizontalLayout row = new HorizontalLayout();
-        row.setMargin(false);
-        row.setWidth("100%"); 
-        addComponent(row);        
-        final FormLayout formTitle = new FormLayout();
+        HorizontalLayout headerLayout = new HorizontalLayout();
+        addComponent(headerLayout);
+        headerLayout.setMargin(false);
+        headerLayout.setWidth("100%");
+        final FormLayout formTitle = new FormLayout();       
+        headerLayout.addComponent(formTitle);
         formTitle.setMargin(false);
         formTitle.addStyleName("light");        
-        Label title = new Label("Account Settings");
-        title.addStyleName("h1");
-        formTitle.addComponent(title);
-        row.addComponent(formTitle);  
-        
-        VerticalLayout uploadLayout = new VerticalLayout();
-        uploadLayout.setMargin(false);
-        uploadLayout.setWidth("40%");        
-        urlResourcesImage = commonRest.getUrl(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
-        String urlImage = urlResourcesImage.concat("profile-default-300px.png"); 
-        if(profileData.getPhoto() != null)
-        	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(profileData.getPhoto());
-        urlImageProfileResource = new ExternalResource(urlImage);        	
-        profilePhoto.setSource(urlImageProfileResource); 
-        profilePhoto.setWidth("100%");
-        upload.setWidth("100%");
-        upload.setImmediate(true);
-        upload.addStartedListener(new StartedListener() {			
-			private static final long serialVersionUID = 1784510326592657108L;
-			@Override
-			public void uploadStarted(StartedEvent event) {
-				String typeFile = event.getMIMEType().split("/")[0];
-	        	if(!EWebUIConstant.TYPE_FILE_IMAGE.toString().equals(typeFile)){
-	        		upload.interruptUpload();
-	        	}
-			}
-		});
-        upload.addFinishedListener(new FinishedListener() {
-			private static final long serialVersionUID = -9184461198940643739L;
-			@Override
-			public void uploadFinished(FinishedEvent event) {       
-				String urlImage = urlResourcesImage.concat("profile-default-300px.png");
-				String fileName = receiver.getFile().getName();
-	        	IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
-				Map<String, Object> data = new HashMap<String, Object>();
-				data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY"), username.getValue());
-				data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP"), identifierPlatform.getIPAddress());
-				data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM"), identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
-				GeneralTransferObject generalTransferObject = profileService.updatePhotoProfile(receiver.getFile(), data);
-		        if(ParameterConstant.RESPONSE_SUCCESS.equals(generalTransferObject.getResponseMsg()))
-		        	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(fileName);
-		        urlImageProfileResource = new ExternalResource(urlImage); 
-		        profilePhoto.setSource(urlImageProfileResource);
-				TripoinUI.get().updateImageProfile(urlImage);
-			}
-		});
-        upload.addSucceededListener(new SucceededListener() {
-			private static final long serialVersionUID = -7061365876392881684L;
-			@Override
-			public void uploadSucceeded(SucceededEvent event) {
-				receiver.getFile().delete();
-			}
-		});
-        uploadLayout.addComponent(profilePhoto);
-        uploadLayout.addComponent(upload);
-        row.addComponent(uploadLayout);
-        row.setComponentAlignment(uploadLayout, Alignment.TOP_RIGHT);  
+        Label title = new Label(PAGE_NAME);
+        formTitle.addComponent(title); 
+        title.addStyleName("h1");   
 
-        form.setMargin(false);
-        form.addStyleName("light");
-        addComponent(form);
-
-        Label section = new Label("Personal Info");
+        final FormLayout formHeaderLayout = new FormLayout();
+        addComponent(formHeaderLayout);
+        formHeaderLayout.setStyleName("tripoin-custom-form");
+        formHeaderLayout.setMargin(false);        
+        Label section = new Label(" ");
+        formHeaderLayout.addComponent(section); 
         section.addStyleName("h3");
         section.addStyleName("colored");
-        form.addComponent(section); 
-        
-        username.setValue(profileData.getUserData().getUsername());
-        username.setWidth("50%");
-        username.setRequired(true);
-        form.addComponent(username);       
-        
-        name.setValue(profileData.getName());
-        name.setWidth("50%");
-        name.setRequired(true);
-        form.addComponent(name);
+        section.setWidth("80%");
 
+        
+        employeeData = employeeService.getEmployee();
+        if(employeeData == null) profileData = profileService.getProfile();
+        else profileData = employeeData.getProfileData(); 
+        final HorizontalLayout personalInfoLayout = new HorizontalLayout();
+        addComponent(personalInfoLayout);
+        personalInfoLayout.setMargin(false);
+        personalInfoLayout.setSpacing(true);
+        personalInfoLayout.setWidth("80%");    
+        VerticalLayout groupPhotoUploadLayout = groupPhotoUploadLayout();
+        personalInfoLayout.addComponent(groupPhotoUploadLayout);
+        personalInfoLayout.setComponentAlignment(groupPhotoUploadLayout, Alignment.MIDDLE_CENTER);
+        personalInfoLayout.addComponent(personalInfoFormLayout);
+        personalInfoFormLayout.addStyleName("light");
+        personalInfoFormLayout.setMargin(false);
+        personalInfoFormLayout.setWidth("100%");
+        // TODO Personal Info 
+        section = new Label("Personal Info");
+        section.addStyleName("h3");
+        section.addStyleName("colored");
+        section.setWidth("100%");
+        personalInfoFormLayout.addComponent(section); 
+        personalInfoFormLayout.addComponent(nameTextField);
+        nameTextField.setValue(profileData.getName());
+        nameTextField.setWidth("100%");
+        nameTextField.setRequired(true);
+        if(employeeData != null){
+            personalInfoFormLayout.addComponent(nikTextField);
+            nikTextField.setValue(employeeData.getNik());
+            nikTextField.setWidth("100%");
+            nikTextField.setRequired(true);
+            personalInfoFormLayout.addComponent(occupationTextField);
+            occupationTextField.setValue(employeeData.getOccupationData().getName());
+            occupationTextField.setWidth("100%");
+            occupationTextField.setRequired(true);
+            personalInfoFormLayout.addComponent(headTextField);
+            headTextField.setValue(employeeData.getEmployeeDataParent().getProfileData().getName());
+            headTextField.setWidth("100%");
+            headTextField.setRequired(true);        	
+        }
+        personalInfoFormLayout.addComponent(usernameTextField);
+        usernameTextField.setValue(profileData.getUserData().getUsername());
+        usernameTextField.setWidth("100%");
+        usernameTextField.setRequired(true);
         HorizontalLayout placeDateOfBirth = new HorizontalLayout();
+        personalInfoFormLayout.addComponent(placeDateOfBirth);
         placeDateOfBirth.setCaption("Place, Date of Birth");
-        birthPlace.setValue(profileData.getBirthplace());
-        birthPlace.setWidth("45%");       
+        placeDateOfBirth.addComponent(birthPlaceTextField); 
+        birthPlaceTextField.setRequired(true);
+        birthPlaceTextField.setValue(profileData.getBirthplace());
+        birthPlaceTextField.setWidth("45%"); 
+        placeDateOfBirth.addComponent(birthDateDateField); 
+        birthDateDateField.setRequired(true);    
         try {
-			birthDate.setValue(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getBirthdate()));
+			birthDateDateField.setValue(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getBirthdate()));
 		} catch (ReadOnlyException e) {
 			e.printStackTrace();
 		} catch (ConversionException e) {
@@ -196,87 +203,187 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-        birthPlace.setRequired(true);
-        birthDate.setRequired(true);
-        placeDateOfBirth.addComponent(birthPlace);
-        placeDateOfBirth.addComponent(birthDate);
-        form.addComponent(placeDateOfBirth);
-        
-        gender.addItem(ParameterConstant.FEMALE);
-        gender.addItem(ParameterConstant.MALE);
+        personalInfoFormLayout.addComponent(genderOptionGroup);
+        genderOptionGroup.addItem(ParameterConstant.FEMALE);
+        genderOptionGroup.addItem(ParameterConstant.MALE);
         if(ParameterConstant.MALE.equalsIgnoreCase(profileData.getGender()))
-        	gender.select(ParameterConstant.MALE);
+        	genderOptionGroup.select(ParameterConstant.MALE);
         else
-        	gender.select(ParameterConstant.FEMALE);
-        gender.addStyleName("horizontal");
-        gender.setRequired(true);
-        form.addComponent(gender);
-
+        	genderOptionGroup.select(ParameterConstant.FEMALE);
+        genderOptionGroup.addStyleName("horizontal");
+        genderOptionGroup.setRequired(true);
+        personalInfoFormLayout.setReadOnly(true);
+        nameTextField.setReadOnly(true);
+        birthPlaceTextField.setReadOnly(true);
+        birthDateDateField.setReadOnly(true);
+        usernameTextField.setReadOnly(true);
+        nikTextField.setReadOnly(true);
+        occupationTextField.setReadOnly(true);
+        headTextField.setReadOnly(true);
+        genderOptionGroup.setReadOnly(true);
+        
+        addComponent(otherInfoFormLayout);
+        otherInfoFormLayout.addStyleName("light");
+        otherInfoFormLayout.setMargin(false);   
+        // TODO Contact Info     
         section = new Label("Contact Info");
         section.addStyleName("h3");
         section.addStyleName("colored");
-        form.addComponent(section);
-        
-        phone.setWidth("50%");
-        phone.setValue(profileData.getPhone());
-        phone.setRequired(true);
-        form.addComponent(phone);
-        
-        telp.setWidth("50%");
-        telp.setValue(profileData.getTelp());
-        form.addComponent(telp);
-        
-        email.setValue(profileData.getEmail());
-        email.setWidth("50%");
-        email.setRequired(true);
-        form.addComponent(email);
-        
-        address.setValue(profileData.getAddress());
-        address.setWidth("50%");
-        address.setRequired(true);
-        form.addComponent(address);
-
+        section.setWidth("80%");
+        otherInfoFormLayout.addComponent(section);
+        otherInfoFormLayout.addComponent(phoneTextField);
+        phoneTextField.setWidth("50%");
+        phoneTextField.setValue(profileData.getPhone());
+        phoneTextField.setRequired(true);
+        otherInfoFormLayout.addComponent(telpTextField);
+        telpTextField.setWidth("50%");
+        telpTextField.setValue(profileData.getTelp());
+        otherInfoFormLayout.addComponent(emailTextField);        
+        emailTextField.setValue(profileData.getEmail());
+        emailTextField.setWidth("50%");
+        emailTextField.setRequired(true); 
+        otherInfoFormLayout.addComponent(addressTextArea);       
+        addressTextArea.setValue(profileData.getAddress());
+        addressTextArea.setWidth("50%");
+        addressTextArea.setRequired(true);
+        // TODO Additional Info
         section = new Label("Additional Info");
         section.addStyleName("h3");
         section.addStyleName("colored");
-        form.addComponent(section);
-        
-        bio.setValue(profileData.getBio());
-        bio.setWidth("100%");
-        form.addComponent(bio);
-
-        form.setReadOnly(true);
-        name.setReadOnly(true);
-        birthPlace.setReadOnly(true);
-        birthDate.setReadOnly(true);
-        username.setReadOnly(true);
-        gender.setReadOnly(true);
-        address.setReadOnly(true);
-        email.setReadOnly(true);
-        phone.setReadOnly(true);
-        telp.setReadOnly(true);
-        bio.setReadOnly(true);
-
-        edit = new Button("Edit", this);
-        edit.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
+        otherInfoFormLayout.addComponent(section);        
+        bioTextArea.setValue(profileData.getBio());
+        bioTextArea.setWidth("100%");
+        otherInfoFormLayout.addComponent(bioTextArea);
+        // TODO Footer
+        submitButton = new Button("Edit", this);
+        submitButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         HorizontalLayout footer = new HorizontalLayout();
+        otherInfoFormLayout.addComponent(footer);
         footer.setMargin(new MarginInfo(true, false, true, false));
         footer.setSpacing(true);
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
-        form.addComponent(footer);
-        footer.addComponent(edit);
-
+        footer.addComponent(submitButton);
         if(profileData.getModifiedTime() != null){
-        	lastModified = new Label(statusModified(profileData.getModifiedTime()));
-        	lastModified.addStyleName("light");	
-        	footer.addComponent(lastModified);
+        	lastModifiedLabel = new Label(statusModified(profileData.getModifiedTime()));
+        	lastModifiedLabel.addStyleName("light");	
+        	footer.addComponent(lastModifiedLabel);
         }
+        otherInfoFormLayout.setReadOnly(true);
+        addressTextArea.setReadOnly(true);
+        emailTextField.setReadOnly(true);
+        phoneTextField.setReadOnly(true);
+        telpTextField.setReadOnly(true);
+        bioTextArea.setReadOnly(true);
 		
 		notification.setCaption("Error");
 		notification.setStyleName("system closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(10000);
+    }
+    
+    private VerticalLayout groupPhotoUploadLayout(){
+    	VerticalLayout groupPhotoUploadLayout = new VerticalLayout();
+        groupPhotoUploadLayout.setMargin(false);
+        groupPhotoUploadLayout.setWidth("250px");
+        Panel profilePhotoPanel = new Panel("Photo Profile");
+        groupPhotoUploadLayout.addComponent(profilePhotoPanel);
+        profilePhotoPanel.setIcon(FontAwesome.CAMERA);
+        profilePhotoPanel.addStyleName("color1");
+        profilePhotoPanel.setHeight("288px");
+        profilePhotoPanel.setWidth("100%");
+        VerticalLayout profilePhotoLayout = new VerticalLayout();
+        profilePhotoPanel.setContent(profilePhotoLayout);
+        profilePhotoLayout.setSizeFull();
+        profilePhotoLayout.setMargin(true);
+        profilePhotoLayout.setSpacing(true);
+        profilePhotoLayout.addComponent(profilePhotoImage);
+        urlResources = commonRest.getUrl(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
+        String urlImage = urlResources.concat("profile-default-300px.png"); 
+        if(profileData.getPhoto() != null)
+        	urlImage = urlResources.concat(profileData.getResourcesUUID()).concat("/").concat(profileData.getPhoto());
+        urlImageProfileResource = new ExternalResource(urlImage);
+        profilePhotoImage.setSource(urlImageProfileResource);
+        profilePhotoImage.setSizeFull();
+        groupPhotoUploadLayout.addComponent(profilePhotoUpload);
+        groupPhotoUploadLayout.setComponentAlignment(profilePhotoUpload, Alignment.MIDDLE_RIGHT);
+        profilePhotoUpload.setWidth("100%");
+        profilePhotoUpload.setImmediate(true);
+        profilePhotoUpload.addStartedListener(new StartedListener() {			
+			private static final long serialVersionUID = 1784510326592657108L;
+			@Override
+			public void uploadStarted(StartedEvent event) {
+				String typeFile = event.getMIMEType().split("/")[0];
+	        	if(!EWebUIConstant.TYPE_FILE_IMAGE.toString().equals(typeFile)){
+	        		event.getUpload().interruptUpload();
+					notification.setCaption("Upload Failure");
+					notification.setDescription("Type file not valid : ".concat(event.getFilename()));
+					notification.show(Page.getCurrent());	        		
+	        	}else if(EWebUIConstant.MAX_SIZE_IMAGE_BYTE.getOperatorInt()<event.getContentLength()){
+	        		event.getUpload().interruptUpload();
+					notification.setCaption("Upload Failure");
+					notification.setDescription("Size file more than 1 MB.");
+					notification.show(Page.getCurrent());
+	        	}
+			}
+		});
+        profilePhotoUpload.addFinishedListener(new FinishedListener() {
+			private static final long serialVersionUID = -9184461198940643739L;
+			@Override
+			public void uploadFinished(FinishedEvent event) {
+				BufferedImage bufferedImage = null;
+				try {
+					if(receiverImage.getFile() != null){
+						bufferedImage = ImageIO.read(receiverImage.getFile());
+						if(bufferedImage != null){
+							if(bufferedImage.getWidth() < 1500){
+								Integer x = 0;
+								Integer y = 0;
+								int width = bufferedImage.getWidth();
+								int height = bufferedImage.getHeight();
+								if(height<width){
+									x = ((width-height)/2);
+									width = height;
+								}else if(height>width){
+									y = ((height-width)/2);
+									height = width;
+								}
+				        		ImageIO.write(bufferedImage.getSubimage(x, y, width, height), receiverImage.getExtensionFile().replace(".", ""), receiverImage.getFile());
+
+								String urlImage = urlResources.concat("profile-default-300px.png");
+								IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
+								Map<String, Object> data = new HashMap<String, Object>();
+								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY"), usernameTextField.getValue());
+								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP"), identifierPlatform.getIPAddress());
+								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM"), identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
+								GeneralTransferObject generalTransferObject = profileService.updatePhotoProfile(receiverImage.getFile(), data);
+						        if(ParameterConstant.RESPONSE_SUCCESS.equals(generalTransferObject.getResponseMsg()))
+						        	urlImage = urlResources.concat(profileData.getResourcesUUID()).concat("/").concat(receiverImage.getFile().getName());
+						        urlImageProfileResource = new ExternalResource(urlImage); 
+						        profilePhotoImage.setSource(urlImageProfileResource);
+								TripoinUI.get().updateImageProfile(urlImage);
+							}
+						}						
+					}
+				} catch (IOException e) {
+					LOGGER.warn("IOException : ".concat(e.getLocalizedMessage()));
+				}
+			}
+		});
+        profilePhotoUpload.addFailedListener(new FailedListener() {
+			private static final long serialVersionUID = 3321334380230456924L;
+			@Override
+			public void uploadFailed(FailedEvent event) {
+				LOGGER.warn("FailedEvent : "+event.getReason().getMessage());
+			}
+		});
+        profilePhotoUpload.addSucceededListener(new SucceededListener() {
+			private static final long serialVersionUID = -7061365876392881684L;
+			@Override
+			public void uploadSucceeded(SucceededEvent event) {
+				receiverImage.getFile().delete();
+			}
+		});
+        return groupPhotoUploadLayout;
     }
 
     @Override
@@ -291,110 +398,116 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 
 	@Override
 	public void buttonClick(com.vaadin.ui.Button.ClickEvent event) {
-        boolean readOnly = form.isReadOnly();
+        boolean readOnly = personalInfoFormLayout.isReadOnly();
         if (readOnly) {
-            form.setReadOnly(false);
-            name.setReadOnly(false);
-            name.setComponentError(null);
-            birthPlace.setReadOnly(false);
-            birthPlace.setComponentError(null);
-            birthDate.setReadOnly(false);
-            birthDate.setComponentError(null);
-            gender.setReadOnly(false);
-            address.setReadOnly(false);
-            address.setComponentError(null);
-            email.setReadOnly(false);
-            email.setComponentError(null);
-            phone.setReadOnly(false);
-            phone.setComponentError(null);
-            telp.setReadOnly(false);
-            telp.setComponentError(null);
-            bio.setReadOnly(false);
-            bio.setComponentError(null);
-            form.removeStyleName("light");
-            form.addStyleName("tripoin-custom-form");
+        	personalInfoFormLayout.setReadOnly(false);
+            otherInfoFormLayout.setReadOnly(false);
+            nameTextField.setReadOnly(false);
+            nameTextField.setComponentError(null);
+            birthPlaceTextField.setReadOnly(false);
+            birthPlaceTextField.setComponentError(null);
+            birthDateDateField.setReadOnly(false);
+            birthDateDateField.setComponentError(null);
+            genderOptionGroup.setReadOnly(false);
+            addressTextArea.setReadOnly(false);
+            addressTextArea.setComponentError(null);
+            emailTextField.setReadOnly(false);
+            emailTextField.setComponentError(null);
+            phoneTextField.setReadOnly(false);
+            phoneTextField.setComponentError(null);
+            telpTextField.setReadOnly(false);
+            telpTextField.setComponentError(null);
+            bioTextArea.setReadOnly(false);
+            bioTextArea.setComponentError(null);
+            personalInfoFormLayout.removeStyleName("light");
+            personalInfoFormLayout.addStyleName("tripoin-custom-form");
+            otherInfoFormLayout.removeStyleName("light");
+            otherInfoFormLayout.addStyleName("tripoin-custom-form");            
             event.getButton().setCaption("Save");
             event.getButton().addStyleName("primary");
         } else {
         	IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
         	String allNotif = "";
             boolean isValid = true;
-        	if(name.getValue()==null || name.getValue().isEmpty()){
-        		name.setComponentError(new UserError("Name not null"));
+        	if(nameTextField.getValue()==null || nameTextField.getValue().isEmpty()){
+        		nameTextField.setComponentError(new UserError("Name not null"));
         		allNotif=allNotif.concat("Name not null!\n");
         		isValid=false;
         	}
-        	if(birthPlace.getValue()==null || birthPlace.getValue().isEmpty()){
-        		birthPlace.setComponentError(new UserError("Birth place not null"));
+        	if(birthPlaceTextField.getValue()==null || birthPlaceTextField.getValue().isEmpty()){
+        		birthPlaceTextField.setComponentError(new UserError("Birth place not null"));
         		allNotif=allNotif.concat("Birth place not null!\n");
         		isValid=false;
         	}
-        	if(!birthDate.isValid() || birthDate.getValue()==null){
-        		birthDate.setComponentError(new UserError("Birth date incorrectly"));
+        	if(!birthDateDateField.isValid() || birthDateDateField.getValue()==null){
+        		birthDateDateField.setComponentError(new UserError("Birth date incorrectly"));
         		allNotif=allNotif.concat("Birth date incorrectly!\n");
         		isValid=false;
         	}
-        	if(phone.getValue()==null || phone.getValue().isEmpty()){
-        		phone.setComponentError(new UserError("Phone not null"));
+        	if(phoneTextField.getValue()==null || phoneTextField.getValue().isEmpty()){
+        		phoneTextField.setComponentError(new UserError("Phone not null"));
         		allNotif=allNotif.concat("Phone not null!\n");
         		isValid=false;
         	}
-        	if(telp.getValue()==null || telp.getValue().isEmpty()){
-        		telp.setComponentError(new UserError("Telp not null"));
+        	if(telpTextField.getValue()==null || telpTextField.getValue().isEmpty()){
+        		telpTextField.setComponentError(new UserError("Telp not null"));
         		allNotif=allNotif.concat("Telp not null!\n");
         		isValid=false;
         	}
-        	if(email.getValue()==null || email.getValue().isEmpty()){
-        		email.setComponentError(new UserError("Email not null"));
+        	if(emailTextField.getValue()==null || emailTextField.getValue().isEmpty()){
+        		emailTextField.setComponentError(new UserError("Email not null"));
         		allNotif=allNotif.concat("Email not null!\n");
         		isValid=false;
-        	}else if (!email.getValue().matches(EWebUIConstant.REGEX_EMAIL.toString())) {
-        		email.setComponentError(new UserError("Email format not valid"));
+        	}else if (!emailTextField.getValue().matches(EWebUIConstant.REGEX_EMAIL.toString())) {
+        		emailTextField.setComponentError(new UserError("Email format not valid"));
         		allNotif=allNotif.concat("Email format not valid!\n");
         		isValid=false;
 			}
-        	if(address.getValue()==null || address.getValue().isEmpty()){
-        		address.setComponentError(new UserError("Address not null"));
+        	if(addressTextArea.getValue()==null || addressTextArea.getValue().isEmpty()){
+        		addressTextArea.setComponentError(new UserError("Address not null"));
         		allNotif=allNotif.concat("Address not null!\n");
         		isValid=false;
         	}	
         	if(isValid){
-            	profileData.setName(name.getValue());
-            	profileData.setBirthplace(birthPlace.getValue());
-            	profileData.setBirthdate(ParameterConstant.FORMAT_DEFAULT.format(birthDate.getValue()));
-            	profileData.setGender(gender.getValue().toString().toUpperCase());
-            	profileData.setAddress(address.getValue());
-            	profileData.setPhone(phone.getValue());
-            	profileData.setTelp(telp.getValue());
-            	profileData.setEmail(email.getValue());
-            	profileData.setBio(bio.getValue());
-            	profileData.setModifiedBy(username.getValue());
+            	profileData.setName(nameTextField.getValue());
+            	profileData.setBirthplace(birthPlaceTextField.getValue());
+            	profileData.setBirthdate(ParameterConstant.FORMAT_DEFAULT.format(birthDateDateField.getValue()));
+            	profileData.setGender(genderOptionGroup.getValue().toString().toUpperCase());
+            	profileData.setAddress(addressTextArea.getValue());
+            	profileData.setPhone(phoneTextField.getValue());
+            	profileData.setTelp(telpTextField.getValue());
+            	profileData.setEmail(emailTextField.getValue());
+            	profileData.setBio(bioTextArea.getValue());
+            	profileData.setModifiedBy(usernameTextField.getValue());
             	profileData.setModifiedIP(identifierPlatform.getIPAddress());
             	profileData.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
             	profileData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));        	
             	profileService.updateProfile(profileData);
 
-                name.setComponentError(null);
-                birthPlace.setComponentError(null);
-                birthDate.setComponentError(null);
-                address.setComponentError(null);
-                email.setComponentError(null);
-                phone.setComponentError(null);
-                telp.setComponentError(null);
-                bio.setComponentError(null);
-                form.setReadOnly(true);
-                name.setReadOnly(true);
-                birthPlace.setReadOnly(true);
-                birthDate.setReadOnly(true);
-                gender.setReadOnly(true);
-                address.setReadOnly(true);
-                email.setReadOnly(true);
-                phone.setReadOnly(true);
-                telp.setReadOnly(true);
-                bio.setReadOnly(true);
-                lastModified.setValue(statusModified(profileData.getModifiedTime()));
-                form.addStyleName("light");
-                form.removeStyleName("tripoin-custom-form");
+                nameTextField.setComponentError(null);
+                birthPlaceTextField.setComponentError(null);
+                birthDateDateField.setComponentError(null);
+                addressTextArea.setComponentError(null);
+                emailTextField.setComponentError(null);
+                phoneTextField.setComponentError(null);
+                telpTextField.setComponentError(null);
+                bioTextArea.setComponentError(null);
+                personalInfoFormLayout.setReadOnly(true);
+                otherInfoFormLayout.setReadOnly(true);
+                nameTextField.setReadOnly(true);
+                birthPlaceTextField.setReadOnly(true);
+                birthDateDateField.setReadOnly(true);
+                genderOptionGroup.setReadOnly(true);
+                addressTextArea.setReadOnly(true);
+                emailTextField.setReadOnly(true);
+                phoneTextField.setReadOnly(true);
+                telpTextField.setReadOnly(true);
+                bioTextArea.setReadOnly(true);
+                lastModifiedLabel.setValue(statusModified(profileData.getModifiedTime()));
+                personalInfoFormLayout.addStyleName("light");
+                personalInfoFormLayout.removeStyleName("tripoin-custom-form");
+                otherInfoFormLayout.addStyleName("light");
+                otherInfoFormLayout.removeStyleName("tripoin-custom-form");
                 event.getButton().setCaption("Edit");
                 event.getButton().removeStyleName("primary");
         	} else{

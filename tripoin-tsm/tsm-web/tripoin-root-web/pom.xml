@@ -48,6 +48,7 @@
 		<vaadin.addons.aceeditor.version>0.8.14</vaadin.addons.aceeditor.version>
 		<com.vaadin.tapio.version>1.1.2</com.vaadin.tapio.version>
 		<vaadin.grid.util.version>1.0.8</vaadin.grid.util.version>
+		<vaadin.jcrop.version>1.1.2</vaadin.jcrop.version>
 		
         <!-- Convenience property to set the Jetty Lib -->
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
