@@ -200,6 +200,112 @@ public class OccupationData {
 
 	public void setModifiedPlatform(String modifiedPlatform) {
 		this.modifiedPlatform = modifiedPlatform;
+	}	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		result = prime * result
+				+ ((createdBy == null) ? 0 : createdBy.hashCode());
+		result = prime * result
+				+ ((createdIP == null) ? 0 : createdIP.hashCode());
+		result = prime * result
+				+ ((createdPlatform == null) ? 0 : createdPlatform.hashCode());
+		result = prime * result
+				+ ((createdTime == null) ? 0 : createdTime.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((modifiedBy == null) ? 0 : modifiedBy.hashCode());
+		result = prime * result
+				+ ((modifiedIP == null) ? 0 : modifiedIP.hashCode());
+		result = prime
+				* result
+				+ ((modifiedPlatform == null) ? 0 : modifiedPlatform.hashCode());
+		result = prime * result
+				+ ((modifiedTime == null) ? 0 : modifiedTime.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((remarks == null) ? 0 : remarks.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OccupationData other = (OccupationData) obj;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
+		if (createdBy == null) {
+			if (other.createdBy != null)
+				return false;
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		if (createdIP == null) {
+			if (other.createdIP != null)
+				return false;
+		} else if (!createdIP.equals(other.createdIP))
+			return false;
+		if (createdPlatform == null) {
+			if (other.createdPlatform != null)
+				return false;
+		} else if (!createdPlatform.equals(other.createdPlatform))
+			return false;
+		if (createdTime == null) {
+			if (other.createdTime != null)
+				return false;
+		} else if (!createdTime.equals(other.createdTime))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (modifiedBy == null) {
+			if (other.modifiedBy != null)
+				return false;
+		} else if (!modifiedBy.equals(other.modifiedBy))
+			return false;
+		if (modifiedIP == null) {
+			if (other.modifiedIP != null)
+				return false;
+		} else if (!modifiedIP.equals(other.modifiedIP))
+			return false;
+		if (modifiedPlatform == null) {
+			if (other.modifiedPlatform != null)
+				return false;
+		} else if (!modifiedPlatform.equals(other.modifiedPlatform))
+			return false;
+		if (modifiedTime == null) {
+			if (other.modifiedTime != null)
+				return false;
+		} else if (!modifiedTime.equals(other.modifiedTime))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (remarks == null) {
+			if (other.remarks != null)
+				return false;
+		} else if (!remarks.equals(other.remarks))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		return true;
 	}
 
 	@Override

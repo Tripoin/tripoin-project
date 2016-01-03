@@ -63,7 +63,7 @@ public class EmployeeLoadEndpoint extends XReturnStatus {
 		
 		try{
 			FilterArgument[] filterArguments = new FilterArgument[] { 
-					new FilterArgument("user.username", ECommonOperator.EQUALS) 
+					new FilterArgument("profile.user.username", ECommonOperator.EQUALS) 
 			};
 			List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { currentUserName }, null, null);
 			List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
@@ -74,6 +74,8 @@ public class EmployeeLoadEndpoint extends XReturnStatus {
 				}
 				employeeTransferObject.setEmployeeDatas(employeeDatas);
 			}
+			employeeList = null;
+			employeeDatas = null;
 			employeeTransferObject.setResponseCode("0");
 			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
 			employeeTransferObject.setResponseDesc("Load Employee Data Success");			

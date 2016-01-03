@@ -14,7 +14,6 @@
 	
 	<int:channel id="responseChannelEmployeeLoad"/>
 	<int:channel id="requestChannelEmployeeLoad"/>
-	<int:channel id="routeChannelEmployeeLoad"/>
 		
 	<int:channel id="responseChannelEmployeeLoadAll"/>
 	<int:channel id="requestChannelEmployeeLoadAll"/>
@@ -33,14 +32,10 @@
 	
 	<int-http:inbound-gateway request-channel="requestChannelEmployeeLoad"
 		reply-channel="responseChannelEmployeeLoad"
-		supported-methods="POST" 
-		path="/wscontext/employee/load, /wscontext/employee/load/{employee}"
-		request-payload-type="com.tripoin.core.dto.EmployeeData">	
+		supported-methods="GET" 
+		path="/wscontext/employee/load">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
-	<int:router input-channel="routeChannelEmployeeLoad" expression="headers.http_requestMethod">
-	    <int:mapping value="POST" channel="requestChannelEmployeeLoad"/>
-	</int:router>	
 	<int:service-activator ref="employeeLoadEndpoint" method="loadEmployee" input-channel="requestChannelEmployeeLoad" output-channel="responseChannelEmployeeLoad"/>
 			
 	<int-http:inbound-gateway request-channel="requestChannelEmployeeLoadAll"

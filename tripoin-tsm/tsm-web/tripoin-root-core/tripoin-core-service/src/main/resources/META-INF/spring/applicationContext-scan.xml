@@ -31,6 +31,6 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
     </context:component-scan>
     
-	<task:executor  id="web-async-task-executor"  pool-size="5"/>
+	<task:executor id="web-async-task-executor"  pool-size="5"/>
     
 </beans>

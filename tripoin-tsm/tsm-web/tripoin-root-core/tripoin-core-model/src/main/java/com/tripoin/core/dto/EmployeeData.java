@@ -248,6 +248,135 @@ public class EmployeeData {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		result = prime * result
+				+ ((createdBy == null) ? 0 : createdBy.hashCode());
+		result = prime * result
+				+ ((createdIP == null) ? 0 : createdIP.hashCode());
+		result = prime * result
+				+ ((createdPlatform == null) ? 0 : createdPlatform.hashCode());
+		result = prime * result
+				+ ((createdTime == null) ? 0 : createdTime.hashCode());
+		result = prime
+				* result
+				+ ((employeeDataParent == null) ? 0 : employeeDataParent
+						.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((modifiedBy == null) ? 0 : modifiedBy.hashCode());
+		result = prime * result
+				+ ((modifiedIP == null) ? 0 : modifiedIP.hashCode());
+		result = prime
+				* result
+				+ ((modifiedPlatform == null) ? 0 : modifiedPlatform.hashCode());
+		result = prime * result
+				+ ((modifiedTime == null) ? 0 : modifiedTime.hashCode());
+		result = prime * result + ((nik == null) ? 0 : nik.hashCode());
+		result = prime * result
+				+ ((occupationData == null) ? 0 : occupationData.hashCode());
+		result = prime * result
+				+ ((profileData == null) ? 0 : profileData.hashCode());
+		result = prime * result + ((remarks == null) ? 0 : remarks.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeData other = (EmployeeData) obj;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
+		if (createdBy == null) {
+			if (other.createdBy != null)
+				return false;
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		if (createdIP == null) {
+			if (other.createdIP != null)
+				return false;
+		} else if (!createdIP.equals(other.createdIP))
+			return false;
+		if (createdPlatform == null) {
+			if (other.createdPlatform != null)
+				return false;
+		} else if (!createdPlatform.equals(other.createdPlatform))
+			return false;
+		if (createdTime == null) {
+			if (other.createdTime != null)
+				return false;
+		} else if (!createdTime.equals(other.createdTime))
+			return false;
+		if (employeeDataParent == null) {
+			if (other.employeeDataParent != null)
+				return false;
+		} else if (!employeeDataParent.equals(other.employeeDataParent))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (modifiedBy == null) {
+			if (other.modifiedBy != null)
+				return false;
+		} else if (!modifiedBy.equals(other.modifiedBy))
+			return false;
+		if (modifiedIP == null) {
+			if (other.modifiedIP != null)
+				return false;
+		} else if (!modifiedIP.equals(other.modifiedIP))
+			return false;
+		if (modifiedPlatform == null) {
+			if (other.modifiedPlatform != null)
+				return false;
+		} else if (!modifiedPlatform.equals(other.modifiedPlatform))
+			return false;
+		if (modifiedTime == null) {
+			if (other.modifiedTime != null)
+				return false;
+		} else if (!modifiedTime.equals(other.modifiedTime))
+			return false;
+		if (nik == null) {
+			if (other.nik != null)
+				return false;
+		} else if (!nik.equals(other.nik))
+			return false;
+		if (occupationData == null) {
+			if (other.occupationData != null)
+				return false;
+		} else if (!occupationData.equals(other.occupationData))
+			return false;
+		if (profileData == null) {
+			if (other.profileData != null)
+				return false;
+		} else if (!profileData.equals(other.profileData))
+			return false;
+		if (remarks == null) {
+			if (other.remarks != null)
+				return false;
+		} else if (!remarks.equals(other.remarks))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "EmployeeData [id=" + id + ", code=" + code + ", nik=" + nik
 				+ ", status=" + status + ", remarks=" + remarks
