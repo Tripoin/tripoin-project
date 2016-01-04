@@ -65,14 +65,15 @@ public class ProfileImageEndpoint extends XReturnStatus {
 						if(!tempDir.exists())
 							tempDir.mkdirs();
 						((UploadedMultipartFile) multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE)).transferTo(new File(rootPath.concat(profile.getResourcesUUID()), fileName));
-					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY").equals(elementName)){
-						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY")))
+						new File(rootPath.concat(profile.getResourcesUUID()), profile.getPhoto()).delete();
+					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_BY.equals(elementName)){
+						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_BY))
 							profile.setModifiedBy(value);
-					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP").equals(elementName)){
-						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP")))
+					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_IP.equals(elementName)){
+						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_IP))
 							profile.setModifiedIP(value);
-					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM").equals(elementName)){
-						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM")))
+					}else if(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_PLATFORM.equals(elementName)){
+						for(String value : (String[])multipartRequest.getFirst(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_PLATFORM))
 							profile.setModifiedPlatform(value);
 					}
 				}

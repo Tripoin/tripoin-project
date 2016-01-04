@@ -45,6 +45,9 @@ public class ParameterConstant {
 	public static final String TRIPOIN_CONTENT_URL = "\\$\\{TRIPOIN.CONTENT.URL\\}";	
 
 	public static final String TRIPOIN_UPLOAD_IMAGE = "TRIPOIN-UPLOAD-IMAGE";
+	public static final String TRIPOIN_UPLOAD_IMAGE_CREATED_BY = "TRIPOIN-UPLOAD-IMAGE-CREATED-BY";
+	public static final String TRIPOIN_UPLOAD_IMAGE_CREATED_IP = "TRIPOIN-UPLOAD-IMAGE-CREATED-IP";
+	public static final String TRIPOIN_UPLOAD_IMAGE_CREATED_PLATFORM = "TRIPOIN-UPLOAD-IMAGE-CREATED-PLATFORM";
 	public static final String TRIPOIN_UPLOAD_DATA = "TRIPOIN-UPLOAD-DATA";
 	
 }
