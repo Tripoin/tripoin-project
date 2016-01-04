@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2015 at 06:31 AM
+-- Generation Time: Jan 04, 2016 at 04:00 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -278,7 +278,7 @@ INSERT INTO `mst_profile` (`profile_id`, `profile_email`, `profile_name`, `profi
 (1, 'ridla.fadilah@tripoin.co.id', 'Ridla Fadilah', 'MALE', 'Bandung', '1990-12-27', 'Tangerang', '021234567891', NULL, 1, '081234567891', '<font face="Courier New">This is Me</font>', 'b1c52cdc-78ac-4677-899d-2cacb5cb72e0', '0d0bf53a-0d24-4290-b29b-9190ae5ccf0f', '2015-11-02 13:15:09', 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'ridla', '127.0.0.1', '2015-10-31 08:00:55', 'Computer | Windows | Chrome'),
 (2, 'bangkit.pratolo@tripoin.co.id', 'Bangkit Pratolo', 'MALE', 'Tangerang', '2015-10-12', 'Tangerang', '-', NULL, 2, '081234567892', '-', '399820b9-14c8-4788-bdba-8789dc7ce533', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
 (3, 'achmad.fauzi@tripoin.co.id', 'Achmad Fauzi', 'MALE', 'Tangerang', '2015-10-13', 'Tangerang', '-', NULL, 3, '081234567893', '-', 'a1e87b78-4e1d-4f09-8eeb-8c78c7b8d22b', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
-(4, 'admin@tripoin.co.id', 'Administrator', 'FEMALE', 'Tangerang', '2015-10-14', 'Tangerang', '-', 'vaadin-logo.png84017421666174995.png', 4, '081234567894', '-', 'd42c93af-92e0-49ca-8989-4e6d14c6606c', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'admin', '127.0.0.1', '2015-11-03 16:12:46', 'Computer | Windows | Chrome');
+(4, 'admin@tripoin.co.id', 'Administrator', 'FEMALE', 'Tangerang', '2015-10-14', 'Tangerang', '-', 'tomcat.gif8796357859637219542.gif', 4, '081234567894', '-', 'd42c93af-92e0-49ca-8989-4e6d14c6606c', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'admin', '127.0.0.1', '2016-01-04 02:51:50', 'Computer | Windows | Firefox');
 
 -- --------------------------------------------------------
 
@@ -387,7 +387,15 @@ CREATE TABLE IF NOT EXISTS `vcs_table` (
   `vcs_table_modified_ip` varchar(150) DEFAULT NULL,
   `vcs_table_modified_time` timestamp NULL DEFAULT NULL,
   `vcs_table_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `vcs_table`
+--
+
+INSERT INTO `vcs_table` (`vcs_table_id`, `vcs_table_code`, `vcs_table_total_row`, `vcs_table_status`, `vcs_table_remarks`, `vcs_table_created_by`, `vcs_table_created_ip`, `vcs_table_created_time`, `vcs_table_created_platform`, `vcs_table_modified_by`, `vcs_table_modified_ip`, `vcs_table_modified_time`, `vcs_table_modified_platform`) VALUES
+(1, 'mst_employee', 3, 1, 'Tabel of mst_employee', 'admin', '127.0.0.1', '2016-01-04 02:43:24', NULL, NULL, NULL, NULL, NULL),
+(2, 'mst_occupation', 3, 1, 'Table of mst_occupation', 'admin', '127.0.0.1', '2016-01-04 02:43:24', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -519,7 +527,7 @@ MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 -- AUTO_INCREMENT for table `vcs_table`
 --
 ALTER TABLE `vcs_table`
-MODIFY `vcs_table_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `vcs_table_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
