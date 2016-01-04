@@ -1,5 +1,6 @@
 package com.tripoin.web.view.page.masterdata.employee;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,8 @@ import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseManageView;
+import com.vaadin.data.Property.ReadOnlyException;
+import com.vaadin.data.util.converter.Converter.ConversionException;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
@@ -30,7 +33,6 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -54,6 +56,7 @@ public class DataEmployeeManageView extends ABaseManageView {
 	@Autowired
 	private IDataLoadStarted dataLoadStarted;	
 
+	private Label section = new Label("Personal Info");
     private final TextField employeeNameTextField = new TextField("Name");
     private final TextField nikTextField = new TextField("NIK");
     private final ComboBox occupationComboBox = new ComboBox("Occupation");
@@ -66,7 +69,6 @@ public class DataEmployeeManageView extends ABaseManageView {
     private final TextField telpTextField = new TextField("Home Phone");
     private final TextField emailTextField = new TextField("Email");
     private final TextArea addressTextArea = new TextArea("Address");
-    private final RichTextArea bioTextArea = new RichTextArea("Bio");
 	private EmployeeData employeeData;
 
 	@PostConstruct
@@ -82,8 +84,7 @@ public class DataEmployeeManageView extends ABaseManageView {
 		}); 
     }
 	
-	protected void setFormLayoutView(){
-        Label section = new Label("Personal Info");
+	protected void setFormLayoutView(){        
         form.addComponent(section);
         section.addStyleName("h3");
         section.addStyleName("colored");
@@ -153,14 +154,6 @@ public class DataEmployeeManageView extends ABaseManageView {
         form.addComponent(addressTextArea);
         addressTextArea.setWidth("50%");
         addressTextArea.setRequired(true);
-
-        section = new Label("Additional Info");
-        form.addComponent(section);
-        section.addStyleName("h3");
-        section.addStyleName("colored");
-
-        form.addComponent(bioTextArea);
-        bioTextArea.setWidth("100%");
 	}
 
 	protected void initiateSessionData(){       
@@ -174,7 +167,24 @@ public class DataEmployeeManageView extends ABaseManageView {
         	employeeData = (EmployeeData)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
         	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
         	employeeNameTextField.setValue(employeeData.getProfileData().getName());
-        	occupationComboBox.select(employeeData.getOccupationData());
+        	nikTextField.setValue(employeeData.getNik());
+        	occupationComboBox.select(employeeData.getOccupationData());        	
+        	//TODO parentEmployeeComboBox.select(employeeData.getEmployeeDataParent().getProfileData().getName());
+        	usernameTextField.setValue(employeeData.getProfileData().getUserData().getUsername());
+        	birthPlaceTextField.setValue(employeeData.getProfileData().getBirthplace());
+        	try {
+				birthDateDateField.setValue(ParameterConstant.FORMAT_DEFAULT.parse(employeeData.getProfileData().getBirthdate()));
+			} catch (ReadOnlyException | ConversionException | ParseException e) {
+				birthDateDateField.setValue(new Date());
+			}
+        	if(ParameterConstant.MALE.equalsIgnoreCase(employeeData.getProfileData().getGender()))
+            	genderOptionGroup.select(ParameterConstant.MALE);
+            else
+            	genderOptionGroup.select(ParameterConstant.FEMALE);
+        	phoneTextField.setValue(employeeData.getProfileData().getPhone());
+        	telpTextField.setValue(employeeData.getProfileData().getTelp());
+        	emailTextField.setValue(employeeData.getProfileData().getEmail());
+        	addressTextArea.setValue(employeeData.getProfileData().getAddress());
         	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());
         }	
 	}

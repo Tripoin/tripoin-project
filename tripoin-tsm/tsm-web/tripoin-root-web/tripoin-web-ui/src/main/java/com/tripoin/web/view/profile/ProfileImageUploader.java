@@ -28,7 +28,7 @@ public class ProfileImageUploader implements Receiver {
         	String typeFile = mimeType.split("/")[0];
         	extensionFile = filename.substring(filename.lastIndexOf("."));
         	if(EWebUIConstant.TYPE_FILE_IMAGE.toString().equals(typeFile))
-                file = File.createTempFile(filename, extensionFile);
+                file = File.createTempFile(filename.replace(extensionFile, ""), extensionFile);
         	try {
 				fos = new FileOutputStream(file);
 			} catch (final FileNotFoundException e) {

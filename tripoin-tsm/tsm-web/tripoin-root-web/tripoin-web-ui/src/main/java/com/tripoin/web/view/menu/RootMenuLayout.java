@@ -153,7 +153,7 @@ public class RootMenuLayout extends HorizontalLayout implements View {
 	private Component buildUserMenu() {
         final MenuBar settings = new MenuBar();
         settings.addStyleName("user-menu");      
-        urlResourcesImage = commonRest.getUrl(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
+        urlResourcesImage = commonRest.getUrlHostName(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
         String urlImage = urlResourcesImage.concat("profile-default-300px.png");
         if(profileData.getPhoto() != null)
            	urlImage = urlResourcesImage.concat(profileData.getResourcesUUID()).concat("/").concat(profileData.getPhoto());

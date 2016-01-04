@@ -297,7 +297,7 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         profilePhotoLayout.setMargin(true);
         profilePhotoLayout.setSpacing(true);
         profilePhotoLayout.addComponent(profilePhotoImage);
-        urlResources = commonRest.getUrl(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
+        urlResources = commonRest.getUrlHostName(WebServiceConstant.HTTP_RESOURCES_IMAGES.concat("/"));
         String urlImage = urlResources.concat("profile-default-300px.png"); 
         if(profileData.getPhoto() != null)
         	urlImage = urlResources.concat(profileData.getResourcesUUID()).concat("/").concat(profileData.getPhoto());
@@ -352,9 +352,9 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 								String urlImage = urlResources.concat("profile-default-300px.png");
 								IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
 								Map<String, Object> data = new HashMap<String, Object>();
-								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-BY"), usernameTextField.getValue());
-								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-IP"), identifierPlatform.getIPAddress());
-								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE.concat("CREATED-PLATFORM"), identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
+								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_BY, usernameTextField.getValue());
+								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_IP, identifierPlatform.getIPAddress());
+								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_PLATFORM, identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
 								GeneralTransferObject generalTransferObject = profileService.updatePhotoProfile(receiverImage.getFile(), data);
 						        if(ParameterConstant.RESPONSE_SUCCESS.equals(generalTransferObject.getResponseMsg()))
 						        	urlImage = urlResources.concat(profileData.getResourcesUUID()).concat("/").concat(receiverImage.getFile().getName());
