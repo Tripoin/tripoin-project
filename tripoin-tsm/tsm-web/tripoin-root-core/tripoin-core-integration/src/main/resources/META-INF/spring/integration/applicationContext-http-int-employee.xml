@@ -21,6 +21,10 @@
 	<int:channel id="responseChannelEmployeeLoadPaging"/>
 	<int:channel id="requestChannelEmployeeLoadPaging"/>
 	<int:channel id="routeChannelEmployeeLoadPaging"/>
+	
+	<int:channel id="responseChannelEmployeeLoadAllByParam"/>
+	<int:channel id="requestChannelEmployeeLoadAllByParam"/>
+	<int:channel id="routeChannelEmployeeLoadAllByParam"/>
 		
 	<int:channel id="responseChannelEmployeeSave"/>
 	<int:channel id="requestChannelEmployeeSave"/>
@@ -57,6 +61,18 @@
 	    <int:mapping value="POST" channel="requestChannelEmployeeLoadPaging"/>
 	</int:router>	
 	<int:service-activator ref="employeeLoadEndpoint" method="loadEmployeePaging" input-channel="requestChannelEmployeeLoadPaging" output-channel="responseChannelEmployeeLoadPaging"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelEmployeeLoadAllByParam"
+		reply-channel="responseChannelEmployeeLoadAllByParam"
+		supported-methods="POST" 
+		path="/wscontext/employee/load/all, /wscontext/employee/load/all/{employee}"
+		request-payload-type="com.tripoin.core.dto.EmployeeTransferObject">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelEmployeeLoadAllByParam" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelEmployeeLoadAllByParam"/>
+	</int:router>	
+	<int:service-activator ref="employeeLoadEndpoint" method="loadEmployeeAllByParam" input-channel="requestChannelEmployeeLoadAllByParam" output-channel="responseChannelEmployeeLoadAllByParam"/>
 	
 	<int-http:inbound-gateway request-channel="requestChannelEmployeeSave"
 		reply-channel="responseChannelEmployeeSave"

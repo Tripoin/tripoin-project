@@ -18,10 +18,10 @@ public enum ECommonOperator implements Serializable {
 	
 	EQUALS(" = ?"), 
 	LESS(" < ?"), 
-	LESS_EQUAL(" < ?"), 
+	LESS_EQUALS(" < ?"), 
 	GREATER(" > ?"), 
-	GREATER_EQUAL(" >= ?"),
-	NOT_EQUAL(" <> ?"),
+	GREATER_EQUALS(" >= ?"),
+	NOT_EQUALS(" <> ?"),
 
 	fieldIsNull(" IS NULL ?"),
 	fieldIsNotNull(" IS NOT NULL ?"),

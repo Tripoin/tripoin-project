@@ -343,6 +343,178 @@ public class ProfileData {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((bio == null) ? 0 : bio.hashCode());
+		result = prime * result
+				+ ((birthdate == null) ? 0 : birthdate.hashCode());
+		result = prime * result
+				+ ((birthplace == null) ? 0 : birthplace.hashCode());
+		result = prime * result
+				+ ((createdBy == null) ? 0 : createdBy.hashCode());
+		result = prime * result
+				+ ((createdIP == null) ? 0 : createdIP.hashCode());
+		result = prime * result
+				+ ((createdPlatform == null) ? 0 : createdPlatform.hashCode());
+		result = prime * result
+				+ ((createdTime == null) ? 0 : createdTime.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((forgotExpired == null) ? 0 : forgotExpired.hashCode());
+		result = prime * result
+				+ ((forgotUUID == null) ? 0 : forgotUUID.hashCode());
+		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((modifiedBy == null) ? 0 : modifiedBy.hashCode());
+		result = prime * result
+				+ ((modifiedIP == null) ? 0 : modifiedIP.hashCode());
+		result = prime
+				* result
+				+ ((modifiedPlatform == null) ? 0 : modifiedPlatform.hashCode());
+		result = prime * result
+				+ ((modifiedTime == null) ? 0 : modifiedTime.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((photo == null) ? 0 : photo.hashCode());
+		result = prime * result
+				+ ((resourcesUUID == null) ? 0 : resourcesUUID.hashCode());
+		result = prime * result + ((telp == null) ? 0 : telp.hashCode());
+		result = prime * result
+				+ ((userData == null) ? 0 : userData.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProfileData other = (ProfileData) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (bio == null) {
+			if (other.bio != null)
+				return false;
+		} else if (!bio.equals(other.bio))
+			return false;
+		if (birthdate == null) {
+			if (other.birthdate != null)
+				return false;
+		} else if (!birthdate.equals(other.birthdate))
+			return false;
+		if (birthplace == null) {
+			if (other.birthplace != null)
+				return false;
+		} else if (!birthplace.equals(other.birthplace))
+			return false;
+		if (createdBy == null) {
+			if (other.createdBy != null)
+				return false;
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		if (createdIP == null) {
+			if (other.createdIP != null)
+				return false;
+		} else if (!createdIP.equals(other.createdIP))
+			return false;
+		if (createdPlatform == null) {
+			if (other.createdPlatform != null)
+				return false;
+		} else if (!createdPlatform.equals(other.createdPlatform))
+			return false;
+		if (createdTime == null) {
+			if (other.createdTime != null)
+				return false;
+		} else if (!createdTime.equals(other.createdTime))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (forgotExpired == null) {
+			if (other.forgotExpired != null)
+				return false;
+		} else if (!forgotExpired.equals(other.forgotExpired))
+			return false;
+		if (forgotUUID == null) {
+			if (other.forgotUUID != null)
+				return false;
+		} else if (!forgotUUID.equals(other.forgotUUID))
+			return false;
+		if (gender == null) {
+			if (other.gender != null)
+				return false;
+		} else if (!gender.equals(other.gender))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (modifiedBy == null) {
+			if (other.modifiedBy != null)
+				return false;
+		} else if (!modifiedBy.equals(other.modifiedBy))
+			return false;
+		if (modifiedIP == null) {
+			if (other.modifiedIP != null)
+				return false;
+		} else if (!modifiedIP.equals(other.modifiedIP))
+			return false;
+		if (modifiedPlatform == null) {
+			if (other.modifiedPlatform != null)
+				return false;
+		} else if (!modifiedPlatform.equals(other.modifiedPlatform))
+			return false;
+		if (modifiedTime == null) {
+			if (other.modifiedTime != null)
+				return false;
+		} else if (!modifiedTime.equals(other.modifiedTime))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if (photo == null) {
+			if (other.photo != null)
+				return false;
+		} else if (!photo.equals(other.photo))
+			return false;
+		if (resourcesUUID == null) {
+			if (other.resourcesUUID != null)
+				return false;
+		} else if (!resourcesUUID.equals(other.resourcesUUID))
+			return false;
+		if (telp == null) {
+			if (other.telp != null)
+				return false;
+		} else if (!telp.equals(other.telp))
+			return false;
+		if (userData == null) {
+			if (other.userData != null)
+				return false;
+		} else if (!userData.equals(other.userData))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "ProfileData [id=" + id + ", email=" + email + ", name=" + name
 				+ ", gender=" + gender + ", birthplace=" + birthplace

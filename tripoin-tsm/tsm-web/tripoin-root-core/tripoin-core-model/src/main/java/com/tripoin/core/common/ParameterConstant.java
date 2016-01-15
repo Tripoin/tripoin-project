@@ -39,6 +39,9 @@ public class ParameterConstant {
 	public static final String FORGOT_PASSWORD_VERIFY_SUBJECT = "TRIPOIN.EMAIL.FORGOT.PASSWORD.VERIFY.SUBJECT";
 	public static final String FORGOT_PASSWORD_VERIFY_BODY = "TRIPOIN.EMAIL.FORGOT.PASSWORD.VERIFY.BODY.MESSAGE";
 
+	public static final String NEW_USER_SUBJECT = "TRIPOIN.EMAIL.NEW.USER.SUBJECT";
+	public static final String NEW_USER_BODY = "TRIPOIN.EMAIL.NEW.USER.BODY.MESSAGE";
+
 	public static final String TRIPOIN_CONTENT_FULLNAME = "\\$\\{TRIPOIN.CONTENT.FULLNAME\\}";
 	public static final String TRIPOIN_CONTENT_USERNAME = "\\$\\{TRIPOIN.CONTENT.USERNAME\\}";
 	public static final String TRIPOIN_CONTENT_PASSWORD = "\\$\\{TRIPOIN.CONTENT.PASSWORD\\}";

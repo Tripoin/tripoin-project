@@ -25,6 +25,7 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
+import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.Occupation;
@@ -35,6 +36,16 @@ import com.tripoin.core.pojo.UserRoute;
 import com.tripoin.core.service.IGenericManagerJpa;
 import com.tripoin.core.service.util.IStanGenerator;
 import com.tripoin.core.service.util.ISystemParameterService;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -82,7 +93,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestUser();
+		runTestEmployee();
 	}
 	
 	public void runTestTotalRowData() throws Exception {
@@ -160,10 +171,10 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	public void runTestEmployee() throws Exception {
-		String username = "ridla";
+		String username = "ROLE_SALESMAN";
 		
 		FilterArgument[] filterArguments = new FilterArgument[] { 
-				new FilterArgument("profile.user.username", ECommonOperator.EQUALS) 
+				new FilterArgument(EmployeeTransferObject.EnumFieldEmployee.ROLE_EMPLOYE.toString(), ECommonOperator.NOT_EQUALS) 
 		};
 		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { username }, null, null);
 		for(Employee employee : employeeList) {
@@ -182,5 +193,30 @@ public class ServiceTest implements ApplicationContextAware  {
 			LOGGER.debug("User Route Data : "+userRoute);
 		}
 	}
+	
+	public void freemarkerTest() {
+        
+        Configuration cfg = new Configuration();
+        try {
+            Template template = cfg.getTemplate("src/test/resources/FreemarkerTemplate.xml");
+             
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("MpnRsAlamatWp", "> Hello & World! <"); 
+             
+            Writer out = new OutputStreamWriter(System.out);
+            template.process(data, out);
+            out.flush();
+ 
+            /*Writer file = new FileWriter (new File("C:\\Temps\\FreemarkerTemplate.txt"));
+            template.process(data, file);
+            file.flush();
+            file.close();*/
+             
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

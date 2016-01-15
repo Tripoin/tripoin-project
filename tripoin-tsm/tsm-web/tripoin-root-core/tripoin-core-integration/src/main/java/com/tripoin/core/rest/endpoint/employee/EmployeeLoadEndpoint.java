@@ -122,12 +122,57 @@ public class EmployeeLoadEndpoint extends XReturnStatus {
 		employeeTransferObject = null;
 		return message;		
 	}
+
+	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_ANONYMOUS_SECURE})
+	public Message<EmployeeTransferObject> loadEmployeeAllByParam(Message<EmployeeTransferObject> inMessage){	
+		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
+		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
+		try{			
+			FilterArgument[] filterArguments = null;
+			Object[] values = null;
+			if(inMessage.getPayload() != null){
+				employeeTransferObject = inMessage.getPayload();
+				if(employeeTransferObject.getFindEmployeeData() != null){
+					filterArguments = new FilterArgument[employeeTransferObject.getFindEmployeeData().size()];
+					values = new Object[employeeTransferObject.getFindEmployeeData().size()];
+					int i = 0;
+					for(String key : employeeTransferObject.getFindEmployeeData().keySet()){
+						if(EnumFieldEmployee.ROLE_EMPLOYE.toString().equals(key))
+							filterArguments[i] = new FilterArgument(key, ECommonOperator.NOT_EQUALS);
+						else filterArguments[i] = new FilterArgument(key, ECommonOperator.EQUALS);
+						values[i] = employeeTransferObject.getFindEmployeeData().get(key);
+						i++;
+					}
+				}
+			}
+			List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, values, null, null);
+			List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
+			if(employeeList != null){
+				for(Employee employee : employeeList)
+					employeeDatas.add(new EmployeeData(employee));
+				employeeTransferObject.setEmployeeDatas(employeeDatas);
+				employeeList = null;
+				employeeDatas = null;
+			}
+			employeeTransferObject.setResponseCode("0");
+			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+			employeeTransferObject.setResponseDesc("Load All Employee Data Success");			
+		}catch (Exception e){
+			LOGGER.error("Load All Employee System Error : "+e.getLocalizedMessage(), e);
+			employeeTransferObject.setResponseCode("1");
+			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			employeeTransferObject.setResponseDesc("Load All Employee System Error : "+e.getLocalizedMessage());
+		}		
+		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
+		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
+		employeeTransferObject = null;
+		return message;		
+	}
 	
 	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<EmployeeTransferObject> loadEmployeePaging(Message<EmployeeTransferObject> inMessage){	
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
-		
 		try{			
 			FilterArgument[] filterArguments = null;
 			Object[] values = null;
@@ -183,8 +228,7 @@ public class EmployeeLoadEndpoint extends XReturnStatus {
 			employeeTransferObject.setResponseCode("1");
 			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			employeeTransferObject.setResponseDesc("Load Paging Employee System Error : "+e.getLocalizedMessage());
-		}
-		
+		}		
 		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
 		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
 		employeeTransferObject = null;

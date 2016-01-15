@@ -43,12 +43,10 @@ public class OccupationUpdateEndpoint extends XReturnStatus {
     public Message<GeneralTransferObject> updateOccupation(Message<OccupationData> inMessage) {
     	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    currentUserName = authentication.getName();
 		}
-
         try {
         	OccupationData occupationData = inMessage.getPayload();
         	if(occupationData != null && occupationData.getId() == null){
@@ -65,8 +63,7 @@ public class OccupationUpdateEndpoint extends XReturnStatus {
         		occupation.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
         	if(occupation.getModifiedPlatform() == null)
         		occupation.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);    		
-    		iGenericManagerJpa.updateObject(occupation);
-    		
+    		iGenericManagerJpa.updateObject(occupation);    		
             generalTransferObject.setResponseCode("0");
             generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
             generalTransferObject.setResponseDesc("Update Employee Data Success");
@@ -76,7 +73,6 @@ public class OccupationUpdateEndpoint extends XReturnStatus {
             generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             generalTransferObject.setResponseDesc("Update Employee System Error : " + e.getMessage());
         }
-
         setReturnStatusAndMessage(generalTransferObject, responseHeaderMap);
         Message<GeneralTransferObject> message = new GenericMessage<GeneralTransferObject>(generalTransferObject, responseHeaderMap);
         return message;

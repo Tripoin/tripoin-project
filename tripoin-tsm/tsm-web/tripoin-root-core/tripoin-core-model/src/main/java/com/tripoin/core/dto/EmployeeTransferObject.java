@@ -47,6 +47,7 @@ public class EmployeeTransferObject extends GeneralPagingTransferObject {
 		NIK_EMPLOYE("nik"),
 		NAME_EMPLOYE("profile.name"),
 		OCCUPATION_EMPLOYE("occupation.name"),
+		ROLE_EMPLOYE("profile.user.role.code"),
 		NAME_PARENT_EMPLOYE("employeeParent.profile.name");
 		
 		private String operator;		

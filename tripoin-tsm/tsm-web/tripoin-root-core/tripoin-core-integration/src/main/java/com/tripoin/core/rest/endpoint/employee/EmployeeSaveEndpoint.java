@@ -1,7 +1,6 @@
 package com.tripoin.core.rest.endpoint.employee;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
@@ -32,9 +30,13 @@ import com.tripoin.core.dto.ProfileData;
 import com.tripoin.core.dto.UserData;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Profile;
+import com.tripoin.core.pojo.Role;
+import com.tripoin.core.pojo.SystemParameter;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.core.service.util.ISystemParameterService;
+import com.tripoin.util.mail.ICoreMailSender;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -49,8 +51,17 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
 
 	@Autowired
 	private StandardStringDigester jasyptStringDigester;
+	
+	@Autowired
+	private ICoreMailSender iCoreMailSender;
+	
+	@Autowired
+	private ISystemParameterService systemParameterService;
     
-	private String currentUserName;
+	private String currentUserName;	
+
+	@Value("${tripoin.email.from}")
+	private String emailFrom;
 	
 	@Value("${path.image}")
 	private String rootPath;
@@ -75,13 +86,17 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
     			if(userList == null || userList.size() == 0){
                 	UserData userDataPayload = employeeDataPayload.getProfileData().getUserData();       	
                     User user = new User(userDataPayload);
-                	if(userDataPayload.getAuth() != null){
-        	        	String basicAuthorization = userDataPayload.getAuth();
-        	        	byte[] oauth = Base64.decode(basicAuthorization.getBytes());
-        	        	userDataPayload.setAuth(null);
-        	            user.setAuth(null);
-        	            user.setPassword(jasyptStringDigester.digest(new String(oauth).split(":")[1]));	            
-                	}        	
+            	    String passwordPlainText = randomGeneratorAlphanumeric(7);
+                    user.setPassword(jasyptStringDigester.digest(passwordPlainText));
+                    Object[] data;
+                    if(RoleConstant.ROLE_SALESSUPERVISOR.toString().equals(employeeDataPayload.getOccupationData().getCode()) ||
+                    		RoleConstant.ROLE_SALESSUPERVISOR.toString().equals(employeeDataPayload.getOccupationData().getCode())){
+                    	data = new Object[]{employeeDataPayload.getOccupationData().getCode()};
+                    }else data = new Object[]{RoleConstant.ROLE_SALESMAN.toString()};
+                    List<Role> roles = iGenericManagerJpa.loadObjectsFilterArgument(Role.class, new FilterArgument[]{
+    					new FilterArgument("code", ECommonOperator.EQUALS)
+        			}, data, null, null);
+                	user.setRole(roles.get(0));
                     iGenericManagerJpa.saveObject(user);
                     
                 	ProfileData profileDataPayload = employeeDataPayload.getProfileData();       	
@@ -109,18 +124,18 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                 		employee.setCreatedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
                 	if(employee.getCreatedPlatform() == null)
                 		employee.setCreatedPlatform(ParameterConstant.PLATFORM_DEFAULT);
-                    iGenericManagerJpa.saveObject(employee);
+                    iGenericManagerJpa.saveObject(employee);                   
                     
-                    FilterArgument[] filterArgumentsEmployee = new FilterArgument[] { 
-            				new FilterArgument("profile.user.username", ECommonOperator.EQUALS) 
-            		};
-            		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsEmployee, new Object[] { employeeDataPayload.getProfileData().getUserData().getUsername() }, null, null);
-                    List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
-                    if (employeeList != null) {
-                        for (Employee employeeTemp : employeeList)
-                            employeeDatas.add(new EmployeeData(employeeTemp));
-                        employeeTransferObject.setEmployeeDatas(employeeDatas);
-                    }
+                    List<SystemParameter> systemParameters = systemParameterService.listValue(new Object[]{ParameterConstant.NEW_USER_SUBJECT, ParameterConstant.NEW_USER_BODY});
+				    Map<String, String> mapSystemParamter = new HashMap<String, String>();
+				    for(SystemParameter systemParameter : systemParameters)
+				    	mapSystemParamter.put(systemParameter.getCode(), systemParameter.getValue());
+				    String content = mapSystemParamter.get(ParameterConstant.NEW_USER_BODY);
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_FULLNAME, profile.getName());
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_USERNAME, profile.getUser().getUsername());
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_PASSWORD, passwordPlainText);
+                    iCoreMailSender.sendMailContent(emailFrom, employee.getProfile().getEmail(), mapSystemParamter.get(ParameterConstant.NEW_USER_SUBJECT), content);
+                    
                     employeeTransferObject.setResponseCode("0");
                     employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
                     employeeTransferObject.setResponseDesc("Save Employee Data Success");
@@ -143,5 +158,17 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
         Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
         return message;
     }
+	
+	private static String randomGeneratorAlphanumeric(int length){
+		String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		StringBuffer buffer = new StringBuffer();
+		int charactersLength = characters.length();
+
+		for (int i = 0; i < length; i++) {
+			double index = Math.random() * charactersLength;
+			buffer.append(characters.charAt((int) index));
+		}
+		return buffer.toString();
+	}
 
 }

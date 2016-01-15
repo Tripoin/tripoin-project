@@ -1,6 +1,5 @@
 package com.tripoin.core.rest.endpoint.employee;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,12 +45,10 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
     public Message<EmployeeTransferObject> updateEmployee(Message<EmployeeData> inMessage) {
     	EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    currentUserName = authentication.getName();
 		}
-
         try {
         	Employee employee = new Employee(inMessage.getPayload());
         	User user = employee.getProfile().getUser();
@@ -68,10 +65,8 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                     	employee.setId(employeeTemp.getId());
                     }                    	
                 }        		
-        	}
-        	
-        	iGenericManagerJpa.updateObject(user);
-    		
+        	}        	
+        	iGenericManagerJpa.updateObject(user);    		
         	profile.setUser(user);
         	profile.setModifiedBy(currentUserName);
         	profile.setModifiedTime(new Date());
@@ -79,8 +74,7 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
         		profile.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
         	if(profile.getModifiedPlatform() == null)
         		profile.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);
-    		iGenericManagerJpa.updateObject(profile);
-    		
+    		iGenericManagerJpa.updateObject(profile);    		
     		employee.setProfile(profile);
         	employee.setModifiedBy(currentUserName);
         	employee.setModifiedTime(profile.getModifiedTime());
@@ -90,9 +84,6 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
         		employee.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);        	
     		iGenericManagerJpa.updateObject(employee);
     		
-            List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
-            employeeDatas.add(new EmployeeData(employee));
-            employeeTransferObject.setEmployeeDatas(employeeDatas);
             employeeTransferObject.setResponseCode("0");
             employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
             employeeTransferObject.setResponseDesc("Update Employee Data Success");
@@ -102,7 +93,6 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
             employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             employeeTransferObject.setResponseDesc("Update Employee System Error : " + e.getMessage());
         }
-
         setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
         Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
         return message;
