@@ -1,7 +1,9 @@
 package com.tripoin.web.service.impl;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.tripoin.core.common.RoleConstant;
+import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeeTransferObject;
+import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.web.common.ABaseHttpRest;
@@ -41,13 +47,16 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
 	public void setUsername(String username) {this.username = username;}
 	@Value("${tripoin.web.app.password}")
 	public void setPassword(String password) {this.password = password;}
-	
+
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);
+	private BeanItemContainer<EmployeeData> employeeContainer = new BeanItemContainer<>(EmployeeData.class);
+	private List<EmployeeData> employeeNotSalesmanList;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		try {
 			buildOccupationContainer();
+			buildEmployeeNotSalesmanContainer();
 		} catch (Exception e) {
 			if(HttpStatus.NOT_FOUND.equals(getStatusCode())){
 				LOGGER.warn("Response : ".concat(getStatusCode().value()+" ").concat(getStatusCode().getReasonPhrase()));
@@ -78,6 +87,39 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
 	@Override
 	public BeanItemContainer<OccupationData> getOccupationContainer() {
 		return occupationContainer;
+	}
+
+	@Override
+	public void buildEmployeeNotSalesmanContainer() {
+		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
+		Map<String, Object> findEmployeeData = new HashMap<String, Object>();
+		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_SALESMAN);
+		employeeTransferObject.setFindEmployeeData(findEmployeeData);
+		employeeNotSalesmanList = getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
+	}
+	
+	@Override
+	public BeanItemContainer<EmployeeData> employeeNotSalesmanContainer() {
+		this.employeeContainer.removeAllItems();
+		this.employeeContainer.addAll(employeeNotSalesmanList);
+		this.employeeContainer.removeContainerProperty("id");
+		this.employeeContainer.removeContainerProperty("code");
+		this.employeeContainer.removeContainerProperty("nik");
+		this.employeeContainer.removeContainerProperty("status");
+		this.employeeContainer.removeContainerProperty("remarks");
+		this.employeeContainer.removeContainerProperty("createdBy");
+		this.employeeContainer.removeContainerProperty("createdIP");
+		this.employeeContainer.removeContainerProperty("createdTime");
+		this.employeeContainer.removeContainerProperty("createdPlatform");
+		this.employeeContainer.removeContainerProperty("modifiedBy");
+		this.employeeContainer.removeContainerProperty("modifiedIP");
+		this.employeeContainer.removeContainerProperty("modifiedTime");
+		this.employeeContainer.removeContainerProperty("modifiedPlatform");
+		this.employeeContainer.removeContainerProperty("profileData");
+		this.employeeContainer.removeContainerProperty("occupationData");
+		this.employeeContainer.removeContainerProperty("employeeDataParent");
+		this.employeeContainer.addNestedContainerProperty("profileData.name");
+		return employeeContainer;
 	}
 	
 	@Override

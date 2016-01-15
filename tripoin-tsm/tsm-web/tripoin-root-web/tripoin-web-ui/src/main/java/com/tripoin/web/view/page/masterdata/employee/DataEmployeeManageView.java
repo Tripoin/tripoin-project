@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.OccupationData;
+import com.tripoin.core.dto.ProfileData;
+import com.tripoin.core.dto.UserData;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
@@ -33,6 +36,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Slider;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -69,6 +73,8 @@ public class DataEmployeeManageView extends ABaseManageView {
     private final TextField telpTextField = new TextField("Home Phone");
     private final TextField emailTextField = new TextField("Email");
     private final TextArea addressTextArea = new TextArea("Address");
+	private final Label sectionAccountStatus = new Label("Account Status");
+    private final Slider enabledAccount = new Slider("Enabled Account");
 	private EmployeeData employeeData;
 
 	@PostConstruct
@@ -109,12 +115,13 @@ public class DataEmployeeManageView extends ABaseManageView {
         occupationComboBox.setWidth("50%");
         
         form.addComponent(parentEmployeeComboBox);
-        parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer());
         parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         parentEmployeeComboBox.addStyleName("small");
-        parentEmployeeComboBox.setNullSelectionAllowed(false);
+        parentEmployeeComboBox.setNullSelectionAllowed(true);
+        parentEmployeeComboBox.setNewItemsAllowed(true);
         parentEmployeeComboBox.setRequired(true);
         parentEmployeeComboBox.setWidth("50%");
+        parentEmployeeComboBox.setImmediate(true);
 
         form.addComponent(usernameTextField);
         usernameTextField.setWidth("50%");
@@ -123,17 +130,19 @@ public class DataEmployeeManageView extends ABaseManageView {
         HorizontalLayout placeDateOfBirth = new HorizontalLayout();
         form.addComponent(placeDateOfBirth);
         placeDateOfBirth.setCaption("Place, Date of Birth");
+        placeDateOfBirth.addComponent(birthPlaceTextField);
         birthPlaceTextField.setWidth("45%");
         birthPlaceTextField.setRequired(true);
-        birthDateDateField.setRequired(true);
-        placeDateOfBirth.addComponent(birthPlaceTextField);
         placeDateOfBirth.addComponent(birthDateDateField);
+        birthDateDateField.setRequired(true);
+        birthDateDateField.setValue(new Date());
 
         form.addComponent(genderOptionGroup);
         genderOptionGroup.addItem(ParameterConstant.FEMALE);
         genderOptionGroup.addItem(ParameterConstant.MALE);
         genderOptionGroup.addStyleName("horizontal");
         genderOptionGroup.setRequired(true);
+        genderOptionGroup.select(ParameterConstant.MALE);
 
         section = new Label("Contact Info");
         form.addComponent(section);
@@ -154,6 +163,15 @@ public class DataEmployeeManageView extends ABaseManageView {
         form.addComponent(addressTextArea);
         addressTextArea.setWidth("50%");
         addressTextArea.setRequired(true);
+
+        form.addComponent(sectionAccountStatus);
+        sectionAccountStatus.addStyleName("h3");
+        sectionAccountStatus.addStyleName("colored");    
+        form.addComponent(enabledAccount);
+    	enabledAccount.setWidth("50px");
+    	enabledAccount.setResolution(0);
+    	enabledAccount.setMin(0);
+    	enabledAccount.setMax(1);
 	}
 
 	protected void initiateSessionData(){       
@@ -161,15 +179,25 @@ public class DataEmployeeManageView extends ABaseManageView {
         	employeeData = new EmployeeData();
 			employeeData.setStatus(1);
 			occupationComboBox.setInputPrompt("Select Occupation");
+	        parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.employeeNotSalesmanContainer());
 			parentEmployeeComboBox.setInputPrompt("Select Head");
+			sectionAccountStatus.setVisible(false);
+			enabledAccount.setVisible(false);
         	submit.setCaption(EWebUIConstant.BUTTON_SAVE.toString());
         }else{
         	employeeData = (EmployeeData)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
         	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
         	employeeNameTextField.setValue(employeeData.getProfileData().getName());
         	nikTextField.setValue(employeeData.getNik());
-        	occupationComboBox.select(employeeData.getOccupationData());        	
-        	//TODO parentEmployeeComboBox.select(employeeData.getEmployeeDataParent().getProfileData().getName());
+        	occupationComboBox.select(employeeData.getOccupationData());        
+        	if(employeeData.getEmployeeDataParent()==null)
+        		parentEmployeeComboBox.setEnabled(false);
+        	else{
+                parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.employeeNotSalesmanContainer());
+        		if(parentEmployeeComboBox.containsId(employeeData))
+        			parentEmployeeComboBox.removeItem(employeeData);
+        		parentEmployeeComboBox.select(employeeData.getEmployeeDataParent());
+        	}
         	usernameTextField.setValue(employeeData.getProfileData().getUserData().getUsername());
         	birthPlaceTextField.setValue(employeeData.getProfileData().getBirthplace());
         	try {
@@ -185,6 +213,9 @@ public class DataEmployeeManageView extends ABaseManageView {
         	telpTextField.setValue(employeeData.getProfileData().getTelp());
         	emailTextField.setValue(employeeData.getProfileData().getEmail());
         	addressTextArea.setValue(employeeData.getProfileData().getAddress());
+			sectionAccountStatus.setVisible(true);
+			enabledAccount.setVisible(true);
+        	enabledAccount.setValue(new Double(employeeData.getProfileData().getUserData().getEnabled()));
         	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());
         }	
 	}
@@ -195,39 +226,96 @@ public class DataEmployeeManageView extends ABaseManageView {
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		if(employeeNameTextField.getValue() == null || "".equals(employeeNameTextField.getValue()) || employeeNameTextField.getValue().isEmpty()){
-			employeeNameTextField.setComponentError(new UserError("Occupation Name not null!"));
-	        notification.setDescription("Occupation Name not null!");
-		}else{
+		String allNotif = "";
+    	if(employeeNameTextField.getValue()==null || employeeNameTextField.getValue().isEmpty()){
+    		employeeNameTextField.setComponentError(new UserError("Name not null"));
+    		allNotif=allNotif.concat("Name not null!\n");
+    		isFailure=false;
+    	}
+    	if(birthPlaceTextField.getValue()==null || birthPlaceTextField.getValue().isEmpty()){
+    		birthPlaceTextField.setComponentError(new UserError("Birth place not null"));
+    		allNotif=allNotif.concat("Birth place not null!\n");
+    		isFailure=false;
+    	}
+    	if(!birthDateDateField.isValid() || birthDateDateField.getValue()==null){
+    		birthDateDateField.setComponentError(new UserError("Birth date incorrectly"));
+    		allNotif=allNotif.concat("Birth date incorrectly!\n");
+    		isFailure=false;
+    	}
+    	if(phoneTextField.getValue()==null || phoneTextField.getValue().isEmpty()){
+    		phoneTextField.setComponentError(new UserError("Phone not null"));
+    		allNotif=allNotif.concat("Phone not null!\n");
+    		isFailure=false;
+    	}
+    	if(telpTextField.getValue()==null || telpTextField.getValue().isEmpty()){
+    		telpTextField.setComponentError(new UserError("Telp not null"));
+    		allNotif=allNotif.concat("Telp not null!\n");
+    		isFailure=false;
+    	}
+    	if(emailTextField.getValue()==null || emailTextField.getValue().isEmpty()){
+    		emailTextField.setComponentError(new UserError("Email not null"));
+    		allNotif=allNotif.concat("Email not null!\n");
+    		isFailure=false;
+    	}else if (!emailTextField.getValue().matches(EWebUIConstant.REGEX_EMAIL.toString())) {
+    		emailTextField.setComponentError(new UserError("Email format not valid"));
+    		allNotif=allNotif.concat("Email format not valid!\n");
+    		isFailure=false;
+		}
+    	if(addressTextArea.getValue()==null || addressTextArea.getValue().isEmpty()){
+    		addressTextArea.setComponentError(new UserError("Address not null"));
+    		allNotif=allNotif.concat("Address not null!\n");
+    		isFailure=false;
+    	}	
+		if(isFailure){
 			GeneralTransferObject generalTransferObject = new GeneralTransferObject();
 			IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
-			/*employeeData.setName(employeeNameTextField.getValue());*/
+			employeeData.setNik(nikTextField.getValue());
+			employeeData.setEmployeeDataParent((EmployeeData)parentEmployeeComboBox.getValue());
+			employeeData.setOccupationData((OccupationData)occupationComboBox.getValue());
+			employeeData.setProfileData(new ProfileData());
+			employeeData.getProfileData().setAddress(addressTextArea.getValue());
+			employeeData.getProfileData().setBirthdate(ParameterConstant.FORMAT_DEFAULT.format(birthDateDateField.getValue()));
+			employeeData.getProfileData().setBirthplace(birthPlaceTextField.getValue());
+			employeeData.getProfileData().setGender(genderOptionGroup.getValue().toString().toUpperCase());
+			employeeData.getProfileData().setPhone(phoneTextField.getValue());
+			employeeData.getProfileData().setTelp(telpTextField.getValue());
+			employeeData.getProfileData().setName(employeeNameTextField.getValue());
+			employeeData.getProfileData().setEmail(emailTextField.getValue());
+			employeeData.getProfileData().setUserData(new UserData());
+			employeeData.getProfileData().getUserData().setUsername(usernameTextField.getValue());
 			if(EWebUIConstant.BUTTON_SAVE.toString().equals(event.getButton().getCaption())){
 				employeeData.setCode(employeeNameTextField.getValue().replace(" ", "").toUpperCase());
 				employeeData.setCreatedIP(identifierPlatform.getIPAddress());
 				employeeData.setCreatedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
 				employeeData.setCreatedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
+				employeeData.getProfileData().setCreatedIP(identifierPlatform.getIPAddress());
+				employeeData.getProfileData().setCreatedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
+				employeeData.getProfileData().setCreatedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
 				generalTransferObject = employeeService.saveEmployee(employeeData);				
 			}else{
 				employeeData.setModifiedIP(identifierPlatform.getIPAddress());
 				employeeData.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
 				employeeData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
+				employeeData.getProfileData().setModifiedIP(identifierPlatform.getIPAddress());
+				employeeData.getProfileData().setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
+				employeeData.getProfileData().setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
 				generalTransferObject = employeeService.updateEmployee(employeeData);
 			}
 			employeeData = null;
 			if(generalTransferObject != null){
-				if("1".equals(generalTransferObject.getResponseCode()))
-					notification.setDescription("Save Occupation error, please try again later!");
-				else if("2".equals(generalTransferObject.getResponseCode()))
-					notification.setDescription("Occupation name already exist.");
-				else{
+				if("1".equals(generalTransferObject.getResponseCode())){
 					isFailure = false;
+					notification.setDescription("Employee error, please try again later!");
+				}else if("2".equals(generalTransferObject.getResponseCode())){
+					isFailure = false;
+					notification.setDescription("Username already exist.");
+				}else					
 					UI.getCurrent().getNavigator().navigateTo(DataEmployeeView.BEAN_NAME);
-				}
 			}			
-		}
+		}else
+    		notification.setDescription(allNotif);
 		
-		if(isFailure)
+		if(!isFailure)
 	        notification.show(Page.getCurrent());
 	}
 

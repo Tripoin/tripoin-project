@@ -90,7 +90,7 @@ public class DataOccupationManageView extends ABaseManageView {
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		if(occupationName.getValue() == null || "".equals(occupationName.getValue()) || occupationName.getValue().isEmpty()){
+		if(occupationName.getValue() == null || occupationName.getValue().isEmpty()){
 			occupationName.setComponentError(new UserError("Occupation Name not null!"));
 	        notification.setDescription("Occupation Name not null!");
 		}else{
@@ -113,7 +113,7 @@ public class DataOccupationManageView extends ABaseManageView {
 			occupationData = null;
 			if(generalTransferObject != null){
 				if("1".equals(generalTransferObject.getResponseCode()))
-					notification.setDescription("Save Occupation error, please try again later!");
+					notification.setDescription("Occupation error, please try again later!");
 				else if("2".equals(generalTransferObject.getResponseCode()))
 					notification.setDescription("Occupation name already exist.");
 				else{

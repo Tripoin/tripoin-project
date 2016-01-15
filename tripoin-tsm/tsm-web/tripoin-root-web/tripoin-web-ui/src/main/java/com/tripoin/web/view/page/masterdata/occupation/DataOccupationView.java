@@ -101,13 +101,14 @@ public class DataOccupationView extends ABaseGridView {
 	
 	@Override
 	protected void setItemMenuGrid(){        
-        itemMenuGrid.addItem("Create", new Command() {
+        /*itemMenuGrid.addItem("Create", new Command() {
         	private static final long serialVersionUID = 4272237366468831374L;
         	@Override
             public void menuSelected(MenuItem selectedItem) {
         		UI.getCurrent().getNavigator().navigateTo(DataOccupationManageView.BEAN_NAME);
             }
-        });
+        });*/
+		itemMenuGrid.addItem("Create", null).setEnabled(false);
         menuItemExport = itemMenuGrid.addItem("Export", null);
         menuItemExport.addItem("Export All", new Command() {
 			private static final long serialVersionUID = 5989159535771225427L;
