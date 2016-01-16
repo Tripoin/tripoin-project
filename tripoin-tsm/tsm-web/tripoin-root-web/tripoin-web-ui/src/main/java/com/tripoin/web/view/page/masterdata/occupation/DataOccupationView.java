@@ -29,6 +29,7 @@ import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -131,7 +132,7 @@ public class DataOccupationView extends ABaseGridView {
 			@Override
             public void menuSelected(MenuItem selectedItem) {
 				if(occupationDatasSelect != null && occupationDatasSelect.size() > 0){
-					OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect);
+					OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect, VaadinServlet.getCurrent().getServletContext());
 					occupationDatasSelect = null;
 		        	grid.getSelectionModel().reset();
 			        constructDataContainer();

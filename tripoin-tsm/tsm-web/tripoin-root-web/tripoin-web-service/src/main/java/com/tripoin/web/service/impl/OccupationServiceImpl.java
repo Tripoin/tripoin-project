@@ -2,6 +2,8 @@ package com.tripoin.web.service.impl;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -51,34 +53,35 @@ public class OccupationServiceImpl implements IOccupationService {
 	}
 
 	@Override
-	public GeneralTransferObject updateOccupation(OccupationData occupationData) {
+	public GeneralTransferObject updateOccupation(OccupationData occupationData, final ServletContext servletContext) {
 		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_UPDATE), occupationData, GeneralTransferObject.class);
-		threadBuildOccupationContainer(generalTransferObject);
+		threadBuildOccupationContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 
 	@Override
-	public GeneralTransferObject saveOccupation(OccupationData occupationData) {
+	public GeneralTransferObject saveOccupation(OccupationData occupationData, final ServletContext servletContext) {
 		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_SAVE), occupationData, GeneralTransferObject.class);
-		threadBuildOccupationContainer(generalTransferObject);
+		threadBuildOccupationContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 
 	@Override
-	public OccupationTransferObject deleteOccupation(List<OccupationData> occupationDatas) {
+	public OccupationTransferObject deleteOccupation(List<OccupationData> occupationDatas, final ServletContext servletContext) {
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		occupationTransferObject.setOccupationDatas(occupationDatas);
 		occupationTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_DELETE), occupationTransferObject, OccupationTransferObject.class);
-		threadBuildOccupationContainer(occupationTransferObject);
+		threadBuildOccupationContainer(occupationTransferObject, servletContext);
 		return occupationTransferObject;
 	}
 	
-	private void threadBuildOccupationContainer(GeneralTransferObject generalTransferObject){
+	private void threadBuildOccupationContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
 		if("0".equals(generalTransferObject.getResponseCode())){
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {
-					dataLoadStarted.buildOccupationContainer();
+					List<OccupationData> occupationDatas = dataLoadStarted.loadOccupationData();
+					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_OCCUPATION, occupationDatas);
 				}
 			});
 		}

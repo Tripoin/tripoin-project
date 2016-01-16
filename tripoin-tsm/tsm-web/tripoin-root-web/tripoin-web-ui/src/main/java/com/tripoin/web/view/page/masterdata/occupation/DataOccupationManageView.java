@@ -20,6 +20,7 @@ import com.tripoin.web.view.ABaseManageView;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -103,12 +104,12 @@ public class DataOccupationManageView extends ABaseManageView {
 				occupationData.setCreatedIP(identifierPlatform.getIPAddress());
 				occupationData.setCreatedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
 				occupationData.setCreatedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
-				generalTransferObject = occupationService.saveOccupation(occupationData);				
+				generalTransferObject = occupationService.saveOccupation(occupationData, VaadinServlet.getCurrent().getServletContext());				
 			}else{
 				occupationData.setModifiedIP(identifierPlatform.getIPAddress());
 				occupationData.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
 				occupationData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
-				generalTransferObject = occupationService.updateOccupation(occupationData);
+				generalTransferObject = occupationService.updateOccupation(occupationData, VaadinServlet.getCurrent().getServletContext());
 			}
 			occupationData = null;
 			if(generalTransferObject != null){

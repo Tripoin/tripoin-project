@@ -27,6 +27,7 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Button;
@@ -192,7 +193,7 @@ public class DataEmployeeView extends ABaseGridView {
         nameTextField.setWidth("50%");
         occupationComboBox = new ComboBox("Occupation");
         groupSearch.addComponent(occupationComboBox);
-        occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer());
+        occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer(VaadinServlet.getCurrent().getServletContext()));
         occupationComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         occupationComboBox.setInputPrompt("Select Occupation");
         occupationComboBox.addStyleName("small");

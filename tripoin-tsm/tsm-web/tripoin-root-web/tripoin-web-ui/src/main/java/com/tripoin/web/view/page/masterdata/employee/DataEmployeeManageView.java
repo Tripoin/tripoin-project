@@ -27,6 +27,7 @@ import com.vaadin.data.util.converter.Converter.ConversionException;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
@@ -106,7 +107,7 @@ public class DataEmployeeManageView extends ABaseManageView {
         nikTextField.setRequired(true);
         
         form.addComponent(occupationComboBox);
-        occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer());
+        occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer(VaadinServlet.getCurrent().getServletContext()));
         occupationComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         occupationComboBox.addStyleName("small");
         occupationComboBox.setTextInputAllowed(false);
@@ -179,7 +180,7 @@ public class DataEmployeeManageView extends ABaseManageView {
         	employeeData = new EmployeeData();
 			employeeData.setStatus(1);
 			occupationComboBox.setInputPrompt("Select Occupation");
-	        parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.employeeNotSalesmanContainer());
+	        parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.employeeNotSalesmanContainer(VaadinServlet.getCurrent().getServletContext()));
 			parentEmployeeComboBox.setInputPrompt("Select Head");
 			sectionAccountStatus.setVisible(false);
 			enabledAccount.setVisible(false);
@@ -193,7 +194,7 @@ public class DataEmployeeManageView extends ABaseManageView {
         	if(employeeData.getEmployeeDataParent()==null)
         		parentEmployeeComboBox.setEnabled(false);
         	else{
-                parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.employeeNotSalesmanContainer());
+                parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.employeeNotSalesmanContainer(VaadinServlet.getCurrent().getServletContext()));
         		if(parentEmployeeComboBox.containsId(employeeData))
         			parentEmployeeComboBox.removeItem(employeeData);
         		parentEmployeeComboBox.select(employeeData.getEmployeeDataParent());

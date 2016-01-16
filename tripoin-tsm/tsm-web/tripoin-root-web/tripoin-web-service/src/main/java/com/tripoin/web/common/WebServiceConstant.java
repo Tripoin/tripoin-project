@@ -19,6 +19,10 @@ public class WebServiceConstant {
 	private static final String HTTP_IMAGE = "/image";
 	private static final String HTTP_DELETE = "/delete";
 	private static final String HTTP_SELECT = "/select";
+
+	public static final String CONTEXT_CONSTANT_ROLES = "ROLES";
+	public static final String CONTEXT_CONSTANT_OCCUPATION = "OCCUPATION";
+	public static final String CONTEXT_CONSTANT_EMPLOYEE_NOT_SALESMAN = "EMPLOYEE_NOT_SALESMAN";
 	
 	public static final String HTTP_ONLY = "HttpOnly";
 	

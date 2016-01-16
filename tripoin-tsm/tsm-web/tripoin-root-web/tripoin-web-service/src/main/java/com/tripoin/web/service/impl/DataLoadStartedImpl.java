@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.tripoin.core.common.RoleConstant;
@@ -30,9 +28,7 @@ import com.vaadin.data.util.BeanItemContainer;
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBean, IDataLoadStarted {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(DataLoadStartedImpl.class);
+public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStarted {
 
 	@Autowired
 	private ICommonRest commonRest;
@@ -50,26 +46,17 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
 
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);
 	private BeanItemContainer<EmployeeData> employeeContainer = new BeanItemContainer<>(EmployeeData.class);
-	private List<EmployeeData> employeeNotSalesmanList;
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		try {
-			buildOccupationContainer();
-			buildEmployeeNotSalesmanContainer();
-		} catch (Exception e) {
-			if(HttpStatus.NOT_FOUND.equals(getStatusCode())){
-				LOGGER.warn("Response : ".concat(getStatusCode().value()+" ").concat(getStatusCode().getReasonPhrase()));
-				throw new Exception("Please check Web Service, and restart this Web Container");
-			}else LOGGER.error("Response : ".concat(getStatusCode().value()+" ").concat(getStatusCode().getReasonPhrase()),e);			
-		}
-	}
 	
 	@Override
-	public void buildOccupationContainer() {
-		List<OccupationData> occupationDatas = getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas();
+	public List<OccupationData> loadOccupationData() {
+    	return getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public BeanItemContainer<OccupationData> getOccupationContainer(ServletContext servletContext) {
 		this.occupationContainer.removeAllItems();
-		this.occupationContainer.addAll(occupationDatas);
+		this.occupationContainer.addAll((List<OccupationData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_OCCUPATION));
     	this.occupationContainer.removeContainerProperty("id");
     	this.occupationContainer.removeContainerProperty("code");
     	this.occupationContainer.removeContainerProperty("status");
@@ -82,26 +69,23 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements InitializingBe
     	this.occupationContainer.removeContainerProperty("modifiedIP");
     	this.occupationContainer.removeContainerProperty("modifiedTime");
     	this.occupationContainer.removeContainerProperty("modifiedPlatform");
-	}
-	
-	@Override
-	public BeanItemContainer<OccupationData> getOccupationContainer() {
 		return occupationContainer;
 	}
 
 	@Override
-	public void buildEmployeeNotSalesmanContainer() {
+	public List<EmployeeData> loadEmployeeNotSalesmanData() {
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		Map<String, Object> findEmployeeData = new HashMap<String, Object>();
 		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_SALESMAN);
 		employeeTransferObject.setFindEmployeeData(findEmployeeData);
-		employeeNotSalesmanList = getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
+		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public BeanItemContainer<EmployeeData> employeeNotSalesmanContainer() {
+	public BeanItemContainer<EmployeeData> employeeNotSalesmanContainer(ServletContext servletContext) {
 		this.employeeContainer.removeAllItems();
-		this.employeeContainer.addAll(employeeNotSalesmanList);
+		this.employeeContainer.addAll((List<EmployeeData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NOT_SALESMAN));
 		this.employeeContainer.removeContainerProperty("id");
 		this.employeeContainer.removeContainerProperty("code");
 		this.employeeContainer.removeContainerProperty("nik");
