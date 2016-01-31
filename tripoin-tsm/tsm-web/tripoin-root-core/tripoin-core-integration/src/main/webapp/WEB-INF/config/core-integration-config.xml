@@ -20,8 +20,8 @@
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
-	<mvc:resources mapping="/resources/images/**" location="file:${path.image}" />
-	<mvc:resources mapping="/resources/apk/**" location="file:${path.apk}" />
+	<mvc:resources mapping="/resources/images/**" location="${path.image}" />
+	<mvc:resources mapping="/resources/apk/**" location="${path.apk}" />
 	
 	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/> 
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
