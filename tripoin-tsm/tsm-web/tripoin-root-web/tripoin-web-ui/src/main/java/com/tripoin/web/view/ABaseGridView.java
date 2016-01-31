@@ -206,7 +206,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 				resource.setMIMEType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
 				setResource("export", resource);			
 				ResourceReference resourceReference = ResourceReference.create(resource, this, "export");
-				Page.getCurrent().open(resourceReference.getURL(), "_blank", false);			
+				Page.getCurrent().open(resourceReference.getURL(), "_self", false);			
 			}
 		}
 	}
