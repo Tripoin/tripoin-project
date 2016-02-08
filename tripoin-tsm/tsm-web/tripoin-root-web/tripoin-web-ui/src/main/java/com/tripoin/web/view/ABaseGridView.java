@@ -46,7 +46,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 	protected Grid grid = new Grid();
     protected MenuItem itemMenuGrid;
     protected Notification notification;
-
+    
 	public void init(String PAGE_NAME) throws Exception {
         setMargin(true);
         addStyleName("tripoin-custom-screen");
@@ -69,7 +69,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 		groupSearch.setSpacing(true);
 		groupSearch.setWidth("100%");
         
-        VerticalLayout contentLayout = new VerticalLayout();      
+        VerticalLayout contentLayout = new VerticalLayout();      //grid container
         addComponent(contentLayout);
         contentLayout.setWidth("100%"); 
         CssLayout layout = new CssLayout();
@@ -234,5 +234,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 	protected abstract void setItemMenuGrid();
 	
 	protected abstract void setLayoutGrid();
+	
+	
 	
 }
