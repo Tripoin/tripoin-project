@@ -1,81 +1,51 @@
 package com.tripoin.web.view.base;
 
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.MenuBar;
 
-public class CommonGrid extends VerticalLayout {
+public class CommonGrid extends CssLayout {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1879211785825116306L;
-	private static final Integer NOTIFICATION_TIME = 10000;
-	private Integer positionPage;
-	private Integer totalPage;
-	protected Grid grid;
-	protected MenuBarLeft menuBarLeft;
-	protected MenuBarRight menuBarRight;
-	
+	protected final Grid grid = new Grid();
+	protected final HorizontalLayout menuBarLayout = new HorizontalLayout();
+	private MenuBar menuBarLeft = new MenuBar();
+	private MenuBar menuBarRight = new MenuBar();
+
 	public CommonGrid() {
+		this.addComponent(this.getMenuBarLayout());
+		this.getMenuBarLayout().addComponent(this.menuBarLeft);
+		this.getMenuBarLayout().setExpandRatio(this.menuBarLeft, 1);
+		this.getMenuBarLayout().addComponent(this.menuBarRight);
+		this.addComponent(this.getGrid());
 	}
 
 	public Grid getGrid() {
 		return grid;
-		
 	}
 
-	public void setGrid(Grid grid) {
-		this.grid = grid;
-		this.addComponent(this.getGrid());
+	public HorizontalLayout getMenuBarLayout() {
+		return menuBarLayout;
 	}
 
-	public Integer getPositionPage() {
-		return positionPage;
+	public MenuBar getMenuBarRight() {
+		return menuBarRight;
 	}
 
-	public void setPositionPage(Integer positionPage) {
-		this.positionPage = positionPage;
+	public void setMenuBarRight(MenuBar menuBarRight) {
+		this.menuBarRight = menuBarRight;
 	}
 
-	public Integer getTotalPage() {
-		return totalPage;
-	}
-
-	public void setTotalPage(Integer totalPage) {
-		this.totalPage = totalPage;
-	}
-
-	public static Integer getNotificationTime() {
-		return NOTIFICATION_TIME;
-	}
-
-	public MenuBarLeft getMenuGrid() {
-		return menuBarLeft;
-		
-	}
-
-	public void setMenuGrid(MenuBarLeft menuGrid) {
-		this.menuBarLeft = menuGrid;
-		this.addComponent(this.getMenuGrid());
-	}
-
-	public MenuBarLeft getMenuBarLeft() {
+	public MenuBar getMenuBarLeft() {
 		return menuBarLeft;
 	}
 
-	public void setMenuBarLeft(MenuBarLeft menuBarLeft) {
+	public void setMenuBarLeft(MenuBar menuBarLeft) {
 		this.menuBarLeft = menuBarLeft;
 	}
-
-	public MenuBarRight getMenuBarRight() {
-		return menuBarRight;
-		
-	}
-
-	public void setMenuBarRight(MenuBarRight menuBarRight) {
-		this.menuBarRight = menuBarRight;
-		
-	}	
-	
 
 }

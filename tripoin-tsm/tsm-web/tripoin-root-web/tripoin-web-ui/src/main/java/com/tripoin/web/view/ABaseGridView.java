@@ -54,13 +54,15 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
         addComponent(row);
         row.setMargin(false);
         row.setWidth("100%");
-        final FormLayout formTitle = new FormLayout();       
+        /*final FormLayout formTitle = new FormLayout();       
         row.addComponent(formTitle);
         formTitle.setMargin(false);
-        formTitle.addStyleName("light");        
+        formTitle.addStyleName("light"); */       
         Label title = new Label(PAGE_NAME);
-        formTitle.addComponent(title); 
+        /*formTitle.addComponent(title); */
         title.addStyleName("h1");
+        
+        row.addComponent(title);
         
 		final FormLayout groupSearch = searchContent();
 		addComponent(groupSearch);

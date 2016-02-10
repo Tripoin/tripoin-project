@@ -1,43 +1,78 @@
 package com.tripoin.web.view.base;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Value;
 
 import com.tripoin.web.view.exception.TripoinViewException;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Label;
 
-public class SearchContainer extends FormLayout implements ITripoinComponent<SearchPanel, SearchContainer> {
+public abstract class SearchContainer extends FormLayout implements ITripoinComponent<SearchPanel, SearchContainer> {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1575878452013068877L;
-	private SearchPanel searchPanel;
+	private SearchPanel searchPanel = new SearchPanel();
 	private SearchContainer searchContainer;
-	
 	private String msg;
 	
+	public SearchContainer() {
+		Label section = new Label();
+		section.addStyleName("h3");
+		section.addStyleName("colored");
+		section.setWidth("100%");
+		this.addComponent(section);
+		
+		searchPanel.setSearcPanelComponents(getComponents());
+		for (Component component: this.getParam().getSearcPanelComponents()) {
+			component.addStyleName("small");
+			component.setWidth("50%");
+			this.addComponent(component);
+		}
+		
+		this.getParam().getFooterSearch().setSpacing(true);
+		this.getParam().getOkButton().addStyleName("primary");
+		this.getParam().getOkButton().addStyleName("small");
+		this.getParam().getOkButton().setClickShortcut(ShortcutAction.KeyCode.ENTER);
+		this.getParam().getCancelButton().addStyleName("small");
+		this.getParam().getCancelButton().setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+		this.addComponent(getParam().getFooterSearch());
+
+		this.setStyleName("tripoin-custom-form");
+		this.setMargin(new MarginInfo(false, false, true, false));
+		this.setSpacing(true);
+		this.setWidth("100%");
+	}
+	
+	abstract ArrayList<Component> getComponents();
+
 	public String getMsg() {
 		return msg;
 	}
+	
 	@Value("${searchcontainer.getresult.error}")
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-
-	@Override
-	public void setParam(SearchPanel p_param) {
-		this.searchPanel=p_param;
-		addComponent(searchPanel);
-	}
-
+	
 	@Override
 	public SearchPanel getParam() {
-		return searchPanel;
+		return this.searchPanel;
+	}
+	
+	@Override
+	public void setParam(SearchPanel param) {
+		this.searchPanel = param;
 	}
 
 	@Override
-	public void setResult(SearchContainer p_result) {
-		this.searchContainer=p_result;
-		
+	public void setResult(SearchContainer result) {
+		this.searchContainer = result;	
 	}
 
 	@Override

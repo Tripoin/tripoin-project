@@ -1,10 +1,13 @@
 package com.tripoin.web.view.base;
 
-public interface ITripoinComponent<PARAM,RESULT> {
-	void setParam(PARAM p_param);
-	PARAM getParam();
-	void setResult(RESULT p_result);
+public interface ITripoinComponent<PARAM, RESULT> {
 	
-	RESULT getResult()throws Exception;
+	public void setParam(PARAM param);
+	
+	public PARAM getParam();
+	
+	public void setResult(RESULT result);
+	
+	public RESULT getResult() throws Exception;
 	
 }

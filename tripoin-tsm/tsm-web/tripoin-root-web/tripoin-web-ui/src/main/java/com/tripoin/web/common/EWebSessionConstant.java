@@ -5,6 +5,7 @@ package com.tripoin.web.common;
  */
 public enum EWebSessionConstant {
 
+	SESSION_GRID_DATA("sessionGridData"),
 	SESSION_OCUPATION_DATA("occupationData"),
 	SESSION_EMPLOYEE_DATA("employeeData");
 

@@ -1,74 +1,45 @@
 package com.tripoin.web.view.base;
 
-import java.util.ArrayList;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 
 import com.tripoin.web.view.exception.TripoinViewException;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Grid.SelectionMode;
 
-public abstract class GridContainer  extends  VerticalLayout implements
-		ITripoinComponent<CommonGrid, GridContainer>{
+public class GridContainer extends VerticalLayout implements ITripoinComponent<CommonGrid, GridContainer> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8264084343906114747L;
-	protected VerticalLayout verticalLayout = new VerticalLayout();
-	protected HorizontalLayout gridMenuLayout = new HorizontalLayout();
-	protected MenuBarLeft menuBarLeft;
-	protected MenuBarRight menuBarRight;
-	private CommonGrid commonGrid;
+	private CommonGrid commonGrid = new CommonGrid();
 	private GridContainer gridContainer;
 	private String msg;
 
-	@PostConstruct
-	void init() {
-		menuBarLeft = new MenuBarLeft();
-		menuBarLeft.setMenuItem(getMenuLeftItem());
-		menuBarLeft.setAutoOpen(true);
-		menuBarLeft.addStyleName("borderless");
-		menuBarLeft.addStyleName("small");
-
-		menuBarRight = new MenuBarRight();
-		menuBarRight.setMenuItem(getMenuRightItem());
-		menuBarRight.addStyleName("borderless");
-		menuBarRight.addStyleName("small");
-		menuBarRight.setAutoOpen(true);
-		commonGrid.setMenuBarLeft(menuBarLeft);
+	public GridContainer() {
+		commonGrid.addStyleName("card");
+		commonGrid.setWidth("100%");
 		
-		commonGrid.setMenuBarRight(menuBarRight);
-		
-		this.commonGrid.getGrid().setReadOnly(true);
-		this.commonGrid.getGrid().setEditorEnabled(false);
-		this.commonGrid.getGrid().setHeaderVisible(true);
-		this.commonGrid.getGrid().setFrozenColumnCount(2);
-		this.commonGrid.getGrid().setSelectionMode(SelectionMode.MULTI);
-		this.commonGrid.getGrid().setSizeUndefined();
-		this.commonGrid.getGrid().setWidth("100%");
-		this.commonGrid.getGrid().addStyleName("small");
-		this.gridMenuLayout.addComponent((Component) commonGrid
-				.getMenuBarLeft());
-		this.gridMenuLayout.addComponent((Component) commonGrid
-				.getMenuBarRight());
-		this.gridMenuLayout.addStyleName("v-panel-caption");
-		this.gridMenuLayout.setWidth("100%");
-		this.verticalLayout.addComponent(gridMenuLayout);
-		this.verticalLayout.addComponent(commonGrid);
-		this.gridMenuLayout.setExpandRatio(menuBarLeft, 1);
+		commonGrid.getMenuBarLayout().addStyleName("v-panel-caption");
+		commonGrid.getMenuBarLayout().setWidth("100%");
+		commonGrid.getMenuBarLeft().setAutoOpen(true);
+		commonGrid.getMenuBarLeft().addStyleName("borderless");
+		commonGrid.getMenuBarLeft().addStyleName("small");
+		commonGrid.getMenuBarRight().setAutoOpen(true);
+		commonGrid.getMenuBarRight().addStyleName("borderless");
+		commonGrid.getMenuBarRight().addStyleName("small");
 
+		commonGrid.getGrid().setReadOnly(true);
+		commonGrid.getGrid().setEditorEnabled(false);
+		commonGrid.getGrid().setHeaderVisible(true);
+		commonGrid.getGrid().setSelectionMode(SelectionMode.MULTI);
+		commonGrid.getGrid().setSizeUndefined();
+		commonGrid.getGrid().setWidth("100%");
+		commonGrid.getGrid().addStyleName("small");
+		this.addComponent(commonGrid);
+		this.setWidth("100%");
 	}
-
-	abstract ArrayList<MenuItem> getMenuLeftItem();
-
-	abstract ArrayList<MenuItem> getMenuRightItem();
-
+	
 	public String getMsg() {
 		return msg;
 	}
@@ -79,9 +50,8 @@ public abstract class GridContainer  extends  VerticalLayout implements
 	}
 
 	@Override
-	public void setParam(CommonGrid p_param) {
-		this.commonGrid = p_param;
-		this.verticalLayout.addComponent(commonGrid);
+	public void setParam(CommonGrid param) {
+		this.commonGrid = param;
 	}
 
 	@Override
@@ -90,8 +60,8 @@ public abstract class GridContainer  extends  VerticalLayout implements
 	}
 
 	@Override
-	public void setResult(GridContainer p_result) {
-		this.gridContainer = p_result;
+	public void setResult(GridContainer result) {
+		this.gridContainer = result;
 	}
 
 	@Override

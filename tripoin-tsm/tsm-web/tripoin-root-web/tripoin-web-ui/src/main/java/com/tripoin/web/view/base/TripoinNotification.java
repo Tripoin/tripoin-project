@@ -2,8 +2,7 @@ package com.tripoin.web.view.base;
 
 import com.vaadin.ui.Notification;
 
-public class TripoinNotification extends Notification{
-
+public class TripoinNotification extends Notification {
 
 	/**
 	 * 
@@ -12,7 +11,6 @@ public class TripoinNotification extends Notification{
 
 	public TripoinNotification(String caption, String description) {
 		super(caption, description);
-		
 	}
 
 }
