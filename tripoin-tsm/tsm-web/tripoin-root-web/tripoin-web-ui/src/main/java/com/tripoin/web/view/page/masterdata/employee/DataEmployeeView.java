@@ -19,6 +19,7 @@ import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseGridView;
+import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.SelectionEvent;
@@ -136,7 +137,7 @@ public class DataEmployeeView extends ABaseGridView {
         });
         itemMenuGrid.addItem("Export", null).setEnabled(false);
         itemMenuGrid.addSeparator();
-        itemMenuGrid.addItem(EWebUIConstant.BUTTON_DELETE.toString(), FontAwesome.TRASH_O, null).setEnabled(false);
+        itemMenuGrid.addItem(ITripoinConstantComponent.Button.DELETE, FontAwesome.TRASH_O, null).setEnabled(false);
 	}
 	
 	@Override

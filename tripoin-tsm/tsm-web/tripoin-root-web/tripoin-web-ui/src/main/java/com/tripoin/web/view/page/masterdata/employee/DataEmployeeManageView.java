@@ -22,6 +22,7 @@ import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseManageView;
+import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.vaadin.data.Property.ReadOnlyException;
 import com.vaadin.data.util.converter.Converter.ConversionException;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -184,7 +185,7 @@ public class DataEmployeeManageView extends ABaseManageView {
 			parentEmployeeComboBox.setInputPrompt("Select Head");
 			sectionAccountStatus.setVisible(false);
 			enabledAccount.setVisible(false);
-        	submit.setCaption(EWebUIConstant.BUTTON_SAVE.toString());
+        	submit.setCaption(ITripoinConstantComponent.Button.SAVE);
         }else{
         	employeeData = (EmployeeData)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
         	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_EMPLOYEE_DATA.toString());
@@ -217,7 +218,7 @@ public class DataEmployeeManageView extends ABaseManageView {
 			sectionAccountStatus.setVisible(true);
 			enabledAccount.setVisible(true);
         	enabledAccount.setValue(new Double(employeeData.getProfileData().getUserData().getEnabled()));
-        	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());
+        	submit.setCaption(ITripoinConstantComponent.Button.UPDATE);
         }	
 	}
 	
@@ -284,7 +285,7 @@ public class DataEmployeeManageView extends ABaseManageView {
 			employeeData.getProfileData().setEmail(emailTextField.getValue());
 			employeeData.getProfileData().setUserData(new UserData());
 			employeeData.getProfileData().getUserData().setUsername(usernameTextField.getValue());
-			if(EWebUIConstant.BUTTON_SAVE.toString().equals(event.getButton().getCaption())){
+			if(ITripoinConstantComponent.Button.SAVE.equals(event.getButton().getCaption())){
 				employeeData.setCode(employeeNameTextField.getValue().replace(" ", "").toUpperCase());
 				employeeData.setCreatedIP(identifierPlatform.getIPAddress());
 				employeeData.setCreatedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));

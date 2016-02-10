@@ -13,10 +13,10 @@ import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
 import com.tripoin.web.common.EWebSessionConstant;
-import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseManageView;
+import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
@@ -75,13 +75,13 @@ public class DataOccupationManageView extends ABaseManageView {
         if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString()) == null){
         	occupationData = new OccupationData();
 			occupationData.setStatus(1);
-        	submit.setCaption(EWebUIConstant.BUTTON_SAVE.toString());
+        	submit.setCaption(ITripoinConstantComponent.Button.SAVE);
         }else{
         	occupationData = (OccupationData)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString());
         	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_OCUPATION_DATA.toString());
         	occupationName.setValue(occupationData.getName());
         	occupationDescription.setValue(occupationData.getRemarks());
-        	submit.setCaption(EWebUIConstant.BUTTON_UPDATE.toString());
+        	submit.setCaption(ITripoinConstantComponent.Button.UPDATE);
         }	
 	}
 	
@@ -99,7 +99,7 @@ public class DataOccupationManageView extends ABaseManageView {
 			IdentifierPlatform identifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
 			occupationData.setName(occupationName.getValue());
 			occupationData.setRemarks(occupationDescription.getValue());
-			if(EWebUIConstant.BUTTON_SAVE.toString().equals(event.getButton().getCaption())){
+			if(ITripoinConstantComponent.Button.SAVE.equals(event.getButton().getCaption())){
 				occupationData.setCode(occupationName.getValue().replace(" ", "").toUpperCase());
 				occupationData.setCreatedIP(identifierPlatform.getIPAddress());
 				occupationData.setCreatedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));

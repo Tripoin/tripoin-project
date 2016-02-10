@@ -6,8 +6,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -19,17 +17,10 @@ import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.base.ATripoinPage;
-import com.tripoin.web.view.base.ITripoinPage;
 import com.tripoin.web.view.page.masterdata.occupation.DataOccupationManageView;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.MenuBar.Command;
-import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.TextField;
 
 @Component
@@ -97,18 +88,23 @@ public class ExamplePage extends ATripoinPage {
 	}
 
 	@Override
+	protected void deleteSelectionEvent(List<Object> dataObjectSelect) {
+		for(Object object : dataObjectSelect)
+			occupationDatasSelect.add((OccupationData)object);
+		OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect, VaadinServlet.getCurrent().getServletContext());
+		occupationDatasSelect = null;
+		if("2".equals(occupationTransferObject.getResponseCode())){
+			String listOccupation = "Occupation : ";
+			for(OccupationData occupationData : occupationTransferObject.getOccupationDatas())
+				listOccupation = listOccupation.concat(occupationData.getName()).concat(", ");
+			listOccupation = listOccupation.concat("#END-OCCUPATION#").replace(", #END-OCCUPATION#", "");
+			tripoinNotification.show("Error Data Occupation", "Some Occupation data already being used\n".concat(listOccupation));
+		}
+	}
+
+	@Override
 	protected String getPageTitle() {
 		return PAGE_NAME;
-	}
-
-	@Override
-	protected String getCaptionNotification() {
-		return null;
-	}
-
-	@Override
-	protected String getDescriptionNotification() {
-		return null;
 	}
 
 	@Override
@@ -122,26 +118,28 @@ public class ExamplePage extends ATripoinPage {
 	}
 
 	@Override
-	protected Class<? extends ATripoinPage> getViewClass() {
-		return this.getClass();
-	}
-
-	@Override
-	protected void deleteSelectionEvent() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String reportJasperNameSelected() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Occupation.jasper";
 	}
 
 	@Override
 	protected String reportJasperNameAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return "OccupationAll.jasper";
+	}
+
+	@Override
+	protected String reportNameSelected() {
+		return "Report-Occupation";
+	}
+
+	@Override
+	protected String reportNameAll() {
+		return "Report-Occupation-All";
+	}
+
+	@Override
+	protected Class<? extends ATripoinPage> getViewClass() {
+		return this.getClass();
 	}
 	
 }

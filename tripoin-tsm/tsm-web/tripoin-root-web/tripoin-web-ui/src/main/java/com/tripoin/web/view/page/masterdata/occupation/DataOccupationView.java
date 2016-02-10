@@ -20,6 +20,7 @@ import com.tripoin.web.common.ReportUtil;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.ABaseGridView;
+import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.SelectionEvent;
@@ -127,7 +128,7 @@ public class DataOccupationView extends ABaseGridView {
 		});
         menuItemExportSelected.setEnabled(false);
         itemMenuGrid.addSeparator();
-        menuItemDelete = itemMenuGrid.addItem(EWebUIConstant.BUTTON_DELETE.toString(), FontAwesome.TRASH_O, new Command() {
+        menuItemDelete = itemMenuGrid.addItem(ITripoinConstantComponent.Button.DELETE, FontAwesome.TRASH_O, new Command() {
 			private static final long serialVersionUID = -6262114274661510612L;
 			@Override
             public void menuSelected(MenuItem selectedItem) {
@@ -248,7 +249,7 @@ public class DataOccupationView extends ABaseGridView {
     public void enter(ViewChangeEvent event) {
 		if(event.getOldView() instanceof DataOccupationManageView){
 			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
-			if(EWebUIConstant.BUTTON_SAVE.toString().equals(oldView.getSubmit().getCaption())){
+			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.getSubmit().getCaption())){
 				setPositionPage(1);
 		        nameOccupationSearchTextField.setValue("");
 		        constructDataContainer();

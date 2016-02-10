@@ -50,10 +50,6 @@ public enum EWebUIConstant {
 	
 	TYPE_FILE_IMAGE("image"),
 	
-	BUTTON_SAVE("Save"),
-	BUTTON_UPDATE("Update"),
-	BUTTON_DELETE("Delete"),
-	
 	REPORT_PDF(".pdf", "application/pdf"),
 	REPORT_EXCEL(".xls", "application/vnd.ms-excel"),
 	REPORT_CSV(".csv", "text/csv"),
