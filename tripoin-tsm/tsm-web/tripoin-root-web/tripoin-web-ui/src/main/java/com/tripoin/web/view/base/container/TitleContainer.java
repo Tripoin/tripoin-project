@@ -1,4 +1,4 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container;
 
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;

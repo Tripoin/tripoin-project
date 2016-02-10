@@ -13,6 +13,9 @@ import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ReportUtil;
+import com.tripoin.web.view.base.container.GridContainer;
+import com.tripoin.web.view.base.container.SearchContainer;
+import com.tripoin.web.view.base.container.TitleContainer;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.SelectionEvent;
@@ -98,7 +101,7 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 			searchContainer = new SearchContainer() {
 				private static final long serialVersionUID = -9075849116444347844L;
 				@Override
-				ArrayList<Component> getComponents() {
+				public ArrayList<Component> getComponents() {
 					return getSearchPanelComponents();
 				}
 			};
@@ -170,7 +173,7 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 	protected abstract GeneralPagingTransferObject constructBeanContainer(GeneralPagingTransferObject generalPagingTransferObject);
 	
 	protected void initMenuBarRightGrid() {
-		new TripoinPageable() {
+		new ATripoinPageable() {
 			@Override
 			protected GeneralPagingTransferObject constructBeanContainerPageable(GeneralPagingTransferObject generalPagingTransferObject) {
 				return constructBeanContainer(generalPagingTransferObject);
@@ -183,7 +186,7 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 	}
 
 	protected void initMenuBarLeftGrid(){
-		final TripoinDataReport tripoinDataReport = new TripoinDataReport() {
+		final ATripoinDataReport tripoinDataReport = new ATripoinDataReport() {
 			@Override
 			ResourceReference setResourceReport(String name, StreamResource resource) {
 				setResource(name, resource);			

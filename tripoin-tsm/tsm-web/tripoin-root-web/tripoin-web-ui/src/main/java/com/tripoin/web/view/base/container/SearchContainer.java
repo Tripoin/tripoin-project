@@ -1,9 +1,11 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container;
 
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.tripoin.web.view.base.ITripoinComponent;
+import com.tripoin.web.view.base.container.component.SearchPanel;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
@@ -49,7 +51,7 @@ public abstract class SearchContainer extends FormLayout implements ITripoinComp
 		this.setWidth("100%");
 	}
 	
-	abstract ArrayList<Component> getComponents();
+	public abstract ArrayList<Component> getComponents();
 
 	public String getMsg() {
 		return msg;

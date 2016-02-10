@@ -1,5 +1,9 @@
 package com.tripoin.web.view.base;
 
+import com.tripoin.web.view.base.container.GridContainer;
+import com.tripoin.web.view.base.container.SearchContainer;
+import com.tripoin.web.view.base.container.TitleContainer;
+
 public class CommonComponent {
 	
 	protected TitleContainer titleContainer;

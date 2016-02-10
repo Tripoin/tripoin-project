@@ -1,4 +1,4 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container.component;
 
 import java.util.ArrayList;
 

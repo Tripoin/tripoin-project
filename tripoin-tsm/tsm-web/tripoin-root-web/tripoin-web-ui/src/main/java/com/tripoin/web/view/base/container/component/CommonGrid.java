@@ -1,4 +1,4 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container.component;
 
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;

@@ -1,7 +1,9 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.tripoin.web.view.base.ITripoinComponent;
+import com.tripoin.web.view.base.container.component.CommonGrid;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Grid.SelectionMode;

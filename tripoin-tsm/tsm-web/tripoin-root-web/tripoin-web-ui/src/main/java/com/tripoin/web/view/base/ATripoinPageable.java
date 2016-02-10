@@ -7,16 +7,16 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 
-public abstract class TripoinPageable {
+public abstract class ATripoinPageable {
 
 	private GeneralPagingTransferObject generalPagingTransferObject = new GeneralPagingTransferObject();
 	
-	public TripoinPageable() {
+	public ATripoinPageable() {
 		this.generalPagingTransferObject = constructBeanContainerPageable(generalPagingTransferObject);
 		initPaging();
 	}
 	
-	public TripoinPageable(GeneralPagingTransferObject generalPagingTransferObject) {
+	public ATripoinPageable(GeneralPagingTransferObject generalPagingTransferObject) {
 		this.generalPagingTransferObject = generalPagingTransferObject;
 	}
 

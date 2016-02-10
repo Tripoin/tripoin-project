@@ -15,7 +15,7 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
-public abstract class TripoinDataReport {
+public abstract class ATripoinDataReport {
 
 	/**
 	 * <b>Sample Code:</b><br>
