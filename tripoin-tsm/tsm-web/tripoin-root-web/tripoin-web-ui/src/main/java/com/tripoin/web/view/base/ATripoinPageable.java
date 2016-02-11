@@ -12,8 +12,7 @@ public abstract class ATripoinPageable {
 	private GeneralPagingTransferObject generalPagingTransferObject = new GeneralPagingTransferObject();
 	
 	public ATripoinPageable() {
-		this.generalPagingTransferObject = constructBeanContainerPageable(generalPagingTransferObject);
-		initPaging();
+		refreshPageable();
 	}
 	
 	public ATripoinPageable(GeneralPagingTransferObject generalPagingTransferObject) {
@@ -50,8 +49,7 @@ public abstract class ATripoinPageable {
 						}
 					}
 					if (generalPagingTransferObject.getPositionPage() > 0) {
-						generalPagingTransferObject = constructBeanContainerPageable(generalPagingTransferObject);
-						initPaging();
+						refreshPageable();
 					}
 				}
 			};
@@ -81,7 +79,7 @@ public abstract class ATripoinPageable {
 		}
 	}
 
-	protected abstract GeneralPagingTransferObject constructBeanContainerPageable(GeneralPagingTransferObject generalPagingTransferObject);
+	public abstract void refreshPageable();
 	
 	protected abstract MenuBar getMenuBar();
 

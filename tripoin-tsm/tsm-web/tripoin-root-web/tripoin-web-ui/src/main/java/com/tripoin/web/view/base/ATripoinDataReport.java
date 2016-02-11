@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.http.MediaType;
 
-import com.tripoin.web.common.EWebUIConstant;
+import com.tripoin.web.common.EReportUIConstant;
 import com.tripoin.web.common.ReportUtil;
 import com.vaadin.server.Page;
 import com.vaadin.server.ResourceReference;
@@ -19,7 +19,7 @@ public abstract class ATripoinDataReport {
 
 	/**
 	 * <b>Sample Code:</b><br>
-	 * <code>exportStreamDataReport(data, "report.jasper", null, "Report-Monthly", EWebUIConstant.REPORT_PDF);</code><br>
+	 * <code>exportStreamDataReport(data, "report.jasper", null, "Report-Monthly", EReportUIConstant.REPORT_PDF);</code><br>
 	 * @param reportUtil
 	 * @param data
 	 * @param reportFilename
@@ -27,7 +27,7 @@ public abstract class ATripoinDataReport {
 	 * @param outputFilename
 	 * @param typeFile
 	 */
-	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EWebUIConstant typeFile){
+	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EReportUIConstant typeFile){
 		outputFilename = outputFilename.concat("-").concat(UUID.randomUUID().toString()).concat(typeFile.toString());
 		final StreamResource resource = reportUtil.exportStreamReport(data, reportFilename, params, outputFilename, typeFile);	    
     	if(resource != null){

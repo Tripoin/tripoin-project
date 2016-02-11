@@ -17,8 +17,10 @@ import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.base.ATripoinPage;
+import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.tripoin.web.view.page.masterdata.occupation.DataOccupationManageView;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextField;
@@ -32,10 +34,10 @@ public class ExamplePage extends ATripoinPage {
 	 * 
 	 */
 	private static final long serialVersionUID = -3718621115290540326L;
-	private Object[] gridHeader = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
-    		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
 	public static final String BEAN_NAME = "dataProjectView";
 	public static final String PAGE_NAME = "Example Page";
+	private Object[] gridHeader = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
+    		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);	
 	private OccupationTransferObject occupationTransferObjectSearch = new OccupationTransferObject();
 	private OccupationTransferObject occupationTransferObject;
@@ -49,6 +51,7 @@ public class ExamplePage extends ATripoinPage {
 	public void init() {
 		initComponent();
 		initEvent();
+		tripoinMenuItemGrid.getMenuItemCreate().setEnabled(false);
 	}
 
 	@Override
@@ -103,6 +106,18 @@ public class ExamplePage extends ATripoinPage {
 	}
 
 	@Override
+    public void enter(ViewChangeEvent event) {
+		if(event.getOldView() instanceof DataOccupationManageView){
+			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
+			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.getSubmit().getCaption())){
+				tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
+		        // Component set empty value
+				tripoinPageable.refreshPageable();
+			}
+		}
+    }
+
+	@Override
 	protected String getPageTitle() {
 		return PAGE_NAME;
 	}
@@ -115,6 +130,11 @@ public class ExamplePage extends ATripoinPage {
 	@Override
 	protected Object[] getGridHeader() {
 		return this.gridHeader;
+	}
+
+	@Override
+	protected boolean isSetMenuGrid() {
+		return true;
 	}
 
 	@Override

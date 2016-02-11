@@ -9,7 +9,6 @@ public class CommonComponent {
 	protected TitleContainer titleContainer;
 	protected SearchContainer searchContainer;
 	protected GridContainer gridContainer;
-	protected TripoinNotification tripoinNotification;
 
 	public TitleContainer getTitleContainer() {
 		return titleContainer;
@@ -33,14 +32,6 @@ public class CommonComponent {
 
 	public void setGridContainer(GridContainer gridContainer) {
 		this.gridContainer = gridContainer;
-	}
-
-	public TripoinNotification getTripoinNotification() {
-		return tripoinNotification;
-	}
-
-	public void setTripoinNotification(TripoinNotification tripoinNotification) {
-		this.tripoinNotification = tripoinNotification;
 	}
 
 }

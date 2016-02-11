@@ -50,11 +50,6 @@ public enum EWebUIConstant {
 	
 	TYPE_FILE_IMAGE("image"),
 	
-	REPORT_PDF(".pdf", "application/pdf"),
-	REPORT_EXCEL(".xls", "application/vnd.ms-excel"),
-	REPORT_CSV(".csv", "text/csv"),
-	REPORT_TEXT(".txt", "text/plain"),
-	
 	BUTTON_PAGING(5),	
 	ROW_PER_PAGE(10),
 	

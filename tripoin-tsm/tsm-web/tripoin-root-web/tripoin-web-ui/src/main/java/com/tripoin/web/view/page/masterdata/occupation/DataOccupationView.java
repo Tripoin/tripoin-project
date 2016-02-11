@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
+import com.tripoin.web.common.EReportUIConstant;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ReportUtil;
@@ -116,14 +117,14 @@ public class DataOccupationView extends ABaseGridView {
 			private static final long serialVersionUID = 5989159535771225427L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				exportStreamDataReport(reportUtil, null, "OccupationAll.jasper", null, "Report-Occupation-All", EWebUIConstant.REPORT_PDF);
+				exportStreamDataReport(reportUtil, null, "OccupationAll.jasper", null, "Report-Occupation-All", EReportUIConstant.REPORT_PDF);
 			}
 		});
         menuItemExportSelected = menuItemExport.addItem("Export Selected", new Command() {
 			private static final long serialVersionUID = 5989159535771225427L;
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				exportStreamDataReport(reportUtil, occupationDatasSelect, "Occupation.jasper", null, "Report-Occupation", EWebUIConstant.REPORT_PDF);
+				exportStreamDataReport(reportUtil, occupationDatasSelect, "Occupation.jasper", null, "Report-Occupation", EReportUIConstant.REPORT_PDF);
 			}
 		});
         menuItemExportSelected.setEnabled(false);

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.http.MediaType;
 
+import com.tripoin.web.common.EReportUIConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ReportUtil;
 import com.vaadin.navigator.View;
@@ -186,7 +187,7 @@ public abstract class ABaseGridView extends VerticalLayout implements View, Clic
 	 * @param outputFilename
 	 * @param typeFile
 	 */
-	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EWebUIConstant typeFile){
+	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EReportUIConstant typeFile){
 		outputFilename = outputFilename.concat("-").concat(UUID.randomUUID().toString()).concat(typeFile.toString());
 		final StreamResource resource = reportUtil.exportStreamReport(data, reportFilename, params, outputFilename, typeFile);	    
     	if(resource != null){

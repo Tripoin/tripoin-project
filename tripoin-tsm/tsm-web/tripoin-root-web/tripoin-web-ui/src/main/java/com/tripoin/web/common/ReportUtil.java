@@ -21,11 +21,11 @@ public class ReportUtil {
 	@Autowired
 	private IGeneralReportService iGeneralReportService;
 	
-    public StreamResource exportStreamReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EWebUIConstant typeFile){    	
+    public StreamResource exportStreamReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EReportUIConstant typeFile){    	
     	return createStreamReport(data, reportFilename, params, outputFilename, typeFile);
     }
     
-    private StreamResource createStreamReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EWebUIConstant typeFile){
+    private StreamResource createStreamReport(Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EReportUIConstant typeFile){
     	final GeneralReportTransferObject generalReportTransferObject = new GeneralReportTransferObject();
     	generalReportTransferObject.setTemplateReportName(reportFilename);
     	generalReportTransferObject.setTypeFile(typeFile.getOperator());
