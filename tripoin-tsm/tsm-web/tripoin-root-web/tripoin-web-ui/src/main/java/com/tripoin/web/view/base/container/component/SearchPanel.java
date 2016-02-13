@@ -1,14 +1,15 @@
 package com.tripoin.web.view.base.container.component;
 
-import java.util.ArrayList;
+import java.util.Map;
 
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 
 public class SearchPanel {
 
-	protected ArrayList<Component> searcPanelComponents;
+	@SuppressWarnings("rawtypes")
+	protected Map<String, AbstractField> searcPanelComponents;
 	protected final HorizontalLayout footerSearch = new HorizontalLayout();
 	protected final Button okButton = new Button();
 	protected final Button cancelButton = new Button();
@@ -30,11 +31,13 @@ public class SearchPanel {
 		return cancelButton;
 	}
 
-	public ArrayList<Component> getSearcPanelComponents() {
+	@SuppressWarnings("rawtypes")
+	public Map<String, AbstractField> getSearcPanelComponents() {
 		return searcPanelComponents;
 	}
 
-	public void setSearcPanelComponents(ArrayList<Component> searcPanelComponents) {
+	@SuppressWarnings("rawtypes")
+	public void setSearcPanelComponents(Map<String, AbstractField> searcPanelComponents) {
 		this.searcPanelComponents = searcPanelComponents;
 	}
 

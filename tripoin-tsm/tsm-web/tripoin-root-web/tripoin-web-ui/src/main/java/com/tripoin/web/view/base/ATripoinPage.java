@@ -1,7 +1,8 @@
 package com.tripoin.web.view.base;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import com.tripoin.web.view.base.container.GridContainer;
 import com.tripoin.web.view.base.container.SearchContainer;
 import com.tripoin.web.view.base.container.TitleContainer;
 import com.tripoin.web.view.exception.TripoinViewException;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
@@ -28,7 +30,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.Component;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
@@ -40,7 +43,7 @@ import com.vaadin.ui.VerticalLayout;
  *
  * @param <HEADER>
  */
-public abstract class ATripoinPage extends VerticalLayout implements View, ClickListener, ITripoinPage {
+public abstract class ATripoinPage<T> extends VerticalLayout implements View, ClickListener, ITripoinPage {
 
 	/**
 	 * 
@@ -58,8 +61,10 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 	protected CommonComponent commonComponent = new CommonComponent();
 	private TitleContainer titleContainer;
 	private SearchContainer searchContainer;
+	private Map<String, Object> searchPanelDatas;
 	private GridContainer gridContainer;
-
+	private BeanItemContainer<T> dataBeanContainer = getBeanDataContainer();
+	
 	protected final ATripoinDataReport tripoinDataReport = new ATripoinDataReport() {
 		@Override
 		ResourceReference setResourceReport(String name, StreamResource resource) {
@@ -74,8 +79,8 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 			return NOTIFICATION_TIME;
 		}
 	};
-	protected ATripoinMenuItemGrid tripoinMenuItemGrid;
-	protected ATripoinPageable tripoinPageable;
+	protected ATripoinMenuItemGridDefault<T> tripoinMenuItemGridDefault;
+	protected ATripoinPageable<T> tripoinPageable;
 
 	protected void initComponent() {
 		initTitle();
@@ -102,13 +107,44 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 		if (getSearchPanelComponents() != null) {
 			searchContainer = new SearchContainer() {
 				private static final long serialVersionUID = -9075849116444347844L;
+				@SuppressWarnings("rawtypes")
 				@Override
-				public ArrayList<Component> getComponents() {
+				public Map<String, AbstractField> getComponents() {
 					return getSearchPanelComponents();
 				}
 			};
 			searchContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
+			searchContainer.getParam().getOkButton().addClickListener(new ClickListener() {
+				private static final long serialVersionUID = 6601057432872302615L;
+				@Override
+				public void buttonClick(ClickEvent event) {
+					searchPanelDatas = new HashMap<String, Object>();
+					for (String key : getSearchPanelComponents().keySet()) {
+						if(searchContainer.getSearchContainerComponents().get(key).getValue() != null){
+							searchPanelDatas.put(key, searchContainer.getSearchContainerComponents().get(key).getValue());
+						}
+					}
+					tripoinPageable.refreshPageable();
+				}
+			});
 			searchContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
+			searchContainer.getParam().getCancelButton().addClickListener(new ClickListener() {
+				private static final long serialVersionUID = 6601057432872302615L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void buttonClick(ClickEvent event) {
+					for (String key : searchContainer.getComponents().keySet()) {
+						if(searchContainer.getComponents().get(key).getValue() != null){
+							if(searchContainer.getSearchContainerComponents().get(key) instanceof AbstractSelect)
+								searchContainer.getSearchContainerComponents().get(key).setValue(null);
+							else
+								searchContainer.getSearchContainerComponents().get(key).setValue("");
+							searchPanelDatas = null;
+						}
+					}
+					tripoinPageable.refreshPageable();
+				}
+			});
 			this.commonComponent.setSearchContainer(searchContainer);
 			addComponent(this.commonComponent.getSearchContainer());
 		}
@@ -118,7 +154,7 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 		gridContainer = new GridContainer();
 		this.commonComponent.setGridContainer(gridContainer);
 		addComponent(this.commonComponent.getGridContainer());
-		tripoinPageable = new ATripoinPageable() {
+		tripoinPageable = new ATripoinPageable<T>() {
 			@Override
 			public void refreshPageable() {
 				this.setGeneralPagingTransferObject(constructBeanContainer(this.getGeneralPagingTransferObject()));
@@ -129,56 +165,94 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 				return gridContainer.getParam().getMenuBarRight();
 			}
 		};
-		if(isSetMenuGrid()){
-			tripoinMenuItemGrid = new ATripoinMenuItemGrid() {
-				@Override
-				protected MenuBar getMenuBar() {
-					return gridContainer.getParam().getMenuBarLeft();
-				}
-				@Override
-				protected Command doGenerateReportAll() {
-					return new Command() {
-						private static final long serialVersionUID = 5989159535771225427L;
-						@Override
-						public void menuSelected(MenuItem selectedItem) {
-							tripoinDataReport.exportStreamDataReport(reportUtil, null, reportJasperNameAll(), null, reportNameAll(), reportTypeAll());
-						}
-					};
-				}
-				@Override
-				protected Command doGenerateReportSelected() {
-					return new Command() {
-						private static final long serialVersionUID = 5989159535771225427L;
-						@Override
-						public void menuSelected(MenuItem selectedItem) {
-							tripoinDataReport.exportStreamDataReport(reportUtil, tripoinMenuItemGrid.getDataObjectSelect(), reportJasperNameSelected(), null, reportNameSelected(), reportTypeSelected());
-						}
-					};
-				}
-				@Override
-				protected Command doCreate() {
-					return null;
-				}
-				@Override
-				protected Command doDelete() {
-					return new Command() {
-						private static final long serialVersionUID = -6262114274661510612L;
-						@Override
-			            public void menuSelected(MenuItem selectedItem) {
-							if(tripoinMenuItemGrid.getDataObjectSelect() != null && tripoinMenuItemGrid.getDataObjectSelect().size() > 0){
-								deleteSelectionEvent(tripoinMenuItemGrid.getDataObjectSelect());
-								tripoinPageable.refreshPageable();
-							}
-			            }
-			        };
-				}
-			};
-		}
+		if(isSetMenuGrid())
+			initMenuItemGridDefault();
+	}
+
+	private GeneralPagingTransferObject<T> constructBeanContainer(GeneralPagingTransferObject<T> generalPagingTransferObject) {
+		generalPagingTransferObject = getALlDatasService(generalPagingTransferObject);
+		dataBeanContainer.removeAllItems();
+		dataBeanContainer.addAll(generalPagingTransferObject.getDatas());
+		for(Object property : removeFieldContainerProperty())
+			dataBeanContainer.removeContainerProperty(property);
+		commonComponent.getGridContainer().getParam().getGrid().getSelectionModel().reset();
+		commonComponent.getGridContainer().getParam().getGrid().setContainerDataSource(dataBeanContainer);
+		commonComponent.getGridContainer().getParam().getGrid().setColumnOrder(getFieldContainerPropertyHeader());
+		for(String key : getColumnAlias().keySet())
+			commonComponent.getGridContainer().getParam().getGrid().getColumn(key).setHeaderCaption(getColumnAlias().get(key));
+		commonComponent.getGridContainer().getParam().getGrid().setFrozenColumnCount(2);
+		return generalPagingTransferObject;
 	}
 	
-	protected abstract ArrayList<Component> getSearchPanelComponents();
+	protected void initMenuItemGridDefault() {
+		tripoinMenuItemGridDefault = new ATripoinMenuItemGridDefault<T>() {
+			@Override
+			protected MenuBar getMenuBar() {
+				return gridContainer.getParam().getMenuBarLeft();
+			}
+			@Override
+			protected Command doGenerateReportAll() {
+				return new Command() {
+					private static final long serialVersionUID = 5989159535771225427L;
+					@Override
+					public void menuSelected(MenuItem selectedItem) {
+						tripoinDataReport.exportStreamDataReport(reportUtil, null, reportJasperNameAll(), null, reportNameAll(), reportTypeAll());
+					}
+				};
+			}
+			@Override
+			protected Command doGenerateReportSelected() {
+				return new Command() {
+					private static final long serialVersionUID = 5989159535771225427L;
+					@Override
+					public void menuSelected(MenuItem selectedItem) {
+						tripoinDataReport.exportStreamDataReport(reportUtil, tripoinMenuItemGridDefault.getDataObjectSelect(), reportJasperNameSelected(), null, reportNameSelected(), reportTypeSelected());
+					}
+				};
+			}
+			@Override
+			protected Command doCreate() {
+				return null;
+			}
+			@Override
+			protected Command doDelete() {
+				return new Command() {
+					private static final long serialVersionUID = -6262114274661510612L;
+					@Override
+		            public void menuSelected(MenuItem selectedItem) {
+						if(tripoinMenuItemGridDefault.getDataObjectSelect() != null && tripoinMenuItemGridDefault.getDataObjectSelect().size() > 0){
+							GeneralPagingTransferObject<T> response = doDeleteService(tripoinMenuItemGridDefault.getDataObjectSelect());
+							if("2".equals(response.getResponseCode()))
+								tripoinNotification.show("Error Data Delete", "Some data already being used");
+							else
+								tripoinPageable.refreshPageable();
+						}
+		            }
+		        };
+			}
+		};
+	}
+	
+	@SuppressWarnings("rawtypes")
+	protected abstract Map<String, AbstractField> getSearchPanelComponents();
 
-	protected abstract GeneralPagingTransferObject constructBeanContainer(GeneralPagingTransferObject generalPagingTransferObject);
+	protected Map<String, Object> getSearchPanelDatas() {
+		return this.searchPanelDatas;
+	}
+	
+	protected abstract GeneralPagingTransferObject<T> getALlDatasService(GeneralPagingTransferObject<T> generalPagingTransferObject);
+	
+	protected abstract GeneralPagingTransferObject<T> doDeleteService(List<T> dataObjectSelect);
+
+	protected abstract BeanItemContainer<T> getBeanDataContainer();
+	
+	protected abstract Object[] getFieldContainerPropertyHeader();
+	
+	protected abstract Object[] removeFieldContainerProperty();
+	
+	protected abstract Map<String, String> getColumnAlias();
+	
+	protected abstract boolean isSetMenuGrid();
 	
 	protected void gridClickEvent() {
 		gridContainer.getParam().getGrid().addItemClickListener(new ItemClickListener() {
@@ -186,7 +260,7 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 			@Override
 			public void itemClick(ItemClickEvent event) {
 				boolean isSelectEdited = false;
-				for(Object object : getGridHeader()){
+				for(Object object : getFieldContainerPropertyHeader()){
 					if(object.equals(event.getPropertyId())){
 						gridContainer.getParam().getGrid().getSelectionModel().reset();
 						gridContainer.getParam().getGrid().select(event.getItemId());
@@ -205,30 +279,26 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 	protected void gridSelectEvent() {
 		gridContainer.getParam().getGrid().addSelectionListener(new SelectionListener() {
 			private static final long serialVersionUID = -6491823805538480108L;
+			@SuppressWarnings("unchecked")
 			@Override
 			public void select(SelectionEvent event) {
 				if(event.getSelected().isEmpty()){
-					if(tripoinMenuItemGrid.getMenuItemDelete().isEnabled())tripoinMenuItemGrid.getMenuItemDelete().setEnabled(false);
-					if(tripoinMenuItemGrid.getMenuItemExportSelected().isEnabled())tripoinMenuItemGrid.getMenuItemExportSelected().setEnabled(false);
+					if(tripoinMenuItemGridDefault.getMenuItemDelete().isEnabled())tripoinMenuItemGridDefault.getMenuItemDelete().setEnabled(false);
+					if(tripoinMenuItemGridDefault.getMenuItemExportSelected().isEnabled())tripoinMenuItemGridDefault.getMenuItemExportSelected().setEnabled(false);
 				}else{
-					if(!tripoinMenuItemGrid.getMenuItemDelete().isEnabled())tripoinMenuItemGrid.getMenuItemDelete().setEnabled(true);
-					if(!tripoinMenuItemGrid.getMenuItemExportSelected().isEnabled())tripoinMenuItemGrid.getMenuItemExportSelected().setEnabled(true);
+					if(!tripoinMenuItemGridDefault.getMenuItemDelete().isEnabled())tripoinMenuItemGridDefault.getMenuItemDelete().setEnabled(true);
+					if(!tripoinMenuItemGridDefault.getMenuItemExportSelected().isEnabled())tripoinMenuItemGridDefault.getMenuItemExportSelected().setEnabled(true);
 				}		
-				tripoinMenuItemGrid.getDataObjectSelect().clear();
-				for(Object object : event.getSelected())tripoinMenuItemGrid.getDataObjectSelect().add(object);
+				tripoinMenuItemGridDefault.getDataObjectSelect().clear();
+				for(Object object : event.getSelected())
+					tripoinMenuItemGridDefault.getDataObjectSelect().add((T)object);
 			}
 		});
 	}
 	
-	protected abstract void deleteSelectionEvent(List<Object> dataObjectSelect);
-	
 	protected abstract String getPageTitle();
 
 	protected abstract String getGridClickNavigate();
-	
-	protected abstract Object[] getGridHeader();
-	
-	protected abstract boolean isSetMenuGrid();
 
 	protected abstract String reportJasperNameSelected();
 
@@ -238,7 +308,7 @@ public abstract class ATripoinPage extends VerticalLayout implements View, Click
 
 	protected abstract String reportNameAll();
 
-	protected abstract Class<? extends ATripoinPage> getViewClass();
+	protected abstract Class<? extends ATripoinPage<T>> getViewClass();
 
 	protected EReportUIConstant reportTypeSelected() {
 		return EReportUIConstant.REPORT_PDF;

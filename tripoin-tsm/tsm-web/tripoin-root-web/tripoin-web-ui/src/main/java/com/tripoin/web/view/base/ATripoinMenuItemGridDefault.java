@@ -11,15 +11,15 @@ import com.vaadin.ui.MenuBar.MenuItem;
 /**
 * @author <a href="ridla.fadilah@gmail.com">Ridla Fadilah</a>
 */
-public abstract class ATripoinMenuItemGrid {
+public abstract class ATripoinMenuItemGridDefault<T> {
 
 	private MenuItem menuItemCreate;
 	private MenuItem menuItemDelete;
 	private MenuItem menuItemExport;
 	private MenuItem menuItemExportSelected;
-	private List<Object> dataObjectSelect = new ArrayList<Object>();
+	private List<T> dataObjectSelect = new ArrayList<T>();
 
-	public ATripoinMenuItemGrid() {
+	public ATripoinMenuItemGridDefault() {
 		menuBarOnGrid();
 	}
 	
@@ -74,11 +74,11 @@ public abstract class ATripoinMenuItemGrid {
 		this.menuItemExportSelected = menuItemExportSelected;
 	}
 
-	public List<Object> getDataObjectSelect() {
+	public List<T> getDataObjectSelect() {
 		return dataObjectSelect;
 	}
 
-	public void setDataObjectSelect(List<Object> dataObjectSelect) {
+	public void setDataObjectSelect(List<T> dataObjectSelect) {
 		this.dataObjectSelect = dataObjectSelect;
 	}
 	

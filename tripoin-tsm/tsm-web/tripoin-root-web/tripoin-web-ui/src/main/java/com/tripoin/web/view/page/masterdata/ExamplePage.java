@@ -1,6 +1,6 @@
 package com.tripoin.web.view.page.masterdata;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
+import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
@@ -22,27 +23,20 @@ import com.tripoin.web.view.page.masterdata.occupation.DataOccupationManageView;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.TextField;
 
 @Component
 @Scope("prototype")
 @VaadinView(value = ExamplePage.BEAN_NAME, cached = true)
-public class ExamplePage extends ATripoinPage {
+public class ExamplePage extends ATripoinPage<OccupationData> {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3718621115290540326L;
 	public static final String BEAN_NAME = "dataProjectView";
-	public static final String PAGE_NAME = "Example Page";
-	private Object[] gridHeader = new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
-    		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
-	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);	
 	private OccupationTransferObject occupationTransferObjectSearch = new OccupationTransferObject();
-	private OccupationTransferObject occupationTransferObject;
-	private List<OccupationData> occupationDatasSelect;
-	private Map<String, Object> findOccupationData;
 
 	@Autowired
 	private IOccupationService occupationService;
@@ -51,58 +45,60 @@ public class ExamplePage extends ATripoinPage {
 	public void init() {
 		initComponent();
 		initEvent();
-		tripoinMenuItemGrid.getMenuItemCreate().setEnabled(false);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	protected ArrayList<com.vaadin.ui.Component> getSearchPanelComponents() {
-		ArrayList<com.vaadin.ui.Component> searchPanelComponents = new  ArrayList<com.vaadin.ui.Component>();
-		TextField tfParam1 = new TextField("Param1");
-		ComboBox cbParam2 = new ComboBox("Param2");
-		TextField tfParam3 = new TextField("Param3");
-		searchPanelComponents.add(tfParam1);
-		searchPanelComponents.add(cbParam2);
-		searchPanelComponents.add(tfParam3);
+	protected Map<String, AbstractField> getSearchPanelComponents() {
+		Map<String, AbstractField> searchPanelComponents = new  HashMap<String, AbstractField>();
+		TextField occupationNameTextField = new TextField("Occupation Name");
+		searchPanelComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), occupationNameTextField);
 		return searchPanelComponents;
 	}
 
 	@Override
-	protected GeneralPagingTransferObject constructBeanContainer(GeneralPagingTransferObject generalPagingTransferObject) {
+	protected GeneralPagingTransferObject<OccupationData> getALlDatasService(GeneralPagingTransferObject<OccupationData> generalPagingTransferObject) {
     	occupationTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
     	occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-    	occupationTransferObjectSearch.setFindOccupationData(findOccupationData);
-    	occupationTransferObject = occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
-		occupationContainer.removeAllItems();
-    	occupationContainer.addAll(occupationTransferObject.getOccupationDatas());
-    	occupationContainer.removeContainerProperty("id");
-    	occupationContainer.removeContainerProperty("status");
-    	occupationContainer.removeContainerProperty("code");
-    	commonComponent.getGridContainer().getParam().getGrid().getSelectionModel().reset();
-    	commonComponent.getGridContainer().getParam().getGrid().setContainerDataSource(occupationContainer);
-    	commonComponent.getGridContainer().getParam().getGrid().setColumnOrder(gridHeader);
-    	commonComponent.getGridContainer().getParam().getGrid().getColumn("name").setHeaderCaption("Occupation Name");
-    	commonComponent.getGridContainer().getParam().getGrid().getColumn("remarks").setHeaderCaption("Description");
-    	commonComponent.getGridContainer().getParam().getGrid().getColumn("createdIP").setHeaderCaption("Created IP Address");
-    	commonComponent.getGridContainer().getParam().getGrid().getColumn("modifiedIP").setHeaderCaption("Modified IP Address");
-    	commonComponent.getGridContainer().getParam().getGrid().setFrozenColumnCount(2);
-        findOccupationData = null;
-        occupationTransferObject.setOccupationDatas(null);
-        return occupationTransferObject;
+    	occupationTransferObjectSearch.setFindOccupationData(getSearchPanelDatas());
+        return occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
 	}
 
 	@Override
-	protected void deleteSelectionEvent(List<Object> dataObjectSelect) {
-		for(Object object : dataObjectSelect)
-			occupationDatasSelect.add((OccupationData)object);
-		OccupationTransferObject occupationTransferObject = occupationService.deleteOccupation(occupationDatasSelect, VaadinServlet.getCurrent().getServletContext());
-		occupationDatasSelect = null;
-		if("2".equals(occupationTransferObject.getResponseCode())){
-			String listOccupation = "Occupation : ";
-			for(OccupationData occupationData : occupationTransferObject.getOccupationDatas())
-				listOccupation = listOccupation.concat(occupationData.getName()).concat(", ");
-			listOccupation = listOccupation.concat("#END-OCCUPATION#").replace(", #END-OCCUPATION#", "");
-			tripoinNotification.show("Error Data Occupation", "Some Occupation data already being used\n".concat(listOccupation));
-		}
+	protected GeneralPagingTransferObject<OccupationData> doDeleteService(List<OccupationData> dataObjectSelect) {
+		return occupationService.deleteOccupation(dataObjectSelect, VaadinServlet.getCurrent().getServletContext());
+	}
+	
+	@Override
+	protected void initMenuItemGridDefault() {
+		super.initMenuItemGridDefault();
+		tripoinMenuItemGridDefault.getMenuItemCreate().setEnabled(false);
+	}
+
+	@Override
+	protected BeanItemContainer<OccupationData> getBeanDataContainer() {
+		return new BeanItemContainer<>(OccupationData.class);
+	}
+
+	@Override
+	protected Object[] getFieldContainerPropertyHeader() {
+		return new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
+	    		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
+	}
+
+	@Override
+	protected Object[] removeFieldContainerProperty() {
+		return new String[]{"id", "status", "code"};
+	}
+
+	@Override
+	protected Map<String, String> getColumnAlias() {
+		Map<String, String> columns = new HashMap<String, String>();
+		columns.put("name", "Occupation Name");
+		columns.put("remarks", "Description");
+		columns.put("createdIP", "Created IP Address");
+		columns.put("modifiedIP", "Modified IP Address");
+		return columns;
 	}
 
 	@Override
@@ -119,17 +115,12 @@ public class ExamplePage extends ATripoinPage {
 
 	@Override
 	protected String getPageTitle() {
-		return PAGE_NAME;
+		return "Example Page";
 	}
 
 	@Override
 	protected String getGridClickNavigate() {
 		return DataOccupationManageView.BEAN_NAME;
-	}
-
-	@Override
-	protected Object[] getGridHeader() {
-		return this.gridHeader;
 	}
 
 	@Override
@@ -158,7 +149,7 @@ public class ExamplePage extends ATripoinPage {
 	}
 
 	@Override
-	protected Class<? extends ATripoinPage> getViewClass() {
+	protected Class<? extends ATripoinPage<OccupationData>> getViewClass() {
 		return this.getClass();
 	}
 	

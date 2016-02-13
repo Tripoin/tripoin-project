@@ -1,6 +1,7 @@
 package com.tripoin.web.view.base.container;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -9,7 +10,7 @@ import com.tripoin.web.view.base.container.component.SearchPanel;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Component;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 
@@ -19,10 +20,13 @@ public abstract class SearchContainer extends FormLayout implements ITripoinComp
 	 * 
 	 */
 	private static final long serialVersionUID = -1575878452013068877L;
+	@SuppressWarnings("rawtypes")
+	private Map<String, AbstractField> searchContainerComponents = new HashMap<String, AbstractField>();
 	private SearchPanel searchPanel = new SearchPanel();
 	private SearchContainer searchContainer;
 	private String msg;
 	
+	@SuppressWarnings("rawtypes")
 	public SearchContainer() {
 		Label section = new Label();
 		section.addStyleName("h3");
@@ -31,10 +35,12 @@ public abstract class SearchContainer extends FormLayout implements ITripoinComp
 		this.addComponent(section);
 		
 		searchPanel.setSearcPanelComponents(getComponents());
-		for (Component component: this.getParam().getSearcPanelComponents()) {
+		for (String key : this.getParam().getSearcPanelComponents().keySet()) {
+			AbstractField component = this.getParam().getSearcPanelComponents().get(key);
 			component.addStyleName("small");
 			component.setWidth("50%");
 			this.addComponent(component);
+			this.searchContainerComponents.put(key, component);
 		}
 		
 		this.getParam().getFooterSearch().setSpacing(true);
@@ -51,7 +57,13 @@ public abstract class SearchContainer extends FormLayout implements ITripoinComp
 		this.setWidth("100%");
 	}
 	
-	public abstract ArrayList<Component> getComponents();
+	@SuppressWarnings("rawtypes")
+	public abstract Map<String, AbstractField> getComponents();
+
+	@SuppressWarnings("rawtypes")
+	public Map<String, AbstractField> getSearchContainerComponents() {
+		return this.searchContainerComponents;
+	}
 
 	public String getMsg() {
 		return msg;
