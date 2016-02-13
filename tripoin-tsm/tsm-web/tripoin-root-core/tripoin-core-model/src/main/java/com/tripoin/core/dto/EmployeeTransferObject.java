@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "EmployeeTransferObject")
-public class EmployeeTransferObject extends GeneralPagingTransferObject {
+public class EmployeeTransferObject extends GeneralPagingTransferObject<EmployeeData> {
 	
 	@XmlElement(name = "EmployeeDatas", namespace = "")
 	private List<EmployeeData> employeeDatas;
@@ -21,6 +21,11 @@ public class EmployeeTransferObject extends GeneralPagingTransferObject {
 	@XmlElement(name = "FindEmployeeData", namespace = "")
 	private Map<String, Object> findEmployeeData;
 
+	@Override
+	public List<EmployeeData> getDatas() {
+		return employeeDatas;
+	}
+	
 	public List<EmployeeData> getEmployeeDatas() {
 		return employeeDatas;
 	}

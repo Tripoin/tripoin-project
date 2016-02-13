@@ -13,13 +13,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "OccupationTransferObject")
-public class OccupationTransferObject extends GeneralPagingTransferObject {
+public class OccupationTransferObject extends GeneralPagingTransferObject<OccupationData> {
 	
 	@XmlElement(name = "OccupationDatas", namespace = "")
 	private List<OccupationData> occupationDatas;
 	
 	@XmlElement(name = "FindOccupationData", namespace = "")
 	private Map<String, Object> findOccupationData;
+
+	@Override
+	public List<OccupationData> getDatas() {
+		return occupationDatas;
+	}
 
 	public List<OccupationData> getOccupationDatas() {
 		return occupationDatas;
