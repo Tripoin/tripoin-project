@@ -1,4 +1,4 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container;
 
 import java.util.Collection;
 import java.util.Map;
@@ -27,7 +27,7 @@ public abstract class ATripoinDataReport {
 	 * @param outputFilename
 	 * @param typeFile
 	 */
-	protected void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EReportUIConstant typeFile){
+	public void exportStreamDataReport(ReportUtil reportUtil, Collection<?> data, String reportFilename, Map<String, Object> params, String outputFilename, EReportUIConstant typeFile){
 		outputFilename = outputFilename.concat("-").concat(UUID.randomUUID().toString()).concat(typeFile.toString());
 		final StreamResource resource = reportUtil.exportStreamReport(data, reportFilename, params, outputFilename, typeFile);	    
     	if(resource != null){
@@ -53,6 +53,6 @@ public abstract class ATripoinDataReport {
 		}
 	}
 	
-	abstract ResourceReference setResourceReport(String name, StreamResource resource);
+	protected abstract ResourceReference setResourceReport(String name, StreamResource resource);
 	
 }

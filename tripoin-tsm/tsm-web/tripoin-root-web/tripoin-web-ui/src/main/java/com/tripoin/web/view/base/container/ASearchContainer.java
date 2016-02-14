@@ -14,7 +14,7 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 
-public abstract class SearchContainer extends FormLayout implements ITripoinComponent<SearchPanel, SearchContainer> {
+public abstract class ASearchContainer extends FormLayout implements ITripoinComponent<SearchPanel, ASearchContainer> {
 	
 	/**
 	 * 
@@ -23,11 +23,11 @@ public abstract class SearchContainer extends FormLayout implements ITripoinComp
 	@SuppressWarnings("rawtypes")
 	private Map<String, AbstractField> searchContainerComponents = new HashMap<String, AbstractField>();
 	private SearchPanel searchPanel = new SearchPanel();
-	private SearchContainer searchContainer;
+	private ASearchContainer searchContainer;
 	private String msg;
 	
 	@SuppressWarnings("rawtypes")
-	public SearchContainer() {
+	public ASearchContainer() {
 		Label section = new Label();
 		section.addStyleName("h3");
 		section.addStyleName("colored");
@@ -85,12 +85,12 @@ public abstract class SearchContainer extends FormLayout implements ITripoinComp
 	}
 
 	@Override
-	public void setResult(SearchContainer result) {
+	public void setResult(ASearchContainer result) {
 		this.searchContainer = result;	
 	}
 
 	@Override
-	public SearchContainer getResult() throws Exception{
+	public ASearchContainer getResult() throws Exception{
 		if(this.searchContainer!=null){
 			return searchContainer;
 		}else{

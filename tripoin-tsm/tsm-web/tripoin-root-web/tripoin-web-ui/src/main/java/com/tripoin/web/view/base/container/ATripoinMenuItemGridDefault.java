@@ -1,8 +1,9 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;

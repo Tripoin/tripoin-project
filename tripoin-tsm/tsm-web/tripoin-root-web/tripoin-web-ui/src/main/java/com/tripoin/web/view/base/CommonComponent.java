@@ -1,13 +1,13 @@
 package com.tripoin.web.view.base;
 
 import com.tripoin.web.view.base.container.GridContainer;
-import com.tripoin.web.view.base.container.SearchContainer;
+import com.tripoin.web.view.base.container.ASearchContainer;
 import com.tripoin.web.view.base.container.TitleContainer;
 
 public class CommonComponent {
 	
 	protected TitleContainer titleContainer;
-	protected SearchContainer searchContainer;
+	protected ASearchContainer searchContainer;
 	protected GridContainer gridContainer;
 
 	public TitleContainer getTitleContainer() {
@@ -18,11 +18,11 @@ public class CommonComponent {
 		this.titleContainer = titleContainer;
 	}
 
-	public SearchContainer getSearchContainer() {
+	public ASearchContainer getSearchContainer() {
 		return searchContainer;
 	}
 
-	public void setSearchContainer(SearchContainer searchContainer) {
+	public void setSearchContainer(ASearchContainer searchContainer) {
 		this.searchContainer = searchContainer;
 	}
 

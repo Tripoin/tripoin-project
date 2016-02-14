@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -40,12 +38,6 @@ public class ExamplePage extends ATripoinPage<OccupationData> {
 
 	@Autowired
 	private IOccupationService occupationService;
-	
-	@PostConstruct
-	public void init() {
-		initComponent();
-		initEvent();
-	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -105,11 +97,8 @@ public class ExamplePage extends ATripoinPage<OccupationData> {
     public void enter(ViewChangeEvent event) {
 		if(event.getOldView() instanceof DataOccupationManageView){
 			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
-			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.getSubmit().getCaption())){
-				tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
-		        // Component set empty value
-				tripoinPageable.refreshPageable();
-			}
+			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.getSubmit().getCaption()))
+		        doCancel();
 		}
     }
 

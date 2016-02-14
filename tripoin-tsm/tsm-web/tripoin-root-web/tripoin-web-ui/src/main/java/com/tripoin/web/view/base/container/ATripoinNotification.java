@@ -1,4 +1,4 @@
-package com.tripoin.web.view.base;
+package com.tripoin.web.view.base.container;
 
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
