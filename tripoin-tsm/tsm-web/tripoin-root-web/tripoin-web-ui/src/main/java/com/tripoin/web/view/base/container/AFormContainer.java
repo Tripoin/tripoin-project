@@ -6,42 +6,41 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.tripoin.web.view.base.ITripoinComponent;
-import com.tripoin.web.view.base.container.component.SearchPanel;
+import com.tripoin.web.view.base.container.component.FormPanel;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 
-public abstract class ASearchContainer extends FormLayout implements ITripoinComponent<SearchPanel, ASearchContainer> {
+public abstract class AFormContainer extends FormLayout implements ITripoinComponent<FormPanel, AFormContainer> {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1575878452013068877L;
 	@SuppressWarnings("rawtypes")
-	private Map<String, AbstractField> searchContainerComponents = new HashMap<String, AbstractField>();
-	private SearchPanel searchPanel = new SearchPanel();
-	private ASearchContainer searchContainer;
+	private Map<String, AbstractField> formContainerComponents = new HashMap<String, AbstractField>();
+	private FormPanel formPanel = new FormPanel();
+	private AFormContainer searchContainer;
 	private String msg;
 	
 	@SuppressWarnings("rawtypes")
-	public ASearchContainer() {
+	public AFormContainer() {
 		Label section = new Label();
 		section.addStyleName("h3");
 		section.addStyleName("colored");
 		section.setWidth("100%");
 		this.addComponent(section);
 		
-		searchPanel.setSearchPanelComponents(getSearchComponents());
-		for (String key : this.getParam().getSearchPanelComponents().keySet()) {
-			AbstractField component = this.getParam().getSearchPanelComponents().get(key);
+		formPanel.setFormPanelComponents(getFormComponents());
+		for (String key : this.getParam().getFormPanelComponents().keySet()) {
+			AbstractField component = this.getParam().getFormPanelComponents().get(key);
 			component.addStyleName("small");
 			component.setWidth("60%");
 			this.addComponent(component);
-			this.searchContainerComponents.put(key, component);
+			this.formContainerComponents.put(key, component);
 		}
 		
 		this.getParam().getFooterSearch().setSpacing(true);
@@ -53,26 +52,22 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 		this.addComponent(getParam().getFooterSearch());
 
 		this.setStyleName("tripoin-custom-form");
-		this.setMargin(new MarginInfo(false, false, true, false));
-		this.setSpacing(true);
-		this.setWidth("100%");
+		this.setMargin(false);        
 	}
 	
 	@SuppressWarnings("rawtypes")
-	protected abstract Map<String, AbstractField> getSearchComponents();
+	protected abstract Map<String, AbstractField> getFormComponents();
 
 	@SuppressWarnings("rawtypes")
-	public Map<String, AbstractField> getSearchContainerComponents() {
-		return this.searchContainerComponents;
+	public Map<String, AbstractField> getFormContainerComponents() {
+		return this.formContainerComponents;
 	}
 
 	public Map<String, Object> doOk() {
-		Map<String, Object> searchPanelDatas = null;
-		for (String key : getSearchComponents().keySet()) {
-			if(searchContainerComponents.get(key).getValue() != null && !((String)searchContainerComponents.get(key).getValue()).isEmpty()){
-				if(searchPanelDatas == null)
-					searchPanelDatas = new HashMap<String, Object>();
-				searchPanelDatas.put(key, searchContainerComponents.get(key).getValue());
+		Map<String, Object> searchPanelDatas = new HashMap<String, Object>();
+		for (String key : getFormComponents().keySet()) {
+			if(formContainerComponents.get(key).getValue() != null && !((String)formContainerComponents.get(key).getValue()).isEmpty()){
+				searchPanelDatas.put(key, formContainerComponents.get(key).getValue());
 			}
 		}
 		return searchPanelDatas;
@@ -80,12 +75,12 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 	
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> doCancel() {
-		for (String key : getSearchComponents().keySet()) {
-			if(getSearchComponents().get(key).getValue() != null){
-				if(searchContainerComponents.get(key) instanceof AbstractSelect)
-					searchContainerComponents.get(key).setValue(null);
+		for (String key : searchContainer.getFormComponents().keySet()) {
+			if(getFormComponents().get(key).getValue() != null){
+				if(formContainerComponents.get(key) instanceof AbstractSelect)
+					formContainerComponents.get(key).setValue(null);
 				else
-					searchContainerComponents.get(key).setValue("");
+					formContainerComponents.get(key).setValue("");
 			}
 		}
 		return null;
@@ -101,22 +96,22 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 	}
 	
 	@Override
-	public SearchPanel getParam() {
-		return this.searchPanel;
+	public FormPanel getParam() {
+		return this.formPanel;
 	}
 	
 	@Override
-	public void setParam(SearchPanel param) {
-		this.searchPanel = param;
+	public void setParam(FormPanel param) {
+		this.formPanel = param;
 	}
 
 	@Override
-	public void setResult(ASearchContainer result) {
+	public void setResult(AFormContainer result) {
 		this.searchContainer = result;	
 	}
 
 	@Override
-	public ASearchContainer getResult() throws Exception{
+	public AFormContainer getResult() throws Exception{
 		if(this.searchContainer!=null){
 			return searchContainer;
 		}else{

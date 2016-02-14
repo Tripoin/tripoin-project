@@ -6,15 +6,15 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 
-public class SearchPanel {
+public class FormPanel {
 
 	@SuppressWarnings("rawtypes")
-	protected Map<String, AbstractField> searchPanelComponents;
+	protected Map<String, AbstractField> formPanelComponents;
 	protected final HorizontalLayout footerSearch = new HorizontalLayout();
 	protected final Button okButton = new Button();
 	protected final Button cancelButton = new Button();
 
-	public SearchPanel() {
+	public FormPanel() {
 		this.getFooterSearch().addComponent(this.okButton);
 		this.getFooterSearch().addComponent(this.cancelButton);
 	}
@@ -32,13 +32,13 @@ public class SearchPanel {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public Map<String, AbstractField> getSearchPanelComponents() {
-		return searchPanelComponents;
+	public Map<String, AbstractField> getFormPanelComponents() {
+		return formPanelComponents;
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void setSearchPanelComponents(Map<String, AbstractField> searchPanelComponents) {
-		this.searchPanelComponents = searchPanelComponents;
+	public void setFormPanelComponents(Map<String, AbstractField> formPanelComponents) {
+		this.formPanelComponents = formPanelComponents;
 	}
 
 }

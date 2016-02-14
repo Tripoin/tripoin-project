@@ -14,7 +14,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Component
 @Scope("prototype")
-@VaadinView(value = "dataProjectViewTest", cached = true)
+@VaadinView(value = "dataProjectView", cached = true)
 public class DataProjectView extends VerticalLayout implements View {
 
 	private static final long serialVersionUID = -4592518571070450190L;

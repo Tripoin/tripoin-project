@@ -8,6 +8,7 @@ public interface ITripoinConstantComponent {
 		String DELETE = "Delete";
 		String SEARCH = "Search";
 		String RESET = "Reset";
+		String CANCEL = "Cancel";
 	}
 	
 	interface MenuItem {

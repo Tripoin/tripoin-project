@@ -34,8 +34,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Slider;
@@ -129,13 +129,15 @@ public class DataEmployeeManageView extends ABaseManageView {
         usernameTextField.setWidth("50%");
         usernameTextField.setRequired(true);
 
-        HorizontalLayout placeDateOfBirth = new HorizontalLayout();
+        CssLayout placeDateOfBirth = new CssLayout();
+        placeDateOfBirth.setWidth("60%");
         form.addComponent(placeDateOfBirth);
         placeDateOfBirth.setCaption("Place, Date of Birth");
         placeDateOfBirth.addComponent(birthPlaceTextField);
-        birthPlaceTextField.setWidth("45%");
+        birthPlaceTextField.setWidthUndefined();
         birthPlaceTextField.setRequired(true);
         placeDateOfBirth.addComponent(birthDateDateField);
+        birthDateDateField.setWidthUndefined();
         birthDateDateField.setRequired(true);
         birthDateDateField.setValue(new Date());
 

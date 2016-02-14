@@ -1,6 +1,5 @@
 package com.tripoin.web.view.base;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,6 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
@@ -86,7 +84,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	protected ATripoinPageable<T> tripoinPageable;
 
 	@PostConstruct
-	protected void init() {
+	protected void init() throws Exception {
 		initTitle();
 		initSearch();
 		initGrid();
@@ -107,7 +105,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 				private static final long serialVersionUID = -9075849116444347844L;
 				@SuppressWarnings("rawtypes")
 				@Override
-				public Map<String, AbstractField> getComponents() {
+				public Map<String, AbstractField> getSearchComponents() {
 					return getSearchPanelComponents();
 				}
 			};
@@ -116,7 +114,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 				private static final long serialVersionUID = 6601057432872302615L;
 				@Override
 				public void buttonClick(ClickEvent event) {
-					searchPanelDatas = new HashMap<String, Object>();
+					searchPanelDatas = searchContainer.doOk();
 					tripoinPageable.refreshPageable();
 				}
 			});
@@ -125,35 +123,14 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 				private static final long serialVersionUID = 6601057432872302615L;
 				@Override
 				public void buttonClick(ClickEvent event) {
-					doCancel();
+					searchPanelDatas = searchContainer.doCancel();
+					tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
+					tripoinPageable.refreshPageable();
 				}
 			});
 			this.commonComponent.setSearchContainer(searchContainer);
 			addComponent(this.commonComponent.getSearchContainer());
 		}
-	}
-
-	protected void doOk() {
-		for (String key : getSearchPanelComponents().keySet()) {
-			if(searchContainer.getSearchContainerComponents().get(key).getValue() != null && !((String)searchContainer.getSearchContainerComponents().get(key).getValue()).isEmpty()){
-				searchPanelDatas.put(key, searchContainer.getSearchContainerComponents().get(key).getValue());
-			}
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected void doCancel() {
-		tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
-		for (String key : searchContainer.getComponents().keySet()) {
-			if(searchContainer.getComponents().get(key).getValue() != null){
-				if(searchContainer.getSearchContainerComponents().get(key) instanceof AbstractSelect)
-					searchContainer.getSearchContainerComponents().get(key).setValue(null);
-				else
-					searchContainer.getSearchContainerComponents().get(key).setValue("");
-			}
-		}
-		searchPanelDatas = null;
-		tripoinPageable.refreshPageable();
 	}
 
 	private void initGrid() {
@@ -176,7 +153,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	}
 
 	private GeneralPagingTransferObject<T> constructBeanContainer(GeneralPagingTransferObject<T> generalPagingTransferObject) {
-		doOk();
+		searchPanelDatas = searchContainer.doOk();
 		generalPagingTransferObject = getALlDatasService(generalPagingTransferObject);
 		dataBeanContainer.removeAllItems();
 		dataBeanContainer.addAll(generalPagingTransferObject.getDatas());
@@ -234,11 +211,14 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 					@Override
 		            public void menuSelected(MenuItem selectedItem) {
 						if(tripoinMenuItemGridDefault.getDataObjectSelect() != null && tripoinMenuItemGridDefault.getDataObjectSelect().size() > 0){
-							GeneralPagingTransferObject<T> response = doDeleteService(tripoinMenuItemGridDefault.getDataObjectSelect());
-							if("2".equals(response.getResponseCode()))
-								tripoinNotification.show("Error Delete", "Some data already being used");
-							else
+							try {
+								GeneralPagingTransferObject<T> response = doDeleteService(tripoinMenuItemGridDefault.getDataObjectSelect());
+								if("2".equals(response.getResponseCode()))
+									throw new Exception();
 								tripoinPageable.refreshPageable();
+							} catch (Exception e) {
+								tripoinNotification.show("Error Delete", "Some data already being used");
+							}
 						}
 		            }
 		        };
