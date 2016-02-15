@@ -1,6 +1,6 @@
 package com.tripoin.web.view.base.container;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -9,39 +9,33 @@ import com.tripoin.web.view.base.ITripoinComponent;
 import com.tripoin.web.view.base.container.component.FormPanel;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.AbstractSelect;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 
+/**
+ * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
+ */
 public abstract class AFormContainer extends FormLayout implements ITripoinComponent<FormPanel, AFormContainer> {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1575878452013068877L;
-	@SuppressWarnings("rawtypes")
-	private Map<String, AbstractField> formContainerComponents = new HashMap<String, AbstractField>();
 	private FormPanel formPanel = new FormPanel();
-	private AFormContainer searchContainer;
+	private AFormContainer formContainer;
 	private String msg;
 	
-	@SuppressWarnings("rawtypes")
 	public AFormContainer() {
 		Label section = new Label();
 		section.addStyleName("h3");
 		section.addStyleName("colored");
 		section.setWidth("100%");
 		this.addComponent(section);
-		
-		formPanel.setFormPanelComponents(getFormComponents());
-		for (String key : this.getParam().getFormPanelComponents().keySet()) {
-			AbstractField component = this.getParam().getFormPanelComponents().get(key);
-			component.addStyleName("small");
-			component.setWidth("60%");
+
+		for(Component component : getFormComponent())
 			this.addComponent(component);
-			this.formContainerComponents.put(key, component);
-		}
 		
 		this.getParam().getFooterSearch().setSpacing(true);
 		this.getParam().getOkButton().addStyleName("primary");
@@ -52,45 +46,22 @@ public abstract class AFormContainer extends FormLayout implements ITripoinCompo
 		this.addComponent(getParam().getFooterSearch());
 
 		this.setStyleName("tripoin-custom-form");
-		this.setMargin(false);        
+		this.setMargin(new MarginInfo(false, false, true, false));
+		this.setSpacing(true);
+		this.setWidth("100%");
 	}
 	
-	@SuppressWarnings("rawtypes")
-	protected abstract Map<String, AbstractField> getFormComponents();
+	protected abstract List<Component> getFormComponent();
 
-	@SuppressWarnings("rawtypes")
-	public Map<String, AbstractField> getFormContainerComponents() {
-		return this.formContainerComponents;
-	}
-
-	public Map<String, Object> doOk() {
-		Map<String, Object> searchPanelDatas = new HashMap<String, Object>();
-		for (String key : getFormComponents().keySet()) {
-			if(formContainerComponents.get(key).getValue() != null && !((String)formContainerComponents.get(key).getValue()).isEmpty()){
-				searchPanelDatas.put(key, formContainerComponents.get(key).getValue());
-			}
-		}
-		return searchPanelDatas;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Map<String, Object> doCancel() {
-		for (String key : searchContainer.getFormComponents().keySet()) {
-			if(getFormComponents().get(key).getValue() != null){
-				if(formContainerComponents.get(key) instanceof AbstractSelect)
-					formContainerComponents.get(key).setValue(null);
-				else
-					formContainerComponents.get(key).setValue("");
-			}
-		}
-		return null;
+	public Map<String, Object> getDataField(boolean isResetField) {
+		return TripoinDataField.getDataField(this, isResetField);
 	}
 
 	public String getMsg() {
 		return msg;
 	}
 	
-	@Value("${searchcontainer.getresult.error}")
+	@Value("${formcontainer.getresult.error}")
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
@@ -107,13 +78,13 @@ public abstract class AFormContainer extends FormLayout implements ITripoinCompo
 
 	@Override
 	public void setResult(AFormContainer result) {
-		this.searchContainer = result;	
+		this.formContainer = result;	
 	}
 
 	@Override
 	public AFormContainer getResult() throws Exception{
-		if(this.searchContainer!=null){
-			return searchContainer;
+		if(this.formContainer!=null){
+			return formContainer;
 		}else{
 			throw new TripoinViewException(msg);
 		}

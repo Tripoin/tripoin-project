@@ -1,5 +1,6 @@
 package com.tripoin.web.view.page.masterdata.occupation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,6 @@ import com.tripoin.web.view.page.masterdata.ExamplePage;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.TextField;
 
 /**
@@ -42,20 +42,22 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 	@Autowired
 	private IOccupationService occupationService;
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	protected Map<String, AbstractField> getSearchPanelComponents() {
-		Map<String, AbstractField> searchPanelComponents = new  HashMap<String, AbstractField>();
+	protected List<com.vaadin.ui.Component> designSearchComponent() {
+		List<com.vaadin.ui.Component> component = new ArrayList<com.vaadin.ui.Component>();
 		TextField occupationNameTextField = new TextField("Occupation Name");
-		searchPanelComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), occupationNameTextField);
-		return searchPanelComponents;
+		occupationNameTextField.setId(EnumFieldOccupation.NAME_OCCUPATION.toString());
+		occupationNameTextField.setStyleName("small");
+		occupationNameTextField.setWidth("60%");
+		component.add(occupationNameTextField);
+		return component;
 	}
 
 	@Override
-	protected GeneralPagingTransferObject<OccupationData> getALlDatasService(GeneralPagingTransferObject<OccupationData> generalPagingTransferObject) {
+	protected GeneralPagingTransferObject<OccupationData> getALlDatasService(GeneralPagingTransferObject<OccupationData> generalPagingTransferObject, Map<String, Object> searchPanelDatas) {
     	occupationTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
     	occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-    	occupationTransferObjectSearch.setFindOccupationData(getSearchPanelDatas());
+    	occupationTransferObjectSearch.setFindOccupationData(searchPanelDatas);
         return occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
 	}
 
@@ -101,17 +103,17 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 		if(event.getOldView() instanceof DataOccupationManageView){
 			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
 			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.getSubmit().getCaption()))
-		        this.commonComponent.getSearchContainer().doCancel();
+		        this.commonComponent.getSearchContainer().getDataField(false);
 		}
     }
 
 	@Override
 	protected String getPageTitle() {
-		return "Example Page";
+		return "Data Occupation";
 	}
 
 	@Override
-	protected String getGridClickNavigate() {
+	protected String afterGridClickNavigate() {
 		return ExamplePage.BEAN_NAME;
 	}
 

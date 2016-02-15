@@ -6,6 +6,9 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 
+/**
+ * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
+ */
 public class FormPanel {
 
 	@SuppressWarnings("rawtypes")

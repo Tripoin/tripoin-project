@@ -1,6 +1,6 @@
 package com.tripoin.web.view.base.container;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +10,7 @@ import com.tripoin.web.view.base.container.component.SearchPanel;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 
@@ -21,28 +20,19 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 	 * 
 	 */
 	private static final long serialVersionUID = -1575878452013068877L;
-	@SuppressWarnings("rawtypes")
-	private Map<String, AbstractField> searchContainerComponents = new HashMap<String, AbstractField>();
 	private SearchPanel searchPanel = new SearchPanel();
 	private ASearchContainer searchContainer;
 	private String msg;
 	
-	@SuppressWarnings("rawtypes")
 	public ASearchContainer() {
 		Label section = new Label();
 		section.addStyleName("h3");
 		section.addStyleName("colored");
 		section.setWidth("100%");
 		this.addComponent(section);
-		
-		searchPanel.setSearchPanelComponents(getSearchComponents());
-		for (String key : this.getParam().getSearchPanelComponents().keySet()) {
-			AbstractField component = this.getParam().getSearchPanelComponents().get(key);
-			component.addStyleName("small");
-			component.setWidth("60%");
+
+		for(Component component : getSearchComponent())
 			this.addComponent(component);
-			this.searchContainerComponents.put(key, component);
-		}
 		
 		this.getParam().getFooterSearch().setSpacing(true);
 		this.getParam().getOkButton().addStyleName("primary");
@@ -58,37 +48,10 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 		this.setWidth("100%");
 	}
 	
-	@SuppressWarnings("rawtypes")
-	protected abstract Map<String, AbstractField> getSearchComponents();
+	protected abstract List<Component> getSearchComponent();
 
-	@SuppressWarnings("rawtypes")
-	public Map<String, AbstractField> getSearchContainerComponents() {
-		return this.searchContainerComponents;
-	}
-
-	public Map<String, Object> doOk() {
-		Map<String, Object> searchPanelDatas = null;
-		for (String key : getSearchComponents().keySet()) {
-			if(searchContainerComponents.get(key).getValue() != null && !((String)searchContainerComponents.get(key).getValue()).isEmpty()){
-				if(searchPanelDatas == null)
-					searchPanelDatas = new HashMap<String, Object>();
-				searchPanelDatas.put(key, searchContainerComponents.get(key).getValue());
-			}
-		}
-		return searchPanelDatas;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Map<String, Object> doCancel() {
-		for (String key : getSearchComponents().keySet()) {
-			if(getSearchComponents().get(key).getValue() != null){
-				if(searchContainerComponents.get(key) instanceof AbstractSelect)
-					searchContainerComponents.get(key).setValue(null);
-				else
-					searchContainerComponents.get(key).setValue("");
-			}
-		}
-		return null;
+	public Map<String, Object> getDataField(boolean isResetField) {
+		return TripoinDataField.getDataField(this, isResetField);
 	}
 
 	public String getMsg() {

@@ -1,6 +1,6 @@
 package com.tripoin.web.view.base;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -12,19 +12,19 @@ import com.tripoin.web.view.base.container.ATripoinNotification;
 import com.tripoin.web.view.base.container.AFormContainer;
 import com.tripoin.web.view.base.container.TitleContainer;
 import com.tripoin.web.view.exception.TripoinViewException;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-public abstract class ATripoinForm<T> extends VerticalLayout implements View, ClickListener, ITripoinPage {
+public abstract class ATripoinForm extends VerticalLayout implements View, ClickListener, ITripoinPage {
 
 	/**
 	 * 
@@ -65,13 +65,12 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	}
 
 	private void initForm() {
-		if (getFormPanelComponents() != null) {
+		if (designFormComponent() != null) {
 			formContainer = new AFormContainer() {
 				private static final long serialVersionUID = -9075849116444347844L;
-				@SuppressWarnings("rawtypes")
 				@Override
-				public Map<String, AbstractField> getFormComponents() {
-					return getFormPanelComponents();
+				public List<Component> getFormComponent() {
+					return designFormComponent();
 				}
 			};
 			formContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
@@ -79,7 +78,16 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 				private static final long serialVersionUID = 6601057432872302615L;
 				@Override
 				public void buttonClick(ClickEvent event) {
-					formPanelDatas = new HashMap<String, Object>();
+					formPanelDatas = formContainer.getDataField(false);
+					if(formPanelDatas != null){
+						if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption())){
+							doOkButtonEvent();
+						}else{
+							doReOkButtonEvent();
+						}
+					}else{
+						tripoinNotification.show("Error Submit", "Data form not null!");
+					}
 				}
 			});
 			formContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
@@ -87,7 +95,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 				private static final long serialVersionUID = 6601057432872302615L;
 				@Override
 				public void buttonClick(ClickEvent event) {
-					formPanelDatas = null;
+					doCancelEvent();
 				}
 			});
 			this.commonComponent.setFormContainer(formContainer);
@@ -95,18 +103,35 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
-	protected abstract Map<String, AbstractField> getFormPanelComponents();
+	protected abstract List<Component> designFormComponent();
 
 	protected Map<String, Object> getFormPanelDatas() {
 		return this.formPanelDatas;
 	}
 
-	protected abstract BeanItemContainer<T> getBeanDataContainer();
+	protected void doOkButtonEvent() {
+		
+		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());		
+	}
+
+	protected void doReOkButtonEvent() {
+		
+		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());		
+	}
+	
+	protected void doCancelEvent() {
+		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());
+	}
 	
 	protected abstract String getPageTitle();
+	
+	protected abstract String afterButtonClickNavigate();
 
-	protected abstract Class<? extends ATripoinForm<T>> getViewClass();
+	protected abstract Class<? extends ATripoinForm> getViewClass();
+	
+	protected  String getReOkButtonCaption(){
+		return ITripoinConstantComponent.Button.SAVE;
+	}
 	
 	protected  String getOkButtonCaption(){
 		return ITripoinConstantComponent.Button.UPDATE;

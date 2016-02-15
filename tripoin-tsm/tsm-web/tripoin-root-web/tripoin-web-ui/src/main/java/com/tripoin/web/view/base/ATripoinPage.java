@@ -28,10 +28,10 @@ import com.vaadin.server.ResourceReference;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
@@ -55,13 +55,13 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	private ReportUtil reportUtil;
 
 	private static final int NOTIFICATION_TIME = 7000;
+	private boolean isFieldReset = false;
 	private ITripoinPage tripoinPage;
 	private String msg;
 
 	protected CommonComponent commonComponent = new CommonComponent();
 	private TitleContainer titleContainer;
 	private ASearchContainer searchContainer;
-	private Map<String, Object> searchPanelDatas;
 	private GridContainer gridContainer;
 	private BeanItemContainer<T> dataBeanContainer = getBeanDataContainer();
 	
@@ -100,13 +100,12 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	}
 
 	private void initSearch() {
-		if (getSearchPanelComponents() != null) {
+		if (designSearchComponent() != null) {
 			searchContainer = new ASearchContainer() {
 				private static final long serialVersionUID = -9075849116444347844L;
-				@SuppressWarnings("rawtypes")
 				@Override
-				public Map<String, AbstractField> getSearchComponents() {
-					return getSearchPanelComponents();
+				public List<Component> getSearchComponent() {
+					return designSearchComponent();
 				}
 			};
 			searchContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
@@ -114,7 +113,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 				private static final long serialVersionUID = 6601057432872302615L;
 				@Override
 				public void buttonClick(ClickEvent event) {
-					searchPanelDatas = searchContainer.doOk();
+					isFieldReset = false;
 					tripoinPageable.refreshPageable();
 				}
 			});
@@ -123,7 +122,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 				private static final long serialVersionUID = 6601057432872302615L;
 				@Override
 				public void buttonClick(ClickEvent event) {
-					searchPanelDatas = searchContainer.doCancel();
+					isFieldReset = true;
 					tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
 					tripoinPageable.refreshPageable();
 				}
@@ -153,8 +152,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	}
 
 	private GeneralPagingTransferObject<T> constructBeanContainer(GeneralPagingTransferObject<T> generalPagingTransferObject) {
-		searchPanelDatas = searchContainer.doOk();
-		generalPagingTransferObject = getALlDatasService(generalPagingTransferObject);
+		generalPagingTransferObject = getALlDatasService(generalPagingTransferObject, searchContainer.getDataField(isFieldReset));
 		dataBeanContainer.removeAllItems();
 		dataBeanContainer.addAll(generalPagingTransferObject.getDatas());
 		for(Object property : removeFieldContainerProperty())
@@ -165,6 +163,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 		for(String key : getColumnAlias().keySet())
 			commonComponent.getGridContainer().getParam().getGrid().getColumn(key).setHeaderCaption(getColumnAlias().get(key));
 		commonComponent.getGridContainer().getParam().getGrid().setFrozenColumnCount(2);
+		isFieldReset = false;
 		return generalPagingTransferObject;
 	}
 	
@@ -200,7 +199,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 					private static final long serialVersionUID = 5989159535771225427L;
 					@Override
 					public void menuSelected(MenuItem selectedItem) {
-						UI.getCurrent().getNavigator().navigateTo(getGridClickNavigate());
+						UI.getCurrent().getNavigator().navigateTo(afterGridClickNavigate());
 					}
 				};
 			}
@@ -239,19 +238,14 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 			}
 			@Override
 			protected String getClickNavigate() {
-				return getGridClickNavigate();
+				return afterGridClickNavigate();
 			}
 		};
 	}
 	
-	@SuppressWarnings("rawtypes")
-	protected abstract Map<String, AbstractField> getSearchPanelComponents();
-
-	protected Map<String, Object> getSearchPanelDatas() {
-		return this.searchPanelDatas;
-	}
+	protected abstract List<Component> designSearchComponent();
 	
-	protected abstract GeneralPagingTransferObject<T> getALlDatasService(GeneralPagingTransferObject<T> generalPagingTransferObject);
+	protected abstract GeneralPagingTransferObject<T> getALlDatasService(GeneralPagingTransferObject<T> generalPagingTransferObject, Map<String, Object> searchPanelDatas);
 	
 	protected abstract GeneralPagingTransferObject<T> doDeleteService(List<T> dataObjectSelect);
 
@@ -267,7 +261,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	
 	protected abstract String getPageTitle();
 
-	protected abstract String getGridClickNavigate();
+	protected abstract String afterGridClickNavigate();
 
 	protected abstract String reportJasperNameSelected();
 
