@@ -9,11 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tripoin.web.view.base.container.ATripoinNotification;
+import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.view.base.container.AFormContainer;
 import com.tripoin.web.view.base.container.TitleContainer;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
@@ -24,7 +28,7 @@ import com.vaadin.ui.VerticalLayout;
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-public abstract class ATripoinForm extends VerticalLayout implements View, ClickListener, ITripoinPage {
+public abstract class ATripoinForm<T> extends VerticalLayout implements View, ClickListener, ITripoinPage {
 
 	/**
 	 * 
@@ -33,6 +37,7 @@ public abstract class ATripoinForm extends VerticalLayout implements View, Click
 	protected Logger LOGGER = LoggerFactory.getLogger(getViewClass());
 
 	private static final int NOTIFICATION_TIME = 7000;
+	private boolean isFieldReset = false;
 	private ITripoinPage tripoinPage;
 	private String msg;
 
@@ -40,7 +45,8 @@ public abstract class ATripoinForm extends VerticalLayout implements View, Click
 	private TitleContainer titleContainer;
 	private AFormContainer formContainer;
 	private Map<String, Object> formPanelDatas;
-	
+
+	private T dataOriginalGrid = null;
 	protected ATripoinNotification tripoinNotification = new ATripoinNotification("", "") {
 		private static final long serialVersionUID = 1736547096660591645L;
 		@Override
@@ -65,59 +71,81 @@ public abstract class ATripoinForm extends VerticalLayout implements View, Click
 	}
 
 	private void initForm() {
-		if (designFormComponent() != null) {
-			formContainer = new AFormContainer() {
-				private static final long serialVersionUID = -9075849116444347844L;
-				@Override
-				public List<Component> getFormComponent() {
-					return designFormComponent();
-				}
-			};
-			formContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
-			formContainer.getParam().getOkButton().addClickListener(new ClickListener() {
-				private static final long serialVersionUID = 6601057432872302615L;
-				@Override
-				public void buttonClick(ClickEvent event) {
-					formPanelDatas = formContainer.getDataField(false);
-					if(formPanelDatas != null){
-						if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption())){
-							doOkButtonEvent();
-						}else{
-							doReOkButtonEvent();
-						}
-					}else{
-						tripoinNotification.show("Error Submit", "Data form not null!");
+		formContainer = new AFormContainer() {
+			private static final long serialVersionUID = -9075849116444347844L;
+			@SuppressWarnings("unchecked")
+			@Override
+			public List<Component> getFormComponent() {
+				if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString()) == null){
+					getParam().getOkButton().setCaption(getOkButtonCaption());
+				}else{
+					try {
+						dataOriginalGrid = (T) VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
+						VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
+						getParam().getOkButton().setCaption(getReOkButtonCaption());
+					} catch (ClassCastException e) {
+						getParam().getOkButton().setCaption(getOkButtonCaption());
+					} catch (Exception e) {
+						getParam().getOkButton().setCaption(getOkButtonCaption());
+						e.printStackTrace();
 					}
 				}
-			});
-			formContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
-			formContainer.getParam().getCancelButton().addClickListener(new ClickListener() {
-				private static final long serialVersionUID = 6601057432872302615L;
-				@Override
-				public void buttonClick(ClickEvent event) {
-					doCancelEvent();
+				return designFormComponent(dataOriginalGrid);
+			}
+		};
+		formContainer.getParam().getOkButton().addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 6601057432872302615L;
+			@Override
+			public void buttonClick(ClickEvent event) {
+				formPanelDatas = formContainer.getDataField(isFieldReset);
+				if(formPanelDatas != null){
+					pressOkButtonAllEvent(event);
+				}else{
+					tripoinNotification.show("Error Submit", "Data form not null!");
 				}
-			});
-			this.commonComponent.setFormContainer(formContainer);
-			addComponent(this.commonComponent.getFormContainer());
-		}
+			}
+		});
+		formContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
+		formContainer.getParam().getCancelButton().addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 6601057432872302615L;
+			@Override
+			public void buttonClick(ClickEvent event) {
+				doCancelEvent();
+			}
+		});
+		this.commonComponent.setFormContainer(formContainer);
+		addComponent(this.commonComponent.getFormContainer());
 	}
 	
-	protected abstract List<Component> designFormComponent();
+	protected abstract List<Component> designFormComponent(T dataGrid);
+	
+	protected abstract Map<String, ErrorMessage> errorComponents(Map<String, Object> dataFields, GeneralTransferObject generalTransferObject);
 
 	protected Map<String, Object> getFormPanelDatas() {
 		return this.formPanelDatas;
 	}
-
-	protected void doOkButtonEvent() {
-		
-		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());		
+	
+	protected void pressOkButtonAllEvent(ClickEvent event) {
+		Map<String, ErrorMessage> errorComponents = errorComponents(formPanelDatas, null);
+		if(errorComponents != null && !errorComponents.isEmpty()){
+			formContainer.setErrorComponents(errorComponents);
+		}else{
+			GeneralTransferObject generalTransferObject;
+			if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption()))
+				generalTransferObject = doOkButtonEvent(formPanelDatas, dataOriginalGrid);
+			else
+				generalTransferObject = doReOkButtonEvent(formPanelDatas, dataOriginalGrid);
+			errorComponents = errorComponents(formPanelDatas, generalTransferObject);
+			if(errorComponents != null && !errorComponents.isEmpty()){
+				formContainer.setErrorComponents(errorComponents);
+			}else
+				UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());
+		}
 	}
 
-	protected void doReOkButtonEvent() {
-		
-		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());		
-	}
+	protected abstract GeneralTransferObject doOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
+
+	protected abstract GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
 	
 	protected void doCancelEvent() {
 		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());
@@ -127,13 +155,13 @@ public abstract class ATripoinForm extends VerticalLayout implements View, Click
 	
 	protected abstract String afterButtonClickNavigate();
 
-	protected abstract Class<? extends ATripoinForm> getViewClass();
+	protected abstract Class<? extends ATripoinForm<T>> getViewClass();
 	
-	protected  String getReOkButtonCaption(){
+	protected  String getOkButtonCaption(){
 		return ITripoinConstantComponent.Button.SAVE;
 	}
 	
-	protected  String getOkButtonCaption(){
+	protected  String getReOkButtonCaption(){
 		return ITripoinConstantComponent.Button.UPDATE;
 	}
 	

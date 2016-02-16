@@ -9,6 +9,7 @@ import com.tripoin.web.view.base.ITripoinComponent;
 import com.tripoin.web.view.base.container.component.FormPanel;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.ErrorMessage;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
@@ -55,6 +56,10 @@ public abstract class AFormContainer extends FormLayout implements ITripoinCompo
 
 	public Map<String, Object> getDataField(boolean isResetField) {
 		return TripoinDataField.getDataField(this, isResetField);
+	}
+	
+	public void setErrorComponents(Map<String, ErrorMessage> errorComponents) {
+		TripoinDataField.setErrorComponents(this, errorComponents);
 	}
 
 	public String getMsg() {
