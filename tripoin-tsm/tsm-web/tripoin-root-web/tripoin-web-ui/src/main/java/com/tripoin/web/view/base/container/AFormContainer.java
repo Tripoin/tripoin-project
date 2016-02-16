@@ -35,7 +35,7 @@ public abstract class AFormContainer extends FormLayout implements ITripoinCompo
 		section.setWidth("100%");
 		this.addComponent(section);
 
-		for(Component component : getFormComponent())
+		for(Component component : getFormComponents())
 			this.addComponent(component);
 		
 		this.getParam().getFooterSearch().setSpacing(true);
@@ -52,7 +52,7 @@ public abstract class AFormContainer extends FormLayout implements ITripoinCompo
 		this.setWidth("100%");
 	}
 	
-	protected abstract List<Component> getFormComponent();
+	protected abstract List<Component> getFormComponents();
 
 	public Map<String, Object> getDataField(boolean isResetField) {
 		return TripoinDataField.getDataField(this, isResetField);

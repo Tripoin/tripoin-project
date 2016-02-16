@@ -1,5 +1,6 @@
 package com.tripoin.web.view.base;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,14 +10,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tripoin.web.view.base.container.ATripoinNotification;
+import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.util.ui.platform.IdentifierPlatform;
 import com.tripoin.web.common.EWebSessionConstant;
+import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.view.base.container.AFormContainer;
 import com.tripoin.web.view.base.container.TitleContainer;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -47,6 +52,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	private Map<String, Object> formPanelDatas;
 
 	private T dataOriginalGrid = null;
+	protected IdentifierPlatform tripoinIdentifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
 	protected ATripoinNotification tripoinNotification = new ATripoinNotification("", "") {
 		private static final long serialVersionUID = 1736547096660591645L;
 		@Override
@@ -75,7 +81,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 			private static final long serialVersionUID = -9075849116444347844L;
 			@SuppressWarnings("unchecked")
 			@Override
-			public List<Component> getFormComponent() {
+			public List<Component> getFormComponents() {
 				if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString()) == null){
 					getParam().getOkButton().setCaption(getOkButtonCaption());
 				}else{
@@ -90,7 +96,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 						e.printStackTrace();
 					}
 				}
-				return designFormComponent(dataOriginalGrid);
+				return designFormComponents(dataOriginalGrid);
 			}
 		};
 		formContainer.getParam().getOkButton().addClickListener(new ClickListener() {
@@ -99,6 +105,9 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 			public void buttonClick(ClickEvent event) {
 				formPanelDatas = formContainer.getDataField(isFieldReset);
 				if(formPanelDatas != null){
+					formPanelDatas.put(EWebUIConstant.IDENTIFIER_IP.toString(), tripoinIdentifierPlatform.getIPAddress());
+					formPanelDatas.put(EWebUIConstant.IDENTIFIER_TIME.toString(), ParameterConstant.FORMAT_DEFAULT.format(new Date()));
+					formPanelDatas.put(EWebUIConstant.IDENTIFIER_PLATFORM.toString(), tripoinIdentifierPlatform.getDevice().concat(" | ").concat(tripoinIdentifierPlatform.getOperatingSystem()).concat(" | ").concat(tripoinIdentifierPlatform.getBrowser()));
 					pressOkButtonAllEvent(event);
 				}else{
 					tripoinNotification.show("Error Submit", "Data form not null!");
@@ -117,16 +126,16 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 		addComponent(this.commonComponent.getFormContainer());
 	}
 	
-	protected abstract List<Component> designFormComponent(T dataGrid);
+	protected abstract List<Component> designFormComponents(T dataGrid);
 	
-	protected abstract Map<String, ErrorMessage> errorComponents(Map<String, Object> dataFields, GeneralTransferObject generalTransferObject);
+	protected abstract Map<String, ErrorMessage> validateErrorComponents(Map<String, Object> formPanelDatas, GeneralTransferObject generalTransferObject);
 
 	protected Map<String, Object> getFormPanelDatas() {
 		return this.formPanelDatas;
 	}
 	
 	protected void pressOkButtonAllEvent(ClickEvent event) {
-		Map<String, ErrorMessage> errorComponents = errorComponents(formPanelDatas, null);
+		Map<String, ErrorMessage> errorComponents = validateErrorComponents(formPanelDatas, null);
 		if(errorComponents != null && !errorComponents.isEmpty()){
 			formContainer.setErrorComponents(errorComponents);
 		}else{
@@ -135,7 +144,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 				generalTransferObject = doOkButtonEvent(formPanelDatas, dataOriginalGrid);
 			else
 				generalTransferObject = doReOkButtonEvent(formPanelDatas, dataOriginalGrid);
-			errorComponents = errorComponents(formPanelDatas, generalTransferObject);
+			errorComponents = validateErrorComponents(formPanelDatas, generalTransferObject);
 			if(errorComponents != null && !errorComponents.isEmpty()){
 				formContainer.setErrorComponents(errorComponents);
 			}else

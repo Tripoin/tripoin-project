@@ -31,7 +31,7 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 		section.setWidth("100%");
 		this.addComponent(section);
 
-		for(Component component : getSearchComponent())
+		for(Component component : getSearchComponents())
 			this.addComponent(component);
 		
 		this.getParam().getFooterSearch().setSpacing(true);
@@ -48,7 +48,7 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 		this.setWidth("100%");
 	}
 	
-	protected abstract List<Component> getSearchComponent();
+	protected abstract List<Component> getSearchComponents();
 
 	public Map<String, Object> getDataField(boolean isResetField) {
 		return TripoinDataField.getDataField(this, isResetField);

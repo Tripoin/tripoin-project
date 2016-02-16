@@ -1,19 +1,25 @@
 package com.tripoin.web.view.page.masterdata;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
+import com.tripoin.web.common.EWebUIConstant;
+import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.base.ATripoinForm;
 import com.tripoin.web.view.page.masterdata.occupation.DataOccupationView;
 import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.UserError;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.TextField;
 
 /**
@@ -26,9 +32,12 @@ public class ExamplePage extends ATripoinForm<OccupationData> {
 
 	private static final long serialVersionUID = -4592518571070450190L;
 	public static final String BEAN_NAME = "examplePage";
+	
+	@Autowired
+	private IOccupationService occupationService;
 
 	@Override
-	protected List<com.vaadin.ui.Component> designFormComponent(OccupationData dataGrid) {
+	protected List<com.vaadin.ui.Component> designFormComponents(OccupationData dataGrid) {
 		List<com.vaadin.ui.Component> component = new ArrayList<com.vaadin.ui.Component>();
 		TextField occupationNameTextField = new TextField("Occupation Name");
 		occupationNameTextField.setValue(dataGrid.getName());
@@ -48,8 +57,23 @@ public class ExamplePage extends ATripoinForm<OccupationData> {
 	}
 
 	@Override
-	protected Map<String, ErrorMessage> errorComponents(Map<String, Object> dataFields, GeneralTransferObject generalTransferObject) {
-		return null;
+	protected Map<String, ErrorMessage> validateErrorComponents(Map<String, Object> formPanelDatas, GeneralTransferObject generalTransferObject) {
+		Map<String, ErrorMessage> errorComponents = new HashMap<String, ErrorMessage>();
+		if(formPanelDatas.containsKey(EnumFieldOccupation.NAME_OCCUPATION.toString())){
+			if(formPanelDatas.get(EnumFieldOccupation.NAME_OCCUPATION.toString()) == null || formPanelDatas.get(EnumFieldOccupation.NAME_OCCUPATION.toString()).toString().isEmpty()){
+				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Occupation Name not null!"));
+			}
+		}
+		if(generalTransferObject != null){
+			if("1".equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error Update", "Occupation error, please try again later!");
+				errorComponents.put(EWebUIConstant.EXCEPTION.toString(), new UserError("Occupation error, please try again later!"));
+			}else if("2".equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error Update", "Occupation name already exist.");
+				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Occupation name already exist."));
+			}
+		}
+		return errorComponents;
 	}
 
 	@Override
@@ -59,7 +83,14 @@ public class ExamplePage extends ATripoinForm<OccupationData> {
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, OccupationData dataOriginalGrid) {
-		return null;
+		dataOriginalGrid.setName(formPanelDatas.get(EnumFieldOccupation.NAME_OCCUPATION.toString()).toString());
+		dataOriginalGrid.setRemarks(formPanelDatas.get(EnumFieldOccupation.DESCRIPTION_OCCUPATION.toString()).toString());
+		dataOriginalGrid.setModifiedIP(formPanelDatas.get(EWebUIConstant.IDENTIFIER_IP.toString()).toString());
+		dataOriginalGrid.setModifiedTime(formPanelDatas.get(EWebUIConstant.IDENTIFIER_TIME.toString()).toString());
+		dataOriginalGrid.setModifiedPlatform(formPanelDatas.get(EWebUIConstant.IDENTIFIER_PLATFORM.toString()).toString());
+		GeneralTransferObject generalTransferObject = occupationService.updateOccupation(dataOriginalGrid, VaadinServlet.getCurrent().getServletContext());
+		System.out.println("update server");
+		return generalTransferObject;
 	}
 
 	@Override

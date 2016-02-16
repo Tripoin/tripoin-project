@@ -43,7 +43,7 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 	private IOccupationService occupationService;
 
 	@Override
-	protected List<com.vaadin.ui.Component> designSearchComponent() {
+	protected List<com.vaadin.ui.Component> designSearchComponents() {
 		List<com.vaadin.ui.Component> component = new ArrayList<com.vaadin.ui.Component>();
 		TextField occupationNameTextField = new TextField("Occupation Name");
 		occupationNameTextField.setId(EnumFieldOccupation.NAME_OCCUPATION.toString());

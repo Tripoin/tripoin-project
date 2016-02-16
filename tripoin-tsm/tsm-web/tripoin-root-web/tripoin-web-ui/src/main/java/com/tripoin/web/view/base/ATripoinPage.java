@@ -100,12 +100,12 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	}
 
 	private void initSearch() {
-		if (designSearchComponent() != null) {
+		if (designSearchComponents() != null) {
 			searchContainer = new ASearchContainer() {
 				private static final long serialVersionUID = -9075849116444347844L;
 				@Override
-				public List<Component> getSearchComponent() {
-					return designSearchComponent();
+				public List<Component> getSearchComponents() {
+					return designSearchComponents();
 				}
 			};
 			searchContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
@@ -243,7 +243,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 		};
 	}
 	
-	protected abstract List<Component> designSearchComponent();
+	protected abstract List<Component> designSearchComponents();
 	
 	protected abstract GeneralPagingTransferObject<T> getALlDatasService(GeneralPagingTransferObject<T> generalPagingTransferObject, Map<String, Object> searchPanelDatas);
 	

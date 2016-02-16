@@ -42,8 +42,12 @@ public enum EWebUIConstant {
 	REGEX_FRONT_CONTAINS_DIGIT("[^\\d+].*"),
 	
 	AUTHORIZATION("Authorization"),
-	
-    COMING("Coming"), AVAILABLE("Available"), DISCONTINUED("Discontinued"),
+    
+    EXCEPTION("Exception"),
+
+    IDENTIFIER_TIME("IDENTIFIER_TIME"),
+    IDENTIFIER_IP("IDENTIFIER_IP"),
+    IDENTIFIER_PLATFORM("IDENTIFIER_PLATFORM"),
 	
 	HOME_VIEW(""),
 	NAVIGATE_NULL("#!"),
