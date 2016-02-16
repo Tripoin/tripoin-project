@@ -49,7 +49,8 @@ public class OccupationTransferObject extends GeneralPagingTransferObject<Occupa
 	}
 
 	public enum EnumFieldOccupation {
-		NAME_OCCUPATION("name");
+		NAME_OCCUPATION("name"),
+		DESCRIPTION_OCCUPATION("description");
 		
 		private String operator;		
 		private EnumFieldOccupation(String operator){this.operator=operator;}
