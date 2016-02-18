@@ -4,28 +4,40 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 
-public abstract class ATripoinNotification extends Notification {
+public abstract class ATripoinNotification {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7036584635068630755L;
+	private Notification notification;
 	private String caption;
 	private String description;
 
+	public ATripoinNotification() {
+		notification = new Notification("");
+		init();
+	}
+
+	public ATripoinNotification(String caption) {
+		notification = new Notification(caption);
+		this.caption = caption;
+		init();
+	}
+
 	public ATripoinNotification(String caption, String description) {
-		super(caption, description);
+		notification = new Notification(caption, description);
 		this.caption = caption;
 		this.description = description;
-		setStyleName("system closable");
-		setPosition(Position.BOTTOM_CENTER);
-		setDelayMsec(delayMiliSecond());
+		init();
+	}
+	
+	private void init(){
+		notification.setStyleName("system closable");
+		notification.setPosition(Position.BOTTOM_CENTER);
+		notification.setDelayMsec(delayMiliSecond());
 	}
 	
 	public void show(String caption, String description) {
-		this.setCaption(this.caption);
-		this.setDescription(this.description);
-		this.show(Page.getCurrent());
+		notification.setCaption(this.caption);
+		notification.setDescription(this.description);
+		notification.show(Page.getCurrent());
 	}
 	
 	protected abstract int delayMiliSecond();

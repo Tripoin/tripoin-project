@@ -14,6 +14,8 @@ import com.vaadin.ui.UI;
 * @author <a href="ridla.fadilah@gmail.com">Ridla Fadilah</a>
 */
 public abstract class AMenuItemGridEventDefault<T> {
+	
+	private Integer indexSelected = null;
 
 	public AMenuItemGridEventDefault() {
 		gridClickEvent();
@@ -29,7 +31,7 @@ public abstract class AMenuItemGridEventDefault<T> {
 				for(Object object : getFieldHeader()){
 					if(object.equals(event.getPropertyId())){
 						getGrid().getSelectionModel().reset();
-						getGrid().select(event.getItemId());
+						indexSelected = getGrid().getContainerDataSource().indexOfId(event.getItemId());
 						isSelectEdited = true; break;
 					}
 				}
@@ -48,6 +50,7 @@ public abstract class AMenuItemGridEventDefault<T> {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void select(SelectionEvent event) {
+				indexSelected = null;
 				if(event.getSelected().isEmpty()){
 					if(getTripoinMenuItemGridDefault().getMenuItemDelete().isEnabled())getTripoinMenuItemGridDefault().getMenuItemDelete().setEnabled(false);
 					if(getTripoinMenuItemGridDefault().getMenuItemExportSelected().isEnabled())getTripoinMenuItemGridDefault().getMenuItemExportSelected().setEnabled(false);
@@ -60,6 +63,14 @@ public abstract class AMenuItemGridEventDefault<T> {
 					getTripoinMenuItemGridDefault().getDataObjectSelect().add((T)object);
 			}
 		});
+	}
+
+	public Integer getIndexSelected() {
+		return indexSelected;
+	}
+	
+	public void setIndexSelected(Integer indexSelected) {
+		this.indexSelected = indexSelected;
 	}
 
 	protected abstract Grid getGrid();

@@ -89,7 +89,6 @@ public class ExamplePage extends ATripoinForm<OccupationData> {
 		dataOriginalGrid.setModifiedTime(formPanelDatas.get(EWebUIConstant.IDENTIFIER_TIME.toString()).toString());
 		dataOriginalGrid.setModifiedPlatform(formPanelDatas.get(EWebUIConstant.IDENTIFIER_PLATFORM.toString()).toString());
 		GeneralTransferObject generalTransferObject = occupationService.updateOccupation(dataOriginalGrid, VaadinServlet.getCurrent().getServletContext());
-		System.out.println("update server");
 		return generalTransferObject;
 	}
 

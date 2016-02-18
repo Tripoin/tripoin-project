@@ -62,6 +62,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	protected CommonComponent commonComponent = new CommonComponent();
 	private TitleContainer titleContainer;
 	private ASearchContainer searchContainer;
+	private List<Component> searchComponents;
 	private GridContainer gridContainer;
 	private BeanItemContainer<T> dataBeanContainer = getBeanDataContainer();
 	
@@ -72,8 +73,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 			return ResourceReference.create(resource, ATripoinPage.this, name);
 		}
 	};
-	protected ATripoinNotification tripoinNotification = new ATripoinNotification("", "") {
-		private static final long serialVersionUID = 1736547096660591645L;
+	protected ATripoinNotification tripoinNotification = new ATripoinNotification() {
 		@Override
 		protected int delayMiliSecond() {
 			return NOTIFICATION_TIME;
@@ -100,12 +100,12 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	}
 
 	private void initSearch() {
-		if (designSearchComponents() != null) {
+		if ((searchComponents = designSearchComponents()) != null) {
 			searchContainer = new ASearchContainer() {
 				private static final long serialVersionUID = -9075849116444347844L;
 				@Override
 				public List<Component> getSearchComponents() {
-					return designSearchComponents();
+					return searchComponents;
 				}
 			};
 			searchContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
@@ -115,6 +115,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 				public void buttonClick(ClickEvent event) {
 					isFieldReset = false;
 					tripoinPageable.refreshPageable();
+					menuItemGridEventDefault.setIndexSelected(null);
 				}
 			});
 			searchContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
@@ -125,10 +126,12 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 					isFieldReset = true;
 					tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
 					tripoinPageable.refreshPageable();
+					menuItemGridEventDefault.setIndexSelected(null);
 				}
 			});
 			this.commonComponent.setSearchContainer(searchContainer);
 			addComponent(this.commonComponent.getSearchContainer());
+			searchComponents = null;
 		}
 	}
 
@@ -314,7 +317,11 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	}
 
 	@Override
-	public void enter(ViewChangeEvent event) {}
+	public void enter(ViewChangeEvent event) {
+		tripoinPageable.refreshPageable();
+		if(menuItemGridEventDefault.getIndexSelected()!=null)
+			gridContainer.getParam().getGrid().select(dataBeanContainer.getIdByIndex(menuItemGridEventDefault.getIndexSelected()));
+	}
 
 	@Override
 	public void buttonClick(ClickEvent event) {}

@@ -53,19 +53,19 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 
 	private T dataOriginalGrid = null;
 	protected IdentifierPlatform tripoinIdentifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
-	protected ATripoinNotification tripoinNotification = new ATripoinNotification("", "") {
-		private static final long serialVersionUID = 1736547096660591645L;
-		@Override
-		protected int delayMiliSecond() {
-			return NOTIFICATION_TIME;
-		}
-	};
+	protected ATripoinNotification tripoinNotification;
 
 	@PostConstruct
 	protected void init() throws Exception {
 		initTitle();
 		initForm();
-
+		
+		tripoinNotification = new ATripoinNotification() {
+			@Override
+			protected int delayMiliSecond() {
+				return NOTIFICATION_TIME;
+			}
+		};
         this.setMargin(true);
         this.addStyleName("tripoin-custom-screen");
 	}
@@ -87,7 +87,6 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 				}else{
 					try {
 						dataOriginalGrid = (T) VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
-						VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
 						getParam().getOkButton().setCaption(getReOkButtonCaption());
 					} catch (ClassCastException e) {
 						getParam().getOkButton().setCaption(getOkButtonCaption());
@@ -96,24 +95,11 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 						e.printStackTrace();
 					}
 				}
+				VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
 				return designFormComponents(dataOriginalGrid);
 			}
 		};
-		formContainer.getParam().getOkButton().addClickListener(new ClickListener() {
-			private static final long serialVersionUID = 6601057432872302615L;
-			@Override
-			public void buttonClick(ClickEvent event) {
-				formPanelDatas = formContainer.getDataField(isFieldReset);
-				if(formPanelDatas != null){
-					formPanelDatas.put(EWebUIConstant.IDENTIFIER_IP.toString(), tripoinIdentifierPlatform.getIPAddress());
-					formPanelDatas.put(EWebUIConstant.IDENTIFIER_TIME.toString(), ParameterConstant.FORMAT_DEFAULT.format(new Date()));
-					formPanelDatas.put(EWebUIConstant.IDENTIFIER_PLATFORM.toString(), tripoinIdentifierPlatform.getDevice().concat(" | ").concat(tripoinIdentifierPlatform.getOperatingSystem()).concat(" | ").concat(tripoinIdentifierPlatform.getBrowser()));
-					pressOkButtonAllEvent(event);
-				}else{
-					tripoinNotification.show("Error Submit", "Data form not null!");
-				}
-			}
-		});
+		formContainer.getParam().getOkButton().addClickListener(this);
 		formContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
 		formContainer.getParam().getCancelButton().addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 6601057432872302615L;
@@ -166,11 +152,15 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 
 	protected abstract Class<? extends ATripoinForm<T>> getViewClass();
 	
-	protected  String getOkButtonCaption(){
+	public String okButtonCaption(){
+		return formContainer.getParam().getOkButton().getCaption();
+	}
+	
+	protected String getOkButtonCaption(){
 		return ITripoinConstantComponent.Button.SAVE;
 	}
 	
-	protected  String getReOkButtonCaption(){
+	protected String getReOkButtonCaption(){
 		return ITripoinConstantComponent.Button.UPDATE;
 	}
 	
@@ -206,6 +196,16 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	public void enter(ViewChangeEvent event) {}
 
 	@Override
-	public void buttonClick(ClickEvent event) {}
+	public void buttonClick(ClickEvent event) {
+		formPanelDatas = formContainer.getDataField(isFieldReset);
+		if(formPanelDatas != null){
+			formPanelDatas.put(EWebUIConstant.IDENTIFIER_IP.toString(), tripoinIdentifierPlatform.getIPAddress());
+			formPanelDatas.put(EWebUIConstant.IDENTIFIER_TIME.toString(), ParameterConstant.FORMAT_DEFAULT.format(new Date()));
+			formPanelDatas.put(EWebUIConstant.IDENTIFIER_PLATFORM.toString(), tripoinIdentifierPlatform.getDevice().concat(" | ").concat(tripoinIdentifierPlatform.getOperatingSystem()).concat(" | ").concat(tripoinIdentifierPlatform.getBrowser()));
+			pressOkButtonAllEvent(event);
+		}else{
+			tripoinNotification.show("Error Submit", "Data form not null!");
+		}
+	}
 
 }

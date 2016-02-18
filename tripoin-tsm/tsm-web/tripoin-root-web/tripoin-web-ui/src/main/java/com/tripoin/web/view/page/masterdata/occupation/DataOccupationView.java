@@ -18,7 +18,6 @@ import com.tripoin.web.service.IOccupationService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.base.ATripoinPage;
 import com.tripoin.web.view.base.ITripoinConstantComponent;
-import com.tripoin.web.view.page.masterdata.ExamplePage;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinServlet;
@@ -100,10 +99,12 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 
 	@Override
     public void enter(ViewChangeEvent event) {
+		super.enter(event);
 		if(event.getOldView() instanceof DataOccupationManageView){
 			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
-			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.getSubmit().getCaption()))
+			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.okButtonCaption()))
 		        this.commonComponent.getSearchContainer().getDataField(false);
+			
 		}
     }
 
@@ -114,7 +115,7 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 
 	@Override
 	protected String afterGridClickNavigate() {
-		return ExamplePage.BEAN_NAME;
+		return DataOccupationManageView.BEAN_NAME;
 	}
 
 	@Override
