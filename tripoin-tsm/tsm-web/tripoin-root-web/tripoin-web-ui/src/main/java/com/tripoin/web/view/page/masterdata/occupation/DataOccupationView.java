@@ -57,7 +57,7 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
     	occupationTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
     	occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
     	occupationTransferObjectSearch.setFindOccupationData(searchPanelDatas);
-        return occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
+    	return occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
 	}
 
 	@Override
@@ -80,6 +80,11 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 	protected Object[] getFieldContainerPropertyHeader() {
 		return new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
 	    		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
+	}
+	
+	@Override
+	protected Object[] addNestedFieldContainerProperty() {
+		return null;
 	}
 
 	@Override

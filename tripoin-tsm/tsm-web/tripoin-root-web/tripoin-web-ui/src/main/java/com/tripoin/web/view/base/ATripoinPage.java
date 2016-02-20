@@ -160,6 +160,8 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 		dataBeanContainer.addAll(generalPagingTransferObject.getDatas());
 		for(Object property : removeFieldContainerProperty())
 			dataBeanContainer.removeContainerProperty(property);
+		for(Object property : addNestedFieldContainerProperty())
+			dataBeanContainer.addNestedContainerProperty((String)property);
 		commonComponent.getGridContainer().getParam().getGrid().getSelectionModel().reset();
 		commonComponent.getGridContainer().getParam().getGrid().setContainerDataSource(dataBeanContainer);
 		commonComponent.getGridContainer().getParam().getGrid().setColumnOrder(getFieldContainerPropertyHeader());
@@ -255,6 +257,8 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	protected abstract BeanItemContainer<T> getBeanDataContainer();
 	
 	protected abstract Object[] getFieldContainerPropertyHeader();
+	
+	protected abstract Object[] addNestedFieldContainerProperty();
 	
 	protected abstract Object[] removeFieldContainerProperty();
 	
