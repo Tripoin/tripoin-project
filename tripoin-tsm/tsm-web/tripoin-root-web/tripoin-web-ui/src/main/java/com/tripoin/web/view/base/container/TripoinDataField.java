@@ -11,6 +11,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HasComponents;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.TextField;
 
@@ -118,6 +119,24 @@ public class TripoinDataField {
 								dataFields.put(slider.getId(), slider.getValue());
 							}
 						}
+					}
+				}else if(cmpnnt instanceof OptionGroup){
+					OptionGroup optionGroup = (OptionGroup)cmpnnt;
+					if(errorComponents != null){
+						if(errorComponents.containsKey(optionGroup.getId()))
+							optionGroup.setComponentError(errorComponents.get(optionGroup.getId()));
+						else
+							optionGroup.setComponentError(null);
+					}else{
+						if(isResetField){
+							optionGroup.setValue(null);
+							optionGroup.setComponentError(null);
+						}else{
+							if(optionGroup.getValue() != null){
+								dataFields.put(optionGroup.getId(), optionGroup.getValue());
+							}
+						}
+						
 					}
 				}else if(cmpnnt instanceof AbstractLayout){
 					dataField((AbstractLayout)cmpnnt, isResetField, dataFields, errorComponents);
