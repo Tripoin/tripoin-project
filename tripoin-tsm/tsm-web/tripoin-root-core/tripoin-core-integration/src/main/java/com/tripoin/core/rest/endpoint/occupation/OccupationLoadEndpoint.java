@@ -99,7 +99,7 @@ public class OccupationLoadEndpoint extends APageableEndpoint<OccupationData> {
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
 		try{
-			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, getFilterArguments(), getValues(), null, getPageTransferObject(inMessage.getPayload(), occupationTransferObject.getFindOccupationData()));
+			List<Occupation> occupationList = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, getFilterArguments(), getValues(), null, getPageTransferObject(inMessage.getPayload(), inMessage.getPayload().getFindOccupationData()));
 			List<OccupationData> occupationDatas = new ArrayList<OccupationData>();
 			if(occupationList != null){
 				for(int i=occupationList.size()-1; i>=0; i--)
