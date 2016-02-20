@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.integration.http.multipart.UploadedMultipartFile;
 import org.springframework.messaging.Message;
@@ -20,7 +19,6 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
-import com.tripoin.core.service.IGenericManagerJpa;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -29,9 +27,6 @@ import com.tripoin.core.service.IGenericManagerJpa;
 public class UploadEndpoint extends XReturnStatus {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UploadEndpoint.class);
-
-	@Autowired
-	private IGenericManagerJpa iGenericManagerJpa;
 	
 	@Value("${path.image}")
 	private String rootPath;

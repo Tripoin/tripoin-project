@@ -18,7 +18,7 @@ import com.tripoin.core.service.util.IVersionControlSystemTableService;
 /**
 * @author <a href="ridla.fadilah@gmail.com">Ridla Fadilah</a>
 */
-public abstract class APageableEndpoint<T, S> extends XReturnStatus {
+public abstract class APageableEndpoint<T> extends XReturnStatus {
 	
     protected static Logger LOGGER = LoggerFactory.getLogger(APageableEndpoint.class);
 

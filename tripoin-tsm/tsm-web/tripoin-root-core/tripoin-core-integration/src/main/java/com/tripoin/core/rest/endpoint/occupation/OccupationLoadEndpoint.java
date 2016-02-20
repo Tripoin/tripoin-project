@@ -27,7 +27,7 @@ import com.tripoin.core.service.IGenericManagerJpa;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Component("occupationLoadEndpoint")
-public class OccupationLoadEndpoint extends APageableEndpoint<OccupationData, Occupation> {
+public class OccupationLoadEndpoint extends APageableEndpoint<OccupationData> {
 
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
