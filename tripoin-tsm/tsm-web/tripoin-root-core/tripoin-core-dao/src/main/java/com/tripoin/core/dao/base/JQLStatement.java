@@ -53,7 +53,7 @@ public class JQLStatement implements Serializable {
 	public Query pageStatement(Query query, PageArgument pageArgument) throws Exception {
 		if(pageArgument.getMinRow() != null && pageArgument.getMinRow() > 0)
 			query.setFirstResult(pageArgument.getMinRow());
-		if(pageArgument.getMaxRow() != null && pageArgument.getMaxRow() > pageArgument.getMinRow())
+		if(pageArgument.getMaxRow() != null && pageArgument.getMaxRow() > 0)
 			query.setMaxResults(pageArgument.getMaxRow());
 		return query;
 	}
