@@ -52,6 +52,8 @@ public enum EWebUIConstant {
 	HOME_VIEW(""),
 	NAVIGATE_NULL("#!"),
 	
+	NAVIGATE_AFTER_FORM("NAVIGATE-AFTER-FORM"),
+	
 	TYPE_FILE_IMAGE("image"),
 	
 	BUTTON_PAGING(5),	

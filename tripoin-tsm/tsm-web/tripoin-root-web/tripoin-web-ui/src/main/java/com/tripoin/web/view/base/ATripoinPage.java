@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.web.common.EReportUIConstant;
+import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ReportUtil;
 import com.tripoin.web.view.base.container.ATripoinDataReport;
 import com.tripoin.web.view.base.container.ATripoinMenuItemGridDefault;
@@ -326,7 +327,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if(dataBeanContainer != null){
+		if(dataBeanContainer != null && EWebUIConstant.NAVIGATE_AFTER_FORM.toString().equals(event.getParameters())){
 			tripoinPageable.refreshPageable();
 			if(menuItemGridEventDefault.getIndexSelected()!=null)
 				gridContainer.getParam().getGrid().select(dataBeanContainer.getIdByIndex(menuItemGridEventDefault.getIndexSelected()));	

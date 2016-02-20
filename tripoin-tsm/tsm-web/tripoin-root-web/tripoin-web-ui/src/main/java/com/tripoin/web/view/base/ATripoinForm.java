@@ -134,7 +134,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 			if(errorComponents != null && !errorComponents.isEmpty()){
 				formContainer.setErrorComponents(errorComponents);
 			}else
-				UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());
+				UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));
 		}
 	}
 
@@ -143,7 +143,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	protected abstract GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
 	
 	protected void doCancelEvent() {
-		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate());
+		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));
 	}
 	
 	protected abstract String getPageTitle();
