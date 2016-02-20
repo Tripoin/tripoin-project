@@ -14,6 +14,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
 import com.tripoin.core.common.RoleConstant;
+import com.tripoin.core.dto.AreaData;
+import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
@@ -50,6 +52,11 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 	@Override
 	public List<OccupationData> loadOccupationData() {
     	return getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas();
+	}
+	
+	@Override
+	public List<AreaData> loadAreaData() {
+    	return getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL), null, AreaTransferObject.class).getAreaDatas();
 	}
 	
 	@SuppressWarnings("unchecked")

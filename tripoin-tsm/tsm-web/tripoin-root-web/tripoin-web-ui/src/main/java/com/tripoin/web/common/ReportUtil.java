@@ -1,9 +1,5 @@
 package com.tripoin.web.common;
 
-import com.tripoin.core.dto.GeneralReportTransferObject;
-import com.tripoin.web.service.IGeneralReportService;
-import com.vaadin.server.StreamResource;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -13,6 +9,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.tripoin.core.dto.GeneralReportTransferObject;
+import com.tripoin.web.service.IGeneralReportService;
+import com.vaadin.server.StreamResource;
 
 public class ReportUtil {
 

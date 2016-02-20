@@ -6,6 +6,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.http.HttpStatus;
 
+import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.OccupationData;
 import com.vaadin.data.util.BeanItemContainer;
@@ -18,6 +19,8 @@ public interface IDataLoadStarted {
 	public HttpStatus getStatusCode();
     
 	public List<OccupationData> loadOccupationData();
+	
+	public List<AreaData> loadAreaData();
 	
 	public BeanItemContainer<OccupationData> getOccupationContainer(ServletContext servletContext);
     

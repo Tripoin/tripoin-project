@@ -24,6 +24,8 @@ public class WebServiceConstant {
 	public static final String CONTEXT_CONSTANT_OCCUPATION = "OCCUPATION";
 	public static final String CONTEXT_CONSTANT_EMPLOYEE_NOT_SALESMAN = "EMPLOYEE_NOT_SALESMAN";
 	
+	public static final String CONTEXT_CONSTANT_AREA = "AREA";
+	
 	public static final String HTTP_ONLY = "HttpOnly";
 	
 	public static final String HTTP_RESOURCES_IMAGES = HTTP_CONTEXT_RESOURCES.concat("/images");
@@ -56,5 +58,12 @@ public class WebServiceConstant {
 	public static final String HTTP_OCCUPATION_UPDATE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_UPDATE);
 	public static final String HTTP_OCCUPATION_DELETE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_DELETE);
 	public static final String HTTP_OCCUPATION_ALL_PAGE = HTTP_CONTEXT_REST.concat("/occupation").concat(HTTP_LOAD).concat(HTTP_PAGE);
+	public static final String HTTP_AREA = HTTP_CONTEXT_REST.concat("/area").concat(HTTP_LOAD);
+	public static final String HTTP_AREA_ALL = HTTP_CONTEXT_REST.concat("/area").concat(HTTP_LOAD).concat(HTTP_ALL);
+	public static final String HTTP_AREA_SAVE = HTTP_CONTEXT_REST.concat("/area").concat(HTTP_SAVE);
+	public static final String HTTP_AREA_UPDATE = HTTP_CONTEXT_REST.concat("/area").concat(HTTP_UPDATE);
+	public static final String HTTP_AREA_DELETE = HTTP_CONTEXT_REST.concat("/area").concat(HTTP_DELETE);
+	public static final String HTTP_AREA_ALL_PAGE = HTTP_CONTEXT_REST.concat("/area").concat(HTTP_LOAD).concat(HTTP_PAGE);
+	
 	
 }

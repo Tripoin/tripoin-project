@@ -24,6 +24,7 @@
 	<import resource="anonymous/applicationContext-http-int-forgot-password.xml" />
 	<import resource="applicationContext-http-int-connection.xml" />
 	<import resource="applicationContext-http-int-employee.xml" />
+	<import resource="applicationContext-http-int-area.xml" />
 	<import resource="applicationContext-http-int-login-menu.xml" />
 	<import resource="applicationContext-http-int-login.xml" />
 	<import resource="applicationContext-http-int-logout.xml" />

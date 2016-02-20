@@ -157,6 +157,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	private GeneralPagingTransferObject<T> constructBeanContainer(GeneralPagingTransferObject<T> generalPagingTransferObject) {
 		generalPagingTransferObject = getALlDatasService(generalPagingTransferObject, searchContainer.getDataField(isFieldReset));
 		dataBeanContainer.removeAllItems();
+		System.out.println("DATAS"+generalPagingTransferObject.getDatas());
 		dataBeanContainer.addAll(generalPagingTransferObject.getDatas());
 		for(Object property : removeFieldContainerProperty())
 			dataBeanContainer.removeContainerProperty(property);
