@@ -157,10 +157,11 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	private GeneralPagingTransferObject<T> constructBeanContainer(GeneralPagingTransferObject<T> generalPagingTransferObject) {
 		generalPagingTransferObject = getALlDatasService(generalPagingTransferObject, searchContainer.getDataField(isFieldReset));
 		dataBeanContainer.removeAllItems();
-		System.out.println("DATAS"+generalPagingTransferObject.getDatas());
 		dataBeanContainer.addAll(generalPagingTransferObject.getDatas());
-		for(Object property : removeFieldContainerProperty())
-			dataBeanContainer.removeContainerProperty(property);
+		if(removeFieldContainerProperty() != null){
+			for(Object property : removeFieldContainerProperty())
+				dataBeanContainer.removeContainerProperty(property);	
+		}
 		if(addNestedFieldContainerProperty() != null){
 			for(Object property : addNestedFieldContainerProperty())
 				dataBeanContainer.addNestedContainerProperty((String)property);
@@ -325,9 +326,11 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		tripoinPageable.refreshPageable();
-		if(menuItemGridEventDefault.getIndexSelected()!=null)
-			gridContainer.getParam().getGrid().select(dataBeanContainer.getIdByIndex(menuItemGridEventDefault.getIndexSelected()));
+		if(dataBeanContainer != null){
+			tripoinPageable.refreshPageable();
+			if(menuItemGridEventDefault.getIndexSelected()!=null)
+				gridContainer.getParam().getGrid().select(dataBeanContainer.getIdByIndex(menuItemGridEventDefault.getIndexSelected()));	
+		}
 	}
 
 	@Override
