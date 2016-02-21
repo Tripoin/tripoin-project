@@ -47,9 +47,8 @@ public class GeneralTransferObject {
 
 	@Override
 	public String toString() {
-		return "GeneralConnectionDTO [responseCode=" + responseCode
-				+ ", responseMsg=" + responseMsg + ", responseDesc="
-				+ responseDesc + "]";
+		return "GeneralTransferObject [responseCode=" + responseCode + ", responseMsg=" + responseMsg
+				+ ", responseDesc=" + responseDesc + "]";
 	}
 
 }

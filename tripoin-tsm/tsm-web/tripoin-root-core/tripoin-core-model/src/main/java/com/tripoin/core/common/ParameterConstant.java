@@ -14,6 +14,10 @@ public class ParameterConstant {
 
 	public static final String IP_ADDRESSV4_DEFAULT = "127.0.0.1";
 	public static final String PLATFORM_DEFAULT = "Computer | Unknown Operating System | Unknown Browser";
+
+	public static final String IDENTIFIER_TIME = "IDENTIFIER_TIME";
+	public static final String IDENTIFIER_IP = "IDENTIFIER_IP";
+	public static final String IDENTIFIER_PLATFORM = "IDENTIFIER_PLATFORM";
 	
 	public static final String RESPONSE_SUCCESS = "SUCCESS";
 	public static final String RESPONSE_FAILURE = "FAILURE";

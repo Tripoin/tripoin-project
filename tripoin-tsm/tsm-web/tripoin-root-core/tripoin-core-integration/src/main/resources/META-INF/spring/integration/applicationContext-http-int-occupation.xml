@@ -83,7 +83,7 @@
 		reply-channel="responseChannelOccupationUpdate"
 		supported-methods="POST" 
 		path="/wscontext/occupation/update, /wscontext/occupation/update/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationData">	
+		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelOccupationUpdate" expression="headers.http_requestMethod">
