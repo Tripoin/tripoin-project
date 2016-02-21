@@ -124,7 +124,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
             	String homePhone = (String)findDataEmployee.get(EnumFieldEmployee.TELP_EMPLOYE.toString());
             	String email = (String)findDataEmployee.get(EnumFieldEmployee.EMAIL_EMPLOYE.toString());
             	String address = (String)findDataEmployee.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString());
-            	
+            	Integer enabled = ((Double)findDataEmployee.get(EnumFieldEmployee.ENABLE_EMPLOYE.toString())).intValue();
             	FilterArgument[] filterArguments = new FilterArgument[]{
     					new FilterArgument(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), ECommonOperator.EQUALS)
     			};
@@ -144,7 +144,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                     user.setUsername(username);
             	    passwordPlainText = randomGeneratorAlphanumeric(7);
                     user.setPassword(jasyptStringDigester.digest(passwordPlainText));
-                    user.setEnabled(1);
+                    user.setEnabled(enabled);
                     user.setStatus(1);
                     iGenericManagerJpa.saveObject(user);
                     /**
