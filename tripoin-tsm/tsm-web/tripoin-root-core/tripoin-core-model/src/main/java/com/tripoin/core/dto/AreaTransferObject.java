@@ -49,7 +49,9 @@ public class AreaTransferObject extends GeneralPagingTransferObject<AreaData> {
 	}
 
 	public enum EnumFieldArea {
-		NAME_AREA("name"), DESCRIPTION_AREA("remarks");
+		CODE_AREA("code"),
+		NAME_AREA("name"),
+		DESCRIPTION_AREA("remarks");
 
 		private String operator;
 
