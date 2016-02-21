@@ -150,8 +150,9 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                     /**
                      * Set Profile
                      */
-                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) != null){
-                    	List<Profile> profileListCheckMobileEmail = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE email = ? OR phone = ?",  new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.EMAIL_EMPLOYE.toString()), 
+                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.EMAIL_EMPLOYE.toString()) != null && datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
+                    	List<Profile> profileListCheckMobileEmail = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE email = ? OR phone = ?",  new Object[] { 
+                    			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.EMAIL_EMPLOYE.toString()), 
                     			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) }, null);
                     	if(profileListCheckMobileEmail != null && !profileListCheckMobileEmail.isEmpty()){
             				wsEndpointFault.setMessage("Contact Email and Mobile Phone Already Exists");
@@ -192,9 +193,10 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                 	 */
                 	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) != null){
                     	FilterArgument[] filterArgumentsParentEmployee = new FilterArgument[] { 
-                				new FilterArgument(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), ECommonOperator.EQUALS) 
+                				new FilterArgument(EnumFieldEmployee.NIK_EMPLOYE.toString(), ECommonOperator.EQUALS) 
                 		};
-                    	List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsParentEmployee, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
+                    	List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsParentEmployee, new Object[] { 
+                    			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
                     	if(employeeParentList != null && !employeeParentList.isEmpty())
                     		employee.setEmployeeParent(employeeParentList.get(0));
                 	}

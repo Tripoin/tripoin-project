@@ -101,9 +101,10 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                 	employee = employeeList.get(0);
                 	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) != null){
                     	FilterArgument[] filterArgumentsParentEmployee = new FilterArgument[] { 
-                				new FilterArgument(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), ECommonOperator.EQUALS) 
+                				new FilterArgument(EnumFieldEmployee.NIK_EMPLOYE.toString(), ECommonOperator.EQUALS) 
                 		};
-                    	List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsParentEmployee, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
+                    	List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsParentEmployee, new Object[] { 
+                    			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
                     	if(employeeParentList != null && !employeeParentList.isEmpty())
                     		employee.setEmployeeParent(employeeParentList.get(0));
                     	else {
