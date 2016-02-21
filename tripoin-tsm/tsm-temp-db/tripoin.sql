@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 21, 2016 at 10:44 AM
+-- Generation Time: Feb 21, 2016 at 11:29 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -86,39 +86,39 @@ INSERT INTO `mst_area` (`area_id`, `area_code`, `area_name`, `area_status`, `are
 (1, 'JAKARTA', 'JAKARTA', 1, '-', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (2, 'TANGERANG', 'TANGERANG', 1, '-', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (3, 'BANDUNG', 'BANDUNG', 1, '-', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(7, '01', 'ACEH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
-(8, '02', 'SUMATERA UTARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
-(9, '03', 'SUMATERA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
-(10, '04', 'RIAU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
-(11, '05', 'JAMBI', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
-(12, '06', 'SUMATERA SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
-(13, '07', 'BENGKULU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
-(14, '08', 'LAMPUNG', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(15, '09', 'KEPULAUAN BANGKA BELITUNG', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(16, '10', 'KEPULAUAN RIAU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(17, '11', 'DKI JAKARTA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(18, '12', 'JAWA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(19, '13', 'JAWA TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(20, '14', 'DI YOGYAKARTA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(21, '15', 'JAWA TIMUR', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(22, '16', 'BANTEN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(23, '17', 'BALI', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(24, '18', 'NUSA TENGGARA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
-(25, '19', 'NUSA TENGGARA TIMUR', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(26, '20', 'KALIMANTAN BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(27, '21', 'KALIMANTAN TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(28, '22', 'KALIMANTAN SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(29, '23', 'KALIMANTAN TIMUR', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(30, '24', 'SULAWESI UTARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(31, '25', 'SULAWESI TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(32, '26', 'SULAWESI SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(33, '27', 'SULAWESI TENGGARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(34, '28', 'GORONTALO', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(35, '29', 'SULAWESI BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(36, '30', 'MALUKU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(37, '31', 'MALUKU UTARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:55', NULL, NULL, NULL, NULL, NULL),
-(38, '32', 'PAPUA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:55', NULL, NULL, NULL, NULL, NULL),
-(39, '33', 'PAPUA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:55', NULL, NULL, NULL, NULL, NULL);
+(4, 'ACEH', 'ACEH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
+(5, 'SUMATERAUTARA', 'SUMATERA UTARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
+(6, 'SUMATERABARAT', 'SUMATERA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
+(7, 'RIAU', 'RIAU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
+(8, 'JAMBI', 'JAMBI', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
+(9, 'SUMATERASELATAN', 'SUMATERA SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
+(10, 'BENGKULU', 'BENGKULU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:52', NULL, NULL, NULL, NULL, NULL),
+(11, 'LAMPUNG', 'LAMPUNG', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(12, 'KEPULAUANBANGKABELITUNG', 'KEPULAUAN BANGKA BELITUNG', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(13, 'KEPULAUANRIAU', 'KEPULAUAN RIAU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(14, 'DKIJAKARTA', 'DKI JAKARTA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(15, 'JAWABARAT', 'JAWA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(16, 'JAWATENGAH', 'JAWA TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(17, 'DIYOGYAKARTA', 'DI YOGYAKARTA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(18, 'JAWATIMUR', 'JAWA TIMUR', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(19, 'BANTEN', 'BANTEN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(20, 'BALI', 'BALI', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(21, 'NUSATENGGARABARAT', 'NUSA TENGGARA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:53', NULL, NULL, NULL, NULL, NULL),
+(22, 'NUSATENGGARATIMUR', 'NUSA TENGGARA TIMUR', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(23, 'KALIMANTANBARAT', 'KALIMANTAN BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(24, 'KALIMANTANTENGAH', 'KALIMANTAN TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(25, 'KALIMANTANSELATAN', 'KALIMANTAN SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(26, 'KALIMANTANTIMUR', 'KALIMANTAN TIMUR', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(27, 'SULAWESIUTARA', 'SULAWESI UTARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(28, 'SULAWESITENGAH', 'SULAWESI TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, '0000-00-00 00:00:00', NULL),
+(29, 'SULAWESISELATAN', 'SULAWESI SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(30, 'SULAWESITENGGARA', 'SULAWESI TENGGARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(31, 'GORONTALO', 'GORONTALO', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(32, 'SULAWESIBARAT', 'SULAWESI BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(33, 'MALUKU', 'MALUKU', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
+(34, 'MALUKUUTARA', 'MALUKU UTARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:55', NULL, NULL, NULL, NULL, NULL),
+(35, 'PAPUABARAT', 'PAPUA BARAT', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:55', NULL, NULL, NULL, NULL, NULL),
+(36, 'PAPUA', 'PAPUA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:55', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -460,7 +460,7 @@ CREATE TABLE `vcs_table` (
 INSERT INTO `vcs_table` (`vcs_table_id`, `vcs_table_code`, `vcs_table_total_row`, `vcs_table_status`, `vcs_table_remarks`, `vcs_table_created_by`, `vcs_table_created_ip`, `vcs_table_created_time`, `vcs_table_created_platform`, `vcs_table_modified_by`, `vcs_table_modified_ip`, `vcs_table_modified_time`, `vcs_table_modified_platform`) VALUES
 (1, 'mst_employee', 3, 1, 'Tabel of mst_employee', 'admin', '127.0.0.1', '2016-01-04 02:43:24', NULL, NULL, NULL, NULL, NULL),
 (2, 'mst_occupation', 3, 1, 'Table of mst_occupation', 'admin', '127.0.0.1', '2016-01-04 02:43:24', NULL, NULL, NULL, NULL, NULL),
-(3, 'mst_area', 40, 1, 'Table of mst_area', 'admin', '127.0.0.1', '2016-01-04 02:43:24', '', '', '', '2016-02-11 14:35:11', '');
+(3, 'mst_area', 36, 1, 'Table of mst_area', 'admin', '127.0.0.1', '2016-01-04 02:43:24', '', '', '', '2016-02-11 14:35:11', '');
 
 -- --------------------------------------------------------
 
