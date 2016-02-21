@@ -53,7 +53,17 @@ public class EmployeeTransferObject extends GeneralPagingTransferObject<Employee
 		NAME_EMPLOYE("profile.name"),
 		OCCUPATION_EMPLOYE("occupation.name"),
 		ROLE_EMPLOYE("profile.user.role.code"),
-		NAME_PARENT_EMPLOYE("employeeParent.profile.name");
+		NAME_PARENT_EMPLOYE("employeeParent.profile.name"),
+		USERNAME_EMPLOYE("profile.user.username"),
+		BIRTHPLACE_EMPLOYE("profile.birthplace"),
+		BIRTHDATE_EMPLOYE("profile.birthdate"),
+		GENDER_EMPLOYE("profile.gender"),
+		TELP_EMPLOYE("profile.telp"),
+		PHONE_EMPLOYE("profile.phone"),
+		EMAIL_EMPLOYE("profile.email"),
+		ADDRESS_EMPLOYE("profile.address"),
+		ENABLE_EMPLOYE("profile.user.status");
+		
 		
 		private String operator;		
 		private EnumFieldEmployee(String operator){this.operator=operator;}
