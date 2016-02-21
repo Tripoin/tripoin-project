@@ -193,7 +193,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
             telpTextField.setValue(dataGrid.getProfileData().getTelp());
             emailTextField.setValue(dataGrid.getProfileData().getEmail());
             addressTextArea.setValue(dataGrid.getProfileData().getAddress());
-            enabledAccount.setValue((double)dataGrid.getProfileData().getUserData().getStatus());
+            enabledAccount.setValue((double)dataGrid.getProfileData().getUserData().getEnabled());
     	}
     	
 		return component;			
@@ -255,6 +255,12 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			}else if("2".equals(generalTransferObject.getResponseCode())){
 				tripoinNotification.show("Error Update", "Employee name already exist.");
 				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Employee name already exist."));
+			}else if("3".equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error Update", "Employee name already exist.");
+				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Employee name already exist."));
+			}else if("4".equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error Update", "Contact Email and Mobile Phone already exists.");
+				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Contact Email and Mobile Phone already exists."));
 			}
 		}
 		return errorComponents;
