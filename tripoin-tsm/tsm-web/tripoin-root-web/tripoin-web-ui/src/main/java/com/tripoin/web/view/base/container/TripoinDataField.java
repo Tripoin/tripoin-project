@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.tripoin.core.common.ParameterConstant;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.CheckBox;
@@ -65,7 +66,7 @@ public class TripoinDataField {
 							dateField.setComponentError(null);
 						}else{
 							if(dateField.getValue() != null){
-								dataFields.put(dateField.getId(), dateField.getValue());
+								dataFields.put(dateField.getId(), ParameterConstant.FORMAT_DEFAULT.format(dateField.getValue()));
 							}
 						}
 					}
