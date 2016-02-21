@@ -1,7 +1,12 @@
 package com.tripoin.core.test;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -34,18 +38,11 @@ import com.tripoin.core.pojo.SystemParameter;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.pojo.UserRoute;
 import com.tripoin.core.service.IGenericManagerJpa;
-import com.tripoin.core.service.util.IStanGenerator;
 import com.tripoin.core.service.util.ISystemParameterService;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -61,12 +58,6 @@ public class ServiceTest implements ApplicationContextAware  {
 	
 	@Autowired
 	private ISystemParameterService systemParameterService;
-	
-	@Autowired
-	private IStanGenerator stanManager;
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	@Qualifier(value="transactionManager")
