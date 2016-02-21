@@ -56,7 +56,7 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
         nameTextField.addStyleName("small");
         nameTextField.setWidth("50%");
         ComboBox occupationComboBox = new ComboBox("Occupation");
-		occupationComboBox.setId(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString());
+		occupationComboBox.setId(EnumFieldEmployee.OCCUPATION.toString());
         occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer(VaadinServlet.getCurrent().getServletContext()));
         occupationComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         occupationComboBox.setInputPrompt("Select Occupation");
@@ -81,9 +81,9 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 		employeeTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
 		employeeTransferObjectSearch.setFindEmployeeData(searchPanelDatas);
 		if(searchPanelDatas != null){
-			if(searchPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString())){
-				OccupationData occupationData = (OccupationData)searchPanelDatas.get(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString());
-				searchPanelDatas.put(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString(), occupationData.getName());
+			if(searchPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
+				OccupationData occupationData = (OccupationData)searchPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
+				searchPanelDatas.put(EnumFieldEmployee.OCCUPATION_NAME.toString(), occupationData.getName());
 			}
 		}
 	    return employeeService.getAllEmployeeDatas(employeeTransferObjectSearch);

@@ -81,7 +81,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
         
 	    ComboBox occupationComboBox = new ComboBox("Occupation");
 		component.add(occupationComboBox);
-		occupationComboBox.setId(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString());
+		occupationComboBox.setId(EnumFieldEmployee.OCCUPATION.toString());
         occupationComboBox.setContainerDataSource(dataLoadStarted.getOccupationContainer(VaadinServlet.getCurrent().getServletContext()));
         occupationComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         occupationComboBox.addStyleName("small");
@@ -210,9 +210,9 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			if(formPanelDatas.get(EnumFieldEmployee.NIK_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.NIK_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.NIK_EMPLOYE.toString(), new UserError("Employee NIK can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString())){
-			if(formPanelDatas.get(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString()).toString().isEmpty()){
-				errorComponents.put(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString(), new UserError("Employee Occupation can not null!"));
+		}else if(formPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
+			if(formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString()) == null || formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString()).toString().isEmpty()){
+				errorComponents.put(EnumFieldEmployee.OCCUPATION.toString(), new UserError("Employee Occupation can not null!"));
 			}
 		}else if(formPanelDatas.containsKey(EnumFieldEmployee.NAME_PARENT_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.NAME_PARENT_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.NAME_PARENT_EMPLOYE.toString()).toString().isEmpty()){
@@ -267,7 +267,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
-		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString());
+		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
 		formPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getCode());
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		employeeTransferObject.setFindEmployeeData(formPanelDatas);
