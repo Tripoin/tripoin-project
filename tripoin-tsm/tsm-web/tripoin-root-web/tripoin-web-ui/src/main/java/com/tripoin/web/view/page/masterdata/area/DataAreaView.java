@@ -38,8 +38,6 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 
 	@Autowired
 	private IAreaService areaService;
-
-	
 	
 	@Override
 	protected List<com.vaadin.ui.Component> designSearchComponents() {
@@ -51,7 +49,6 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 		component.add(areaNameTextField);
 		return component;
 	}
-
 
 	@Override
 	protected GeneralPagingTransferObject<AreaData> getALlDatasService(GeneralPagingTransferObject<AreaData> generalPagingTransferObject, Map<String, Object> searchPanelDatas) {
@@ -69,7 +66,6 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 	@Override
 	protected void initMenuItemGridDefault() {
 		super.initMenuItemGridDefault();
-		tripoinMenuItemGridDefault.getMenuItemCreate().setEnabled(false);
 	}
 
 	@Override
@@ -109,8 +105,7 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 		if(event.getOldView() instanceof DataAreaManageView){
 			DataAreaManageView oldView = (DataAreaManageView)event.getOldView();
 			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.okButtonCaption()))
-		        this.commonComponent.getSearchContainer().getDataField(false);
-			
+		        this.commonComponent.getSearchContainer().getDataField(false);	
 		}
     }
 

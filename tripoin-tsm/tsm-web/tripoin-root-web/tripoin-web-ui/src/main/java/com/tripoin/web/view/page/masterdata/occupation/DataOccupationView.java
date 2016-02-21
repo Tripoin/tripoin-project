@@ -114,7 +114,6 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 			DataOccupationManageView oldView = (DataOccupationManageView)event.getOldView();
 			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.okButtonCaption()))
 		        this.commonComponent.getSearchContainer().getDataField(false);
-			
 		}
     }
 
