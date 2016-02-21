@@ -250,16 +250,16 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 
 		if(generalTransferObject != null){
 			if("1".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error Update", "Employee error, please try again later!");
+				tripoinNotification.show("Error", "Employee error, please try again later!");
 				errorComponents.put(EWebUIConstant.EXCEPTION.toString(), new UserError("Employee error, please try again later!"));
 			}else if("2".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error Update", "Employee name already exist.");
+				tripoinNotification.show("Error", "Employee name already exist.");
 				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Employee name already exist."));
 			}else if("3".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error Update", "Employee name already exist.");
-				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Employee name already exist."));
+				tripoinNotification.show("Error", "NIK already exists.");
+				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("NIK already exist."));
 			}else if("4".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error Update", "Contact Email and Mobile Phone already exists.");
+				tripoinNotification.show("Error", "Contact Email and Mobile Phone already exists.");
 				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Contact Email and Mobile Phone already exists."));
 			}
 		}
@@ -273,6 +273,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
+		System.out.println(formPanelDatas.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString()));
 		EmployeeData employeeDataParent = (EmployeeData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
 		formPanelDatas.put(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), employeeDataParent.getNik());
 		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());

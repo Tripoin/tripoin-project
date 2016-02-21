@@ -11,16 +11,18 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
+import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.OccupationData;
-import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IEmployeeService;
-import com.vaadin.server.VaadinServlet;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.base.ATripoinPage;
+import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextField;
@@ -129,6 +131,16 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 	protected boolean isSetMenuGrid() {
 		return true;
 	}
+	
+	@Override
+    public void enter(ViewChangeEvent event) {
+		super.enter(event);
+		if(event.getOldView() instanceof DataEmployeeManageView){
+			DataEmployeeManageView oldView = (DataEmployeeManageView)event.getOldView();
+			if(ITripoinConstantComponent.Button.SAVE.equals(oldView.okButtonCaption()))
+		        this.commonComponent.getSearchContainer().getDataField(false);
+		}
+    }
 
 	@Override
 	protected String getPageTitle() {

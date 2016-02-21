@@ -14,6 +14,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.HasComponents;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Slider;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 /**
@@ -49,6 +50,24 @@ public class TripoinDataField {
 						}else{
 							if(textField.getValue() != null && !textField.getValue().isEmpty()){
 								dataFields.put(textField.getId(), textField.getValue());
+							}
+						}
+						
+					}
+				}else if(cmpnnt instanceof TextArea){
+					TextArea textArea = (TextArea)cmpnnt;
+					if(errorComponents != null){
+						if(errorComponents.containsKey(textArea.getId()))
+							textArea.setComponentError(errorComponents.get(textArea.getId()));
+						else
+							textArea.setComponentError(null);
+					}else{
+						if(isResetField){
+							textArea.setValue("");
+							textArea.setComponentError(null);
+						}else{
+							if(textArea.getValue() != null && !textArea.getValue().isEmpty()){
+								dataFields.put(textArea.getId(), textArea.getValue());
 							}
 						}
 						
