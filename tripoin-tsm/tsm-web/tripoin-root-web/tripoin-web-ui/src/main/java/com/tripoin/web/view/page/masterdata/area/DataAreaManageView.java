@@ -39,7 +39,6 @@ public class DataAreaManageView extends ATripoinForm<AreaData> {
 	protected List<com.vaadin.ui.Component> designFormComponents(AreaData dataGrid) {
 		List<com.vaadin.ui.Component> component = new ArrayList<com.vaadin.ui.Component>();
 		TextField areaNameTextField = new TextField("Area Name");
-		areaNameTextField.setValue(dataGrid.getName());
 		areaNameTextField.setId(EnumFieldArea.NAME_AREA.toString());
 		areaNameTextField.setStyleName("small");
 		areaNameTextField.setWidth("60%");
@@ -47,10 +46,13 @@ public class DataAreaManageView extends ATripoinForm<AreaData> {
 		areaNameTextField.focus();
 		component.add(areaNameTextField);
 		TextField areaDescriptionTextField = new TextField("Area Description");
-		areaDescriptionTextField.setValue(dataGrid.getRemarks());
 		areaDescriptionTextField.setId(EnumFieldArea.DESCRIPTION_AREA.toString());
 		areaDescriptionTextField.setStyleName("small");
 		areaDescriptionTextField.setWidth("60%");
+		if(dataGrid != null){
+			areaNameTextField.setValue(dataGrid.getName());
+			areaDescriptionTextField.setValue(dataGrid.getRemarks());
+		}
 		component.add(areaDescriptionTextField);
 		return component;
 	}
