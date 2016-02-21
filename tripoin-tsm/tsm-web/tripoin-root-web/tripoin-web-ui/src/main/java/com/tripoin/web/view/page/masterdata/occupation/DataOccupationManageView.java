@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
+import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
@@ -82,12 +83,10 @@ public class DataOccupationManageView extends ATripoinForm<OccupationData> {
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, OccupationData dataOriginalGrid) {
-		dataOriginalGrid.setName(formPanelDatas.get(EnumFieldOccupation.NAME_OCCUPATION.toString()).toString());
-		dataOriginalGrid.setRemarks(formPanelDatas.get(EnumFieldOccupation.DESCRIPTION_OCCUPATION.toString()).toString());
-		dataOriginalGrid.setModifiedIP(formPanelDatas.get(EWebUIConstant.IDENTIFIER_IP.toString()).toString());
-		dataOriginalGrid.setModifiedTime(formPanelDatas.get(EWebUIConstant.IDENTIFIER_TIME.toString()).toString());
-		dataOriginalGrid.setModifiedPlatform(formPanelDatas.get(EWebUIConstant.IDENTIFIER_PLATFORM.toString()).toString());
-		GeneralTransferObject generalTransferObject = occupationService.updateOccupation(dataOriginalGrid, VaadinServlet.getCurrent().getServletContext());
+		formPanelDatas.put(EnumFieldOccupation.CODE_OCCUPATION.toString(), dataOriginalGrid.getCode());
+		OccupationTransferObject dataTransferObject = new OccupationTransferObject();
+		dataTransferObject.setFindOccupationData(formPanelDatas);
+		GeneralTransferObject generalTransferObject = occupationService.updateOccupation(dataTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}
 

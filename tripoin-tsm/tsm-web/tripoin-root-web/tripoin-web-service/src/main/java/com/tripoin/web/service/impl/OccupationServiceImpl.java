@@ -53,8 +53,9 @@ public class OccupationServiceImpl implements IOccupationService {
 	}
 
 	@Override
-	public GeneralTransferObject updateOccupation(OccupationData occupationData, final ServletContext servletContext) {
-		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_UPDATE), occupationData, GeneralTransferObject.class);
+	public GeneralTransferObject updateOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext) {
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_UPDATE), dataTransferObject, GeneralTransferObject.class);
+		threadBuildOccupationContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 
