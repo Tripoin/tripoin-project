@@ -66,7 +66,7 @@ public class EmployeeTransferObject extends GeneralPagingTransferObject<Employee
 		PHONE_EMPLOYE("profile.phone"),
 		EMAIL_EMPLOYE("profile.email"),
 		ADDRESS_EMPLOYE("profile.address"),
-		ENABLE_EMPLOYE("profile.user.status");
+		ENABLE_EMPLOYE("profile.user.enabled");
 		
 		
 		private String operator;		
