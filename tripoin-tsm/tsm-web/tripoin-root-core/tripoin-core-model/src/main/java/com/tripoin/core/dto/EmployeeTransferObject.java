@@ -51,7 +51,8 @@ public class EmployeeTransferObject extends GeneralPagingTransferObject<Employee
 	public enum EnumFieldEmployee {
 		NIK_EMPLOYE("nik"),
 		NAME_EMPLOYE("profile.name"),
-		OCCUPATION_EMPLOYE("occupation.name"),
+		OCCUPATION("occupation"),
+		OCCUPATION_NAME("occupation.name"),
 		OCCUPATION_CODE("occupation.code"),
 		ROLE_EMPLOYE("profile.user.role.code"),
 		NAME_PARENT_EMPLOYE("employeeParent.profile.name"),
