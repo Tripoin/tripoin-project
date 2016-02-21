@@ -78,7 +78,7 @@
 		reply-channel="responseChannelEmployeeSave"
 		supported-methods="POST" 
 		path="/wscontext/employee/save, /wscontext/employee/save/{employee}"
-		request-payload-type="com.tripoin.core.dto.EmployeeData">	
+		request-payload-type="com.tripoin.core.dto.EmployeeTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelEmployeeSave" expression="headers.http_requestMethod">
@@ -90,7 +90,7 @@
 		reply-channel="responseChannelEmployeeUpdate"
 		supported-methods="POST" 
 		path="/wscontext/employee/update, /wscontext/employee/update/{employee}"
-		request-payload-type="com.tripoin.core.dto.EmployeeData">	
+		request-payload-type="com.tripoin.core.dto.EmployeeTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelEmployeeUpdate" expression="headers.http_requestMethod">
