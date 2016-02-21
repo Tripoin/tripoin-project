@@ -60,7 +60,12 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 
 	@Override
 	protected GeneralPagingTransferObject<AreaData> doDeleteService(List<AreaData> dataObjectSelect) {
-		return areaService.deleteArea(dataObjectSelect, VaadinServlet.getCurrent().getServletContext());
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		for(AreaData areaData : dataObjectSelect)
+			dataMap.put(areaData.getCode(), areaData.getCode());
+		AreaTransferObject areaTransferObject = new AreaTransferObject();
+		areaTransferObject.setFindAreaData(dataMap);
+		return areaService.deleteArea(areaTransferObject, VaadinServlet.getCurrent().getServletContext());
 	}
 	
 	@Override

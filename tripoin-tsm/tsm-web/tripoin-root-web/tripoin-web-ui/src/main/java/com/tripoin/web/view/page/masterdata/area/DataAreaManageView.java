@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.AreaData;
+import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.EWebUIConstant;
@@ -79,23 +80,18 @@ public class DataAreaManageView extends ATripoinForm<AreaData> {
 
 	@Override
 	protected GeneralTransferObject doOkButtonEvent(Map<String, Object> formPanelDatas, AreaData dataOriginalGrid) {
-		dataOriginalGrid.setName(formPanelDatas.get(EnumFieldArea.NAME_AREA.toString()).toString());
-		dataOriginalGrid.setRemarks(formPanelDatas.get(EnumFieldArea.DESCRIPTION_AREA.toString()).toString());
-		dataOriginalGrid.setCreatedIP(formPanelDatas.get(EWebUIConstant.IDENTIFIER_IP.toString()).toString());
-		dataOriginalGrid.setCreatedTime(formPanelDatas.get(EWebUIConstant.IDENTIFIER_TIME.toString()).toString());
-		dataOriginalGrid.setCreatedPlatform(formPanelDatas.get(EWebUIConstant.IDENTIFIER_PLATFORM.toString()).toString());
-		GeneralTransferObject generalTransferObject = areaService.saveArea(dataOriginalGrid, VaadinServlet.getCurrent().getServletContext());
+		AreaTransferObject areaTransferObject = new AreaTransferObject();
+		areaTransferObject.setFindAreaData(formPanelDatas);
+		GeneralTransferObject generalTransferObject = areaService.saveArea(areaTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, AreaData dataOriginalGrid) {
-		dataOriginalGrid.setName(formPanelDatas.get(EnumFieldArea.NAME_AREA.toString()).toString());
-		dataOriginalGrid.setRemarks(formPanelDatas.get(EnumFieldArea.DESCRIPTION_AREA.toString()).toString());
-		dataOriginalGrid.setModifiedIP(formPanelDatas.get(EWebUIConstant.IDENTIFIER_IP.toString()).toString());
-		dataOriginalGrid.setModifiedTime(formPanelDatas.get(EWebUIConstant.IDENTIFIER_TIME.toString()).toString());
-		dataOriginalGrid.setModifiedPlatform(formPanelDatas.get(EWebUIConstant.IDENTIFIER_PLATFORM.toString()).toString());
-		GeneralTransferObject generalTransferObject = areaService.updateArea(dataOriginalGrid, VaadinServlet.getCurrent().getServletContext());
+		formPanelDatas.put(EnumFieldArea.CODE_AREA.toString(), dataOriginalGrid.getCode());
+		AreaTransferObject areaTransferObject = new AreaTransferObject();
+		areaTransferObject.setFindAreaData(formPanelDatas);
+		GeneralTransferObject generalTransferObject = areaService.updateArea(areaTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}
 
