@@ -56,7 +56,7 @@ public class AccessControlImpl implements IAccessControl {
         return false;
     }
 
-    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	@Override
 	public String getUsername() {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -65,7 +65,7 @@ public class AccessControlImpl implements IAccessControl {
 		return authentication.getName();
 	}
 
-    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	@Override
 	public String getRole() {	
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

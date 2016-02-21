@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +21,6 @@ import com.tripoin.util.ui.geo.EGeoTypes;
 import com.tripoin.util.ui.geo.Geolocator;
 import com.tripoin.util.ui.geo.PositionCallback;
 import com.tripoin.util.ui.geo.shared.Position;
-import com.tripoin.web.common.IStateFullRest;
-import com.tripoin.web.service.IUserService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -55,12 +52,6 @@ import com.vaadin.ui.VerticalLayout;
 public class SalesTrackingView extends VerticalLayout implements View, ClickListener {
 
 	private static final long serialVersionUID = -4592518571070450190L;
-
-    @Autowired
-    private IUserService userService;
-    
-    @Autowired
-    private IStateFullRest stateFullRest;
 
     private GoogleMap googleMap;
     private GoogleMapMarker kakolaMarker = new GoogleMapMarker("DRAGGABLE: Kakolan vankila", new LatLon(-6.266600, 106.659831), true, null);

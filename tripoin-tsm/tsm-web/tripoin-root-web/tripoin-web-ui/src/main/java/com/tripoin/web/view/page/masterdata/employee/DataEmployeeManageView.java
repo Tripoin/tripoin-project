@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.web.common.EWebUIConstant;
@@ -95,8 +97,6 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
         parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         parentEmployeeComboBox.addStyleName("small");
         parentEmployeeComboBox.setNullSelectionAllowed(true);
-//        parentEmployeeComboBox.setNewItemsAllowed(true);
-//        parentEmployeeComboBox.setRequired(true);
         parentEmployeeComboBox.setWidth("50%");
         parentEmployeeComboBox.setImmediate(true);
         
@@ -267,12 +267,11 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
-		dataOriginalGrid.setNik(formPanelDatas.get(EnumFieldEmployee.NIK_EMPLOYE.toString()).toString());
-		dataOriginalGrid.setStatus(Integer.valueOf(formPanelDatas.get(EnumFieldEmployee.ENABLE_EMPLOYE.toString()).toString()));
-		dataOriginalGrid.setModifiedIP(formPanelDatas.get(EWebUIConstant.IDENTIFIER_IP.toString()).toString());
-		dataOriginalGrid.setModifiedTime(formPanelDatas.get(EWebUIConstant.IDENTIFIER_TIME.toString()).toString());
-		dataOriginalGrid.setModifiedPlatform(formPanelDatas.get(EWebUIConstant.IDENTIFIER_PLATFORM.toString()).toString());
-		GeneralTransferObject generalTransferObject = employeeService.updateEmployee(dataOriginalGrid);
+		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION_EMPLOYE.toString());
+		formPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getCode());
+		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
+		employeeTransferObject.setFindEmployeeData(formPanelDatas);
+		GeneralTransferObject generalTransferObject = employeeService.updateEmployee(employeeTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}
 

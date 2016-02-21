@@ -62,7 +62,12 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 
 	@Override
 	protected GeneralPagingTransferObject<OccupationData> doDeleteService(List<OccupationData> dataObjectSelect) {
-		return occupationService.deleteOccupation(dataObjectSelect, VaadinServlet.getCurrent().getServletContext());
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		for(OccupationData occupationData : dataObjectSelect)
+			dataMap.put(occupationData.getCode(), occupationData.getCode());
+		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
+		occupationTransferObject.setFindOccupationData(dataMap);
+		return occupationService.deleteOccupation(occupationTransferObject, VaadinServlet.getCurrent().getServletContext());
 	}
 	
 	@Override

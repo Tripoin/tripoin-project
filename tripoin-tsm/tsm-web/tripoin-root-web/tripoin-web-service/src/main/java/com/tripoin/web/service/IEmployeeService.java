@@ -1,6 +1,9 @@
 package com.tripoin.web.service;
 
 import java.util.List;
+
+import javax.servlet.ServletContext;
+
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 
@@ -15,8 +18,8 @@ public interface IEmployeeService {
     
     public EmployeeTransferObject getAllEmployeeDatas(EmployeeTransferObject employeeTransferObject);
     
-    public EmployeeTransferObject updateEmployee(EmployeeData employeeData);
+    public EmployeeTransferObject updateEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext);
     
-    public EmployeeTransferObject saveEmployee(EmployeeData employeeData);
+    public EmployeeTransferObject saveEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext);
 
 }

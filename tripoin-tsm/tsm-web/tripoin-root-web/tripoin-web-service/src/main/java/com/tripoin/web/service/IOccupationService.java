@@ -21,8 +21,8 @@ public interface IOccupationService {
     
     public GeneralTransferObject updateOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext);
     
-    public GeneralTransferObject saveOccupation(OccupationData occupationData, final ServletContext servletContext);
+    public GeneralTransferObject saveOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext);
 
-	public OccupationTransferObject deleteOccupation(List<OccupationData> occupationDatas, final ServletContext servletContext);
+	public OccupationTransferObject deleteOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext);
 
 }

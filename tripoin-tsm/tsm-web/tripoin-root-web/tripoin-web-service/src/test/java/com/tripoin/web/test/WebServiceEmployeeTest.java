@@ -14,12 +14,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.dto.MenuData;
-import com.tripoin.core.dto.MenuTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
@@ -30,9 +27,9 @@ import com.tripoin.web.common.WebServiceConstant;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext-web-service-test.xml"})
-public class WebServiceLoginMenuTest implements ApplicationContextAware {
+public class WebServiceEmployeeTest implements ApplicationContextAware {
 	
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(WebServiceLoginMenuTest.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WebServiceEmployeeTest.class);
 	
 	@Autowired
 	private ICommonRest commonRest;
