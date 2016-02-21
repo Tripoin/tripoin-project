@@ -22,7 +22,7 @@ import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dto.OccupationTransferObject;
-import com.tripoin.core.pojo.Employee;
+import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.core.pojo.Occupation;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -56,20 +56,24 @@ public class OccupationDeleteEndpoint extends XReturnStatus {
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 
         try {
-        	FilterArgument[] filterArguments = new FilterArgument[] { 
-    				new FilterArgument("code", ECommonOperator.EQUALS) 
+			FilterArgument[] filterArguments = new FilterArgument[] { 
+    				new FilterArgument(EnumFieldOccupation.CODE_OCCUPATION.toString(), ECommonOperator.EQUALS) 
     		};
-        	Long countOccupation = new Long(0);
-        	for(String code : inMessage.getPayload().getFindOccupationData().keySet()){
-        		countOccupation  = iGenericManagerJpa.totalRowData(Employee.class, filterArguments, new Object[] { code }, null, null);
-        		if(countOccupation > 0)
-        			break;
-        	}	
-        	if(countOccupation > 0){
+        	boolean isDeleted = false;
+        	try {
+            	for(String code : inMessage.getPayload().getFindOccupationData().keySet()){
+            		Occupation occupation = iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArguments, new Object[]{ inMessage.getPayload().getFindOccupationData().get(code) }, null, null).get(0);
+            		if(occupation != null)
+            			iGenericManagerJpa.deleteObject(occupation);
+            	}
+            	isDeleted = true;
+			} catch (Exception e) {
+				e.printStackTrace();
                 occupationTransferObject.setResponseCode("2");
                 occupationTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-                occupationTransferObject.setResponseDesc("Delete Occupation Data Failure, Some Occupation Data already being used");        		
-        	}else{
+                occupationTransferObject.setResponseDesc("Delete Occupation Data Failure, Some Occupation Data already being used"); 
+			}
+        	if(isDeleted){
         		taskExecutor.execute(new Runnable() {			
         			@Override
         			public void run() {

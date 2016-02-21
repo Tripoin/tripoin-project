@@ -71,7 +71,7 @@
 		reply-channel="responseChannelAreaSave"
 		supported-methods="POST" 
 		path="/wscontext/area/save, /wscontext/area/save/{area}"
-		request-payload-type="com.tripoin.core.dto.AreaData">	
+		request-payload-type="com.tripoin.core.dto.AreaTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelAreaSave" expression="headers.http_requestMethod">
@@ -83,7 +83,7 @@
 		reply-channel="responseChannelAreaUpdate"
 		supported-methods="POST" 
 		path="/wscontext/area/update, /wscontext/area/update/{area}"
-		request-payload-type="com.tripoin.core.dto.AreaData">	
+		request-payload-type="com.tripoin.core.dto.AreaTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelAreaUpdate" expression="headers.http_requestMethod">

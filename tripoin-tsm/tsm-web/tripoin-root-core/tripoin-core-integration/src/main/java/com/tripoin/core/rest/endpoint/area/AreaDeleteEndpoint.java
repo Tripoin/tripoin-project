@@ -1,8 +1,6 @@
 package com.tripoin.core.rest.endpoint.area;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -23,8 +21,8 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
-import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
+import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.pojo.Area;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -36,8 +34,7 @@ import com.tripoin.core.service.util.IVersionControlSystemTableService;
 @Component("areaDeleteEndpoint")
 public class AreaDeleteEndpoint extends XReturnStatus {
 
-	private static Logger LOGGER = LoggerFactory
-			.getLogger(AreaDeleteEndpoint.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(AreaDeleteEndpoint.class);
 
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
@@ -54,83 +51,61 @@ public class AreaDeleteEndpoint extends XReturnStatus {
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Secured({ RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN })
-	public Message<AreaTransferObject> deleteArea(
-			Message<AreaTransferObject> inMessage) {
+	public Message<AreaTransferObject> deleteArea(Message<AreaTransferObject> inMessage) {
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 
 		try {
-			List<AreaData> areaDataPayloadList = inMessage.getPayload()
-					.getAreaDatas();
-			FilterArgument[] filterArguments = new FilterArgument[] { new FilterArgument(
-					"code", ECommonOperator.EQUALS) };
-			List<Area> areaList;
-			List<AreaData> areaDataAlreadyExsistList = new ArrayList<AreaData>();
-			for (AreaData areaData : areaDataPayloadList) {
-				if (areaData.getCode() != null && areaData.getId() == null) {
-					areaList = iGenericManagerJpa.loadObjectsFilterArgument(
-							Area.class, filterArguments,
-							new Object[] { areaData.getCode() }, null, null);
-					areaData.setId(areaList.get(0).getId());
-				}
-
-				iGenericManagerJpa.deleteObject(new Area(areaData));
-
-			}
-			taskExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					final TransactionTemplate transactionTemplate = new TransactionTemplate(
-							transactionManager);
-					transactionTemplate
-							.execute(new TransactionCallback<Object>() {
-								@Override
-								public Object doInTransaction(
-										TransactionStatus arg0) {
-									try {
-										versionControlSystemTableService
-												.insertValueAndSync(
-														Area.TABLE_NAME,
-														new Long(1),
-														"Table of "
-																.concat(Area.TABLE_NAME));
-									} catch (Exception e) {
-										LOGGER.error(
-												"Delete Area System Error : "
-														+ e.getLocalizedMessage(),
-												e);
-									}
-									return null;
-								}
-							});
-				}
-			});
-			if (areaDataAlreadyExsistList.size() > 0) {
-				areaTransferObject.setAreaDatas(areaDataAlreadyExsistList);
+			FilterArgument[] filterArguments = new FilterArgument[] { 
+    				new FilterArgument(EnumFieldArea.CODE_AREA.toString(), ECommonOperator.EQUALS) 
+    		};
+        	boolean isDeleted = false;
+        	try {
+            	for(String code : inMessage.getPayload().getFindAreaData().keySet()){
+            		Area area = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, filterArguments, new Object[]{ inMessage.getPayload().getFindAreaData().get(code) }, null, null).get(0);
+            		if(area != null)
+            			iGenericManagerJpa.deleteObject(area);
+            	}
+            	isDeleted = true;
+			} catch (Exception e) {
+				e.printStackTrace();
 				areaTransferObject.setResponseCode("2");
-				areaTransferObject
-						.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-				areaTransferObject
-						.setResponseDesc("Delete Area Data Failure, Some Area Data already being used");
-			} else {
+				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+				areaTransferObject.setResponseDesc("Delete Area Data Failure, Some Area Data already being used");
+			}	
+        	if(isDeleted){
+				taskExecutor.execute(new Runnable() {
+					@Override
+					public void run() {
+						final TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+						transactionTemplate.execute(new TransactionCallback<Object>() {
+							@Override
+							public Object doInTransaction(TransactionStatus arg0) {
+								try {
+									versionControlSystemTableService.insertValueAndSync(Area.TABLE_NAME, new Long(1),
+											"Table of ".concat(Area.TABLE_NAME));
+								} catch (Exception e) {
+									LOGGER.error("Delete Area System Error : " + e.getLocalizedMessage(), e);
+								}
+								return null;
+							}
+						});
+					}
+				});
 				areaTransferObject.setResponseCode("0");
-				areaTransferObject
-						.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
 				areaTransferObject.setResponseDesc("Delete Area Data Success");
 			}
 		} catch (Exception e) {
-			LOGGER.error(
-					"Delete Area System Error : " + e.getLocalizedMessage(), e);
+			LOGGER.error("Delete Area System Error : " + e.getLocalizedMessage(), e);
 			areaTransferObject.setResponseCode("1");
-			areaTransferObject
-					.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			areaTransferObject.setResponseDesc("Delete Area System Error : "
-					+ e.getLocalizedMessage());
+			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			areaTransferObject.setResponseDesc("Delete Area System Error : " + e.getLocalizedMessage());
 		}
 
 		setReturnStatusAndMessage(areaTransferObject, responseHeaderMap);
-		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(
-				areaTransferObject, responseHeaderMap);
+		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(areaTransferObject,
+				responseHeaderMap);
 		return message;
 	}
 

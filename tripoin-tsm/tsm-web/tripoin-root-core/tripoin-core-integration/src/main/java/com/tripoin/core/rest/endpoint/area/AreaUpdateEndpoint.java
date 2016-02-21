@@ -20,8 +20,9 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dto.AreaTransferObject;
+import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.dto.GeneralTransferObject;
-import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.pojo.Area;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -40,7 +41,7 @@ public class AreaUpdateEndpoint extends XReturnStatus {
 	private String currentUserName;
 
     @Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
-    public Message<GeneralTransferObject> updateArea(Message<AreaData> inMessage) {
+    public Message<GeneralTransferObject> updateArea(Message<AreaTransferObject> inMessage) {
     	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,19 +49,25 @@ public class AreaUpdateEndpoint extends XReturnStatus {
 		    currentUserName = authentication.getName();
 		}
         try {
-        	AreaData areaData = inMessage.getPayload();
-        	if(areaData != null && areaData.getId() == null){
+        	AreaTransferObject datasTransmit = inMessage.getPayload();
+        	Area area = new Area();
+        	if(datasTransmit.getFindAreaData() != null){
                 FilterArgument[] filterArguments = new FilterArgument[] { 
-        				new FilterArgument("code", ECommonOperator.EQUALS) 
+        				new FilterArgument(EnumFieldArea.CODE_AREA.toString(), ECommonOperator.EQUALS) 
         		};
-        		List<Area> areaList = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, filterArguments, new Object[] { areaData.getCode() }, null, null);    		
-        		areaData.setId(areaList.get(0).getId());        		
+        		List<Area> areaList = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, filterArguments, new Object[] { datasTransmit.getFindAreaData().get(EnumFieldArea.CODE_AREA.toString()) }, null, null);    		
+        		area = areaList.get(0);
+        		area.setName((String)datasTransmit.getFindAreaData().get(EnumFieldArea.NAME_AREA.toString()));
+        		area.setRemarks((String)datasTransmit.getFindAreaData().get(EnumFieldArea.DESCRIPTION_AREA.toString()));
+        		area.setModifiedIP((String)datasTransmit.getFindAreaData().get(ParameterConstant.IDENTIFIER_IP));
+        		area.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.parse((String)datasTransmit.getFindAreaData().get(ParameterConstant.IDENTIFIER_TIME)));
+        		area.setModifiedPlatform((String)datasTransmit.getFindAreaData().get(ParameterConstant.IDENTIFIER_PLATFORM));
         	}
-        	Area area = new Area(areaData);
         	area.setModifiedBy(currentUserName);
-        	area.setModifiedTime(new Date());
         	if(area.getModifiedIP() == null)
         		area.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
+        	if(area.getModifiedTime() == null)
+            	area.setModifiedTime(new Date());
         	if(area.getModifiedPlatform() == null)
         		area.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);    		
     		iGenericManagerJpa.updateObject(area);    		
