@@ -76,7 +76,6 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 		
 		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
 		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
-		System.out.println("ANJAR GANTENG loadEmployee -> "+message.toString());
 		employeeTransferObject = null;
 		return message;		
 	}
@@ -108,7 +107,6 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 		
 		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
 		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
-		System.out.println("ANJAR GANTENG loadAllEmployees -> "+message.toString());
 		employeeTransferObject = null;
 		return message;		
 	}
@@ -155,7 +153,6 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 		}		
 		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
 		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
-		System.out.println("ANJAR GANTENG loadEmployeeAllByParam -> "+message.toString());
 		employeeTransferObject = null;
 		return message;		
 	}
@@ -177,8 +174,7 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 			employeeTransferObject.setTotalPage(getTotalPage());
 			employeeTransferObject.setResponseCode("0");
 			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			employeeTransferObject.setResponseDesc("Load Paging Employee Data Success");
-			System.out.println("ANJAR GANTENG loadEmployeePaging -> "+employeeTransferObject.getEmployeeDatas());
+			employeeTransferObject.setResponseDesc("Load Paging Employee Data Success");			
 		}catch (Exception e){
 			LOGGER.error("Load Paging Employee System Error : "+e.getLocalizedMessage(), e);
 			employeeTransferObject.setResponseCode("1");
@@ -187,7 +183,6 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 		}		
 		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
 		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
-		System.out.println("ANJAR GANTENG loadEmployeePaging -> "+message.toString());
 		employeeTransferObject = null;
 		return message;		
 	}
