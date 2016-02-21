@@ -19,10 +19,10 @@ public interface IAreaService {
     
     public AreaTransferObject getAllAreaDatas(AreaTransferObject occupationTransferObject);
     
-    public GeneralTransferObject updateArea(AreaData occupationData, final ServletContext servletContext);
+    public GeneralTransferObject updateArea(AreaTransferObject dataTransferObject, final ServletContext servletContext);
     
-    public GeneralTransferObject saveArea(AreaData occupationData, final ServletContext servletContext);
+    public GeneralTransferObject saveArea(AreaTransferObject dataTransferObject, final ServletContext servletContext);
 
-	public AreaTransferObject deleteArea(List<AreaData> occupationDatas, final ServletContext servletContext);
+	public AreaTransferObject deleteArea(AreaTransferObject dataTransferObject, final ServletContext servletContext);
 
 }

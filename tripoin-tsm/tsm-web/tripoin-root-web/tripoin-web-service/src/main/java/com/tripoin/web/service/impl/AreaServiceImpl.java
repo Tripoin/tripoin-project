@@ -53,24 +53,22 @@ public class AreaServiceImpl implements IAreaService {
 	}
 
 	@Override
-	public GeneralTransferObject updateArea(AreaData areaData, final ServletContext servletContext) {
-		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_UPDATE), areaData, GeneralTransferObject.class);
+	public GeneralTransferObject updateArea(AreaTransferObject dataTransferObject, final ServletContext servletContext) {
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_UPDATE), dataTransferObject, GeneralTransferObject.class);
 		threadBuildAreaContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 
 	@Override
-	public GeneralTransferObject saveArea(AreaData areaData, final ServletContext servletContext) {
-		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_SAVE), areaData, GeneralTransferObject.class);
+	public GeneralTransferObject saveArea(AreaTransferObject dataTransferObject, final ServletContext servletContext) {
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_SAVE), dataTransferObject, GeneralTransferObject.class);
 		threadBuildAreaContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 
 	@Override
-	public AreaTransferObject deleteArea(List<AreaData> areaDatas, final ServletContext servletContext) {
-		AreaTransferObject areaTransferObject = new AreaTransferObject();
-		areaTransferObject.setAreaDatas(areaDatas);
-		areaTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_DELETE), areaTransferObject, AreaTransferObject.class);
+	public AreaTransferObject deleteArea(AreaTransferObject dataTransferObject, final ServletContext servletContext) {
+		AreaTransferObject areaTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_DELETE), dataTransferObject, AreaTransferObject.class);
 		threadBuildAreaContainer(areaTransferObject, servletContext);
 		return areaTransferObject;
 	}
