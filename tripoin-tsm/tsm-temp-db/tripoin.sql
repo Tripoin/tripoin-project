@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 21, 2016 at 11:29 AM
+-- Generation Time: Feb 21, 2016 at 11:48 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -110,7 +110,7 @@ INSERT INTO `mst_area` (`area_id`, `area_code`, `area_name`, `area_status`, `are
 (25, 'KALIMANTANSELATAN', 'KALIMANTAN SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
 (26, 'KALIMANTANTIMUR', 'KALIMANTAN TIMUR', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
 (27, 'SULAWESIUTARA', 'SULAWESI UTARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
-(28, 'SULAWESITENGAH', 'SULAWESI TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, '0000-00-00 00:00:00', NULL),
+(28, 'SULAWESITENGAH', 'SULAWESI TENGAH', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
 (29, 'SULAWESISELATAN', 'SULAWESI SELATAN', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
 (30, 'SULAWESITENGGARA', 'SULAWESI TENGGARA', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
 (31, 'GORONTALO', 'GORONTALO', 1, NULL, 'admin', '127.0.0.1', '2016-02-20 15:03:54', NULL, NULL, NULL, NULL, NULL),
