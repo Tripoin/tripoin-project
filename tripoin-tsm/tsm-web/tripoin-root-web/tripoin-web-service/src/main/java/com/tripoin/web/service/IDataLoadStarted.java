@@ -19,12 +19,12 @@ public interface IDataLoadStarted {
 	public HttpStatus getStatusCode();
     
 	public List<OccupationData> loadOccupationData();
+    
+	public List<EmployeeData> loadEmployeeNotSalesmanData();
 	
 	public List<AreaData> loadAreaData();
 	
 	public BeanItemContainer<OccupationData> getOccupationContainer(ServletContext servletContext);
-    
-	public List<EmployeeData> loadEmployeeNotSalesmanData();
 	
 	public BeanItemContainer<EmployeeData> employeeNotSalesmanContainer(ServletContext servletContext);
 	

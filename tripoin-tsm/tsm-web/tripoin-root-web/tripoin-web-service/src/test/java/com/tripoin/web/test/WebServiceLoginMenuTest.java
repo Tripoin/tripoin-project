@@ -1,5 +1,8 @@
 package com.tripoin.web.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -12,8 +15,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.common.RoleConstant;
+import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.MenuData;
 import com.tripoin.core.dto.MenuTransferObject;
+import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -22,8 +29,7 @@ import com.tripoin.web.common.WebServiceConstant;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:META-INF/spring/applicationContext-web-service.xml",
-		"classpath:META-INF/spring/applicationContext-web-service-test.xml"})
+@ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext-web-service-test.xml"})
 public class WebServiceLoginMenuTest implements ApplicationContextAware {
 	
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(WebServiceLoginMenuTest.class);
@@ -53,9 +59,14 @@ public class WebServiceLoginMenuTest implements ApplicationContextAware {
 		stateFullRestTest.setUsername("admin");
 		stateFullRestTest.setPassword("admin");
 		
-		MenuTransferObject menuTransferObject = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_LOGIN_MENU), ParameterConstant.VIEW_TYPE.concat(ParameterConstant.VIEW_WEB), MenuTransferObject.class);		
+		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
+		Map<String, Object> findEmployeeData = new HashMap<String, Object>();
+		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_SALESMAN);
+		employeeTransferObject.setFindEmployeeData(findEmployeeData);
+		
+		EmployeeTransferObject menuTransferObject = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class);		
 		LOGGER.debug("Response Message Menu : ".concat(menuTransferObject.getResponseMsg()));
-		for(MenuData menuData : menuTransferObject.getMenuDatas())
+		for(EmployeeData menuData : menuTransferObject.getEmployeeDatas())
 			LOGGER.debug("Response Data Menu : ".concat(menuData.toString()));
 	}
 

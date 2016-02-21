@@ -57,7 +57,7 @@ public enum EWebUIConstant {
 	TYPE_FILE_IMAGE("image"),
 	
 	BUTTON_PAGING(5),	
-	ROW_PER_PAGE(10),
+	ROW_PER_PAGE(2),
 	
 	MAX_SIZE_IMAGE_BYTE(1000000);
 
