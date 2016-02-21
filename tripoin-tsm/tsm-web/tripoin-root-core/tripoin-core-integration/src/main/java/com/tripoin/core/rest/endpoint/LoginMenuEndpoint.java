@@ -45,7 +45,7 @@ public class LoginMenuEndpoint extends XReturnStatus {
 	
 	private String viewType = ParameterConstant.VIEW_WEB_MOBILE;
 
-	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<UserMenuTransferObject> getUserMenu(Message<?> inMessage){
 		UserMenuTransferObject userMenuTransferObject = new UserMenuTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();	

@@ -40,7 +40,7 @@ public class OccupationUpdateEndpoint extends XReturnStatus {
     
 	private String currentUserName;
 
-    @Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<GeneralTransferObject> updateOccupation(Message<OccupationTransferObject> inMessage) {
     	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

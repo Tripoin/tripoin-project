@@ -53,7 +53,7 @@ public class AreaDeleteEndpoint extends XReturnStatus {
 	@Qualifier(value = "web-async-task-executor")
 	private ThreadPoolTaskExecutor taskExecutor;
 
-	@Secured({ RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN })
+	@Secured({ RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN })
 	public Message<AreaTransferObject> deleteArea(
 			Message<AreaTransferObject> inMessage) {
 		AreaTransferObject areaTransferObject = new AreaTransferObject();

@@ -49,7 +49,7 @@ public class AreaLoadEndpoint extends XReturnStatus {
 	private Integer minRow;
 	private Integer maxRow;
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<AreaTransferObject> loadArea(Message<AreaData> inMessage){	
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
@@ -82,7 +82,7 @@ public class AreaLoadEndpoint extends XReturnStatus {
 		return message;		
 	}
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_ANONYMOUS_SECURE})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_ANONYMOUS_SECURE})
 	public Message<AreaTransferObject> loadAllAreas(Message<?> inMessage){	
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
@@ -111,7 +111,7 @@ public class AreaLoadEndpoint extends XReturnStatus {
 		return message;		
 	}
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<AreaTransferObject> loadAreaPaging(Message<AreaTransferObject> inMessage){	
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		

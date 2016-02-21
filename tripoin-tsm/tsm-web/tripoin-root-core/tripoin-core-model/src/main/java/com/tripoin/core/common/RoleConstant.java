@@ -10,7 +10,7 @@ public class RoleConstant {
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 	
 	public static final String ROLE_SALESMAN = "ROLE_SALESMAN";
-	public static final String ROLE_SALESSUPERVISOR = "ROLE_SALESSUPERVISOR";
-	public static final String ROLE_SALESMANAGER = "ROLE_SALESMANAGER";	
+	public static final String ROLE_AREASALESMANAGER = "ROLE_AREASALESMANAGER";
+	public static final String ROLE_NATIONALSALESMANAGER = "ROLE_NATIONALSALESMANAGER";	
 
 }

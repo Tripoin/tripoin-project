@@ -40,7 +40,7 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 	
 	private String currentUserName;
 
-	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<EmployeeTransferObject> loadEmployee(Message<?> inMessage){	
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
@@ -80,7 +80,7 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 		return message;		
 	}
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<EmployeeTransferObject> loadAllEmployees(Message<?> inMessage){	
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();	
@@ -111,7 +111,7 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 		return message;		
 	}
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_ANONYMOUS_SECURE})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_ANONYMOUS_SECURE})
 	public Message<EmployeeTransferObject> loadEmployeeAllByParam(Message<EmployeeTransferObject> inMessage){	
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
@@ -157,7 +157,7 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 		return message;		
 	}
 	
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<EmployeeTransferObject> loadEmployeePaging(Message<EmployeeTransferObject> inMessage){	
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		

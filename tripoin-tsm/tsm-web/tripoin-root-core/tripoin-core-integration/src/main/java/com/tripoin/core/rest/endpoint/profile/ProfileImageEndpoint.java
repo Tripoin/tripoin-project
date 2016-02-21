@@ -45,7 +45,7 @@ public class ProfileImageEndpoint extends XReturnStatus {
 
 	private String currentUserName;
 
-	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<GeneralTransferObject> updatePhotoProfile(LinkedMultiValueMap<String, Object> multipartRequest){		
 		GeneralTransferObject generalTransferObject = new GeneralTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

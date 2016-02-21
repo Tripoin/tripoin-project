@@ -18,7 +18,7 @@ import com.tripoin.core.dto.GeneralTransferObject;
 @Component("connectionEndpoint")
 public class ConnectionEndpoint extends XReturnStatus {
 	
-	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<GeneralTransferObject> getConnection(Message<?> inMessage){	
 		GeneralTransferObject connect = new GeneralTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

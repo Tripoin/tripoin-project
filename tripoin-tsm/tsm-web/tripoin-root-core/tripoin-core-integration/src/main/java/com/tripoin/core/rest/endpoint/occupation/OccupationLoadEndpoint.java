@@ -32,7 +32,7 @@ public class OccupationLoadEndpoint extends APageableEndpoint<OccupationData> {
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<OccupationTransferObject> loadOccupation(Message<OccupationData> inMessage){	
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
@@ -94,7 +94,7 @@ public class OccupationLoadEndpoint extends APageableEndpoint<OccupationData> {
 		return message;		
 	}
 
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<OccupationTransferObject> loadOccupationPaging(Message<OccupationTransferObject> inMessage){	
 		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		

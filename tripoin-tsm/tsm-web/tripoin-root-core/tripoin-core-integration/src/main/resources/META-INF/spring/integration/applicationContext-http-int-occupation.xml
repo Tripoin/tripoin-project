@@ -71,7 +71,7 @@
 		reply-channel="responseChannelOccupationSave"
 		supported-methods="POST" 
 		path="/wscontext/occupation/save, /wscontext/occupation/save/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationData">	
+		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelOccupationSave" expression="headers.http_requestMethod">

@@ -66,7 +66,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
 	@Value("${path.image}")
 	private String rootPath;
 	
-    @Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<EmployeeTransferObject> saveEmployee(Message<EmployeeData> inMessage) {
     	EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
@@ -89,8 +89,8 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
             	    String passwordPlainText = randomGeneratorAlphanumeric(7);
                     user.setPassword(jasyptStringDigester.digest(passwordPlainText));
                     Object[] data;
-                    if(RoleConstant.ROLE_SALESSUPERVISOR.toString().equals(employeeDataPayload.getOccupationData().getCode()) ||
-                    		RoleConstant.ROLE_SALESSUPERVISOR.toString().equals(employeeDataPayload.getOccupationData().getCode())){
+                    if(RoleConstant.ROLE_AREASALESMANAGER.toString().equals(employeeDataPayload.getOccupationData().getCode()) ||
+                    		RoleConstant.ROLE_AREASALESMANAGER.toString().equals(employeeDataPayload.getOccupationData().getCode())){
                     	data = new Object[]{employeeDataPayload.getOccupationData().getCode()};
                     }else data = new Object[]{RoleConstant.ROLE_SALESMAN.toString()};
                     List<Role> roles = iGenericManagerJpa.loadObjectsFilterArgument(Role.class, new FilterArgument[]{

@@ -37,7 +37,7 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 
 	private String currentUserName;
 
-	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<ProfileTransferObject> getProfile(Message<?> inMessage){	
 		ProfileTransferObject profileTransferObject = new ProfileTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

@@ -21,7 +21,7 @@ public class LogoutEndpoint extends XReturnStatus {
 
 	private String currentUserName;
 
-	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public void doLogout(Message<?> inMessage){	
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

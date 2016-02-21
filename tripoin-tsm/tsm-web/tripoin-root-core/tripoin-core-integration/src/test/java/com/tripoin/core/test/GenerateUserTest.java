@@ -12,8 +12,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tripoin.core.service.IGenericManagerJpa;
-
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
@@ -28,9 +26,6 @@ public class GenerateUserTest implements ApplicationContextAware {
 	
 	@Autowired
 	private StandardStringDigester jasyptStringDigester;
-	
-	@Autowired
-	private IGenericManagerJpa iGenericManagerJpa;
 	
 	private ApplicationContext applicationContext;
 	

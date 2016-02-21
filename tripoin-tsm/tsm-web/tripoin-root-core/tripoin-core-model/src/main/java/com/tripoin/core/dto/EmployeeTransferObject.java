@@ -52,6 +52,7 @@ public class EmployeeTransferObject extends GeneralPagingTransferObject<Employee
 		NIK_EMPLOYE("nik"),
 		NAME_EMPLOYE("profile.name"),
 		OCCUPATION_EMPLOYE("occupation.name"),
+		OCCUPATION_CODE("occupation.code"),
 		ROLE_EMPLOYE("profile.user.role.code"),
 		NAME_PARENT_EMPLOYE("employeeParent.profile.name"),
 		USERNAME_EMPLOYE("profile.user.username"),

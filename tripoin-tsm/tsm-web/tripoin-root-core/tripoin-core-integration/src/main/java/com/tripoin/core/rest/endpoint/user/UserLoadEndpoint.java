@@ -40,7 +40,7 @@ public class UserLoadEndpoint extends XReturnStatus {
     
 	private String currentUserName;
 
-    @Secured({RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<UserTransferObject> loadAllUser(Message<?> inMessage) {
         UserTransferObject userTransferObject = new UserTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
@@ -70,7 +70,7 @@ public class UserLoadEndpoint extends XReturnStatus {
         return message;
     }
 
-    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<UserTransferObject> loadUser(Message<?> inMessage) {
         UserTransferObject userTransferObject = new UserTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

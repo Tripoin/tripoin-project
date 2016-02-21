@@ -52,7 +52,7 @@ public class GeneralReportEndpoint extends XReturnStatus {
 	private GeneralReportTransferObject generalReportTransferObject;
 	private Map<String, Object> params;
 	
-	@Secured({RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<byte[]> exportStreamReport(Message<GeneralReportTransferObject> inMessage){
 		outputStreamData = new ByteArrayOutputStream();
 		generalReportTransferObject = new GeneralReportTransferObject();

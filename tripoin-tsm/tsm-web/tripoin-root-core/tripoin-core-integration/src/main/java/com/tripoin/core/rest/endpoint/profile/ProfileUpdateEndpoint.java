@@ -35,7 +35,7 @@ public class ProfileUpdateEndpoint extends XReturnStatus {
     @Autowired
     private IGenericManagerJpa iGenericManagerJpa;
 
-    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_SALESSUPERVISOR, RoleConstant.ROLE_SALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<ProfileTransferObject> updateProfile(Message<ProfileData> inMessage) {
     	ProfileTransferObject profileTransferObject = new ProfileTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
