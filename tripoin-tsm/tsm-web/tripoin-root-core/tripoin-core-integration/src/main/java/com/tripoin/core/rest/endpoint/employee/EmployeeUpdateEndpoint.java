@@ -22,6 +22,7 @@ import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
+import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Occupation;
 import com.tripoin.core.pojo.Profile;
@@ -58,22 +59,25 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
         	Profile profile = new Profile();
         	Occupation occupation = new Occupation();
         	Employee employee = new Employee();
-        	if(datasTransmit.getFindEmployeeData() == null){
+        	if(datasTransmit.getFindEmployeeData() != null){
                 FilterArgument[] filterArguments = new FilterArgument[] { 
         				new FilterArgument(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), ECommonOperator.EQUALS) 
         		};
                 employee.setNik((String)datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_EMPLOYE.toString()));
                 profile.setName((String)datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NAME_EMPLOYE.toString()));
-        		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.USERNAME_EMPLOYE.toString()) }, null, null);    		
+        		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.USERNAME_EMPLOYE.toString()) }, null, null);
         		if (employeeList != null) {
                     FilterArgument[] filterArgumentsRole = new FilterArgument[] { 
-            				new FilterArgument(EnumFieldEmployee.ROLE_EMPLOYE.toString(), ECommonOperator.EQUALS) 
+            				new FilterArgument("code", ECommonOperator.EQUALS) 
             		};
-                    role =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
+                    List<Role> roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null);
+                    if(roleList == null || roleList.isEmpty())
+                    	roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { RoleConstant.ROLE_SALESMAN }, null, null);
+                    role = roleList.get(0);
                 	user = employeeList.get(0).getProfile().getUser();
                 	profile = employeeList.get(0).getProfile();
                 	FilterArgument[] filterArgumentsOccupation = new FilterArgument[] { 
-            				new FilterArgument(EnumFieldEmployee.OCCUPATION_CODE.toString(), ECommonOperator.EQUALS) 
+            				new FilterArgument(EnumFieldOccupation.CODE_OCCUPATION.toString(), ECommonOperator.EQUALS) 
             		};
                 	occupation =  iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArgumentsOccupation, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
                 	employee = employeeList.get(0);
