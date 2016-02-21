@@ -75,7 +75,7 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
             	String homePhone = (String)findDataEmployee.get(EnumFieldEmployee.TELP_EMPLOYE.toString());
             	String email = (String)findDataEmployee.get(EnumFieldEmployee.EMAIL_EMPLOYE.toString());
             	String address = (String)findDataEmployee.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString());
-            	Integer enabled = (Integer)findDataEmployee.get(EnumFieldEmployee.ENABLE_EMPLOYE.toString());
+            	Integer enabled = ((Double)findDataEmployee.get(EnumFieldEmployee.ENABLE_EMPLOYE.toString())).intValue();
                 FilterArgument[] filterArguments = new FilterArgument[] { 
         				new FilterArgument(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), ECommonOperator.EQUALS)
         		};
@@ -111,8 +111,11 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                 		List<Employee> employeeListCheckNik = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsNik, new Object[] { 
                 				nik}, null, null);
                 		if(employeeListCheckNik != null && !employeeListCheckNik.isEmpty()){
-            				wsEndpointFault.setMessage("NIK Already Exists");
-            				throw new WSEndpointFaultException("3", wsEndpointFault);	
+                			if(!employeeListCheckNik.get(0).getNik().equals(employeeList.get(0).getNik())){
+                				wsEndpointFault.setMessage("NIK Already Exists");
+                				throw new WSEndpointFaultException("3", wsEndpointFault);
+                			}else
+                                employee.setNik(nik);
                     	}else
                             employee.setNik(nik);
                 	}
