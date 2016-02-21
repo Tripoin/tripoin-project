@@ -58,22 +58,22 @@ public class AreaData {
 
 	public AreaData() {}
 
-	public AreaData(Area occupation) {
-		this.id = occupation.getId();
-		this.code = occupation.getCode();
-		this.name = occupation.getName();
-		this.status = occupation.getStatus();
-		this.remarks = occupation.getRemarks();
-		this.createdBy = occupation.getCreatedBy();
-		this.createdIP = occupation.getCreatedIP();
-		if(occupation.getCreatedTime() != null)
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(occupation.getCreatedTime());
-		this.createdPlatform = occupation.getCreatedPlatform();
-		this.modifiedBy = occupation.getModifiedBy();
-		this.modifiedIP = occupation.getModifiedIP();
-		if(occupation.getModifiedTime() != null)
-			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(occupation.getModifiedTime());
-		this.modifiedPlatform = occupation.getModifiedPlatform();
+	public AreaData(Area area) {
+		this.id = area.getId();
+		this.code = area.getCode();
+		this.name = area.getName();
+		this.status = area.getStatus();
+		this.remarks = area.getRemarks();
+		this.createdBy = area.getCreatedBy();
+		this.createdIP = area.getCreatedIP();
+		if(area.getCreatedTime() != null)
+			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(area.getCreatedTime());
+		this.createdPlatform = area.getCreatedPlatform();
+		this.modifiedBy = area.getModifiedBy();
+		this.modifiedIP = area.getModifiedIP();
+		if(area.getModifiedTime() != null)
+			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(area.getModifiedTime());
+		this.modifiedPlatform = area.getModifiedPlatform();
 	}
 	
 	public AreaData(Integer id, String code, String name, Integer status,
