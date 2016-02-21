@@ -23,7 +23,6 @@ public class AreaTransferObject extends GeneralPagingTransferObject<AreaData> {
 
 	@Override
 	public List<AreaData> getDatas() {
-		// TODO Auto-generated method stub
 		return areaDatas;
 	}
 
@@ -50,7 +49,7 @@ public class AreaTransferObject extends GeneralPagingTransferObject<AreaData> {
 	}
 
 	public enum EnumFieldArea {
-		NAME_AREA("name"), DESCRIPTION_AREA("description");
+		NAME_AREA("name"), DESCRIPTION_AREA("remarks");
 
 		private String operator;
 
