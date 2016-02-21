@@ -85,10 +85,13 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                     FilterArgument[] filterArgumentsRole = new FilterArgument[] { 
             				new FilterArgument("code", ECommonOperator.EQUALS) 
             		};
-                    List<Role> roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null);
-                    if(roleList == null || roleList.isEmpty())
-                    	roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { RoleConstant.ROLE_SALESMAN }, null, null);
-                    role = roleList.get(0);
+                    List<Role> roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { 
+                    		datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null);
+                    if(roleList == null || roleList.isEmpty()){
+                    	roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { 
+                    			RoleConstant.ROLE_SALESMAN }, null, null);
+                    }else
+                    	role = roleList.get(0);
                 	user = employeeList.get(0).getProfile().getUser();
                 	profile = employeeList.get(0).getProfile();
                 	FilterArgument[] filterArgumentsOccupation = new FilterArgument[] { 
@@ -103,6 +106,9 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                     	List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsParentEmployee, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
                     	if(employeeParentList != null && !employeeParentList.isEmpty())
                     		employee.setEmployeeParent(employeeParentList.get(0));
+                    	else {
+							employee.setEmployeeParent(null);
+						}
                 	}
                 	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_EMPLOYE.toString()) != null){
                 		FilterArgument[] filterArgumentsNik = new FilterArgument[] { 
@@ -114,18 +120,19 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                 			if(!employeeListCheckNik.get(0).getNik().equals(employeeList.get(0).getNik())){
                 				wsEndpointFault.setMessage("NIK Already Exists");
                 				throw new WSEndpointFaultException("3", wsEndpointFault);
-                			}else
-                                employee.setNik(nik);
-                    	}else
-                            employee.setNik(nik);
+                			}
+                    	}
                 	}
                 	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
                     	List<Profile> profileListCheckMobileEmail = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE email = ? OR phone = ?",  new Object[] { 
                     			email, 
                     			mobilePhone }, null);
                     	if(profileListCheckMobileEmail != null && !profileListCheckMobileEmail.isEmpty()){
-            				wsEndpointFault.setMessage("Contact Email and Mobile Phone Already Exists");
-            				throw new WSEndpointFaultException("4", wsEndpointFault);	
+                    		if(!profile.getPhone().equals(profileListCheckMobileEmail.get(0).getPhone()) ||
+                    				!profile.getEmail().equals(profileListCheckMobileEmail.get(0).getEmail())){
+                				wsEndpointFault.setMessage("Contact Email and Mobile Phone Already Exists");
+                				throw new WSEndpointFaultException("4", wsEndpointFault);	
+                    		}	
                     	}
                 	}
                     profile.setName(name);
@@ -139,7 +146,7 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                    	
                     user.setEnabled(enabled);
                 	user.setRole(role);
-                	iGenericManagerJpa.updateObject(user);    		
+                	iGenericManagerJpa.updateObject(user);  		
                 	profile.setUser(user);
                 	profile.setModifiedBy(currentUserName);
                 	profile.setModifiedTime(new Date());
@@ -149,7 +156,8 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                     	profile.setModifiedTime(new Date());
                 	if(profile.getModifiedPlatform() == null)
                 		profile.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);
-            		iGenericManagerJpa.updateObject(profile);    		
+            		iGenericManagerJpa.updateObject(profile);  
+                    employee.setNik(nik);  		
             		employee.setProfile(profile);
             		employee.setOccupation(occupation);
                 	employee.setModifiedBy(currentUserName);
@@ -167,6 +175,7 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                 }        		
         	} 
         } catch (WSEndpointFaultException e) {
+        	e.printStackTrace();
             employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             employeeTransferObject.setResponseDesc(e.getFaultInfo().getMessage());	
             if("2".equals(e.getMessage()))
