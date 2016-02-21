@@ -63,7 +63,6 @@ public class OccupationUpdateEndpoint extends XReturnStatus {
         		occupation.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.parse((String)datasTransmit.getFindOccupationData().get(ParameterConstant.IDENTIFIER_TIME)));
         		occupation.setModifiedPlatform((String)datasTransmit.getFindOccupationData().get(ParameterConstant.IDENTIFIER_PLATFORM));
         	}
-        	System.out.println("Data : "+datasTransmit.getFindOccupationData());
         	occupation.setModifiedBy(currentUserName);
         	if(occupation.getModifiedIP() == null)
         		occupation.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
