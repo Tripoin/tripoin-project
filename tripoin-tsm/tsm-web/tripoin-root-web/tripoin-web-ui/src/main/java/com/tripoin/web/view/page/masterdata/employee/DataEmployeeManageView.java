@@ -273,7 +273,6 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
-		System.out.println(formPanelDatas.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString()));
 		EmployeeData employeeDataParent = (EmployeeData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
 		formPanelDatas.put(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), employeeDataParent.getNik());
 		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());

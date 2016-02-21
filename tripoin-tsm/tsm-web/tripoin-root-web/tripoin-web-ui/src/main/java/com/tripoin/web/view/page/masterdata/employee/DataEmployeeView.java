@@ -79,15 +79,16 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 
 	@Override
 	protected GeneralPagingTransferObject<EmployeeData> getALlDatasService(GeneralPagingTransferObject<EmployeeData> generalPagingTransferObject, Map<String, Object> searchPanelDatas) {
+		if(searchPanelDatas != null && !searchPanelDatas.isEmpty()){
+			if(searchPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
+				System.out.println(searchPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString()));
+				OccupationData occupationData = (OccupationData)searchPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
+				searchPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getName());
+			}
+		}
 		employeeTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
 		employeeTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
 		employeeTransferObjectSearch.setFindEmployeeData(searchPanelDatas);
-		if(searchPanelDatas != null){
-			if(searchPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
-				OccupationData occupationData = (OccupationData)searchPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
-				searchPanelDatas.put(EnumFieldEmployee.OCCUPATION_NAME.toString(), occupationData.getName());
-			}
-		}
 	    return employeeService.getAllEmployeeDatas(employeeTransferObjectSearch);
 	}
 
