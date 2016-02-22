@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -250,6 +251,10 @@ public class TripoinUI extends UI implements ErrorHandler {
 
 	@Override
 	public void error(com.vaadin.server.ErrorEvent event) {
+		if(HttpStatus.UNAUTHORIZED.equals(stateFullRest.getStatusCode())){
+			close();
+			return;
+		}
         StringWriter errors = new StringWriter();
         event.getThrowable().printStackTrace(new PrintWriter(errors));
     	LOGGER.error("Fault Exception Tripoin UI", event.getThrowable());
