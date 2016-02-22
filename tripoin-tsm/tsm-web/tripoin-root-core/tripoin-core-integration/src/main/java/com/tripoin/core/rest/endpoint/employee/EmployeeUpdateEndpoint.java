@@ -48,6 +48,12 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
 	
 	private WSEndpointFault wsEndpointFault = new WSEndpointFault();
 
+	private Role role;
+	private User user;
+	private Profile profile;
+	private Occupation occupation;
+	private Employee employee;
+
 	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<EmployeeTransferObject> updateEmployee(Message<EmployeeTransferObject> inMessage) {
     	EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
@@ -59,11 +65,11 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
         try {
         	EmployeeTransferObject datasTransmit = inMessage.getPayload();
         	Map<String, Object> findDataEmployee = datasTransmit.getFindEmployeeData();
-        	Role role = new Role();
-        	User user = new User();
-        	Profile profile = new Profile();
-        	Occupation occupation = new Occupation();
-        	Employee employee = new Employee();
+        	role = new Role();
+        	user = new User();
+        	profile = new Profile();
+        	occupation = new Occupation();
+        	employee = new Employee();
         	if(findDataEmployee != null){
             	String name = (String)findDataEmployee.get(EnumFieldEmployee.NAME_EMPLOYE.toString());
             	String nik = (String)findDataEmployee.get(EnumFieldEmployee.NIK_EMPLOYE.toString());
@@ -76,12 +82,19 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
             	String email = (String)findDataEmployee.get(EnumFieldEmployee.EMAIL_EMPLOYE.toString());
             	String address = (String)findDataEmployee.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString());
             	Integer enabled = ((Double)findDataEmployee.get(EnumFieldEmployee.ENABLE_EMPLOYE.toString())).intValue();
-                FilterArgument[] filterArguments = new FilterArgument[] { 
+                /**
+                 * Check User
+                 */
+            	FilterArgument[] filterArguments = new FilterArgument[] { 
         				new FilterArgument(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), ECommonOperator.EQUALS)
         		};
         		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { 
         				username}, null, null);
-        		if (employeeList != null) {
+        		if (employeeList != null) {     
+    				/**
+    				 * Set User
+    				 */
+                	user = employeeList.get(0).getProfile().getUser();
                     FilterArgument[] filterArgumentsRole = new FilterArgument[] { 
             				new FilterArgument("code", ECommonOperator.EQUALS) 
             		};
@@ -90,14 +103,62 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                     if(roleList == null || roleList.isEmpty()){
                     	roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { 
                     			RoleConstant.ROLE_SALESMAN }, null, null);
-                    }else
-                    	role = roleList.get(0);
-                	user = employeeList.get(0).getProfile().getUser();
-                	profile = employeeList.get(0).getProfile();
+                    }
+                    role = roleList.get(0);
+                	user.setRole(role);
+                    user.setEnabled(enabled);       
+                    /**
+                     * Set Profile
+                     */
+                	profile = employeeList.get(0).getProfile(); 
+                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
+                    	List<Profile> profileListCheckMobileEmail = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE email = ? OR phone = ?",  new Object[] { 
+                    			email, 
+                    			mobilePhone }, null);
+                    	if(profileListCheckMobileEmail != null && !profileListCheckMobileEmail.isEmpty()){
+                        	for(Profile profileCheck : profileListCheckMobileEmail){
+                        		if(!profileCheck.getUser().getUsername().equals(profile.getUser().getUsername())){
+                            		if(profileCheck.getPhone().equals(mobilePhone)){
+                        				wsEndpointFault.setMessage("Mobile Phone Already Exists");
+                        				throw new WSEndpointFaultException("4", wsEndpointFault);	
+                            		}	
+                            		if(profileCheck.getEmail().equals(email)){
+                        				wsEndpointFault.setMessage("Email Already Exists");
+                        				throw new WSEndpointFaultException("5", wsEndpointFault);	
+                            		}
+                        		}	
+                        	}
+                    	}
+                    	profileListCheckMobileEmail = null;
+                	}	
+                	profile.setUser(user); 
+                    profile.setName(name);
+                    profile.setEmail(email);
+                    profile.setGender(gender);
+                    profile.setBirthplace(birthPlace);
+                    profile.setBirthdate(birthDate);
+                    profile.setAddress(address);
+                    profile.setTelp(homePhone);
+                    profile.setPhone(mobilePhone);	
+                	profile.setModifiedBy(currentUserName);
+                	profile.setModifiedTime(new Date());
+                	if(profile.getModifiedIP() == null)
+                		profile.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
+                	if(profile.getModifiedTime() == null)
+                    	profile.setModifiedTime(new Date());
+                	if(profile.getModifiedPlatform() == null)
+                		profile.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);
+                    /**
+                     * Set Occupation
+                     */
                 	FilterArgument[] filterArgumentsOccupation = new FilterArgument[] { 
             				new FilterArgument(EnumFieldOccupation.CODE_OCCUPATION.toString(), ECommonOperator.EQUALS) 
             		};
-                	occupation =  iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArgumentsOccupation, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
+                	occupation =  iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArgumentsOccupation, new Object[] { 
+                			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
+                	/**
+                	 * Set Employee Parent
+                	 */
                 	employee = employeeList.get(0);
                 	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) != null){
                     	FilterArgument[] filterArgumentsParentEmployee = new FilterArgument[] { 
@@ -110,7 +171,12 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                     	else {
 							employee.setEmployeeParent(null);
 						}
+                    	filterArgumentsParentEmployee = null;
+                    	employeeParentList = null;
                 	}
+                	/**
+                	 * Set Employee
+                	 */
                 	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_EMPLOYE.toString()) != null){
                 		FilterArgument[] filterArgumentsNik = new FilterArgument[] { 
                 				new FilterArgument(EnumFieldEmployee.NIK_EMPLOYE.toString(), ECommonOperator.EQUALS)
@@ -123,41 +189,9 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                 				throw new WSEndpointFaultException("3", wsEndpointFault);
                 			}
                     	}
-                	}
-                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
-                    	List<Profile> profileListCheckMobileEmail = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE email = ? OR phone = ?",  new Object[] { 
-                    			email, 
-                    			mobilePhone }, null);
-                    	if(profileListCheckMobileEmail != null && !profileListCheckMobileEmail.isEmpty()){
-                    		if(!profile.getPhone().equals(profileListCheckMobileEmail.get(0).getPhone()) ||
-                    				!profile.getEmail().equals(profileListCheckMobileEmail.get(0).getEmail())){
-                				wsEndpointFault.setMessage("Contact Email and Mobile Phone Already Exists");
-                				throw new WSEndpointFaultException("4", wsEndpointFault);	
-                    		}	
-                    	}
-                	}
-                    profile.setName(name);
-                    profile.setEmail(email);
-                    profile.setGender(gender);
-                    profile.setBirthplace(birthPlace);
-                    profile.setBirthdate(birthDate);
-                    profile.setAddress(address);
-                    profile.setTelp(homePhone);
-                    profile.setPhone(mobilePhone);
-                   	
-                    user.setEnabled(enabled);
-                	user.setRole(role);
-                	iGenericManagerJpa.updateObject(user);  		
-                	profile.setUser(user);
-                	profile.setModifiedBy(currentUserName);
-                	profile.setModifiedTime(new Date());
-                	if(profile.getModifiedIP() == null)
-                		profile.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
-                	if(profile.getModifiedTime() == null)
-                    	profile.setModifiedTime(new Date());
-                	if(profile.getModifiedPlatform() == null)
-                		profile.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);
-            		iGenericManagerJpa.updateObject(profile);  
+                		filterArgumentsNik = null;
+                		employeeListCheckNik = null;
+                	} 
                     employee.setNik(nik);  		
             		employee.setProfile(profile);
             		employee.setOccupation(occupation);
@@ -167,23 +201,26 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                 	if(employee.getModifiedTime() == null)
                 		employee.setModifiedTime(new Date());
                 	if(employee.getModifiedPlatform() == null)
-                		employee.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);        	
+                		employee.setModifiedPlatform(ParameterConstant.PLATFORM_DEFAULT);
+                	/**
+                	 * Update
+                	 */
+                	iGenericManagerJpa.updateObject(user);  
+            		iGenericManagerJpa.updateObject(profile);         	
             		iGenericManagerJpa.updateObject(employee);
             		
                     employeeTransferObject.setResponseCode("0");
                     employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
                     employeeTransferObject.setResponseDesc("Update Employee Data Success");
-                }        		
+                }else {
+                	wsEndpointFault.setMessage("Username not exist");
+    				throw new WSEndpointFaultException("-1", wsEndpointFault);
+                }
         	} 
         } catch (WSEndpointFaultException e) {
             employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             employeeTransferObject.setResponseDesc(e.getFaultInfo().getMessage());	
-            if("2".equals(e.getMessage()))
-    			employeeTransferObject.setResponseCode("2");
-        	else if("3".equals(e.getMessage()))
-    			employeeTransferObject.setResponseCode("3");	
-        	else if("4".equals(e.getMessage()))
-    			employeeTransferObject.setResponseCode("4");
+            employeeTransferObject.setResponseCode(e.getMessage());
         } catch (Exception e) {
             LOGGER.error("Update Employee System Error : " + e.getMessage(), e);
             employeeTransferObject.setResponseCode("1");

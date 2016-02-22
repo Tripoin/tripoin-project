@@ -125,6 +125,9 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
             	String email = (String)findDataEmployee.get(EnumFieldEmployee.EMAIL_EMPLOYE.toString());
             	String address = (String)findDataEmployee.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString());
             	Integer enabled = ((Double)findDataEmployee.get(EnumFieldEmployee.ENABLE_EMPLOYE.toString())).intValue();
+            	/**
+            	 * Check User
+            	 */
             	FilterArgument[] filterArguments = new FilterArgument[]{
     					new FilterArgument(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), ECommonOperator.EQUALS)
     			};
@@ -133,12 +136,15 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
     				/**
     				 * Set User
     				 */
-    				FilterArgument[] filterArgumentsRole = new FilterArgument[] { 
+                    FilterArgument[] filterArgumentsRole = new FilterArgument[] { 
             				new FilterArgument("code", ECommonOperator.EQUALS) 
             		};
-                    List<Role> roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null);
-                    if(roleList == null || roleList.isEmpty())
-                    	roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { RoleConstant.ROLE_SALESMAN }, null, null);
+                    List<Role> roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { 
+                    		datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null);
+                    if(roleList == null || roleList.isEmpty()){
+                    	roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { 
+                    			RoleConstant.ROLE_SALESMAN }, null, null);
+                    }
                     role = roleList.get(0);
                     user.setRole(role);
                     user.setUsername(username);
@@ -150,14 +156,23 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                     /**
                      * Set Profile
                      */
-                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.EMAIL_EMPLOYE.toString()) != null && datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
+                    if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
                     	List<Profile> profileListCheckMobileEmail = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE email = ? OR phone = ?",  new Object[] { 
-                    			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.EMAIL_EMPLOYE.toString()), 
-                    			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) }, null);
+                    			email, 
+                    			mobilePhone }, null);
                     	if(profileListCheckMobileEmail != null && !profileListCheckMobileEmail.isEmpty()){
-            				wsEndpointFault.setMessage("Contact Email and Mobile Phone Already Exists");
-            				throw new WSEndpointFaultException("4", wsEndpointFault);	
+                        	for(Profile profileCheck : profileListCheckMobileEmail){
+                        		if(profileCheck.getPhone().equals(mobilePhone)){
+                    				wsEndpointFault.setMessage("Mobile Phone Already Exists");
+                    				throw new WSEndpointFaultException("4", wsEndpointFault);	
+                        		}	
+                        		if(profileCheck.getEmail().equals(email)){
+                    				wsEndpointFault.setMessage("Email Already Exists");
+                    				throw new WSEndpointFaultException("5", wsEndpointFault);	
+                        		}
+                        	}
                     	}
+                    	profileListCheckMobileEmail = null;
                 	}
                     profile.setUser(user);
                     profile.setName(name);
@@ -187,7 +202,8 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                     FilterArgument[] filterArgumentsOccupation = new FilterArgument[] { 
             				new FilterArgument(EnumFieldOccupation.CODE_OCCUPATION.toString(), ECommonOperator.EQUALS) 
             		};
-                	occupation =  iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArgumentsOccupation, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
+                	occupation =  iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArgumentsOccupation, new Object[] { 
+                			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
                 	/**
                 	 * Set Employee Parent
                 	 */
@@ -199,20 +215,28 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                     			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
                     	if(employeeParentList != null && !employeeParentList.isEmpty())
                     		employee.setEmployeeParent(employeeParentList.get(0));
+                    	else {
+							employee.setEmployeeParent(null);
+						}
+                    	filterArgumentsParentEmployee = null;
+                    	employeeParentList = null;
                 	}
                 	/**
                 	 * Set Employee
                 	 */
-                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) != null){
-                    	FilterArgument[] filterArgumentsNikEmployee = new FilterArgument[] { 
-                				new FilterArgument(EnumFieldEmployee.NIK_EMPLOYE.toString(), ECommonOperator.EQUALS) 
+                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_EMPLOYE.toString()) != null){
+                		FilterArgument[] filterArgumentsNik = new FilterArgument[] { 
+                				new FilterArgument(EnumFieldEmployee.NIK_EMPLOYE.toString(), ECommonOperator.EQUALS)
                 		};
-                    	List<Employee> employeeListCheckNik = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsNikEmployee, new Object[] { datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_EMPLOYE.toString()) }, null, null);
-                    	if(employeeListCheckNik != null && !employeeListCheckNik.isEmpty()){
+                		List<Employee> employeeListCheckNik = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsNik, new Object[] { 
+                				nik}, null, null);
+                		if(employeeListCheckNik != null && !employeeListCheckNik.isEmpty()){
             				wsEndpointFault.setMessage("NIK Already Exists");
             				throw new WSEndpointFaultException("3", wsEndpointFault);	
                     	}else
                             employee.setNik(nik);
+                		filterArgumentsNik = null;
+                		employeeListCheckNik = null;
                 	}
                 	employee.setProfile(profile);
                 	employee.setOccupation(occupation);
@@ -259,6 +283,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                     employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
                     employeeTransferObject.setResponseDesc("Save Employee Data Success");
     			}else{
+    				userListCheck = null;
     				wsEndpointFault.setMessage("Username Already Exists");
     				throw new WSEndpointFaultException("2", wsEndpointFault);
     			}
@@ -267,12 +292,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
         } catch (WSEndpointFaultException e) {
             employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             employeeTransferObject.setResponseDesc(e.getFaultInfo().getMessage());	
-            if("2".equals(e.getMessage()))
-    			employeeTransferObject.setResponseCode("2");
-        	else if("3".equals(e.getMessage()))
-    			employeeTransferObject.setResponseCode("3");	
-        	else if("4".equals(e.getMessage()))
-    			employeeTransferObject.setResponseCode("4");
+            employeeTransferObject.setResponseCode(e.getMessage());
         } catch (Exception e) {
             LOGGER.error("Save Employee System Error : " + e.getLocalizedMessage(), e);
             employeeTransferObject.setResponseCode("1");
