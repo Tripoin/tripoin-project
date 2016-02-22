@@ -18,6 +18,8 @@ public abstract class AMenuItemGridEventDefault<T> {
 	private Integer indexSelected = null;
 
 	public AMenuItemGridEventDefault() {
+		getTripoinMenuItemGridDefault().getMenuItemCreate().setEnabled(enabledCreate());
+		getTripoinMenuItemGridDefault().getMenuItemExport().setEnabled(enabledExport());
 		gridClickEvent();
 		gridSelectEvent();
 	}
@@ -52,11 +54,15 @@ public abstract class AMenuItemGridEventDefault<T> {
 			public void select(SelectionEvent event) {
 				indexSelected = null;
 				if(event.getSelected().isEmpty()){
-					if(getTripoinMenuItemGridDefault().getMenuItemDelete().isEnabled())getTripoinMenuItemGridDefault().getMenuItemDelete().setEnabled(false);
-					if(getTripoinMenuItemGridDefault().getMenuItemExportSelected().isEnabled())getTripoinMenuItemGridDefault().getMenuItemExportSelected().setEnabled(false);
+					if(enabledDelete())
+						if(getTripoinMenuItemGridDefault().getMenuItemDelete().isEnabled())getTripoinMenuItemGridDefault().getMenuItemDelete().setEnabled(false);
+					if(enabledExport())
+						if(getTripoinMenuItemGridDefault().getMenuItemExportSelected().isEnabled())getTripoinMenuItemGridDefault().getMenuItemExportSelected().setEnabled(false);
 				}else{
-					if(!getTripoinMenuItemGridDefault().getMenuItemDelete().isEnabled())getTripoinMenuItemGridDefault().getMenuItemDelete().setEnabled(true);
-					if(!getTripoinMenuItemGridDefault().getMenuItemExportSelected().isEnabled())getTripoinMenuItemGridDefault().getMenuItemExportSelected().setEnabled(true);
+					if(enabledDelete())
+						if(!getTripoinMenuItemGridDefault().getMenuItemDelete().isEnabled())getTripoinMenuItemGridDefault().getMenuItemDelete().setEnabled(true);
+					if(enabledExport())
+						if(!getTripoinMenuItemGridDefault().getMenuItemExportSelected().isEnabled())getTripoinMenuItemGridDefault().getMenuItemExportSelected().setEnabled(true);
 				}		
 				getTripoinMenuItemGridDefault().getDataObjectSelect().clear();
 				for(Object object : event.getSelected())
@@ -77,5 +83,8 @@ public abstract class AMenuItemGridEventDefault<T> {
 	protected abstract ATripoinMenuItemGridDefault<T> getTripoinMenuItemGridDefault();
 	protected abstract Object[] getFieldHeader();
 	protected abstract String getClickNavigate();
+	protected abstract boolean enabledCreate();
+	protected abstract boolean enabledDelete();
+	protected abstract boolean enabledExport();
 	
 }

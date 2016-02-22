@@ -73,7 +73,11 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 	@Override
 	protected void initMenuItemGridDefault() {
 		super.initMenuItemGridDefault();
-		tripoinMenuItemGridDefault.getMenuItemCreate().setEnabled(false);
+	}
+
+	@Override
+	protected boolean isEnabledCreate() {
+		return false;
 	}
 
 	@Override

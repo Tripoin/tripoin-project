@@ -64,6 +64,15 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 		sectionPersonal.addStyleName("h3");
 		sectionPersonal.addStyleName("colored");
         
+	    TextField usernameTextField = new TextField("Username");
+		component.add(usernameTextField);
+		usernameTextField.setId(EnumFieldEmployee.USERNAME_EMPLOYE.toString());
+        usernameTextField.setWidth("50%");
+        if(dataGrid == null)
+        	usernameTextField.addStyleName("small");
+        else
+        	usernameTextField.addStyleName("borderless");
+        
 	    TextField employeeNameTextField = new TextField("Name");
 		component.add(employeeNameTextField);
 		employeeNameTextField.setId(EnumFieldEmployee.NAME_EMPLOYE.toString());
@@ -98,13 +107,6 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
         parentEmployeeComboBox.setNullSelectionAllowed(true);
         parentEmployeeComboBox.setWidth("50%");
         parentEmployeeComboBox.setImmediate(true);
-        
-	    TextField usernameTextField = new TextField("Username");
-		component.add(usernameTextField);
-		usernameTextField.setId(EnumFieldEmployee.USERNAME_EMPLOYE.toString());
-        usernameTextField.setWidth("50%");
-        usernameTextField.setRequired(true);
-        usernameTextField.setEnabled(false);
         
 	    TextField birthPlaceTextField = new TextField();
 	    DateField birthDateDateField = new DateField();
@@ -160,12 +162,10 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
         addressTextArea.setRequired(true);
 
 		Label sectionAccountStatus = new Label("Account Status");
-		component.add(sectionAccountStatus);
         sectionAccountStatus.addStyleName("h3");
         sectionAccountStatus.addStyleName("colored");    
         
 	    Slider enabledAccount = new Slider("Enabled Account");
-		component.add(enabledAccount);
 		enabledAccount.setId(EnumFieldEmployee.ENABLE_EMPLOYE.toString());
     	enabledAccount.setWidth("50px");
     	enabledAccount.setResolution(0);
@@ -173,6 +173,8 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
     	enabledAccount.setMax(1);
 
     	if(dataGrid != null){
+    		component.add(sectionAccountStatus);
+    		component.add(enabledAccount);
             employeeNameTextField.setValue(dataGrid.getProfileData().getName());
             nikTextField.setValue(dataGrid.getNik());
             occupationComboBox.setValue(dataGrid.getOccupationData());

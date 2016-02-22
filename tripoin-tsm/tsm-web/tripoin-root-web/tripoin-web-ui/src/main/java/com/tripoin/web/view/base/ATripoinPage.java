@@ -252,6 +252,18 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 			protected String getClickNavigate() {
 				return afterGridClickNavigate();
 			}
+			@Override
+			protected boolean enabledCreate() {
+				return isEnabledCreate();
+			}
+			@Override
+			protected boolean enabledDelete() {
+				return isEnabledDelete();
+			}
+			@Override
+			protected boolean enabledExport() {
+				return isEnabledExport();
+			}
 		};
 	}
 	
@@ -286,6 +298,18 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	protected abstract String reportNameAll();
 
 	protected abstract Class<? extends ATripoinPage<T>> getViewClass();
+	
+	protected boolean isEnabledCreate() {
+		return true;
+	}
+	
+	protected boolean isEnabledDelete() {
+		return true;
+	}
+	
+	protected boolean isEnabledExport() {
+		return true;
+	}
 
 	protected EReportUIConstant reportTypeSelected() {
 		return EReportUIConstant.REPORT_PDF;

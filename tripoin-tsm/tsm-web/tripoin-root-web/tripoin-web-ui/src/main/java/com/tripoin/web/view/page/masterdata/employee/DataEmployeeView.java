@@ -129,6 +129,11 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 	}
 
 	@Override
+	protected boolean isEnabledDelete() {
+		return false;
+	}
+
+	@Override
 	protected boolean isSetMenuGrid() {
 		return true;
 	}
