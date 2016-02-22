@@ -30,6 +30,7 @@ public abstract class APageableEndpoint<T> extends XReturnStatus {
 	private Integer rowPerPage;
 	private Integer totalPage;
 	private Integer minRow;
+	private Integer maxRow;
 	private Object[] values;
 	private FilterArgument[] filterArguments;
 
@@ -65,9 +66,13 @@ public abstract class APageableEndpoint<T> extends XReturnStatus {
 			if(versionControlSystemTable.getTotalRow()%rowPerPage>0)totalPage++;	
 			if(positionPage > totalPage) positionPage = totalPage;				
 	        minRow = versionControlSystemTable.getTotalRow().intValue() - (positionPage * rowPerPage);
-	        if(minRow < 0) minRow = 0;
+	        if(minRow < 0){
+	        	maxRow = rowPerPage + minRow;
+	        	minRow = 0;
+	        }else
+	        	maxRow = rowPerPage;
 		}
-		return new PageArgument(minRow, rowPerPage);
+		return new PageArgument(minRow, maxRow);
 	}
 	
 	protected abstract Long getTotalRowVcsTable() throws Exception;
@@ -96,6 +101,14 @@ public abstract class APageableEndpoint<T> extends XReturnStatus {
 
 	public void setTotalPage(Integer totalPage) {
 		this.totalPage = totalPage;
+	}
+
+	public Integer getMaxRow() {
+		return maxRow;
+	}
+
+	public void setMaxRow(Integer maxRow) {
+		this.maxRow = maxRow;
 	}
 
 	public Integer getMinRow() {
