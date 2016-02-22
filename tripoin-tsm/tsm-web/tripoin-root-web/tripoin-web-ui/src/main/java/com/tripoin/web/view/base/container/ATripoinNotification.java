@@ -35,6 +35,8 @@ public abstract class ATripoinNotification {
 	}
 	
 	public void show(String caption, String description) {
+		this.caption = caption;
+		this.description = description;
 		notification.setCaption(this.caption);
 		notification.setDescription(this.description);
 		notification.show(Page.getCurrent());

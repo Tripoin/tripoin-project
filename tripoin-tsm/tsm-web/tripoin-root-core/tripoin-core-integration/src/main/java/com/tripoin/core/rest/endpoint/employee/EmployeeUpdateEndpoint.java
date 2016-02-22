@@ -176,7 +176,6 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                 }        		
         	} 
         } catch (WSEndpointFaultException e) {
-        	e.printStackTrace();
             employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             employeeTransferObject.setResponseDesc(e.getFaultInfo().getMessage());	
             if("2".equals(e.getMessage()))
