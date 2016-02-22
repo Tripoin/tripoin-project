@@ -12,12 +12,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.GeneralTransferObject;
-import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
-import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
+import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.core.dto.OccupationData;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IEmployeeService;
@@ -105,6 +104,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 		usernameTextField.setId(EnumFieldEmployee.USERNAME_EMPLOYE.toString());
         usernameTextField.setWidth("50%");
         usernameTextField.setRequired(true);
+        usernameTextField.setEnabled(false);
         
 	    TextField birthPlaceTextField = new TextField();
 	    DateField birthDateDateField = new DateField();
@@ -253,14 +253,17 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 				tripoinNotification.show("Error", "Employee error, please try again later!");
 				errorComponents.put(EWebUIConstant.EXCEPTION.toString(), new UserError("Employee error, please try again later!"));
 			}else if("2".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error", "Employee name already exist.");
-				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Employee name already exist."));
+				tripoinNotification.show("Error", "Username already exist.");
+				errorComponents.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), new UserError("Username already exist."));
 			}else if("3".equals(generalTransferObject.getResponseCode())){
 				tripoinNotification.show("Error", "NIK already exists.");
-				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("NIK already exist."));
+				errorComponents.put(EnumFieldEmployee.NIK_EMPLOYE.toString(), new UserError("NIK already exist."));
 			}else if("4".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error", "Contact Email and Mobile Phone already exists.");
-				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Contact Email and Mobile Phone already exists."));
+				tripoinNotification.show("Error", "Mobile Phone already exists.");
+				errorComponents.put(EnumFieldEmployee.PHONE_EMPLOYE.toString(), new UserError("Mobile Phone already exists."));
+			}else if("5".equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", "Email already exists.");
+				errorComponents.put(EnumFieldEmployee.EMAIL_EMPLOYE.toString(), new UserError("Email already exists."));
 			}
 		}
 		return errorComponents;
@@ -273,6 +276,8 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 
 	@Override
 	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
+		if(dataOriginalGrid.getProfileData().getUserData().getUsername() != null)
+			formPanelDatas.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), dataOriginalGrid.getProfileData().getUserData().getUsername());
 		EmployeeData employeeDataParent = (EmployeeData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
 		formPanelDatas.put(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), employeeDataParent.getNik());
 		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
