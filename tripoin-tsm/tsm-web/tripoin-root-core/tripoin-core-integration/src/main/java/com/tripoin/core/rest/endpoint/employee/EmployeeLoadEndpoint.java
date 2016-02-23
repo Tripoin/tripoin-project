@@ -22,7 +22,6 @@ import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.rest.endpoint.base.APageableEndpoint;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -125,9 +124,7 @@ public class EmployeeLoadEndpoint extends APageableEndpoint<EmployeeData> {
 					values = new Object[employeeTransferObject.getFindEmployeeData().size()];
 					int i = 0;
 					for(String key : employeeTransferObject.getFindEmployeeData().keySet()){
-						if(EnumFieldEmployee.ROLE_EMPLOYE.toString().equals(key))
-							filterArguments[i] = new FilterArgument(key, ECommonOperator.NOT_EQUALS);
-						else filterArguments[i] = new FilterArgument(key, ECommonOperator.EQUALS);
+						filterArguments[i] = new FilterArgument(key, ECommonOperator.EQUALS);
 						values[i] = employeeTransferObject.getFindEmployeeData().get(key);
 						i++;
 					}
