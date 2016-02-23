@@ -19,6 +19,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.web.common.WebServiceConstant;
@@ -189,8 +190,12 @@ public class SpringVaadinServlet extends VaadinServlet implements SessionInitLis
 		try {
 			List<OccupationData> occupationDatas = dataLoadStarted.loadOccupationData();
 			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_OCCUPATION, occupationDatas);
-			List<EmployeeData> employeeNotSalesmanList = dataLoadStarted.loadEmployeeNotSalesmanData();
-			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NOT_SALESMAN, employeeNotSalesmanList);
+			List<EmployeeData> employeeNotSalesmanList = dataLoadStarted.loadEmployeeAreaSalesManagerData();
+			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER, employeeNotSalesmanList);
+			employeeNotSalesmanList = dataLoadStarted.loadEmployeeNationalSalesManagerData();
+			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER, employeeNotSalesmanList);
+			List<AreaData> areaDatas = dataLoadStarted.loadAreaData();
+			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_AREA, areaDatas);
 		} catch (Exception e) {
 			if(HttpStatus.NOT_FOUND.equals(dataLoadStarted.getStatusCode())){
 				LOGGER.warn("Response : ".concat(dataLoadStarted.getStatusCode().value()+" ").concat(dataLoadStarted.getStatusCode().getReasonPhrase()));

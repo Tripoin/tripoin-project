@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
@@ -23,6 +24,9 @@ import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.servlet.VaadinView;
 import com.tripoin.web.view.base.ATripoinForm;
 import com.vaadin.data.Property.ReadOnlyException;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.converter.Converter.ConversionException;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.UserError;
@@ -54,10 +58,12 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 	@Autowired
 	private IEmployeeService employeeService;
 	@Autowired
-	private IDataLoadStarted dataLoadStarted;	
+	private IDataLoadStarted dataLoadStarted;
+	
+	private ComboBox parentEmployeeComboBox;
 
 	@Override
-	protected List<com.vaadin.ui.Component> designFormComponents(EmployeeData dataGrid) {
+	protected List<com.vaadin.ui.Component> designFormComponents(final EmployeeData dataGrid) {
 		List<com.vaadin.ui.Component> component = new ArrayList<com.vaadin.ui.Component>();
 		Label sectionPersonal = new Label("Personal Info");
 		component.add(sectionPersonal);
@@ -98,15 +104,43 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
         occupationComboBox.setRequired(true);
         occupationComboBox.setWidth("50%");
         
-	    ComboBox parentEmployeeComboBox = new ComboBox("Head");
+	    parentEmployeeComboBox = new ComboBox("Head");
 		component.add(parentEmployeeComboBox);
 		parentEmployeeComboBox.setId(EnumFieldEmployee.PARENT_EMPLOYE.toString());
-		parentEmployeeComboBox.setContainerDataSource(dataLoadStarted.employeeNotSalesmanContainer(VaadinServlet.getCurrent().getServletContext()));
-        parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
         parentEmployeeComboBox.addStyleName("small");
-        parentEmployeeComboBox.setNullSelectionAllowed(true);
         parentEmployeeComboBox.setWidth("50%");
         parentEmployeeComboBox.setImmediate(true);
+        
+        occupationComboBox.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = -536223779275547217L;
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+		        parentEmployeeComboBox.setNullSelectionAllowed(false);
+		        if(parentEmployeeComboBox.getContainerDataSource() != null)
+		        	parentEmployeeComboBox.setContainerDataSource(null);
+				OccupationData occupationData = (OccupationData)event.getProperty().getValue();
+				if(RoleConstant.ROLE_SALESMAN.equals(occupationData.getCode())){
+					BeanItemContainer<EmployeeData> employeeData = dataLoadStarted.employeeAreaSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
+					if(!RoleConstant.ROLE_SALESMAN.equals(dataGrid.getOccupationData().getCode()))
+						employeeData.removeItem(dataGrid);
+					parentEmployeeComboBox.setContainerDataSource(employeeData);
+			        parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
+			        if(employeeData.getItemIds() != null)
+			        	parentEmployeeComboBox.select(employeeData.getItemIds().get(0));
+			        employeeData = null;
+				}else if(RoleConstant.ROLE_AREASALESMANAGER.equals(occupationData.getCode())){
+					BeanItemContainer<EmployeeData> employeeData = dataLoadStarted.employeeNationalSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
+					if(!RoleConstant.ROLE_AREASALESMANAGER.equals(dataGrid.getOccupationData().getCode()))
+						employeeData.removeItem(dataGrid);
+					parentEmployeeComboBox.setContainerDataSource(employeeData);
+			        parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
+			        if(employeeData.getItemIds() != null)
+			        	parentEmployeeComboBox.select(employeeData.getItemIds().get(0));
+			        employeeData = null;
+				}else
+			        parentEmployeeComboBox.setNullSelectionAllowed(true);
+			}
+		});
         
 	    TextField birthPlaceTextField = new TextField();
 	    DateField birthDateDateField = new DateField();
@@ -269,6 +303,11 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			}
 		}
 		return errorComponents;
+	}
+
+	@Override
+	protected boolean isEditReOkButtonCaption() {
+		return true;
 	}
 
 	@Override

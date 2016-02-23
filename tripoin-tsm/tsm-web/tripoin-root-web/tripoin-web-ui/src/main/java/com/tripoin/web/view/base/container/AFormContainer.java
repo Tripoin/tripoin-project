@@ -58,6 +58,10 @@ public abstract class AFormContainer extends FormLayout implements ITripoinCompo
 		return TripoinDataField.getDataField(this, isResetField);
 	}
 	
+	public void setDisabledComponents(boolean isDisabled) {
+		TripoinDataField.setDisabledComponents(this, isDisabled);
+	}
+	
 	public void setErrorComponents(Map<String, ErrorMessage> errorComponents) {
 		TripoinDataField.setErrorComponents(this, errorComponents);
 	}

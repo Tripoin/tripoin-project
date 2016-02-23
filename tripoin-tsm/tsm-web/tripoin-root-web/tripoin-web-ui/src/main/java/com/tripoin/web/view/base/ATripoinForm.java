@@ -86,21 +86,23 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 					getParam().getOkButton().setCaption(getOkButtonCaption());
 				}else{
 					dataOriginalGrid = (T) VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
+					if(isEditReOkButtonCaption()){
+						getParam().getOkButton().setCaption(getEditFormCaption());
+					}else{
+						getParam().getOkButton().setCaption(getReOkButtonCaption());
+					}
 				}
 				VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
 				return designFormComponents(dataOriginalGrid);
 			}
 		};
-		try {
-			formContainer.getParam().getOkButton().setCaption(getEditFormCaption());
-			doEditForm(getEditFormCaption());
-		} catch (ClassCastException e) {
-			formContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
-		} catch (Exception e) {
-			formContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
-			e.printStackTrace();
+		if(getEditFormCaption().equals(formContainer.getParam().getOkButton().getCaption())){
+			formContainer.setStyleName("light");
+			formContainer.setDisabledComponents(true);
+		}else{
+			formContainer.setStyleName("tripoin-custom-form");
+			formContainer.setDisabledComponents(false);
 		}
-		
 		formContainer.getParam().getOkButton().addClickListener(this);
 		formContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
 		formContainer.getParam().getCancelButton().addClickListener(new ClickListener() {
@@ -128,14 +130,6 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 			formContainer.setErrorComponents(errorComponents);
 		}else{
 			GeneralTransferObject generalTransferObject = new GeneralTransferObject();
-			if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption())){
-				generalTransferObject = doOkButtonEvent(formPanelDatas, dataOriginalGrid);				
-			} else if(event.getButton().getCaption().equalsIgnoreCase(getReOkButtonCaption())){
-				generalTransferObject = doReOkButtonEvent(formPanelDatas, dataOriginalGrid);
-				formContainer.getParam().getOkButton().setCaption(getEditFormCaption());
-			} else {
-				doEditForm(getReOkButtonCaption());
-			}
 			if(generalTransferObject != null){
 				errorComponents = validateErrorComponents(formPanelDatas, generalTransferObject);
 			}
@@ -151,19 +145,6 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 
 	protected abstract GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
 	
-	protected void doEditForm(String currentCaption){
-		boolean enable = true;
-		if(currentCaption.equalsIgnoreCase(ITripoinConstantComponent.Button.EDIT)){
-			enable = true;
-		}else if(currentCaption.equalsIgnoreCase(ITripoinConstantComponent.Button.UPDATE)){
-			enable = false;
-		}
-		for(Component component : formContainer){
-			component.setReadOnly(enable);
-		}
-		formContainer.getParam().getOkButton().setCaption(currentCaption);
-	}
-	
 	protected void doCancelEvent() {
 		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));
 	}
@@ -173,6 +154,8 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	protected abstract String afterButtonClickNavigate();
 
 	protected abstract Class<? extends ATripoinForm<T>> getViewClass();
+	
+	protected abstract boolean isEditReOkButtonCaption();
 	
 	public String okButtonCaption(){
 		return formContainer.getParam().getOkButton().getCaption();
@@ -223,14 +206,19 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		formPanelDatas = formContainer.getDataField(isFieldReset);
-		if(formPanelDatas != null){
-			formPanelDatas.put(EWebUIConstant.IDENTIFIER_IP.toString(), tripoinIdentifierPlatform.getIPAddress());
-			formPanelDatas.put(EWebUIConstant.IDENTIFIER_TIME.toString(), ParameterConstant.FORMAT_DEFAULT.format(new Date()));
-			formPanelDatas.put(EWebUIConstant.IDENTIFIER_PLATFORM.toString(), tripoinIdentifierPlatform.getDevice().concat(" | ").concat(tripoinIdentifierPlatform.getOperatingSystem()).concat(" | ").concat(tripoinIdentifierPlatform.getBrowser()));
-			pressOkButtonAllEvent(event);
+		if(getReOkButtonCaption().equals(event.getButton().getCaption())){
+			formPanelDatas = formContainer.getDataField(isFieldReset);
+			if(formPanelDatas != null){
+				formPanelDatas.put(EWebUIConstant.IDENTIFIER_IP.toString(), tripoinIdentifierPlatform.getIPAddress());
+				formPanelDatas.put(EWebUIConstant.IDENTIFIER_TIME.toString(), ParameterConstant.FORMAT_DEFAULT.format(new Date()));
+				formPanelDatas.put(EWebUIConstant.IDENTIFIER_PLATFORM.toString(), tripoinIdentifierPlatform.getDevice().concat(" | ").concat(tripoinIdentifierPlatform.getOperatingSystem()).concat(" | ").concat(tripoinIdentifierPlatform.getBrowser()));
+				pressOkButtonAllEvent(event);
+			}else{
+				tripoinNotification.show("Error Submit", "Data form not null!");
+			}
 		}else{
-			tripoinNotification.show("Error Submit", "Data form not null!");
+			formContainer.setStyleName("tripoin-custom-form");
+			formContainer.setDisabledComponents(false);
 		}
 	}
 

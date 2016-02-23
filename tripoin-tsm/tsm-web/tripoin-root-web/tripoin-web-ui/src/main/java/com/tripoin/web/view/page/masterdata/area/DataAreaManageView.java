@@ -96,6 +96,11 @@ public class DataAreaManageView extends ATripoinForm<AreaData> {
 	}
 
 	@Override
+	protected boolean isEditReOkButtonCaption() {
+		return true;
+	}
+
+	@Override
 	protected void doCancelEvent() {
 		super.doCancelEvent();
 	}

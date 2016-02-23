@@ -91,6 +91,11 @@ public class DataOccupationManageView extends ATripoinForm<OccupationData> {
 	}
 
 	@Override
+	protected boolean isEditReOkButtonCaption() {
+		return true;
+	}
+
+	@Override
 	protected void doCancelEvent() {
 		super.doCancelEvent();
 	}

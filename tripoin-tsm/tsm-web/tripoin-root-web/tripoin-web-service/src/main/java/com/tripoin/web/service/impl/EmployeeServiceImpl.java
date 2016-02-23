@@ -60,26 +60,44 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public EmployeeTransferObject updateEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext) {
 		EmployeeTransferObject employeeTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_UPDATE), dataTransferObject, EmployeeTransferObject.class);
-		if(!RoleConstant.ROLE_SALESMAN.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
-			threadBuildEmployeeContainer(employeeTransferObject, servletContext);
+		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+			threadBuildEmployeeAreaSalesManagerContainer(employeeTransferObject, servletContext);
+		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+			threadBuildEmployeeNationalSalesManagerContainer(employeeTransferObject, servletContext);
 		return employeeTransferObject;
 	}
 
 	@Override
 	public EmployeeTransferObject saveEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext) {
 		EmployeeTransferObject employeeTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_SAVE), dataTransferObject, EmployeeTransferObject.class);
-		if(!RoleConstant.ROLE_SALESMAN.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
-			threadBuildEmployeeContainer(employeeTransferObject, servletContext);
+		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+			threadBuildEmployeeAreaSalesManagerContainer(employeeTransferObject, servletContext);
+		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+			threadBuildEmployeeNationalSalesManagerContainer(employeeTransferObject, servletContext);
 		return employeeTransferObject;
 	}
 	
-	private void threadBuildEmployeeContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
+	private void threadBuildEmployeeAreaSalesManagerContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
 		if("0".equals(generalTransferObject.getResponseCode())){
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {
-					List<EmployeeData> employeeDatas = dataLoadStarted.loadEmployeeNotSalesmanData();
-					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NOT_SALESMAN, employeeDatas);
+					List<EmployeeData> employeeDatas = dataLoadStarted.loadEmployeeAreaSalesManagerData();
+					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER, employeeDatas);
+					employeeDatas = null;
+				}
+			});
+		}
+	}
+	
+	private void threadBuildEmployeeNationalSalesManagerContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
+		if("0".equals(generalTransferObject.getResponseCode())){
+			taskExecutor.execute(new Runnable() {				
+				@Override
+				public void run() {
+					List<EmployeeData> employeeDatas = dataLoadStarted.loadEmployeeNationalSalesManagerData();
+					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER, employeeDatas);
+					employeeDatas = null;
 				}
 			});
 		}

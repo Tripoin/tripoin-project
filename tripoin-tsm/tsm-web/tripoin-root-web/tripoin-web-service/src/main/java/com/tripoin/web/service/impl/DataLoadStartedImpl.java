@@ -80,19 +80,53 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 	}
 
 	@Override
-	public List<EmployeeData> loadEmployeeNotSalesmanData() {
+	public List<EmployeeData> loadEmployeeAreaSalesManagerData() {
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		Map<String, Object> findEmployeeData = new HashMap<String, Object>();
-		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_SALESMAN);
+		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_AREASALESMANAGER);
+		employeeTransferObject.setFindEmployeeData(findEmployeeData);
+		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
+	}
+	
+	@Override
+	public List<EmployeeData> loadEmployeeNationalSalesManagerData() {
+		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
+		Map<String, Object> findEmployeeData = new HashMap<String, Object>();
+		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_NATIONALSALESMANAGER);
 		employeeTransferObject.setFindEmployeeData(findEmployeeData);
 		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public BeanItemContainer<EmployeeData> employeeNotSalesmanContainer(ServletContext servletContext) {
+	public BeanItemContainer<EmployeeData> employeeAreaSalesManagerContainer(ServletContext servletContext) {
 		this.employeeContainer.removeAllItems();
-		this.employeeContainer.addAll((List<EmployeeData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NOT_SALESMAN));
+		this.employeeContainer.addAll((List<EmployeeData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER));
+		this.employeeContainer.removeContainerProperty("id");
+		this.employeeContainer.removeContainerProperty("code");
+		this.employeeContainer.removeContainerProperty("nik");
+		this.employeeContainer.removeContainerProperty("status");
+		this.employeeContainer.removeContainerProperty("remarks");
+		this.employeeContainer.removeContainerProperty("createdBy");
+		this.employeeContainer.removeContainerProperty("createdIP");
+		this.employeeContainer.removeContainerProperty("createdTime");
+		this.employeeContainer.removeContainerProperty("createdPlatform");
+		this.employeeContainer.removeContainerProperty("modifiedBy");
+		this.employeeContainer.removeContainerProperty("modifiedIP");
+		this.employeeContainer.removeContainerProperty("modifiedTime");
+		this.employeeContainer.removeContainerProperty("modifiedPlatform");
+		this.employeeContainer.removeContainerProperty("profileData");
+		this.employeeContainer.removeContainerProperty("occupationData");
+		this.employeeContainer.removeContainerProperty("employeeDataParent");
+		this.employeeContainer.addNestedContainerProperty("profileData.name");
+		return employeeContainer;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public BeanItemContainer<EmployeeData> employeeNationalSalesManagerContainer(ServletContext servletContext) {
+		this.employeeContainer.removeAllItems();
+		this.employeeContainer.addAll((List<EmployeeData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER));
 		this.employeeContainer.removeContainerProperty("id");
 		this.employeeContainer.removeContainerProperty("code");
 		this.employeeContainer.removeContainerProperty("nik");

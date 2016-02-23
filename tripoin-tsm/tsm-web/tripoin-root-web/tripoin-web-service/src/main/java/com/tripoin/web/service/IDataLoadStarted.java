@@ -20,12 +20,16 @@ public interface IDataLoadStarted {
     
 	public List<OccupationData> loadOccupationData();
     
-	public List<EmployeeData> loadEmployeeNotSalesmanData();
+	public List<EmployeeData> loadEmployeeAreaSalesManagerData();
+    
+	public List<EmployeeData> loadEmployeeNationalSalesManagerData();
 	
 	public List<AreaData> loadAreaData();
 	
 	public BeanItemContainer<OccupationData> getOccupationContainer(ServletContext servletContext);
 	
-	public BeanItemContainer<EmployeeData> employeeNotSalesmanContainer(ServletContext servletContext);
+	public BeanItemContainer<EmployeeData> employeeAreaSalesManagerContainer(ServletContext servletContext);
+	
+	public BeanItemContainer<EmployeeData> employeeNationalSalesManagerContainer(ServletContext servletContext);
 	
 }
