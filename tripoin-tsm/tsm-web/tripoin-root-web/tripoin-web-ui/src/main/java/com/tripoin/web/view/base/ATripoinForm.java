@@ -85,20 +85,22 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 				if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString()) == null){
 					getParam().getOkButton().setCaption(getOkButtonCaption());
 				}else{
-					try {
-						dataOriginalGrid = (T) VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
-						getParam().getOkButton().setCaption(getReOkButtonCaption());
-					} catch (ClassCastException e) {
-						getParam().getOkButton().setCaption(getOkButtonCaption());
-					} catch (Exception e) {
-						getParam().getOkButton().setCaption(getOkButtonCaption());
-						e.printStackTrace();
-					}
+					dataOriginalGrid = (T) VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
 				}
 				VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_GRID_DATA.toString());
 				return designFormComponents(dataOriginalGrid);
 			}
 		};
+		try {
+			formContainer.getParam().getOkButton().setCaption(getEditFormCaption());
+			doEditForm(getEditFormCaption());
+		} catch (ClassCastException e) {
+			formContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
+		} catch (Exception e) {
+			formContainer.getParam().getOkButton().setCaption(getOkButtonCaption());
+			e.printStackTrace();
+		}
+		
 		formContainer.getParam().getOkButton().addClickListener(this);
 		formContainer.getParam().getCancelButton().setCaption(getCancelButtonCaption());
 		formContainer.getParam().getCancelButton().addClickListener(new ClickListener() {
@@ -125,22 +127,42 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 		if(errorComponents != null && !errorComponents.isEmpty()){
 			formContainer.setErrorComponents(errorComponents);
 		}else{
-			GeneralTransferObject generalTransferObject;
-			if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption()))
-				generalTransferObject = doOkButtonEvent(formPanelDatas, dataOriginalGrid);
-			else
+			GeneralTransferObject generalTransferObject = new GeneralTransferObject();
+			if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption())){
+				generalTransferObject = doOkButtonEvent(formPanelDatas, dataOriginalGrid);				
+			} else if(event.getButton().getCaption().equalsIgnoreCase(getReOkButtonCaption())){
 				generalTransferObject = doReOkButtonEvent(formPanelDatas, dataOriginalGrid);
-			errorComponents = validateErrorComponents(formPanelDatas, generalTransferObject);
+				formContainer.getParam().getOkButton().setCaption(getEditFormCaption());
+			} else {
+				doEditForm(getReOkButtonCaption());
+			}
+			if(generalTransferObject != null){
+				errorComponents = validateErrorComponents(formPanelDatas, generalTransferObject);
+			}
 			if(errorComponents != null && !errorComponents.isEmpty()){
 				formContainer.setErrorComponents(errorComponents);
-			}else
+			}else if(!event.getButton().getCaption().equalsIgnoreCase(getReOkButtonCaption())){
 				UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));
+			}
 		}
 	}
 
 	protected abstract GeneralTransferObject doOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
 
 	protected abstract GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
+	
+	protected void doEditForm(String currentCaption){
+		boolean enable = true;
+		if(currentCaption.equalsIgnoreCase(ITripoinConstantComponent.Button.EDIT)){
+			enable = true;
+		}else if(currentCaption.equalsIgnoreCase(ITripoinConstantComponent.Button.UPDATE)){
+			enable = false;
+		}
+		for(Component component : formContainer){
+			component.setReadOnly(enable);
+		}
+		formContainer.getParam().getOkButton().setCaption(currentCaption);
+	}
 	
 	protected void doCancelEvent() {
 		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));
@@ -155,9 +177,13 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	public String okButtonCaption(){
 		return formContainer.getParam().getOkButton().getCaption();
 	}
-	
+
 	protected String getOkButtonCaption(){
 		return ITripoinConstantComponent.Button.SAVE;
+	}
+
+	protected String getEditFormCaption(){
+		return ITripoinConstantComponent.Button.EDIT;
 	}
 	
 	protected String getReOkButtonCaption(){
