@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.5.2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 22, 2016 at 09:21 AM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Host: localhost
+-- Generation Time: Feb 25, 2016 at 06:07 PM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `tripoin`
@@ -26,8 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `geo_user_route`
 --
 
-CREATE TABLE IF NOT EXISTS `geo_user_route` (
-`user_route_id` bigint(20) NOT NULL,
+CREATE TABLE `geo_user_route` (
+  `user_route_id` bigint(20) NOT NULL,
   `user_route_lat` double(30,25) NOT NULL,
   `user_route_lon` double(30,25) NOT NULL,
   `user_route_center` smallint(5) NOT NULL DEFAULT '0',
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `geo_user_route` (
   `user_route_modified_ip` varchar(150) DEFAULT NULL,
   `user_route_modified_time` timestamp NULL DEFAULT NULL,
   `user_route_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `geo_user_route`
@@ -62,8 +62,8 @@ INSERT INTO `geo_user_route` (`user_route_id`, `user_route_lat`, `user_route_lon
 -- Table structure for table `mst_area`
 --
 
-CREATE TABLE IF NOT EXISTS `mst_area` (
-`area_id` bigint(20) NOT NULL,
+CREATE TABLE `mst_area` (
+  `area_id` bigint(20) NOT NULL,
   `area_code` varchar(150) NOT NULL,
   `area_name` varchar(255) NOT NULL,
   `area_status` smallint(5) DEFAULT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `mst_area` (
   `area_modified_ip` varchar(150) DEFAULT NULL,
   `area_modified_time` timestamp NULL DEFAULT NULL,
   `area_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mst_area`
@@ -123,11 +123,33 @@ INSERT INTO `mst_area` (`area_id`, `area_code`, `area_name`, `area_status`, `are
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mst_customer`
+--
+
+CREATE TABLE `mst_customer` (
+  `customer_id` bigint(20) NOT NULL,
+  `customer_code` varchar(150) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_status` smallint(5) DEFAULT NULL,
+  `customer_remarks` varchar(255) DEFAULT NULL,
+  `customer_created_by` varchar(150) DEFAULT NULL,
+  `customer_created_ip` varchar(150) DEFAULT NULL,
+  `customer_created_time` timestamp NULL DEFAULT NULL,
+  `customer_created_platform` varchar(255) DEFAULT NULL,
+  `customer_modified_by` varchar(150) DEFAULT NULL,
+  `customer_modified_ip` varchar(150) DEFAULT NULL,
+  `customer_modified_time` timestamp NULL DEFAULT NULL,
+  `customer_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mst_employee`
 --
 
-CREATE TABLE IF NOT EXISTS `mst_employee` (
-`employee_id` bigint(20) NOT NULL,
+CREATE TABLE `mst_employee` (
+  `employee_id` bigint(20) NOT NULL,
   `employee_code` varchar(150) NOT NULL,
   `employee_nik` varchar(150) NOT NULL,
   `profile_id` bigint(20) NOT NULL,
@@ -143,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `mst_employee` (
   `employee_modified_ip` varchar(150) DEFAULT NULL,
   `employee_modified_time` timestamp NULL DEFAULT NULL,
   `employee_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mst_employee`
@@ -152,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `mst_employee` (
 INSERT INTO `mst_employee` (`employee_id`, `employee_code`, `employee_nik`, `profile_id`, `occupation_id`, `employee_parent_id`, `employee_status`, `employee_remarks`, `employee_created_by`, `employee_created_ip`, `employee_created_time`, `employee_created_platform`, `employee_modified_by`, `employee_modified_ip`, `employee_modified_time`, `employee_modified_platform`) VALUES
 (1, 'TSM201511230001', 'TSM201511230001', 3, 3, NULL, 1, 'TSM201511230001', 'admin', '127.0.0.1', '2015-11-22 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (2, 'TSM201511240001', 'TSM201511240001', 2, 2, 1, 1, 'TSM201511240001', 'admin', '127.0.0.1', '2015-11-23 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(3, 'TSM201511250001', 'TSM201511250001', 1, 1, 2, 1, 'TSM201511250001', 'admin', '127.0.0.1', '2015-11-24 17:00:00', NULL, NULL, NULL, NULL, NULL);
+(3, 'TSM201511250001', 'TSM201511250001', 1, 1, 2, 1, 'TSM201511250001', 'admin', '127.0.0.1', '2015-11-24 17:00:00', NULL, 'admin', '127.0.0.1', '2016-02-22 12:36:56', 'Computer | Unknown Operating System | Unknown Browser');
 
 -- --------------------------------------------------------
 
@@ -160,8 +182,8 @@ INSERT INTO `mst_employee` (`employee_id`, `employee_code`, `employee_nik`, `pro
 -- Table structure for table `mst_menu`
 --
 
-CREATE TABLE IF NOT EXISTS `mst_menu` (
-`menu_id` bigint(20) NOT NULL,
+CREATE TABLE `mst_menu` (
+  `menu_id` bigint(20) NOT NULL,
   `menu_code` varchar(150) NOT NULL,
   `menu_name` varchar(255) DEFAULT NULL,
   `menu_parent_id` bigint(20) DEFAULT NULL,
@@ -180,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `mst_menu` (
   `menu_modified_ip` varchar(150) DEFAULT NULL,
   `menu_modified_time` timestamp NULL DEFAULT NULL,
   `menu_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mst_menu`
@@ -221,11 +243,11 @@ INSERT INTO `mst_menu` (`menu_id`, `menu_code`, `menu_name`, `menu_parent_id`, `
 -- Table structure for table `mst_menu_role`
 --
 
-CREATE TABLE IF NOT EXISTS `mst_menu_role` (
-`menu_role_id` bigint(20) NOT NULL,
+CREATE TABLE `mst_menu_role` (
+  `menu_role_id` bigint(20) NOT NULL,
   `menu_id` bigint(20) NOT NULL,
   `role_id` bigint(20) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mst_menu_role`
@@ -277,8 +299,8 @@ INSERT INTO `mst_menu_role` (`menu_role_id`, `menu_id`, `role_id`) VALUES
 -- Table structure for table `mst_occupation`
 --
 
-CREATE TABLE IF NOT EXISTS `mst_occupation` (
-`occupation_id` bigint(20) NOT NULL,
+CREATE TABLE `mst_occupation` (
+  `occupation_id` bigint(20) NOT NULL,
   `occupation_code` varchar(150) NOT NULL,
   `occupation_name` varchar(255) NOT NULL,
   `occupation_status` smallint(5) DEFAULT NULL,
@@ -291,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `mst_occupation` (
   `occupation_modified_ip` varchar(150) DEFAULT NULL,
   `occupation_modified_time` timestamp NULL DEFAULT NULL,
   `occupation_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mst_occupation`
@@ -305,10 +327,32 @@ INSERT INTO `mst_occupation` (`occupation_id`, `occupation_code`, `occupation_na
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mst_product`
+--
+
+CREATE TABLE `mst_product` (
+  `product_id` bigint(20) NOT NULL,
+  `product_code` varchar(150) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_status` smallint(5) DEFAULT NULL,
+  `product_remarks` varchar(255) DEFAULT NULL,
+  `product_created_by` varchar(150) DEFAULT NULL,
+  `product_created_ip` varchar(150) DEFAULT NULL,
+  `product_created_time` timestamp NULL DEFAULT NULL,
+  `product_created_platform` varchar(255) DEFAULT NULL,
+  `product_modified_by` varchar(150) DEFAULT NULL,
+  `product_modified_ip` varchar(150) DEFAULT NULL,
+  `product_modified_time` timestamp NULL DEFAULT NULL,
+  `product_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mst_profile`
 --
 
-CREATE TABLE IF NOT EXISTS `mst_profile` (
+CREATE TABLE `mst_profile` (
   `profile_id` bigint(20) NOT NULL,
   `profile_email` varchar(255) NOT NULL,
   `profile_name` varchar(255) NOT NULL,
@@ -339,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `mst_profile` (
 --
 
 INSERT INTO `mst_profile` (`profile_id`, `profile_email`, `profile_name`, `profile_gender`, `profile_birthplace`, `profile_birthdate`, `profile_address`, `profile_telp`, `profile_photo`, `user_id`, `profile_phone`, `profile_bio`, `profile_resources_uuid`, `profile_forgot_uuid`, `profile_forgot_expired`, `profile_created_by`, `profile_created_ip`, `profile_created_time`, `profile_created_platform`, `profile_modified_by`, `profile_modified_ip`, `profile_modified_time`, `profile_modified_platform`) VALUES
-(1, 'ridla.fadilah@tripoin.co.id', 'Ridla Fadilah', 'MALE', 'Bandung', '1990-12-27', 'Tangerang', '021234567891', NULL, 1, '081234567891', '<font face="Courier New">This is Me</font>', 'b1c52cdc-78ac-4677-899d-2cacb5cb72e0', '0d0bf53a-0d24-4290-b29b-9190ae5ccf0f', '2015-11-02 13:15:09', 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'ridla', '127.0.0.1', '2015-10-31 08:00:55', 'Computer | Windows | Chrome'),
+(1, 'ridla.fadilah@tripoin.co.id', 'Ridla Fadilah', 'MALE', 'Bandung', '1990-12-27', 'Tangerang', '021234567891', NULL, 1, '081234567891', '<font face="Courier New">This is Me</font>', 'b1c52cdc-78ac-4677-899d-2cacb5cb72e0', '0d0bf53a-0d24-4290-b29b-9190ae5ccf0f', '2015-11-02 13:15:09', 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'admin', '127.0.0.1', '2016-02-22 16:22:53', 'Computer | Windows | Chrome'),
 (2, 'bangkit.pratolo@tripoin.co.id', 'Bangkit Pratolo', 'MALE', 'Tangerang', '2015-10-12', 'Tangerang', '-', NULL, 2, '081234567892', '-', '399820b9-14c8-4788-bdba-8789dc7ce533', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
 (3, 'achmad.fauzi@tripoin.co.id', 'Achmad Fauzi', 'MALE', 'Tangerang', '2015-10-13', 'Tangerang', '-', NULL, 3, '081234567893', '-', 'a1e87b78-4e1d-4f09-8eeb-8c78c7b8d22b', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, NULL, NULL, NULL, NULL),
 (4, 'admin@tripoin.co.id', 'Administrator', 'FEMALE', 'Tangerang', '2015-10-14', 'Tangerang', '-', 'tomcat.gif8796357859637219542.gif', 4, '081234567894', '-', 'd42c93af-92e0-49ca-8989-4e6d14c6606c', NULL, NULL, 'admin', '127.0.0.1', '2015-10-28 03:57:43', NULL, 'admin', '127.0.0.1', '2016-01-04 02:51:50', 'Computer | Windows | Firefox');
@@ -350,8 +394,8 @@ INSERT INTO `mst_profile` (`profile_id`, `profile_email`, `profile_name`, `profi
 -- Table structure for table `mst_system_parameter`
 --
 
-CREATE TABLE IF NOT EXISTS `mst_system_parameter` (
-`system_parameter_id` bigint(20) NOT NULL,
+CREATE TABLE `mst_system_parameter` (
+  `system_parameter_id` bigint(20) NOT NULL,
   `system_parameter_code` varchar(100) NOT NULL,
   `system_parameter_value` text NOT NULL,
   `system_parameter_status` smallint(5) DEFAULT NULL,
@@ -364,7 +408,7 @@ CREATE TABLE IF NOT EXISTS `mst_system_parameter` (
   `system_parameter_modified_ip` varchar(150) DEFAULT NULL,
   `system_parameter_modified_time` timestamp NULL DEFAULT NULL,
   `system_parameter_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mst_system_parameter`
@@ -382,12 +426,12 @@ INSERT INTO `mst_system_parameter` (`system_parameter_id`, `system_parameter_cod
 -- Table structure for table `sec_role`
 --
 
-CREATE TABLE IF NOT EXISTS `sec_role` (
-`role_id` bigint(20) NOT NULL,
+CREATE TABLE `sec_role` (
+  `role_id` bigint(20) NOT NULL,
   `role_code` varchar(50) NOT NULL,
   `role_status` smallint(5) NOT NULL,
   `role_remarks` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sec_role`
@@ -406,8 +450,8 @@ INSERT INTO `sec_role` (`role_id`, `role_code`, `role_status`, `role_remarks`) V
 -- Table structure for table `sec_user`
 --
 
-CREATE TABLE IF NOT EXISTS `sec_user` (
-`user_id` bigint(20) NOT NULL,
+CREATE TABLE `sec_user` (
+  `user_id` bigint(20) NOT NULL,
   `user_username` varchar(20) NOT NULL,
   `user_password` varchar(255) NOT NULL,
   `user_enabled` smallint(5) NOT NULL,
@@ -417,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `sec_user` (
   `user_status` smallint(5) NOT NULL,
   `user_remarks` varchar(255) DEFAULT NULL,
   `role_id` bigint(20) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sec_user`
@@ -434,11 +478,135 @@ INSERT INTO `sec_user` (`user_id`, `user_username`, `user_password`, `user_enabl
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `trx_call_plan_detail`
+--
+
+CREATE TABLE `trx_call_plan_detail` (
+  `call_plan_detail_id` bigint(20) NOT NULL,
+  `call_plan_detail_code` varchar(150) NOT NULL,
+  `call_plan_detail_actual_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `call_plan_detail_approved` varchar(150) NOT NULL DEFAULT 'N',
+  `call_plan_detail_approved_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `call_plan_header_id` bigint(20) NOT NULL,
+  `call_plan_detail_status` smallint(5) DEFAULT NULL,
+  `call_plan_detail_remarks` varchar(255) DEFAULT NULL,
+  `call_plan_detail_created_by` varchar(150) DEFAULT NULL,
+  `call_plan_detail_created_ip` varchar(150) DEFAULT NULL,
+  `call_plan_detail_created_time` timestamp NULL DEFAULT NULL,
+  `call_plan_detail_created_platform` varchar(255) DEFAULT NULL,
+  `call_plan_detail_modified_by` varchar(150) DEFAULT NULL,
+  `call_plan_detail_modified_ip` varchar(150) DEFAULT NULL,
+  `call_plan_detail_modified_time` timestamp NULL DEFAULT NULL,
+  `call_plan_detail_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trx_call_plan_header`
+--
+
+CREATE TABLE `trx_call_plan_header` (
+  `call_plan_header_id` bigint(20) NOT NULL,
+  `call_plan_header_code` varchar(150) NOT NULL,
+  `call_plan_header_start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `call_plan_header_end_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `employee_id` bigint(20) NOT NULL,
+  `employee_parrent_current_id` bigint(20) NOT NULL,
+  `area_id` bigint(20) NOT NULL,
+  `call_plan_header_status` smallint(5) DEFAULT NULL,
+  `call_plan_header_remarks` varchar(255) DEFAULT NULL,
+  `call_plan_header_created_by` varchar(150) DEFAULT NULL,
+  `call_plan_header_created_ip` varchar(150) DEFAULT NULL,
+  `call_plan_header_created_time` timestamp NULL DEFAULT NULL,
+  `call_plan_header_created_platform` varchar(255) DEFAULT NULL,
+  `call_plan_header_modified_id` varchar(150) DEFAULT NULL,
+  `call_plan_header_modified_ip` varchar(150) DEFAULT NULL,
+  `call_plan_header_modified_time` timestamp NULL DEFAULT NULL,
+  `call_plan_header_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trx_call_plan_list`
+--
+
+CREATE TABLE `trx_call_plan_list` (
+  `call_plan_list_id` bigint(20) NOT NULL,
+  `call_plan_list_code` varchar(150) NOT NULL,
+  `customer_id` bigint(20) NOT NULL,
+  `call_plan_detail_id` bigint(20) NOT NULL,
+  `user_route_id` bigint(20) NOT NULL,
+  `call_plan_list_name` varchar(255) DEFAULT NULL,
+  `call_plan_list_phone` varchar(255) DEFAULT NULL,
+  `call_plan_list_purpose` varchar(255) DEFAULT NULL,
+  `call_plan_list_foto` varchar(255) DEFAULT NULL,
+  `call_plan_list_status` smallint(5) DEFAULT NULL,
+  `call_plan_list_remarks` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trx_call_report_header`
+--
+
+CREATE TABLE `trx_call_report_header` (
+  `call_report_header_id` bigint(20) NOT NULL,
+  `call_report_header_code` varchar(150) NOT NULL,
+  `call_plan_list_id` bigint(20) NOT NULL,
+  `customer_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL,
+  `area_id` bigint(20) NOT NULL,
+  `call_report_header_approved` varchar(150) NOT NULL DEFAULT 'N',
+  `call_report_header_status` smallint(5) DEFAULT NULL,
+  `call_report_header_remarks` varchar(255) DEFAULT NULL,
+  `call_report_header_created_by` varchar(150) DEFAULT NULL,
+  `call_report_header_created_ip` varchar(150) DEFAULT NULL,
+  `call_report_header_created_time` timestamp NULL DEFAULT NULL,
+  `call_report_header_created_platform` varchar(255) DEFAULT NULL,
+  `call_report_header_modified_by` varchar(150) DEFAULT NULL,
+  `call_report_header_modified_ip` varchar(150) DEFAULT NULL,
+  `call_report_header_modified_time` timestamp NULL DEFAULT NULL,
+  `call_report_header_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trx_quotation`
+--
+
+CREATE TABLE `trx_quotation` (
+  `quotation_id` bigint(20) NOT NULL,
+  `quotation_code` varchar(150) NOT NULL,
+  `quotation_ref_no` varchar(150) NOT NULL,
+  `quotation_price` varchar(255) NOT NULL,
+  `quotation_approved` varchar(150) NOT NULL DEFAULT 'N',
+  `call_report_header_id` bigint(20) NOT NULL,
+  `quotation_place` varchar(150) NOT NULL,
+  `quotation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `quotation_status` smallint(5) DEFAULT NULL,
+  `quotation_remarks` varchar(255) DEFAULT NULL,
+  `quotation_created_by` varchar(150) DEFAULT NULL,
+  `quotation_created_ip` varchar(150) DEFAULT NULL,
+  `quotation_created_time` timestamp NULL DEFAULT NULL,
+  `quotation_created_platform` varchar(255) DEFAULT NULL,
+  `quotation_modified_by` varchar(150) DEFAULT NULL,
+  `quotation_modified_ip` varchar(150) DEFAULT NULL,
+  `quotation_modified_time` timestamp NULL DEFAULT NULL,
+  `quotation_modified_platform` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `vcs_table`
 --
 
-CREATE TABLE IF NOT EXISTS `vcs_table` (
-`vcs_table_id` bigint(20) NOT NULL,
+CREATE TABLE `vcs_table` (
+  `vcs_table_id` bigint(20) NOT NULL,
   `vcs_table_code` varchar(100) NOT NULL,
   `vcs_table_total_row` bigint(20) NOT NULL,
   `vcs_table_status` smallint(5) DEFAULT NULL,
@@ -451,7 +619,7 @@ CREATE TABLE IF NOT EXISTS `vcs_table` (
   `vcs_table_modified_ip` varchar(150) DEFAULT NULL,
   `vcs_table_modified_time` timestamp NULL DEFAULT NULL,
   `vcs_table_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `vcs_table`
@@ -468,7 +636,7 @@ INSERT INTO `vcs_table` (`vcs_table_id`, `vcs_table_code`, `vcs_table_total_row`
 -- Table structure for table `vcs_user`
 --
 
-CREATE TABLE IF NOT EXISTS `vcs_user` (
+CREATE TABLE `vcs_user` (
   `vcs_user_id` int(11) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `vcs_user_version` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -482,73 +650,134 @@ CREATE TABLE IF NOT EXISTS `vcs_user` (
 -- Indexes for table `geo_user_route`
 --
 ALTER TABLE `geo_user_route`
- ADD PRIMARY KEY (`user_route_id`);
+  ADD PRIMARY KEY (`user_route_id`);
 
 --
 -- Indexes for table `mst_area`
 --
 ALTER TABLE `mst_area`
- ADD PRIMARY KEY (`area_id`), ADD UNIQUE KEY `occupation_code` (`area_code`);
+  ADD PRIMARY KEY (`area_id`),
+  ADD UNIQUE KEY `occupation_code` (`area_code`);
+
+--
+-- Indexes for table `mst_customer`
+--
+ALTER TABLE `mst_customer`
+  ADD PRIMARY KEY (`customer_id`),
+  ADD UNIQUE KEY `customer_code` (`customer_code`);
 
 --
 -- Indexes for table `mst_employee`
 --
 ALTER TABLE `mst_employee`
- ADD PRIMARY KEY (`employee_id`), ADD UNIQUE KEY `employee_code` (`employee_code`), ADD UNIQUE KEY `employee_nik` (`employee_nik`);
+  ADD PRIMARY KEY (`employee_id`),
+  ADD UNIQUE KEY `employee_code` (`employee_code`),
+  ADD UNIQUE KEY `employee_nik` (`employee_nik`);
 
 --
 -- Indexes for table `mst_menu`
 --
 ALTER TABLE `mst_menu`
- ADD PRIMARY KEY (`menu_id`), ADD UNIQUE KEY `menu_code` (`menu_code`);
+  ADD PRIMARY KEY (`menu_id`),
+  ADD UNIQUE KEY `menu_code` (`menu_code`);
 
 --
 -- Indexes for table `mst_menu_role`
 --
 ALTER TABLE `mst_menu_role`
- ADD PRIMARY KEY (`menu_role_id`);
+  ADD PRIMARY KEY (`menu_role_id`);
 
 --
 -- Indexes for table `mst_occupation`
 --
 ALTER TABLE `mst_occupation`
- ADD PRIMARY KEY (`occupation_id`), ADD UNIQUE KEY `occupation_code` (`occupation_code`);
+  ADD PRIMARY KEY (`occupation_id`),
+  ADD UNIQUE KEY `occupation_code` (`occupation_code`);
+
+--
+-- Indexes for table `mst_product`
+--
+ALTER TABLE `mst_product`
+  ADD PRIMARY KEY (`product_id`),
+  ADD UNIQUE KEY `product_code` (`product_code`);
 
 --
 -- Indexes for table `mst_profile`
 --
 ALTER TABLE `mst_profile`
- ADD PRIMARY KEY (`profile_id`), ADD UNIQUE KEY `profile_phone` (`profile_phone`), ADD UNIQUE KEY `profile_email` (`profile_email`), ADD UNIQUE KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`profile_id`),
+  ADD UNIQUE KEY `profile_phone` (`profile_phone`),
+  ADD UNIQUE KEY `profile_email` (`profile_email`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `mst_system_parameter`
 --
 ALTER TABLE `mst_system_parameter`
- ADD PRIMARY KEY (`system_parameter_id`), ADD UNIQUE KEY `system_parameter_code` (`system_parameter_code`);
+  ADD PRIMARY KEY (`system_parameter_id`),
+  ADD UNIQUE KEY `system_parameter_code` (`system_parameter_code`);
 
 --
 -- Indexes for table `sec_role`
 --
 ALTER TABLE `sec_role`
- ADD PRIMARY KEY (`role_id`), ADD UNIQUE KEY `role_code` (`role_code`);
+  ADD PRIMARY KEY (`role_id`),
+  ADD UNIQUE KEY `role_code` (`role_code`);
 
 --
 -- Indexes for table `sec_user`
 --
 ALTER TABLE `sec_user`
- ADD PRIMARY KEY (`user_id`), ADD UNIQUE KEY `user_username` (`user_username`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `user_username` (`user_username`);
+
+--
+-- Indexes for table `trx_call_plan_detail`
+--
+ALTER TABLE `trx_call_plan_detail`
+  ADD PRIMARY KEY (`call_plan_detail_id`),
+  ADD UNIQUE KEY `call_plan_detail_code` (`call_plan_detail_code`);
+
+--
+-- Indexes for table `trx_call_plan_header`
+--
+ALTER TABLE `trx_call_plan_header`
+  ADD PRIMARY KEY (`call_plan_header_id`),
+  ADD UNIQUE KEY `call_plan_header_code` (`call_plan_header_code`);
+
+--
+-- Indexes for table `trx_call_plan_list`
+--
+ALTER TABLE `trx_call_plan_list`
+  ADD PRIMARY KEY (`call_plan_list_id`),
+  ADD UNIQUE KEY `call_plan_list_code` (`call_plan_list_code`);
+
+--
+-- Indexes for table `trx_call_report_header`
+--
+ALTER TABLE `trx_call_report_header`
+  ADD PRIMARY KEY (`call_report_header_id`),
+  ADD UNIQUE KEY `call_report_header_code` (`call_report_header_code`);
+
+--
+-- Indexes for table `trx_quotation`
+--
+ALTER TABLE `trx_quotation`
+  ADD PRIMARY KEY (`quotation_id`),
+  ADD UNIQUE KEY `quotation_code` (`quotation_code`);
 
 --
 -- Indexes for table `vcs_table`
 --
 ALTER TABLE `vcs_table`
- ADD PRIMARY KEY (`vcs_table_id`), ADD UNIQUE KEY `system_parameter_code` (`vcs_table_code`);
+  ADD PRIMARY KEY (`vcs_table_id`),
+  ADD UNIQUE KEY `system_parameter_code` (`vcs_table_code`);
 
 --
 -- Indexes for table `vcs_user`
 --
 ALTER TABLE `vcs_user`
- ADD PRIMARY KEY (`vcs_user_id`);
+  ADD PRIMARY KEY (`vcs_user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -558,52 +787,87 @@ ALTER TABLE `vcs_user`
 -- AUTO_INCREMENT for table `geo_user_route`
 --
 ALTER TABLE `geo_user_route`
-MODIFY `user_route_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `user_route_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `mst_area`
 --
 ALTER TABLE `mst_area`
-MODIFY `area_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
+  MODIFY `area_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+--
+-- AUTO_INCREMENT for table `mst_customer`
+--
+ALTER TABLE `mst_customer`
+  MODIFY `customer_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_employee`
 --
 ALTER TABLE `mst_employee`
-MODIFY `employee_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `employee_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `mst_menu`
 --
 ALTER TABLE `mst_menu`
-MODIFY `menu_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+  MODIFY `menu_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `mst_menu_role`
 --
 ALTER TABLE `mst_menu_role`
-MODIFY `menu_role_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+  MODIFY `menu_role_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT for table `mst_occupation`
 --
 ALTER TABLE `mst_occupation`
-MODIFY `occupation_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `occupation_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `mst_product`
+--
+ALTER TABLE `mst_product`
+  MODIFY `product_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_system_parameter`
 --
 ALTER TABLE `mst_system_parameter`
-MODIFY `system_parameter_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `system_parameter_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `sec_role`
 --
 ALTER TABLE `sec_role`
-MODIFY `role_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `role_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `sec_user`
 --
 ALTER TABLE `sec_user`
-MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `trx_call_plan_detail`
+--
+ALTER TABLE `trx_call_plan_detail`
+  MODIFY `call_plan_detail_id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `trx_call_plan_header`
+--
+ALTER TABLE `trx_call_plan_header`
+  MODIFY `call_plan_header_id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `trx_call_plan_list`
+--
+ALTER TABLE `trx_call_plan_list`
+  MODIFY `call_plan_list_id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `trx_call_report_header`
+--
+ALTER TABLE `trx_call_report_header`
+  MODIFY `call_report_header_id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `trx_quotation`
+--
+ALTER TABLE `trx_quotation`
+  MODIFY `quotation_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `vcs_table`
 --
 ALTER TABLE `vcs_table`
-MODIFY `vcs_table_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `vcs_table_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
