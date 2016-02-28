@@ -1,7 +1,7 @@
 package com.tripoin.core.pojo;
 
+import java.sql.Date;
 import java.text.ParseException;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +24,7 @@ import com.tripoin.core.dto.ProfileData;
  */
 @Entity
 @Table(name=Profile.TABLE_NAME)
-public class Profile implements IBaseModel {
+public class Profile extends AGeneralAuditTrail {
 
     /**
 	 * 
@@ -46,20 +46,14 @@ public class Profile implements IBaseModel {
     private String resourcesUUID;
     private String forgotUUID;
     private Date forgotExpired;
-    private String createdBy;
-    private String createdIP;
-    private Date createdTime;
-    private String createdPlatform;
-    private String modifiedBy;
-    private String modifiedIP;
-    private Date modifiedTime; 
-    private String modifiedPlatform;
     private User user;	
+    
     private Employee employee;
     
     public Profile() {}
     
     public Profile(ProfileData profileData) {
+    	super(profileData);
     	if(profileData != null){
     		this.id = profileData.getId();
     		this.email = profileData.getEmail();
@@ -67,9 +61,9 @@ public class Profile implements IBaseModel {
     		this.gender = profileData.getGender();
     		this.birthplace = profileData.getBirthplace();
     		try {
-				this.birthdate = ParameterConstant.FORMAT_DEFAULT.parse(profileData.getBirthdate());
+				this.birthdate = new Date(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getBirthdate()).getTime());
 			} catch (ParseException e) {
-				this.birthdate = new Date();
+				this.birthdate = new Date(new java.util.Date().getTime());
 			}
     		this.address = profileData.getAddress();
     		this.telp = profileData.getTelp();
@@ -80,28 +74,10 @@ public class Profile implements IBaseModel {
     		this.forgotUUID = profileData.getForgotUUID();
     		try {
     			if(profileData.getForgotExpired() != null)
-    				this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.parse(profileData.getForgotExpired());
+    				this.forgotExpired = new Date(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getForgotExpired()).getTime());
 			} catch (ParseException e) {
-				this.forgotExpired = new Date();
+				this.forgotExpired = new Date(new java.util.Date().getTime());
 			}
-    		this.createdBy = profileData.getCreatedBy();
-    		this.createdIP = profileData.getCreatedIP();
-    		try {
-    			if(profileData.getCreatedTime() != null)
-    				this.createdTime = ParameterConstant.FORMAT_DEFAULT.parse(profileData.getCreatedTime());
-			} catch (ParseException e) {
-				this.createdTime = new Date();
-			}
-    		this.createdPlatform = profileData.getCreatedPlatform();
-    		this.modifiedBy = profileData.getModifiedBy();
-    		this.modifiedIP = profileData.getModifiedIP();
-    		try {
-    			if(profileData.getModifiedTime() != null)
-    				this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.parse(profileData.getModifiedTime());
-			} catch (ParseException e) {
-				this.modifiedTime = new Date();
-			}
-    		this.modifiedPlatform = profileData.getModifiedPlatform();
     		if(profileData.getUserData() != null)
 				this.user = new User(profileData.getUserData());
     	}
@@ -167,6 +143,10 @@ public class Profile implements IBaseModel {
 
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
+	}
+
+	public void setBirthdate(java.util.Date birthdate) {
+		this.birthdate = new Date(birthdate.getTime());
 	}
 
 	@Column(name="profile_address")
@@ -243,79 +223,11 @@ public class Profile implements IBaseModel {
 		this.forgotExpired = forgotExpired;
 	}
 
-	@Column(name="profile_created_by", length=150)
-    public String getCreatedBy() {
-		return createdBy;
+	public void setForgotExpired(java.util.Date forgotExpired) {
+		this.forgotExpired = new Date(forgotExpired.getTime());
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	@Column(name="profile_created_ip", length=150)
-	public String getCreatedIP() {
-		return createdIP;
-	}
-
-	public void setCreatedIP(String createdIP) {
-		this.createdIP = createdIP;
-	}
-
-	@Column(name="profile_created_time")
-	public Date getCreatedTime() {
-		return createdTime;
-	}
-
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
-	}
-
-	@Column(name="profile_created_platform")
-	public String getCreatedPlatform() {
-		return createdPlatform;
-	}
-
-	public void setCreatedPlatform(String createdPlatform) {
-		this.createdPlatform = createdPlatform;
-	}
-
-	@Column(name="profile_modified_by", length=150)
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
-	@Column(name="profile_modified_ip", length=150)
-	public String getModifiedIP() {
-		return modifiedIP;
-	}
-
-	public void setModifiedIP(String modifiedIP) {
-		this.modifiedIP = modifiedIP;
-	}
-
-	@Column(name="profile_modified_time")
-	public Date getModifiedTime() {
-		return modifiedTime;
-	}
-
-	public void setModifiedTime(Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-	
-	@Column(name="profile_modified_platform")
-    public String getModifiedPlatform() {
-		return modifiedPlatform;
-	}
-
-	public void setModifiedPlatform(String modifiedPlatform) {
-		this.modifiedPlatform = modifiedPlatform;
-	}
-
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
 	public User getUser() {
 		return user;
@@ -341,16 +253,10 @@ public class Profile implements IBaseModel {
 
 	@Override
 	public String toString() {
-		return "Profile [id=" + id + ", email=" + email + ", name=" + name
-				+ ", birthplace=" + birthplace + ", birthdate=" + birthdate
-				+ ", address=" + address + ", telp=" + telp + ", phone=" + phone
-				+ ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID=" + forgotUUID
-				+ ", forgotExpired=" + forgotExpired + ", createdBy=" + createdBy
-				+ ", createdIP=" + createdIP + ", createdTime=" + createdTime
-				+ ", createdPlatform=" + createdPlatform
-				+ ", modifiedBy=" + modifiedBy + ", modifiedIP=" + modifiedIP
-				+ ", modifiedTime=" + modifiedTime + ", modifiedPlatform=" + modifiedPlatform
-				+ ", user=" + user + "]";
-	} 
+		return "Profile [id=" + id + ", email=" + email + ", name=" + name + ", gender=" + gender + ", birthplace="
+				+ birthplace + ", birthdate=" + birthdate + ", address=" + address + ", telp=" + telp + ", phone="
+				+ phone + ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID="
+				+ forgotUUID + ", forgotExpired=" + forgotExpired + ", user.id=" + user.getId() + "]";
+	}
 	
 }

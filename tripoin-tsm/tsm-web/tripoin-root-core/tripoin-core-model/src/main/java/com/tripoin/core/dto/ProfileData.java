@@ -1,7 +1,5 @@
 package com.tripoin.core.dto;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -9,14 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.pojo.Profile;
-import com.tripoin.core.pojo.User;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "ProfileData")
-public class ProfileData {
+public class ProfileData extends AGeneralAuditTrailData {
 
 	@XmlElement(name = "ID", namespace = "")
 	private Integer id;
@@ -60,37 +57,13 @@ public class ProfileData {
 	@XmlElement(name = "ForgotExpired", namespace = "")
     private String forgotExpired;
 	
-	@XmlElement(name = "CreatedBy", namespace = "")
-	private String createdBy;
-	
-	@XmlElement(name = "CreatedIP", namespace = "")
-	private String createdIP;
-	
-	@XmlElement(name = "CreatedTime", namespace = "")
-	private String createdTime;
-	
-	@XmlElement(name = "CreatedPlatform", namespace = "")
-    private String createdPlatform;
-	
-	@XmlElement(name = "ModifiedBy", namespace = "")
-	private String modifiedBy;
-	
-	@XmlElement(name = "ModifiedIP", namespace = "")
-	private String modifiedIP;
-	
-	@XmlElement(name = "ModifiedTime", namespace = "")
-	private String modifiedTime;
-	
-	@XmlElement(name = "ModifiedPlatform", namespace = "")
-    private String modifiedPlatform;
-	
 	@XmlElement(name = "UserData", namespace = "")
 	private UserData userData;
 
 	public ProfileData() {}
 	
 	public ProfileData(Profile profile){
-		super();
+		super(profile);
 		this.id = profile.getId();
 		this.email = profile.getEmail();
 		this.name = profile.getName();
@@ -107,55 +80,8 @@ public class ProfileData {
 		this.forgotUUID = profile.getForgotUUID();
 		if(profile.getForgotExpired() != null)
 			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getModifiedTime());
-		this.createdBy = profile.getCreatedBy();
-		this.createdIP = profile.getCreatedIP();
-		if(profile.getCreatedTime() != null)
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(profile.getCreatedTime());
-		this.createdPlatform = profile.getCreatedPlatform();
-		this.modifiedBy = profile.getModifiedBy();
-		this.modifiedIP = profile.getModifiedIP();
-		if(profile.getModifiedTime() != null)
-			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(profile.getModifiedTime());
-		this.modifiedPlatform = profile.getModifiedPlatform();
 		if(profile.getUser() != null)
 			this.userData = new UserData(profile.getUser());
-	}
-	
-	public ProfileData(int id, String email, String name, String gender,
-			String birthplace, Date birthdate, String address, String telp,
-			String phone, String photo, String bio, String resourcesUUID, String forgotUUID, Date forgotExpired,
-			User user, String createdBy, String createdIP,
-			Date createdTime, String createdPlatform, 
-			String modifiedBy, String modifiedIP, Date modifiedTime, String modifiedPlatform) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.name = name;
-		this.gender = gender;
-		this.birthplace = birthplace;
-		if(birthdate != null)
-			this.birthdate = ParameterConstant.FORMAT_DEFAULT.format(birthdate);
-		this.address = address;
-		this.telp = telp;
-		this.phone = phone;
-		this.photo = photo;
-		this.bio = bio;
-		this.resourcesUUID = resourcesUUID;
-		this.forgotUUID = forgotUUID;
-		if(forgotExpired != null)
-			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(forgotExpired);
-		this.createdBy = createdBy;
-		this.createdIP = createdIP;
-		if(createdTime != null)
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
-		this.createdPlatform = createdPlatform;
-		this.modifiedBy = modifiedBy;
-		this.modifiedIP = modifiedIP;
-		if(modifiedTime != null)
-			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(modifiedTime);
-		this.modifiedPlatform = modifiedPlatform;
-		if(user != null)
-			this.userData = new UserData(user);
 	}
 
 	public Integer getId() {
@@ -270,70 +196,6 @@ public class ProfileData {
 		this.forgotExpired = forgotExpired;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getCreatedIP() {
-		return createdIP;
-	}
-
-	public void setCreatedIP(String createdIP) {
-		this.createdIP = createdIP;
-	}
-
-	public String getCreatedTime() {
-		return createdTime;
-	}
-
-	public void setCreatedTime(String createdTime) {
-		this.createdTime = createdTime;
-	}
-
-	public String getCreatedPlatform() {
-		return createdPlatform;
-	}
-
-	public void setCreatedPlatform(String createdPlatform) {
-		this.createdPlatform = createdPlatform;
-	}
-
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
-	public String getModifiedIP() {
-		return modifiedIP;
-	}
-
-	public void setModifiedIP(String modifiedIP) {
-		this.modifiedIP = modifiedIP;
-	}
-
-	public String getModifiedTime() {
-		return modifiedTime;
-	}
-
-	public void setModifiedTime(String modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-	public String getModifiedPlatform() {
-		return modifiedPlatform;
-	}
-
-	public void setModifiedPlatform(String modifiedPlatform) {
-		this.modifiedPlatform = modifiedPlatform;
-	}
-
 	public UserData getUserData() {
 		return userData;
 	}
@@ -345,45 +207,22 @@ public class ProfileData {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((bio == null) ? 0 : bio.hashCode());
-		result = prime * result
-				+ ((birthdate == null) ? 0 : birthdate.hashCode());
-		result = prime * result
-				+ ((birthplace == null) ? 0 : birthplace.hashCode());
-		result = prime * result
-				+ ((createdBy == null) ? 0 : createdBy.hashCode());
-		result = prime * result
-				+ ((createdIP == null) ? 0 : createdIP.hashCode());
-		result = prime * result
-				+ ((createdPlatform == null) ? 0 : createdPlatform.hashCode());
-		result = prime * result
-				+ ((createdTime == null) ? 0 : createdTime.hashCode());
+		result = prime * result + ((birthdate == null) ? 0 : birthdate.hashCode());
+		result = prime * result + ((birthplace == null) ? 0 : birthplace.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((forgotExpired == null) ? 0 : forgotExpired.hashCode());
-		result = prime * result
-				+ ((forgotUUID == null) ? 0 : forgotUUID.hashCode());
+		result = prime * result + ((forgotExpired == null) ? 0 : forgotExpired.hashCode());
+		result = prime * result + ((forgotUUID == null) ? 0 : forgotUUID.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((modifiedBy == null) ? 0 : modifiedBy.hashCode());
-		result = prime * result
-				+ ((modifiedIP == null) ? 0 : modifiedIP.hashCode());
-		result = prime
-				* result
-				+ ((modifiedPlatform == null) ? 0 : modifiedPlatform.hashCode());
-		result = prime * result
-				+ ((modifiedTime == null) ? 0 : modifiedTime.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((photo == null) ? 0 : photo.hashCode());
-		result = prime * result
-				+ ((resourcesUUID == null) ? 0 : resourcesUUID.hashCode());
+		result = prime * result + ((resourcesUUID == null) ? 0 : resourcesUUID.hashCode());
 		result = prime * result + ((telp == null) ? 0 : telp.hashCode());
-		result = prime * result
-				+ ((userData == null) ? 0 : userData.hashCode());
+		result = prime * result + ((userData == null) ? 0 : userData.hashCode());
 		return result;
 	}
 
@@ -391,7 +230,7 @@ public class ProfileData {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -415,26 +254,6 @@ public class ProfileData {
 			if (other.birthplace != null)
 				return false;
 		} else if (!birthplace.equals(other.birthplace))
-			return false;
-		if (createdBy == null) {
-			if (other.createdBy != null)
-				return false;
-		} else if (!createdBy.equals(other.createdBy))
-			return false;
-		if (createdIP == null) {
-			if (other.createdIP != null)
-				return false;
-		} else if (!createdIP.equals(other.createdIP))
-			return false;
-		if (createdPlatform == null) {
-			if (other.createdPlatform != null)
-				return false;
-		} else if (!createdPlatform.equals(other.createdPlatform))
-			return false;
-		if (createdTime == null) {
-			if (other.createdTime != null)
-				return false;
-		} else if (!createdTime.equals(other.createdTime))
 			return false;
 		if (email == null) {
 			if (other.email != null)
@@ -460,26 +279,6 @@ public class ProfileData {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (modifiedBy == null) {
-			if (other.modifiedBy != null)
-				return false;
-		} else if (!modifiedBy.equals(other.modifiedBy))
-			return false;
-		if (modifiedIP == null) {
-			if (other.modifiedIP != null)
-				return false;
-		} else if (!modifiedIP.equals(other.modifiedIP))
-			return false;
-		if (modifiedPlatform == null) {
-			if (other.modifiedPlatform != null)
-				return false;
-		} else if (!modifiedPlatform.equals(other.modifiedPlatform))
-			return false;
-		if (modifiedTime == null) {
-			if (other.modifiedTime != null)
-				return false;
-		} else if (!modifiedTime.equals(other.modifiedTime))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -516,16 +315,10 @@ public class ProfileData {
 
 	@Override
 	public String toString() {
-		return "ProfileData [id=" + id + ", email=" + email + ", name=" + name
-				+ ", gender=" + gender + ", birthplace=" + birthplace
-				+ ", birthdate=" + birthdate + ", address=" + address
-				+ ", telp=" + telp + ", phone=" + phone + ", photo=" + photo
-				+ ", bio=" + bio + ", resourcesUUID=" + resourcesUUID 
-				+ ", forgotUUID=" + forgotUUID + ", forgotExpired=" + forgotExpired
-				+ ", createdBy=" + createdBy + ", createdIP="
-				+ createdIP + ", createdTime=" + createdTime + ", createdPlatform=" + createdPlatform
-				+ ", modifiedBy=" + modifiedBy + ", modifiedIP=" + modifiedIP + ", modifiedTime="
-				+ modifiedTime + ", modifiedPlatform=" + modifiedPlatform + ", userData=" + userData + "]";
+		return "ProfileData [id=" + id + ", email=" + email + ", name=" + name + ", gender=" + gender + ", birthplace="
+				+ birthplace + ", birthdate=" + birthdate + ", address=" + address + ", telp=" + telp + ", phone="
+				+ phone + ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID="
+				+ forgotUUID + ", forgotExpired=" + forgotExpired + ", userData=" + userData + "]";
 	}
 
 }

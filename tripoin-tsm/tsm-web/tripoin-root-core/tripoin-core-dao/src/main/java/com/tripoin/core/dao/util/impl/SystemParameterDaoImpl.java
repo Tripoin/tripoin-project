@@ -24,13 +24,13 @@ public class SystemParameterDaoImpl implements ISystemParameterDao {
 	
 	@Override
 	public SystemParameter loadValue(String code) throws Exception {
-		SystemParameter systemParameter = (SystemParameter)jdbcTemplate.queryForObject("SELECT * FROM mst_system_parameter WHERE system_parameter_code = ?", new Object[]{code}, systemParameterMapper);
+		SystemParameter systemParameter = (SystemParameter)jdbcTemplate.queryForObject("SELECT * FROM sys_system_parameter WHERE system_parameter_code = ?", new Object[]{code}, systemParameterMapper);
 		return systemParameter;
 	}
 
 	@Override
 	public List<SystemParameter> listValue(Object[] code) throws Exception {
-		List<SystemParameter> systemParameterList = jdbcTemplate.query("SELECT * FROM mst_system_parameter WHERE system_parameter_code = ? OR system_parameter_code = ?", code, systemParameterMapper);
+		List<SystemParameter> systemParameterList = jdbcTemplate.query("SELECT * FROM sys_system_parameter WHERE system_parameter_code = ? OR system_parameter_code = ?", code, systemParameterMapper);
 		return systemParameterList;
 	}
 

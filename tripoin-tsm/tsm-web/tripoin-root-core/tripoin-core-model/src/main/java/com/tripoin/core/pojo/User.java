@@ -3,8 +3,8 @@ package com.tripoin.core.pojo;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.UserData;
 
+import java.sql.Date;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -55,7 +55,7 @@ public class User implements IBaseModel {
             this.enabled = userData.getEnabled();
             if(userData.getExpiredDate() != null){
 				try {
-					this.expiredDate = ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate());
+					this.expiredDate = new Date(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}            	
@@ -75,7 +75,7 @@ public class User implements IBaseModel {
             this.enabled = userData.getEnabled();
             if(userData.getExpiredDate() != null){
 				try {
-					this.expiredDate = ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate());
+					this.expiredDate = new Date(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}            	

@@ -82,9 +82,19 @@ public class ServiceTest implements ApplicationContextAware  {
 		return applicationContext;
 	}
 	
+	/**
+	 * TODO method test
+	 */
 	@Test
 	public void runtTestMain() throws Exception{
 		runTestEmployee();
+	}
+	
+	public void runTestDatabase() throws Exception {		
+		List<Menu> dataList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Menu", null, new PageArgument(0, 10));
+		for(Menu data : dataList) {
+			LOGGER.debug("Data : "+data);
+		}
 	}
 	
 	public void runTestTotalRowData() throws Exception {
@@ -126,7 +136,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	public void runTestUser() throws Exception {
-		String username = "tripoin";	
+		String username = "ridla";	
 		
 		List<User> users = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{username}, null);
 		for(User user : users) LOGGER.debug("User Data : "+user);
@@ -165,7 +175,7 @@ public class ServiceTest implements ApplicationContextAware  {
 		String username = "ROLE_SALESMAN";
 		
 		FilterArgument[] filterArguments = new FilterArgument[] { 
-				new FilterArgument(EmployeeTransferObject.EnumFieldEmployee.ROLE_EMPLOYE.toString(), ECommonOperator.NOT_EQUALS) 
+				new FilterArgument(EmployeeTransferObject.EnumFieldEmployee.ROLE_EMPLOYE.toString(), ECommonOperator.EQUALS) 
 		};
 		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { username }, null, null);
 		for(Employee employee : employeeList) {

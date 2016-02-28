@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,9 +30,10 @@ public class Role implements IBaseModel {
 	
 	private Integer id;
 	private String code;
-	private List<User> users;
 	private Integer status;
 	private String remarks;
+
+	private List<User> users;
 	private List<Menu> menus;
 	
 	public Role(){}
@@ -65,15 +67,6 @@ public class Role implements IBaseModel {
 		this.code = code;
 	}
 
-	@OneToMany(mappedBy = "role", cascade=CascadeType.ALL)
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
-
 	@Column(name="role_status")
 	public Integer getStatus() {
 		return status;
@@ -90,6 +83,15 @@ public class Role implements IBaseModel {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role", cascade=CascadeType.ALL)
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
     @ManyToMany(mappedBy = "roles", cascade=CascadeType.ALL)
