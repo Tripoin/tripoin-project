@@ -143,7 +143,7 @@ public class Employee extends AGeneralAuditTrail {
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", code=" + code + ", nik=" + nik + ", profile.id=" + profile.getId() + ", occupation="
-				+ occupation + ", area=" + area + ", employeeParent=" + employeeParent + "]";
+				+ occupation + ", area=" + area + "]";
 	}
 	
 }
