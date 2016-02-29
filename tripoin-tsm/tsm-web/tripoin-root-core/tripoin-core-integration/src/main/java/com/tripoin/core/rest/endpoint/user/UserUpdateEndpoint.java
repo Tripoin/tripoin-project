@@ -38,11 +38,16 @@ public class UserUpdateEndpoint extends XReturnStatus {
 	@Autowired
 	private StandardStringDigester jasyptStringDigester;
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/user/update</code><br>
+	 * @param inMessage
+	 * @return
+	 */
     @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<UserTransferObject> updateUser(Message<UserData> inMessage) {
         UserTransferObject userTransferObject = new UserTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
-
         try {
         	UserData userDataPayload = inMessage.getPayload();       	
             User userPayload = new User(userDataPayload);
@@ -66,7 +71,6 @@ public class UserUpdateEndpoint extends XReturnStatus {
             userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             userTransferObject.setResponseDesc("Update User System Error : " + e.getLocalizedMessage());
         }
-
         setReturnStatusAndMessage(userTransferObject, responseHeaderMap);
         Message<UserTransferObject> message = new GenericMessage<UserTransferObject>(userTransferObject, responseHeaderMap);
         return message;

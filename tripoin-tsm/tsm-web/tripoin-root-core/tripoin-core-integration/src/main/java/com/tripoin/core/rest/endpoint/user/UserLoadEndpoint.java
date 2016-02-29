@@ -40,36 +40,12 @@ public class UserLoadEndpoint extends XReturnStatus {
     
 	private String currentUserName;
 
-    @Secured({RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
-    public Message<UserTransferObject> loadAllUser(Message<?> inMessage) {
-        UserTransferObject userTransferObject = new UserTransferObject();
-        Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
-
-        try {
-            List<User> userList = iGenericManagerJpa.loadObjects(User.class);
-            List<UserData> userDatas = new ArrayList<UserData>();
-            if (userList != null) {
-                for (User user : userList) {
-                    UserData userData = new UserData(user);
-                    userDatas.add(userData);
-                }
-                userTransferObject.setUserDatas(userDatas);
-            }
-            userTransferObject.setResponseCode("0");
-            userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-            userTransferObject.setResponseDesc("Load All User Data Success");
-        } catch (Exception e) {
-            LOGGER.error("Load All User System Error : " + e.getLocalizedMessage(), e);
-            userTransferObject.setResponseCode("1");
-            userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-            userTransferObject.setResponseDesc("Load All User System Error : " + e.getLocalizedMessage());
-        }
-
-        setReturnStatusAndMessage(userTransferObject, responseHeaderMap);
-        Message<UserTransferObject> message = new GenericMessage<UserTransferObject>(userTransferObject, responseHeaderMap);
-        return message;
-    }
-
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/user/load</code><br>
+	 * @param inMessage
+	 * @return
+	 */
     @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
     public Message<UserTransferObject> loadUser(Message<?> inMessage) {
         UserTransferObject userTransferObject = new UserTransferObject();
@@ -100,7 +76,6 @@ public class UserLoadEndpoint extends XReturnStatus {
             userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
             userTransferObject.setResponseDesc("Load User System Error : " + e.getLocalizedMessage());
         }
-
         setReturnStatusAndMessage(userTransferObject, responseHeaderMap);
         Message<UserTransferObject> message = new GenericMessage<UserTransferObject>(userTransferObject, responseHeaderMap);
         return message;

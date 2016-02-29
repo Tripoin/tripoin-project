@@ -37,17 +37,16 @@ public class WebServiceConstant {
 	
 	public static final String HTTP_LOGIN_MENU_SOAP = HTTP_CONTEXT_SOAP.concat("/loginMenuService");
 		
-	public static final String HTTP_CONNECTION = HTTP_CONTEXT_REST.concat("/connection");	
-	public static final String HTTP_LOGIN = HTTP_CONTEXT_REST.concat("/login");	
+	public static final String HTTP_CONNECTION = HTTP_CONTEXT_REST.concat("/connection");
 	public static final String HTTP_LOGIN_MENU = HTTP_CONTEXT_REST.concat("/login-menu");
 	public static final String HTTP_LOGOUT = HTTP_CONTEXT_REST.concat("/logout");
 	public static final String HTTP_REPORT_SELECTED = HTTP_CONTEXT_REST.concat("/report").concat(HTTP_SELECT);
+	public static final String HTTP_USER = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_LOAD);
+	public static final String HTTP_USER_UPDATE = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_UPDATE);
 	public static final String HTTP_PROFILE = HTTP_CONTEXT_REST.concat("/profile").concat(HTTP_LOAD);
+	public static final String HTTP_PROFILE_EMPLOYEE = HTTP_CONTEXT_REST.concat("/profile/employee").concat(HTTP_LOAD);
 	public static final String HTTP_PROFILE_UPDATE = HTTP_CONTEXT_REST.concat("/profile").concat(HTTP_UPDATE);
 	public static final String HTTP_PROFILE_IMAGE = HTTP_CONTEXT_REST.concat("/profile").concat(HTTP_IMAGE);
-	public static final String HTTP_USER = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_LOAD);
-	public static final String HTTP_USER_ALL = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_LOAD).concat(HTTP_ALL);
-	public static final String HTTP_USER_UPDATE = HTTP_CONTEXT_REST.concat("/user").concat(HTTP_UPDATE);
 	public static final String HTTP_EMPLOYEE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_LOAD);
 	public static final String HTTP_EMPLOYEE_ALL = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_LOAD).concat(HTTP_ALL);
 	public static final String HTTP_EMPLOYEE_SAVE = HTTP_CONTEXT_REST.concat("/employee").concat(HTTP_SAVE);

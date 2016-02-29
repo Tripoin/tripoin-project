@@ -13,10 +13,15 @@
         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
 	
 	<int:channel id="responseChannelProfileLoad"/>
-	<int:channel id="requestChannelProfileLoad"/>	
+	<int:channel id="requestChannelProfileLoad"/>
+	
+	<int:channel id="responseChannelProfileEmployeeLoad"/>
+	<int:channel id="requestChannelProfileEmployeeLoad"/>	
+	
 	<int:channel id="responseChannelProfileUpdate"/>
 	<int:channel id="requestChannelProfileUpdate"/>
 	<int:channel id="routeChannelProfileUpdate"/>
+	
 	<int:channel id="requestChannelProfileImage"/>
 	<int:channel id="responseChannelProfileImage"/>
 	<int:channel id="routeChannelProfileImage"/>
@@ -28,6 +33,14 @@
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>	
 	<int:service-activator ref="profileLoadEndpoint" method="getProfile" input-channel="requestChannelProfileLoad" output-channel="responseChannelProfileLoad"/>		
+	
+	<int-http:inbound-gateway request-channel="requestChannelProfileEmployeeLoad"
+		reply-channel="responseChannelProfileEmployeeLoad"
+		supported-methods="GET" 
+		path="/wscontext/profile/employee/load">
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>	
+	<int:service-activator ref="profileLoadEndpoint" method="getProfileEmployee" input-channel="requestChannelProfileEmployeeLoad" output-channel="responseChannelProfileEmployeeLoad"/>		
 	
 	<int-http:inbound-gateway request-channel="requestChannelProfileUpdate"
 		reply-channel="responseChannelProfileUpdate"

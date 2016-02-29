@@ -45,6 +45,12 @@ public class ProfileImageEndpoint extends XReturnStatus {
 
 	private String currentUserName;
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/profile/image</code><br>
+	 * @param multipartRequest
+	 * @return
+	 */
 	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<GeneralTransferObject> updatePhotoProfile(LinkedMultiValueMap<String, Object> multipartRequest){		
 		GeneralTransferObject generalTransferObject = new GeneralTransferObject();

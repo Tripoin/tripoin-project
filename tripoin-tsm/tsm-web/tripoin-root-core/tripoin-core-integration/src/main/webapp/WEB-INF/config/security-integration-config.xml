@@ -26,8 +26,8 @@
 		<security:access-denied-handler ref="access-denied"/>
 		<security:http-basic entry-point-ref="bad-credential"/>	
 		<security:intercept-url pattern='/resources/images/**' access="permitAll" />
-		<security:intercept-url pattern='/soapcontext/*' access="hasAnyRole('ROLE_SALESMAN', 'ROLE_SALESSUPERVISOR', 'ROLE_SALESMANAGER', 'ROLE_ADMIN')" />
-		<security:intercept-url pattern='/wscontext/*' access="hasAnyRole('ROLE_SALESMAN', 'ROLE_SALESSUPERVISOR', 'ROLE_SALESMANAGER', 'ROLE_ADMIN')" />
+		<security:intercept-url pattern='/soapcontext/*' access="hasAnyRole('ROLE_SALESMAN', 'ROLE_AREASALESMANAGER', 'ROLE_NATIONALSALESMANAGER', 'ROLE_ADMIN')" />
+		<security:intercept-url pattern='/wscontext/*' access="hasAnyRole('ROLE_SALESMAN', 'ROLE_AREASALESMANAGER', 'ROLE_NATIONALSALESMANAGER', 'ROLE_ADMIN')" />
 		<security:intercept-url pattern='/anonymous/*' access="hasAnyRole('ROLE_ANONYMOUS_SECURE')" />	
 	</security:http>
 	

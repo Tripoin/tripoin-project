@@ -18,9 +18,14 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
+import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.core.dto.ProfileTransferObject;
+import com.tripoin.core.dto.UserData;
+import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Profile;
+import com.tripoin.core.pojo.User;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
 
@@ -37,35 +42,98 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 
 	private String currentUserName;
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/profile/load</code><br>
+	 * @param inMessage
+	 * @return
+	 */
 	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<ProfileTransferObject> getProfile(Message<?> inMessage){	
 		ProfileTransferObject profileTransferObject = new ProfileTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
-
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken))
-		    this.currentUserName = authentication.getName();		
-		
+		    this.currentUserName = authentication.getName();
+		authentication = null;
 		try{
 			List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT pr FROM Profile pr WHERE pr.user.username = ?", new Object[]{currentUserName}, null);
+			List<User> userList = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{currentUserName}, null);
 			List<ProfileData> profileDatas = new ArrayList<ProfileData>();
-			if(profileList != null){
-				for(Profile profile : profileList)
-					profileDatas.add(new ProfileData(profile));
+			if(profileList != null && !profileList.isEmpty()){
+				ProfileData profileData = new ProfileData(profileList.get(0));
+				profileData.setUserData(new UserData(userList.get(0)));
+				profileDatas.add(profileData);
 				profileTransferObject.setProfileDatas(profileDatas);
+				userList = null;
+				profileData = null;
+				profileList = null;
+				profileDatas = null;
 			}
 			profileTransferObject.setResponseCode("0");
 			profileTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			profileTransferObject.setResponseDesc("Load Profile Data Success");			
+			profileTransferObject.setResponseDesc("Load Profile Data Success");		
 		}catch (Exception e){
 			LOGGER.error("Load Profile System Error : "+e.getLocalizedMessage(), e);
 			profileTransferObject.setResponseCode("1");
 			profileTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			profileTransferObject.setResponseDesc("Load Profile System Error : "+e.getLocalizedMessage());
 		}
-		
 		setReturnStatusAndMessage(profileTransferObject, responseHeaderMap);
 		Message<ProfileTransferObject> message = new GenericMessage<ProfileTransferObject>(profileTransferObject, responseHeaderMap);
+		profileTransferObject = null;
+		currentUserName = null;
+		return message;		
+	}
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/profile/employee/load</code><br>
+	 * @param inMessage
+	 * @return
+	 */
+	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
+	public Message<EmployeeTransferObject> getProfileEmployee(Message<?> inMessage){	
+		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
+		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken))
+		    this.currentUserName = authentication.getName();
+		authentication = null;		
+		try{
+			List<Employee> employeeList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em FROM Employee em WHERE em.profile.user.username = ?", new Object[]{currentUserName}, null);
+			List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT pr FROM Profile pr WHERE pr.user.username = ?", new Object[]{currentUserName}, null);
+			List<User> userList = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{currentUserName}, null);
+			List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
+			if(profileList != null && !profileList.isEmpty()){
+				EmployeeData employeeData = new EmployeeData();
+				if(employeeList != null && !employeeList.isEmpty())
+					employeeData = new EmployeeData(employeeList.get(0));
+				ProfileData profileData = new ProfileData(profileList.get(0));
+				profileData.setUserData(new UserData(userList.get(0)));
+				employeeData.setProfileData(profileData);
+				employeeDatas.add(employeeData);
+				employeeTransferObject.setEmployeeDatas(employeeDatas);
+				userList = null;
+				profileData = null;
+				profileList = null;
+				employeeList = null;
+				employeeData = null;
+				employeeDatas = null;
+			}
+			employeeTransferObject.setResponseCode("0");
+			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+			employeeTransferObject.setResponseDesc("Load Profile Employee Data Success");			
+		}catch (Exception e){
+			LOGGER.error("Load Profile System Error : "+e.getLocalizedMessage(), e);
+			employeeTransferObject.setResponseCode("1");
+			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			employeeTransferObject.setResponseDesc("Load Profile Employee System Error : "+e.getLocalizedMessage());
+		}
+		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
+		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
+		employeeTransferObject = null;
+		currentUserName = null;
 		return message;		
 	}
 	

@@ -87,12 +87,12 @@ public class ServiceTest implements ApplicationContextAware  {
 	 */
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestEmployee();
+		runTestDatabase();
 	}
 	
-	public void runTestDatabase() throws Exception {		
-		List<Menu> dataList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Menu", null, new PageArgument(0, 10));
-		for(Menu data : dataList) {
+	public void runTestDatabase() throws Exception {
+		List<Profile> dataList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT pr FROM Profile pr WHERE pr.user.username = ?", new Object[]{"ridla"}, null);
+		for(Profile data : dataList) {
 			LOGGER.debug("Data : "+data);
 		}
 	}

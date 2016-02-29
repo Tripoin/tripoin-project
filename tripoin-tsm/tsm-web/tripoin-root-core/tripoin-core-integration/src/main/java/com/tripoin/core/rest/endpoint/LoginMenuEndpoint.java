@@ -45,6 +45,12 @@ public class LoginMenuEndpoint extends XReturnStatus {
 	
 	private String viewType = ParameterConstant.VIEW_WEB_MOBILE;
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/login-menu</code><br>
+	 * @param inMessage
+	 * @return
+	 */
 	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<UserMenuTransferObject> getUserMenu(Message<?> inMessage){
 		UserMenuTransferObject userMenuTransferObject = new UserMenuTransferObject();

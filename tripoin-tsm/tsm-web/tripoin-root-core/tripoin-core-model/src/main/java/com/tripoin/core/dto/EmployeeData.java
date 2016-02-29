@@ -43,10 +43,9 @@ public class EmployeeData extends AGeneralAuditTrailData {
 			this.id = employee.getId();
 			this.code = employee.getCode();
 			this.nik = employee.getNik();
-			this.profileData = new ProfileData(employee.getProfile());
 			this.occupationData = new OccupationData(employee.getOccupation());
-			this.areaData = new AreaData(employee.getArea());
-			this.employeeDataParent = new EmployeeData(employee.getEmployeeParent());	
+			if(areaData != null)
+				this.areaData = new AreaData(employee.getArea());	
 		}
 	}
 

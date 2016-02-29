@@ -79,9 +79,7 @@ public class ProfileData extends AGeneralAuditTrailData {
 		this.resourcesUUID = profile.getResourcesUUID();
 		this.forgotUUID = profile.getForgotUUID();
 		if(profile.getForgotExpired() != null)
-			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getModifiedTime());
-		if(profile.getUser() != null)
-			this.userData = new UserData(profile.getUser());
+			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getForgotExpired());
 	}
 
 	public Integer getId() {

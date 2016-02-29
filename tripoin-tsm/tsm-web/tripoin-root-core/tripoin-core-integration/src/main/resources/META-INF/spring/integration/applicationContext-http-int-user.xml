@@ -12,23 +12,12 @@
 		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
 	
-	<int:channel id="responseChannelUserLoadAll"/>
-	<int:channel id="requestChannelUserLoadAll"/>
-	
 	<int:channel id="responseChannelUserLoad"/>
 	<int:channel id="requestChannelUserLoad"/>
 	
 	<int:channel id="responseChannelUserUpdate"/>
 	<int:channel id="requestChannelUserUpdate"/>
 	<int:channel id="routeChannelUserUpdate"/>
-	
-	<int-http:inbound-gateway request-channel="requestChannelUserLoadAll"
-		reply-channel="responseChannelUserLoadAll"
-		supported-methods="GET" 
-		path="/wscontext/user/load/all">
-		<int-http:request-mapping consumes="application/json" produces="application/json"/>
-	</int-http:inbound-gateway>	
-	<int:service-activator ref="userLoadEndpoint" method="loadAllUser" input-channel="requestChannelUserLoadAll" output-channel="responseChannelUserLoadAll"/>
 	
 	<int-http:inbound-gateway request-channel="requestChannelUserLoad"
 		reply-channel="responseChannelUserLoad"

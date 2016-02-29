@@ -11,6 +11,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.core.dto.ProfileTransferObject;
@@ -33,8 +35,12 @@ public class ProfileServiceImpl implements IProfileService {
 	
 	@Override
 	public ProfileData getProfile() {
-		ProfileTransferObject profileTransferObject = stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE), ProfileTransferObject.class);
-		return profileTransferObject.getProfileDatas().get(0);
+		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE), ProfileTransferObject.class).getProfileDatas().get(0);
+	}
+
+	@Override
+	public EmployeeData getProfileEmployee() {
+		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE_EMPLOYEE), EmployeeTransferObject.class).getEmployeeDatas().get(0);
 	}
 
 	@Override
@@ -53,5 +59,4 @@ public class ProfileServiceImpl implements IProfileService {
 		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE_IMAGE), multipartMap, GeneralTransferObject.class);		
 		return generalTransferObject;
 	}
-
 }

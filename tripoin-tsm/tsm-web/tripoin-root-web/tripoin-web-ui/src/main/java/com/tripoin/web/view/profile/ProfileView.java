@@ -27,7 +27,6 @@ import com.tripoin.web.TripoinUI;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.WebServiceConstant;
-import com.tripoin.web.service.IEmployeeService;
 import com.tripoin.web.service.IProfileService;
 import com.tripoin.web.servlet.VaadinView;
 import com.vaadin.data.Property.ReadOnlyException;
@@ -61,11 +60,11 @@ import com.vaadin.ui.Upload.FailedEvent;
 import com.vaadin.ui.Upload.FailedListener;
 import com.vaadin.ui.Upload.FinishedEvent;
 import com.vaadin.ui.Upload.FinishedListener;
-import com.vaadin.ui.Upload.StartedListener;
-import com.vaadin.ui.Upload.SucceededListener;
-import com.vaadin.ui.Upload.SucceededEvent;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Upload.StartedEvent;
+import com.vaadin.ui.Upload.StartedListener;
+import com.vaadin.ui.Upload.SucceededEvent;
+import com.vaadin.ui.Upload.SucceededListener;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -82,9 +81,6 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 
     @Autowired
     private IProfileService profileService;
-
-    @Autowired
-    private IEmployeeService employeeService;
     
     @Autowired
     private ICommonRest commonRest;
@@ -142,10 +138,9 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         section.addStyleName("colored");
         section.setWidth("80%");
 
+        employeeData = profileService.getProfileEmployee();
+        profileData = employeeData.getProfileData();
         
-        employeeData = employeeService.getEmployee();
-        if(employeeData == null) profileData = profileService.getProfile();
-        else profileData = employeeData.getProfileData(); 
         final HorizontalLayout personalInfoLayout = new HorizontalLayout();
         addComponent(personalInfoLayout);
         personalInfoLayout.setMargin(false);
@@ -168,7 +163,8 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         nameTextField.setValue(profileData.getName());
         nameTextField.setWidth("100%");
         nameTextField.setRequired(true);
-        if(employeeData != null){
+
+        if(employeeData.getNik() != null){
             personalInfoFormLayout.addComponent(nikTextField);
             nikTextField.setValue(employeeData.getNik());
             nikTextField.setWidth("100%");

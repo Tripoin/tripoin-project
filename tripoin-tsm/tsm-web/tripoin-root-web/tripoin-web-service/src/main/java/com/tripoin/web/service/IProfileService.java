@@ -3,6 +3,7 @@ package com.tripoin.web.service;
 import java.io.File;
 import java.util.Map;
 
+import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.core.dto.ProfileTransferObject;
@@ -13,6 +14,8 @@ import com.tripoin.core.dto.ProfileTransferObject;
 public interface IProfileService {
 
     public ProfileData getProfile();
+
+    public EmployeeData getProfileEmployee();
     
     public ProfileTransferObject updateProfile(ProfileData profileData);
 

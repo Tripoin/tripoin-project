@@ -21,6 +21,11 @@ public class LogoutEndpoint extends XReturnStatus {
 
 	private String currentUserName;
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/logout</code><br>
+	 * @param inMessage
+	 */
 	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public void doLogout(Message<?> inMessage){	
 		try {
