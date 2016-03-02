@@ -34,6 +34,9 @@ public enum EWebUIConstant {
 	REGEX_CONTAINS_WHITESPACE("((?=\\S+$).{6,20})"),
 	REGEX_CONTAINS_MINMAX(".{6,20}"),
 	REGEX_AUTHORIZATION("Basic |\\[|\\]"),
+	
+	JSESSIONID("JSESSIONID"),
+	COOKIE("Cookie"),
 	/**
 	 * take the number in front of and replace any existing character behind
 	 * example : 3214h3kjagd-089741

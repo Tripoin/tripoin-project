@@ -31,7 +31,7 @@
 		reply-channel="responseChannelUserUpdate"
 		supported-methods="POST" 
 		path="/wscontext/user/update, /wscontext/user/update/{user}"
-		request-payload-type="com.tripoin.core.dto.UserData">	
+		request-payload-type="java.lang.String">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelUserUpdate" expression="headers.http_requestMethod">

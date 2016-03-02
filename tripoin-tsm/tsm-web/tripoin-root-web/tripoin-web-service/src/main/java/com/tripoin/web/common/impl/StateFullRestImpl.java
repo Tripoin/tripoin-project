@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.MenuData;
@@ -114,8 +115,20 @@ public class StateFullRestImpl extends ABaseHttpRest implements IStateFullRest {
 				return encodeUserCredentials(headers, username, password);	
 			}
 		}
-		headers.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));		
+		headers.put("Cookie", Arrays.asList(new String[]{getCookiesString(), getUserCredentials()}));		
 		return headers;
+	}
+	
+	private String getUserCredentials(){
+		StringBuilder sb = new StringBuilder();
+		if (!getCookies().isEmpty()) {
+			String combinedUsernamePassword = username.concat(":").concat(password);
+			byte[] base64Token = Base64.encode(combinedUsernamePassword.getBytes());
+			sb.append("Authorization");
+			sb.append("=");
+			sb.append("Basic ".concat(new String (base64Token)));
+		}	
+		return sb.toString();
 	}
 	
 }

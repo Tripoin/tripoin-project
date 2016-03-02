@@ -17,6 +17,7 @@ public enum EResponseCode {
 	RC_TYPEFILE_NOTALLOW("70", "Type File not Allowed"),
 	RC_MAX_FILE_SIZE("80", "Maximum file upload"),
 	RC_FAIL_UPLOAD("90", "File upload failure "),
+	RC_FAIL_PASSWORD("100", "Password not valid"),
 	
 	RC_OCCUPATION_USED("16", "Occupation is being used"),
 	RC_AREA_USED("17", "Area is being used");

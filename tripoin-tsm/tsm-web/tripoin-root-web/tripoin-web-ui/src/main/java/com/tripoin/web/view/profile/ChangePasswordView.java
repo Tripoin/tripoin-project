@@ -1,5 +1,7 @@
 package com.tripoin.web.view.profile;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.xerces.impl.dv.util.Base64;
@@ -7,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.tripoin.core.dto.UserData;
+import com.tripoin.core.common.EResponseCode;
+import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.TripoinUI;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.IStateFullRest;
@@ -48,8 +52,6 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
     
     @Autowired
     private IStateFullRest stateFullRest;
-    
-    private UserData userData = new UserData();
 
     private String currentUsername;
     private String currentPassword;
@@ -63,13 +65,19 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
     
     @PostConstruct
     public void init() throws Exception {
-        if(stateFullRest.getHeaders().get(EWebUIConstant.AUTHORIZATION.toString()) != null){
-        	String basicAuthorization = stateFullRest.getHeaders().get(EWebUIConstant.AUTHORIZATION.toString()).toString().replaceAll(EWebUIConstant.REGEX_AUTHORIZATION.toString(), "");
+        if(stateFullRest.getHeaders().get(EWebUIConstant.COOKIE.toString()) != null && !stateFullRest.getHeaders().get(EWebUIConstant.COOKIE.toString()).isEmpty()){
+        	List<String> cookies = stateFullRest.getHeaders().get(EWebUIConstant.COOKIE.toString());
+        	String basicAuthorization = "";
+        	for(String cookie : cookies){
+        		if(cookie.startsWith(EWebUIConstant.AUTHORIZATION.toString())){
+        			basicAuthorization = cookie.replaceAll(EWebUIConstant.AUTHORIZATION.toString().concat("="), "").replaceAll(EWebUIConstant.REGEX_AUTHORIZATION.toString(), "");
+        			break;
+        		}
+        	}        	
         	byte[] oauth = Base64.decode(basicAuthorization);
         	this.currentUsername = new String(oauth).split(":")[0];
         	this.currentPassword = new String(oauth).replaceFirst(currentUsername.concat(":"), "");
         }
-        userData = userService.getUser();
         
         setMargin(true);
         addStyleName("tripoin-custom-screen");
@@ -150,7 +158,10 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
     }
 
 	@Override
-	public void buttonClick(ClickEvent event) {		
+	public void buttonClick(ClickEvent event) {
+		oldPassword.setComponentError(null);
+		newPassword.setComponentError(null);
+		reTypePassword.setComponentError(null);	
 		if(oldPassword.getValue().equals(currentPassword)){
 			if(newPassword.getValue() == null || "".equals(newPassword.getValue()) || newPassword.getValue().isEmpty())
 				newPassword.setComponentError(new UserError("New Password not null!"));
@@ -172,14 +183,18 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
 						reTypePassword.setComponentError(new UserError("Must contains one lowercase or one uppercase characters!"));						
 					}else{
 						isFailure = false;
-						byte[] oauth = (this.currentUsername.concat(":").concat(newPassword.getValue())).getBytes();
+						byte[] oauth = (ParameterConstant.TRIPOIN_AUTHORIZATION.concat(this.currentUsername.concat(":").concat(newPassword.getValue()))).getBytes();
 						String basicAuthorization = Base64.encode(oauth);
-						userData.setAuth(basicAuthorization);
-						userService.updateUser(userData);
-						stateFullRest.clearAllCookies();
-						stateFullRest.setUsername(this.currentUsername);
-						stateFullRest.setPassword(newPassword.getValue());
-						TripoinUI.get().close();						
+						GeneralTransferObject generalTransferObject = userService.updateUser(basicAuthorization);
+						if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+							stateFullRest.clearAllCookies();
+							stateFullRest.setUsername(this.currentUsername);
+							stateFullRest.setPassword(newPassword.getValue());
+							TripoinUI.get().close();	
+						}else{
+							notification.setDescription(generalTransferObject.getResponseMsg());
+							isFailure = true;
+						}
 					}
 				}else{
 					newPassword.setComponentError(new UserError("New Password must be equals Re-type New Password!"));

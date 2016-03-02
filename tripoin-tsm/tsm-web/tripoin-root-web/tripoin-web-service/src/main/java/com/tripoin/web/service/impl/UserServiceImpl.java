@@ -3,6 +3,7 @@ package com.tripoin.web.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.UserData;
 import com.tripoin.core.dto.UserTransferObject;
 import com.tripoin.web.common.ICommonRest;
@@ -29,8 +30,8 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public UserTransferObject updateUser(UserData userData) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_USER_UPDATE), userData, UserTransferObject.class);
+	public GeneralTransferObject updateUser(String password) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_USER_UPDATE), password, GeneralTransferObject.class);
 	}
 
 }

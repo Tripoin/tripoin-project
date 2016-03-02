@@ -1,8 +1,6 @@
 package com.tripoin.core.rest.endpoint.user;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.jasypt.digest.StandardStringDigester;
@@ -12,16 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dto.UserData;
-import com.tripoin.core.dto.UserTransferObject;
-import com.tripoin.core.pojo.User;
+import com.tripoin.core.dao.filter.ValueArgument;
+import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.core.dto.exception.WSEndpointFault;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.core.service.soap.handler.WSEndpointFaultException;
 
 /**
  * @author <a href="mailto:fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
@@ -37,6 +40,11 @@ public class UserUpdateEndpoint extends XReturnStatus {
 
 	@Autowired
 	private StandardStringDigester jasyptStringDigester;
+	
+	private WSEndpointFault wsEndpointFault = new WSEndpointFault();
+
+	private String currentUserName;
+	private String newPassword;
 
 	/**
 	 * <b>Sample Code:</b><br>
@@ -45,34 +53,62 @@ public class UserUpdateEndpoint extends XReturnStatus {
 	 * @return
 	 */
     @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
-    public Message<UserTransferObject> updateUser(Message<UserData> inMessage) {
-        UserTransferObject userTransferObject = new UserTransferObject();
+    public Message<GeneralTransferObject> updateUser(Message<?> inMessage) {
+    	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken))
+		    this.currentUserName = authentication.getName();
+		authentication = null;
         try {
-        	UserData userDataPayload = inMessage.getPayload();       	
-            User userPayload = new User(userDataPayload);
-        	if(userDataPayload.getAuth() != null){
-	        	String basicAuthorization = userDataPayload.getAuth();
+			if(inMessage.getPayload() != null){
+				String basicAuthorization = ((String)inMessage.getPayload());
 	        	byte[] oauth = Base64.decode(basicAuthorization.getBytes());
-	        	userDataPayload.setAuth(null);
-	            userPayload.setAuth(null);
-	            userPayload.setPassword(jasyptStringDigester.digest(new String(oauth).split(":")[1]));	            
-        	}        	
-            iGenericManagerJpa.updateObject(userPayload);
-            List<UserData> userDatas = new ArrayList<UserData>();
-            userDatas.add(userDataPayload);
-            userTransferObject.setUserDatas(userDatas);
-            userTransferObject.setResponseCode("0");
-            userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-            userTransferObject.setResponseDesc("Update User Data Success");
+	        	if(new String(oauth).startsWith(ParameterConstant.TRIPOIN_AUTHORIZATION)){
+		        	newPassword = new String(oauth).replaceAll(ParameterConstant.TRIPOIN_AUTHORIZATION, "");
+		        	String[] splitOauth = newPassword.split(":");
+		        	if(splitOauth != null && splitOauth.length == 2){
+		        		if(currentUserName.equals(splitOauth[0]))
+		        			newPassword = jasyptStringDigester.digest(splitOauth[1]);
+		        		else{
+			        		wsEndpointFault.setMessage(EResponseCode.RC_FAIL_PASSWORD.toString());
+		    				throw new WSEndpointFaultException(EResponseCode.RC_FAIL_PASSWORD.getResponseCode(), wsEndpointFault);
+		        		}
+		        	}else{
+		        		wsEndpointFault.setMessage(EResponseCode.RC_FAIL_PASSWORD.toString());
+	    				throw new WSEndpointFaultException(EResponseCode.RC_FAIL_PASSWORD.getResponseCode(), wsEndpointFault);
+		        	}
+	        	}else{
+    				wsEndpointFault.setMessage(EResponseCode.RC_FAIL_PASSWORD.toString());
+    				throw new WSEndpointFaultException(EResponseCode.RC_FAIL_PASSWORD.getResponseCode(), wsEndpointFault);	        		
+	        	}
+	        	basicAuthorization = null;
+	        	oauth = null;
+			}        	
+			ValueArgument[] valueArguments = new ValueArgument[]{
+					new ValueArgument("username", currentUserName),
+					new ValueArgument("password", newPassword)
+			};
+            iGenericManagerJpa.execQueryNotCriteria("UPDATE sec_user SET user_password = :password WHERE user_username = :username", valueArguments);
+            generalTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
+            generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+            generalTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+            valueArguments = null;
+        } catch (WSEndpointFaultException e) {	
+        	generalTransferObject.setResponseCode(e.getMessage());
+        	generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+        	generalTransferObject.setResponseDesc(e.getFaultInfo().getMessage());
         } catch (Exception e) {
             LOGGER.error("Update User System Error : " + e.getLocalizedMessage(), e);
-            userTransferObject.setResponseCode("1");
-            userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-            userTransferObject.setResponseDesc("Update User System Error : " + e.getLocalizedMessage());
+            generalTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
+            generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+            generalTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getLocalizedMessage());
         }
-        setReturnStatusAndMessage(userTransferObject, responseHeaderMap);
-        Message<UserTransferObject> message = new GenericMessage<UserTransferObject>(userTransferObject, responseHeaderMap);
+        setReturnStatusAndMessage(generalTransferObject, responseHeaderMap);
+        Message<GeneralTransferObject> message = new GenericMessage<GeneralTransferObject>(generalTransferObject, responseHeaderMap);
+        generalTransferObject = null;
+        this.currentUserName = null;
+        this.newPassword = null;
         return message;
     }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dao.filter.SortArgument;
+import com.tripoin.core.dao.filter.ValueArgument;
 
 public interface IGenericManagerJpa {
 	
@@ -138,5 +139,31 @@ public interface IGenericManagerJpa {
 	 * @throws Exception
 	 */
 	public void deleteObjectListAndSync(final List<Object> objectTypeList) throws Exception;	
+
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>ValueArgument[] valueArguments = new ValueArgument[]{</code><br>
+	 * <code>new ValueArgument("name", "jakarta"),</code><br>
+	 * <code>new ValueArgument("code", "JAKARTA")};</code><br>
+	 * <code>int i = iGenericManagerJpa.execQueryNotCriteria("UPDATE mst_area SET area_name = :name WHERE area_code = :code", valueArguments);</code><br>
+	 * @param query
+	 * @param valueArguments
+	 * @return
+	 * @throws Exception
+	 */
+	public int execQueryNotCriteria(String query, ValueArgument[] valueArguments) throws Exception;	
+
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>Object[] values = new Object[]{</code><br>
+	 * <code>new Object("jakarta"),</code><br>
+	 * <code>new Object("JAKARTA")};</code><br>
+	 * <code>int i = iGenericManagerJpa.execQueryNotCriteria("UPDATE mst_area SET area_name = ? WHERE area_code = ?", values);</code><br>
+	 * @param query
+	 * @param values
+	 * @return
+	 * @throws Exception
+	 */
+	public int execQueryNotCriteria(String query, Object[] values) throws Exception;	
 	
 }

@@ -8,6 +8,7 @@ import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dao.filter.SortArgument;
+import com.tripoin.core.dao.filter.ValueArgument;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -32,6 +33,13 @@ public class JQLStatement implements Serializable {
 	public Query setParameterStatement(Query query, Object[] values){
 		for (int i=0; i<values.length; i++) {
 			query.setParameter(i+1, values[i]);
+		}
+		return query;
+	}
+	
+	public Query setParameterStatement(Query query, ValueArgument[] valueArguments){
+		for (int i=0; i<valueArguments.length; i++) {
+			query.setParameter(valueArguments[i].getField(), valueArguments[i].getValue());
 		}
 		return query;
 	}

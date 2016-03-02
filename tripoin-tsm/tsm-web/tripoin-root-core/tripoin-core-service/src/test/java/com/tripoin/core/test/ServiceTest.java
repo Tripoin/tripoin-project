@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,7 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
+import com.tripoin.core.dao.filter.ValueArgument;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.pojo.Area;
 import com.tripoin.core.pojo.Employee;
@@ -89,9 +89,16 @@ public class ServiceTest implements ApplicationContextAware  {
 	 */
 	@Test
 	public void runtTestMain() throws Exception{
-		int digitGroups = (int) (Math.log10(43147)/Math.log10(1024));
-		System.out.println(new DecimalFormat("#,##0.#").format(43147/Math.pow(1024, digitGroups)));
-		/*runTestDatabase();*/
+		runTestQuery();
+	}
+	
+	public void runTestQuery() throws Exception {
+		ValueArgument[] valueArguments = new ValueArgument[]{
+				new ValueArgument("name", "jakarta"),
+				new ValueArgument("code", "JAKARTA")
+		};
+		int i = iGenericManagerJpa.execQueryNotCriteria("UPDATE mst_area SET area_name = :name WHERE area_code = :code", valueArguments);
+		LOGGER.debug("Return : "+i);
 	}
 	
 	public void runTestDatabase() throws Exception {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tripoin.core.dao.IGenericDaoJpa;
 import com.tripoin.core.dao.IGenericDeleteDaoJpa;
 import com.tripoin.core.dao.IGenericInsertDaoJpa;
 import com.tripoin.core.dao.IGenericReadDaoJpa;
@@ -14,6 +15,7 @@ import com.tripoin.core.dao.IGenericUpdateDaoJpa;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dao.filter.SortArgument;
+import com.tripoin.core.dao.filter.ValueArgument;
 import com.tripoin.core.service.IGenericManagerJpa;
 
 /**
@@ -22,6 +24,8 @@ import com.tripoin.core.service.IGenericManagerJpa;
 @Service("iGenericManagerJpa")
 public class GenericManagerJpaImpl implements IGenericManagerJpa {
 
+	@Autowired
+	private IGenericDaoJpa genericDao;
 	@Autowired
 	private IGenericReadDaoJpa genericReadDao;
 	@Autowired
@@ -98,6 +102,16 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 	@Override
 	public void deleteObjectListAndSync(List<Object> objectTypeList) throws Exception {
 		genericDeleteDao.deleteObjectListAndSync(objectTypeList);
+	}
+
+	@Override
+	public int execQueryNotCriteria(String query, ValueArgument[] valueArguments) throws Exception {
+		return genericDao.execQueryNotCriteria(query, valueArguments);
+	}
+
+	@Override
+	public int execQueryNotCriteria(String query, Object[] values) throws Exception {
+		return genericDao.execQueryNotCriteria(query, values);
 	}
 
 }
