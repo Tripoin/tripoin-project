@@ -10,6 +10,6 @@ public interface IUserService {
 
     public UserData getUser();
     
-    public GeneralTransferObject updateUser(String userData);
+    public GeneralTransferObject updateUser(String password);
 
 }
