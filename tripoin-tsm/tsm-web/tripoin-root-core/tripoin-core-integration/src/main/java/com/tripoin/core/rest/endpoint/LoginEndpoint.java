@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
@@ -59,14 +60,14 @@ public class LoginEndpoint extends XReturnStatus {
 				userDatas.add(userData);
 				userTransferObject.setUserDatas(userDatas);
 			}
-			userTransferObject.setResponseCode("0");
+			userTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			userTransferObject.setResponseDesc("Login Success");			
+			userTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());			
 		}catch (Exception e){
 			LOGGER.error("Login System Error : "+e.getLocalizedMessage(), e);
-			userTransferObject.setResponseCode("1");
+			userTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			userTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			userTransferObject.setResponseDesc("Login System Error : "+e.getMessage());
+			userTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getMessage());
 		}
 		
 		setReturnStatusAndMessage(userTransferObject, responseHeaderMap);

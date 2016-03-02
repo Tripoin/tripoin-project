@@ -23,11 +23,11 @@ public class EmployeeData extends AGeneralAuditTrailData {
 	@XmlElement(name = "NIK", namespace = "")
     private String nik;
 	
-	@XmlElement(name = "ProfileData", namespace = "")
-    private ProfileData profileData;
-	
 	@XmlElement(name = "OccupationData", namespace = "")
     private OccupationData occupationData;
+	
+	@XmlElement(name = "ProfileData", namespace = "")
+    private ProfileData profileData;
 	
 	@XmlElement(name = "AreaData", namespace = "")
     private AreaData areaData;
@@ -44,7 +44,7 @@ public class EmployeeData extends AGeneralAuditTrailData {
 			this.code = employee.getCode();
 			this.nik = employee.getNik();
 			this.occupationData = new OccupationData(employee.getOccupation());
-			if(areaData != null)
+			if(employee.getArea() != null)
 				this.areaData = new AreaData(employee.getArea());	
 		}
 	}
@@ -73,20 +73,20 @@ public class EmployeeData extends AGeneralAuditTrailData {
 		this.nik = nik;
 	}
 
-	public ProfileData getProfileData() {
-		return profileData;
-	}
-
-	public void setProfileData(ProfileData profileData) {
-		this.profileData = profileData;
-	}
-
 	public OccupationData getOccupationData() {
 		return occupationData;
 	}
 
 	public void setOccupationData(OccupationData occupationData) {
 		this.occupationData = occupationData;
+	}
+
+	public ProfileData getProfileData() {
+		return profileData;
+	}
+
+	public void setProfileData(ProfileData profileData) {
+		this.profileData = profileData;
 	}
 
 	public AreaData getAreaData() {

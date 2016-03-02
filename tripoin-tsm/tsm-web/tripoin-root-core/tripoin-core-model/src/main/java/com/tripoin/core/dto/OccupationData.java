@@ -27,9 +27,11 @@ public class OccupationData extends AGeneralAuditTrailData {
 
 	public OccupationData(Occupation occupation) {
 		super(occupation);
-		this.id = occupation.getId();
-		this.code = occupation.getCode();
-		this.name = occupation.getName();
+		if(occupation != null){
+			this.id = occupation.getId();
+			this.code = occupation.getCode();
+			this.name = occupation.getName();	
+		}
 	}
 
 	public Integer getId() {

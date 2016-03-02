@@ -1,9 +1,9 @@
 package com.tripoin.core.pojo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +31,7 @@ public class Profile extends AGeneralAuditTrail {
 	 */
 	private static final long serialVersionUID = -5575840012553613210L;
     public static final String TABLE_NAME = "mst_profile";
-    
+
 	private Integer id;
     private String email;
     private String name;
@@ -45,14 +45,12 @@ public class Profile extends AGeneralAuditTrail {
     private String bio;
     private String resourcesUUID;
     private String forgotUUID;
-    private Date forgotExpired;
-    private User user;	
-    
-    private Employee employee;
+    private Timestamp forgotExpired;
+    private User user;
     
     public Profile() {}
     
-    public Profile(ProfileData profileData) {
+    public Profile(ProfileData profileData) throws ParseException {
     	super(profileData);
     	if(profileData != null){
     		this.id = profileData.getId();
@@ -74,25 +72,23 @@ public class Profile extends AGeneralAuditTrail {
     		this.forgotUUID = profileData.getForgotUUID();
     		try {
     			if(profileData.getForgotExpired() != null)
-    				this.forgotExpired = new Date(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getForgotExpired()).getTime());
+    				this.forgotExpired = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getForgotExpired()).getTime());
 			} catch (ParseException e) {
-				this.forgotExpired = new Date(new java.util.Date().getTime());
+				this.forgotExpired = new Timestamp(new java.util.Date().getTime());
 			}
-    		if(profileData.getUserData() != null)
-				this.user = new User(profileData.getUserData());
     	}
     }
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="profile_id")
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	@Column(name="profile_email", unique=true, length=150)
     @NotNull
@@ -215,16 +211,16 @@ public class Profile extends AGeneralAuditTrail {
 	}
 
 	@Column(name="profile_forgot_expired")
-	public Date getForgotExpired() {
+	public Timestamp getForgotExpired() {
 		return forgotExpired;
 	}
 
-	public void setForgotExpired(Date forgotExpired) {
+	public void setForgotExpired(Timestamp forgotExpired) {
 		this.forgotExpired = forgotExpired;
 	}
 
 	public void setForgotExpired(java.util.Date forgotExpired) {
-		this.forgotExpired = new Date(forgotExpired.getTime());
+		this.forgotExpired = new Timestamp(forgotExpired.getTime());
 	}
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -235,15 +231,6 @@ public class Profile extends AGeneralAuditTrail {
 
 	public void setUser(User user) {
 		this.user = user;
-	}       
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile", cascade = CascadeType.ALL)
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
 	}
 
 	@Override
@@ -256,7 +243,8 @@ public class Profile extends AGeneralAuditTrail {
 		return "Profile [id=" + id + ", email=" + email + ", name=" + name + ", gender=" + gender + ", birthplace="
 				+ birthplace + ", birthdate=" + birthdate + ", address=" + address + ", telp=" + telp + ", phone="
 				+ phone + ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID="
-				+ forgotUUID + ", forgotExpired=" + forgotExpired + ", user.id=" + user.getId() + "]";
+				+ forgotUUID + ", forgotExpired=" + forgotExpired + ", user.id=" + user.getId() 
+				+ ", auditTrail=" + super.toString() + "]";
 	}
 	
 }

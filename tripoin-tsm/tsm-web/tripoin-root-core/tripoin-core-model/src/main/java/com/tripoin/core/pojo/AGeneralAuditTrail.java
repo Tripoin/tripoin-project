@@ -1,9 +1,11 @@
 package com.tripoin.core.pojo;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.AGeneralAuditTrailData;
@@ -11,6 +13,7 @@ import com.tripoin.core.dto.AGeneralAuditTrailData;
 /**
  * @author <a href="ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
+@MappedSuperclass
 public abstract class AGeneralAuditTrail implements IBaseModel {
 
 	/**
@@ -21,74 +24,39 @@ public abstract class AGeneralAuditTrail implements IBaseModel {
 	private String remarks;
 	private String createdBy;
 	private String createdIP;
-	private Date createdTime;
+	private Timestamp createdTime;
 	private String createdPlatform;
 	private String modifiedBy;
 	private String modifiedIP;
-	private Date modifiedTime;
+	private Timestamp modifiedTime;
 	private String modifiedPlatform;
 	
 	public AGeneralAuditTrail() {}
 	
 	public AGeneralAuditTrail(AGeneralAuditTrailData aGeneralAuditTrailData) {
 		super();
-		this.status = aGeneralAuditTrailData.getStatus();
-		this.remarks = aGeneralAuditTrailData.getRemarks();
-		this.createdBy = aGeneralAuditTrailData.getCreatedBy();
-		this.createdIP = aGeneralAuditTrailData.getCreatedIP();
-		try {
-			this.createdTime = new Date(ParameterConstant.FORMAT_DEFAULT.parse(aGeneralAuditTrailData.getCreatedTime()).getTime());
-		} catch (ParseException e) {
-			this.createdTime = new Date(new java.util.Date().getTime());
+		if(aGeneralAuditTrailData != null){
+			this.status = aGeneralAuditTrailData.getStatus();
+			this.remarks = aGeneralAuditTrailData.getRemarks();
+			this.createdBy = aGeneralAuditTrailData.getCreatedBy();
+			this.createdIP = aGeneralAuditTrailData.getCreatedIP();
+			try {
+				this.createdTime = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(aGeneralAuditTrailData.getCreatedTime()).getTime());
+			} catch (ParseException e) {
+				this.createdTime = new Timestamp(new java.util.Date().getTime());
+			}
+			this.createdPlatform = aGeneralAuditTrailData.getCreatedPlatform();
+			this.modifiedBy = aGeneralAuditTrailData.getModifiedBy();
+			this.modifiedIP = aGeneralAuditTrailData.getModifiedIP();
+			try {
+				this.modifiedTime = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(aGeneralAuditTrailData.getModifiedTime()).getTime());
+			} catch (ParseException e) {
+				this.modifiedTime = new Timestamp(new Date().getTime());
+			}
+			this.modifiedPlatform = aGeneralAuditTrailData.getModifiedPlatform();
 		}
-		this.createdPlatform = aGeneralAuditTrailData.getCreatedPlatform();
-		this.modifiedBy = aGeneralAuditTrailData.getModifiedBy();
-		this.modifiedIP = aGeneralAuditTrailData.getModifiedIP();
-		try {
-			this.modifiedTime = new Date(ParameterConstant.FORMAT_DEFAULT.parse(aGeneralAuditTrailData.getModifiedTime()).getTime());
-		} catch (ParseException e) {
-			this.modifiedTime = new Date(new java.util.Date().getTime());
-		}
-		this.modifiedPlatform = aGeneralAuditTrailData.getModifiedPlatform();
 	}
-	
-	public AGeneralAuditTrail(Integer status, String remarks, String createdBy, String createdIP, String createdTime,
-			String createdPlatform, String modifiedBy, String modifiedIP, String modifiedTime, String modifiedPlatform) {
-		super();
-		this.status = status;
-		this.remarks = remarks;
-		this.createdBy = createdBy;
-		this.createdIP = createdIP;
-		try {
-			this.createdTime = new Date(ParameterConstant.FORMAT_DEFAULT.parse(createdTime).getTime());
-		} catch (ParseException e) {
-			this.createdTime = new Date(new java.util.Date().getTime());
-		}
-		this.createdPlatform = createdPlatform;
-		this.modifiedBy = modifiedBy;
-		this.modifiedIP = modifiedIP;
-		try {
-			this.modifiedTime = new Date(ParameterConstant.FORMAT_DEFAULT.parse(modifiedTime).getTime());
-		} catch (ParseException e) {
-			this.modifiedTime = new Date(new java.util.Date().getTime());
-		}
-		this.modifiedPlatform = modifiedPlatform;
-	}	
-	
-	public AGeneralAuditTrail(Integer status, String remarks, String createdBy, String createdIP, Date createdTime,
-			String createdPlatform, String modifiedBy, String modifiedIP, Date modifiedTime, String modifiedPlatform) {
-		super();
-		this.status = status;
-		this.remarks = remarks;
-		this.createdBy = createdBy;
-		this.createdIP = createdIP;
-		this.createdTime = createdTime;
-		this.createdPlatform = createdPlatform;
-		this.modifiedBy = modifiedBy;
-		this.modifiedIP = modifiedIP;
-		this.modifiedTime = modifiedTime;
-		this.modifiedPlatform = modifiedPlatform;
-	}
+
 
 	@Column(name="status")
 	public Integer getStatus() {
@@ -99,7 +67,7 @@ public abstract class AGeneralAuditTrail implements IBaseModel {
 		this.status = status;
 	}
 
-	@Column(name="reamarks", length=255)
+	@Column(name="remarks", length=255)
 	public String getRemarks() {
 		return remarks;
 	}
@@ -127,18 +95,17 @@ public abstract class AGeneralAuditTrail implements IBaseModel {
 		this.createdIP = createdIP;
 	}
 
-
-	@Column(name="created_by")
-	public Date getCreatedTime() {
+	@Column(name="created_time")
+	public Timestamp getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Date createdTime) {
+	public void setCreatedTime(Timestamp createdTime) {
 		this.createdTime = createdTime;
 	}
 
-	public void setCreatedTime(java.util.Date createdTime) {
-		this.createdTime = new Date(createdTime.getTime());
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = new Timestamp(createdTime.getTime());
 	}
 
 	@Column(name="created_platform")
@@ -169,16 +136,16 @@ public abstract class AGeneralAuditTrail implements IBaseModel {
 	}
 
 	@Column(name="modified_time")
-	public Date getModifiedTime() {
+	public Timestamp getModifiedTime() {
 		return modifiedTime;
 	}
 
-	public void setModifiedTime(Date modifiedTime) {
+	public void setModifiedTime(Timestamp modifiedTime) {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public void setModifiedTime(java.util.Date modifiedTime) {
-		this.modifiedTime = new Date(modifiedTime.getTime());
+	public void setModifiedTime(Date modifiedTime) {
+		this.modifiedTime = new Timestamp(modifiedTime.getTime());
 	}
 
 	@Column(name="modified_platform")
@@ -192,7 +159,7 @@ public abstract class AGeneralAuditTrail implements IBaseModel {
 
 	@Override
 	public String toString() {
-		return "AGeneralAuditTrail [status=" + status + ", remarks=" + remarks + ", createdBy=" + createdBy
+		return "[status=" + status + ", remarks=" + remarks + ", createdBy=" + createdBy
 				+ ", createdIP=" + createdIP + ", createdTime=" + createdTime + ", createdPlatform=" + createdPlatform
 				+ ", modifiedBy=" + modifiedBy + ", modifiedIP=" + modifiedIP + ", modifiedTime=" + modifiedTime
 				+ ", modifiedPlatform=" + modifiedPlatform + "]";

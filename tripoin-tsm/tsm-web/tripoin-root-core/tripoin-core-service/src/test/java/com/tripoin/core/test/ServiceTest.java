@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dto.EmployeeTransferObject;
+import com.tripoin.core.pojo.Area;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.Occupation;
@@ -87,12 +89,14 @@ public class ServiceTest implements ApplicationContextAware  {
 	 */
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestDatabase();
+		int digitGroups = (int) (Math.log10(43147)/Math.log10(1024));
+		System.out.println(new DecimalFormat("#,##0.#").format(43147/Math.pow(1024, digitGroups)));
+		/*runTestDatabase();*/
 	}
 	
 	public void runTestDatabase() throws Exception {
-		List<Profile> dataList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT pr FROM Profile pr WHERE pr.user.username = ?", new Object[]{"ridla"}, null);
-		for(Profile data : dataList) {
+		List<Area> dataList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Area", null, null);
+		for(Area data : dataList) {
 			LOGGER.debug("Data : "+data);
 		}
 	}

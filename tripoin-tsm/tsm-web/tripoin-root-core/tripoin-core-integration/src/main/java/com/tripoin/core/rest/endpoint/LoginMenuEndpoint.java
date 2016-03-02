@@ -17,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
@@ -54,15 +55,14 @@ public class LoginMenuEndpoint extends XReturnStatus {
 	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<UserMenuTransferObject> getUserMenu(Message<?> inMessage){
 		UserMenuTransferObject userMenuTransferObject = new UserMenuTransferObject();
-		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();	
-		
+		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    this.currentUserName = authentication.getName();
 		    GrantedAuthority grantedAuthority = authentication.getAuthorities().iterator().next();
 		    this.currentRole = grantedAuthority.getAuthority();
 		}		
-			
+		authentication = null;
 		try {
 			if(inMessage.getPayload() != null)
 				viewType = ((String)inMessage.getPayload()).replaceAll(ParameterConstant.VIEW_TYPE, "");			
@@ -75,6 +75,8 @@ public class LoginMenuEndpoint extends XReturnStatus {
 				List<UserData> userDatas = new ArrayList<UserData>();
 				userDatas.add(userData);
 				userMenuTransferObject.setUserDatas(userDatas);
+				userData = null;
+				userDatas = null;
 			}
 			List<Menu> menuList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? AND (mn.viewType = ? OR mn.viewType = ?) ORDER BY mn.tree ASC", new Object[] { this.currentRole, this.viewType, ParameterConstant.VIEW_WEB_MOBILE }, null);
 			if (menuList != null) {
@@ -84,19 +86,25 @@ public class LoginMenuEndpoint extends XReturnStatus {
 					menuDatas.add(menuData);
 				}
 				userMenuTransferObject.setMenuDatas(menuDatas);
+				menuDatas = null;
 			}
-			userMenuTransferObject.setResponseCode("0");
+			userMenuTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			userMenuTransferObject.setResponseDesc("Login Menu Success");
+			userMenuTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+			userList = null;
+			filterArguments = null;
+			menuList = null;
 		} catch (Exception e) {
 			LOGGER.error("Login Menu System Error : "+e.getMessage(), e);
-			userMenuTransferObject.setResponseCode("1");
+			userMenuTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			userMenuTransferObject.setResponseDesc("Login Menu System Error : " + e.getMessage());
+			userMenuTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getMessage());
 		}
-		
 		setReturnStatusAndMessage(userMenuTransferObject, responseHeaderMap);
 		Message<UserMenuTransferObject> message = new GenericMessage<UserMenuTransferObject>(userMenuTransferObject, responseHeaderMap);
+		userMenuTransferObject = null;
+		this.currentUserName = null;
+		this.currentRole = null;
 		return message;	
 	}
 	

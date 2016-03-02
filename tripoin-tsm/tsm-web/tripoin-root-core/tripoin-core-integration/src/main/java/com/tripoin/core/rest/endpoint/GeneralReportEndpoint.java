@@ -23,6 +23,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.GeneralReportTransferObject;
@@ -84,22 +85,22 @@ public class GeneralReportEndpoint extends XReturnStatus {
 							}
 						} catch (Exception e) {
 							LOGGER.error("Generate Report System Error : "+e.getLocalizedMessage(), e);
-							generalReportTransferObject.setResponseCode("1");
+							generalReportTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 							generalReportTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-							generalReportTransferObject.setResponseDesc("Generate Report System Error : "+e.getLocalizedMessage());
+							generalReportTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
 						}
 						return null;
 					}
 				});	
 			}
-			generalReportTransferObject.setResponseCode("0");
+			generalReportTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			generalReportTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			generalReportTransferObject.setResponseDesc("Generate Report Success");			
+			generalReportTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());			
 		}catch (Exception e){
 			LOGGER.error("Generate Report System Error : "+e.getLocalizedMessage(), e);
-			generalReportTransferObject.setResponseCode("1");
+			generalReportTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			generalReportTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			generalReportTransferObject.setResponseDesc("Generate Report System Error : "+e.getLocalizedMessage());
+			generalReportTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
 		}
 		setReturnStatusAndMessage(generalReportTransferObject, responseHeaderMap);
 		Message<byte[]> message = new GenericMessage<byte[]>(outputStreamData.toByteArray(), responseHeaderMap);

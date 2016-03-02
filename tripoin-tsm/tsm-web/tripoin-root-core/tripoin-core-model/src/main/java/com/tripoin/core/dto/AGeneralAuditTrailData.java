@@ -48,37 +48,20 @@ public class AGeneralAuditTrailData {
 	public AGeneralAuditTrailData() {}
 
 	public AGeneralAuditTrailData(AGeneralAuditTrail aGeneralAuditTrail) {
-		this.status = aGeneralAuditTrail.getStatus();
-		this.remarks = aGeneralAuditTrail.getRemarks();
-		this.createdBy = aGeneralAuditTrail.getCreatedBy();
-		this.createdIP = aGeneralAuditTrail.getCreatedIP();
-		if(aGeneralAuditTrail.getCreatedTime() != null)
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(aGeneralAuditTrail.getCreatedTime());
-		this.createdPlatform = aGeneralAuditTrail.getCreatedPlatform();
-		this.modifiedBy = aGeneralAuditTrail.getModifiedBy();
-		this.modifiedIP = aGeneralAuditTrail.getModifiedIP();
-		if(aGeneralAuditTrail.getModifiedTime() != null)
-			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(aGeneralAuditTrail.getModifiedTime());
-		this.modifiedPlatform = aGeneralAuditTrail.getModifiedPlatform();
-	}
-	
-	public AGeneralAuditTrailData(Integer id, String code, String name, Integer status,
-			String remarks, String createdBy, String createdIP,
-			java.sql.Date createdTime, String createdPlatform, String modifiedBy,
-			String modifiedIP, java.sql.Date modifiedTime, String modifiedPlatform) {
-		super();
-		this.status = status;
-		this.remarks = remarks;
-		this.createdBy = createdBy;
-		this.createdIP = createdIP;
-		if(createdTime != null)
-			this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(createdTime);
-		this.createdPlatform = createdPlatform;
-		this.modifiedBy = modifiedBy;
-		this.modifiedIP = modifiedIP;
-		if(modifiedTime != null)
-			this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(modifiedTime);
-		this.modifiedPlatform = modifiedPlatform;
+		if(aGeneralAuditTrail != null){
+			this.status = aGeneralAuditTrail.getStatus();
+			this.remarks = aGeneralAuditTrail.getRemarks();
+			this.createdBy = aGeneralAuditTrail.getCreatedBy();
+			this.createdIP = aGeneralAuditTrail.getCreatedIP();
+			if(aGeneralAuditTrail.getCreatedTime() != null)
+				this.createdTime = ParameterConstant.FORMAT_DEFAULT.format(aGeneralAuditTrail.getCreatedTime());
+			this.createdPlatform = aGeneralAuditTrail.getCreatedPlatform();
+			this.modifiedBy = aGeneralAuditTrail.getModifiedBy();
+			this.modifiedIP = aGeneralAuditTrail.getModifiedIP();
+			if(aGeneralAuditTrail.getModifiedTime() != null)
+				this.modifiedTime = ParameterConstant.FORMAT_DEFAULT.format(aGeneralAuditTrail.getModifiedTime());
+			this.modifiedPlatform = aGeneralAuditTrail.getModifiedPlatform();	
+		}
 	}
 
 	public Integer getStatus() {

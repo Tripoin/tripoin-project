@@ -115,23 +115,32 @@ public class TripoinUI extends UI implements ErrorHandler {
 	    		rootMenuLayout.initializedRootMenuLayout();
 	            mainView();
 	        }else{
-	        	removeStyleName(ValoTheme.UI_WITH_MENU);
-	        	loginScreen.addLoginListener(new LoginListener() {
-					private static final long serialVersionUID = 5327649431527930757L;
-					@Override
-					public void loginSuccessful() {
-						mainView();
-					}
-				});
-	        	getPage().setTitle("Tripoin Login");
-	            setContent(loginScreen);
+	        	initLogin();
 	        }       	
         }catch(Exception e){
-            StringWriter errors = new StringWriter();
-            e.printStackTrace(new PrintWriter(errors));
-        	error(new com.vaadin.server.ErrorEvent(e));
+    		if(HttpStatus.UNAUTHORIZED.equals(stateFullRest.getStatusCode())){
+    			initLogin();
+    			close();
+    		}else{
+                StringWriter errors = new StringWriter();
+                e.printStackTrace(new PrintWriter(errors));
+            	error(new com.vaadin.server.ErrorEvent(e));	
+    		}
         }
     }
+	
+	protected void initLogin() {
+		removeStyleName(ValoTheme.UI_WITH_MENU);
+    	loginScreen.addLoginListener(new LoginListener() {
+			private static final long serialVersionUID = 5327649431527930757L;
+			@Override
+			public void loginSuccessful() {
+				mainView();
+			}
+		});
+    	getPage().setTitle("Tripoin Login");
+        setContent(loginScreen);
+	}
 
     protected void mainView() {
     	getPage().setTitle("Tripoin Web Application");
@@ -251,10 +260,6 @@ public class TripoinUI extends UI implements ErrorHandler {
 
 	@Override
 	public void error(com.vaadin.server.ErrorEvent event) {
-		if(HttpStatus.UNAUTHORIZED.equals(stateFullRest.getStatusCode())){
-			close();
-			return;
-		}
         StringWriter errors = new StringWriter();
         event.getThrowable().printStackTrace(new PrintWriter(errors));
     	LOGGER.error("Fault Exception Tripoin UI", event.getThrowable());

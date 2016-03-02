@@ -32,7 +32,8 @@ public class LogoutEndpoint extends XReturnStatus {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			    currentUserName = authentication.getName();
-			}		
+			}
+			authentication = null;
 			SecurityContextHolder.clearContext();			
 		} catch (Exception e) {
 			LOGGER.error("Error on logout : ".concat(e.getMessage()), e);

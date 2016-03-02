@@ -3,7 +3,7 @@ package com.tripoin.core.pojo;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.UserData;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class User implements IBaseModel {
     private String username;
     private String password;
     private Integer enabled;
-    private Date expiredDate;
+    private Timestamp expiredDate;
     private Integer nonLocked;
     private String auth;
     private Integer status;
@@ -55,7 +55,7 @@ public class User implements IBaseModel {
             this.enabled = userData.getEnabled();
             if(userData.getExpiredDate() != null){
 				try {
-					this.expiredDate = new Date(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
+					this.expiredDate = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}            	
@@ -75,7 +75,7 @@ public class User implements IBaseModel {
             this.enabled = userData.getEnabled();
             if(userData.getExpiredDate() != null){
 				try {
-					this.expiredDate = new Date(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
+					this.expiredDate = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}            	
@@ -128,11 +128,11 @@ public class User implements IBaseModel {
     }
 
     @Column(name = "user_expired_date")
-    public Date getExpiredDate() {
+    public Timestamp getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(Date expiredDate) {
+    public void setExpiredDate(Timestamp expiredDate) {
         this.expiredDate = expiredDate;
     }
 

@@ -8,6 +8,7 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.GeneralTransferObject;
@@ -24,13 +25,13 @@ public class ConnectionEndpoint extends XReturnStatus {
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 		
 		try{			
-			connect.setResponseCode("0");
+			connect.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			connect.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			connect.setResponseDesc("Connection Success");			
+			connect.setResponseDesc(EResponseCode.RC_SUCCESS.toString());			
 		}catch (Exception e){
-			connect.setResponseCode("1");
+			connect.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			connect.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			connect.setResponseDesc("Connection System Error : "+e.getMessage());
+			connect.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getMessage());
 		}
 		
 		setReturnStatusAndMessage(connect, responseHeaderMap);

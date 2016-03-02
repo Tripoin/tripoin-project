@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.EmployeeData;
@@ -70,14 +71,14 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 				profileList = null;
 				profileDatas = null;
 			}
-			profileTransferObject.setResponseCode("0");
+			profileTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			profileTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			profileTransferObject.setResponseDesc("Load Profile Data Success");		
+			profileTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());		
 		}catch (Exception e){
 			LOGGER.error("Load Profile System Error : "+e.getLocalizedMessage(), e);
-			profileTransferObject.setResponseCode("1");
+			profileTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			profileTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			profileTransferObject.setResponseDesc("Load Profile System Error : "+e.getLocalizedMessage());
+			profileTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
 		}
 		setReturnStatusAndMessage(profileTransferObject, responseHeaderMap);
 		Message<ProfileTransferObject> message = new GenericMessage<ProfileTransferObject>(profileTransferObject, responseHeaderMap);
@@ -107,8 +108,22 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 			List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
 			if(profileList != null && !profileList.isEmpty()){
 				EmployeeData employeeData = new EmployeeData();
-				if(employeeList != null && !employeeList.isEmpty())
+				if(employeeList != null && !employeeList.isEmpty()){
 					employeeData = new EmployeeData(employeeList.get(0));
+					if(employeeList.get(0).getEmployeeParent() != null){
+						List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Employee WHERE id = ?", new Object[]{employeeList.get(0).getEmployeeParent().getId()}, null);
+						List<Profile> profileParentList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em.profile FROM Employee em WHERE em.id = ?", new Object[]{employeeList.get(0).getEmployeeParent().getId()}, null);
+						EmployeeData employeeParentData = new EmployeeData(employeeParentList.get(0));
+						ProfileData profileParentData = new ProfileData();
+						profileParentData.setName(profileParentList.get(0).getName());
+						employeeParentData.setProfileData(profileParentData);
+						employeeData.setEmployeeDataParent(employeeParentData);
+						employeeParentList = null;
+						profileParentList = null;
+						employeeParentData = null;
+						profileParentData = null;
+					}
+				}
 				ProfileData profileData = new ProfileData(profileList.get(0));
 				profileData.setUserData(new UserData(userList.get(0)));
 				employeeData.setProfileData(profileData);
@@ -121,14 +136,14 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 				employeeData = null;
 				employeeDatas = null;
 			}
-			employeeTransferObject.setResponseCode("0");
+			employeeTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			employeeTransferObject.setResponseDesc("Load Profile Employee Data Success");			
+			employeeTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());			
 		}catch (Exception e){
 			LOGGER.error("Load Profile System Error : "+e.getLocalizedMessage(), e);
-			employeeTransferObject.setResponseCode("1");
+			employeeTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			employeeTransferObject.setResponseDesc("Load Profile Employee System Error : "+e.getLocalizedMessage());
+			employeeTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
 		}
 		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
 		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);

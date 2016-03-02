@@ -29,7 +29,7 @@ public class Menu extends AGeneralAuditTrail {
 	 */
 	private static final long serialVersionUID = -5575840012553613210L;	
     public static final String TABLE_NAME = "sys_menu";
-    
+
 	private Integer id;
     private String code;
     private String name;
@@ -56,17 +56,17 @@ public class Menu extends AGeneralAuditTrail {
 		this.function = menuData.getFunction();
 		this.viewType = menuData.getViewType();
 	}
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="menu_id")
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	@Column(name="menu_code", unique=true, length=150)
 	public String getCode() {
@@ -163,7 +163,7 @@ public class Menu extends AGeneralAuditTrail {
 	public String toString() {
 		return "Menu [id=" + id + ", code=" + code + ", name=" + name + ", menuParent=" + menuParent + ", level="
 				+ level + ", order=" + order + ", tree=" + tree + ", function=" + function + ", viewType=" + viewType
-				+ ", roles=" + roles + "]";
+				+ ", roles=" + roles + ", auditTrail=" + super.toString() + "]";
 	}
 	
 }

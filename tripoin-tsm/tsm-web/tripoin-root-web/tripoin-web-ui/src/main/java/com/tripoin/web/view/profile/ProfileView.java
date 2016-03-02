@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.GeneralTransferObject;
@@ -173,10 +174,12 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
             occupationTextField.setValue(employeeData.getOccupationData().getName());
             occupationTextField.setWidth("100%");
             occupationTextField.setRequired(true);
-            personalInfoFormLayout.addComponent(headTextField);
-            headTextField.setValue(employeeData.getEmployeeDataParent().getProfileData().getName());
-            headTextField.setWidth("100%");
-            headTextField.setRequired(true);        	
+            if(employeeData.getEmployeeDataParent() != null){
+                personalInfoFormLayout.addComponent(headTextField);
+                headTextField.setValue(employeeData.getEmployeeDataParent().getProfileData().getName());
+                headTextField.setWidth("100%");
+                headTextField.setRequired(true);	
+            }        	
         }
         personalInfoFormLayout.addComponent(usernameTextField);
         usernameTextField.setValue(profileData.getUserData().getUsername());
@@ -260,11 +263,12 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         footer.setSpacing(true);
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         footer.addComponent(submitButton);
-        if(profileData.getModifiedTime() != null){
+        if(profileData.getModifiedTime() != null)
         	lastModifiedLabel = new Label(statusModified(profileData.getModifiedTime()));
-        	lastModifiedLabel.addStyleName("light");	
-        	footer.addComponent(lastModifiedLabel);
-        }
+        else
+        	lastModifiedLabel = new Label();
+    	lastModifiedLabel.addStyleName("light");	
+    	footer.addComponent(lastModifiedLabel);
         otherInfoFormLayout.setReadOnly(true);
         addressTextArea.setReadOnly(true);
         emailTextField.setReadOnly(true);
@@ -353,7 +357,7 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_IP, identifierPlatform.getIPAddress());
 								data.put(ParameterConstant.TRIPOIN_UPLOAD_IMAGE_CREATED_PLATFORM, identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
 								GeneralTransferObject generalTransferObject = profileService.updatePhotoProfile(receiverImage.getFile(), data);
-						        if(ParameterConstant.RESPONSE_SUCCESS.equals(generalTransferObject.getResponseMsg()))
+						        if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode()))
 						        	urlImage = urlResources.concat(profileData.getResourcesUUID()).concat("/").concat(receiverImage.getFile().getName());
 						        urlImageProfileResource = new ExternalResource(urlImage); 
 						        profilePhotoImage.setSource(urlImageProfileResource);
@@ -395,27 +399,27 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
 
 	@Override
 	public void buttonClick(com.vaadin.ui.Button.ClickEvent event) {
+        nameTextField.setComponentError(null);
+        birthPlaceTextField.setComponentError(null);
+        birthDateDateField.setComponentError(null);
+        addressTextArea.setComponentError(null);
+        emailTextField.setComponentError(null);
+        phoneTextField.setComponentError(null);
+        telpTextField.setComponentError(null);
+        bioTextArea.setComponentError(null);
         boolean readOnly = personalInfoFormLayout.isReadOnly();
         if (readOnly) {
         	personalInfoFormLayout.setReadOnly(false);
             otherInfoFormLayout.setReadOnly(false);
             nameTextField.setReadOnly(false);
-            nameTextField.setComponentError(null);
             birthPlaceTextField.setReadOnly(false);
-            birthPlaceTextField.setComponentError(null);
             birthDateDateField.setReadOnly(false);
-            birthDateDateField.setComponentError(null);
             genderOptionGroup.setReadOnly(false);
             addressTextArea.setReadOnly(false);
-            addressTextArea.setComponentError(null);
             emailTextField.setReadOnly(false);
-            emailTextField.setComponentError(null);
             phoneTextField.setReadOnly(false);
-            phoneTextField.setComponentError(null);
             telpTextField.setReadOnly(false);
-            telpTextField.setComponentError(null);
             bioTextArea.setReadOnly(false);
-            bioTextArea.setComponentError(null);
             personalInfoFormLayout.removeStyleName("light");
             personalInfoFormLayout.addStyleName("tripoin-custom-form");
             otherInfoFormLayout.removeStyleName("light");
@@ -475,14 +479,23 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
             	profileData.setTelp(telpTextField.getValue());
             	profileData.setEmail(emailTextField.getValue());
             	profileData.setBio(bioTextArea.getValue());
-            	profileData.setModifiedBy(usernameTextField.getValue());
             	profileData.setModifiedIP(identifierPlatform.getIPAddress());
             	profileData.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
             	profileData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));        	
             	ProfileTransferObject profileTransferObject = profileService.updateProfile(profileData);
-
-            	if("1".equals(profileTransferObject.getResponseCode())){
+            	if(profileTransferObject.getProfileDatas() != null && !profileTransferObject.getProfileDatas().isEmpty())
+            		profileData = profileTransferObject.getProfileDatas().get(0);
+            	
+            	if(EResponseCode.RC_FAILURE.getResponseCode().equals(profileTransferObject.getResponseCode())){
             		notification.setDescription("Update account error, please try again later!");
+        	        notification.show(Page.getCurrent());	            		
+            	}else if(EResponseCode.RC_PHONE_EXISTS.getResponseCode().equals(profileTransferObject.getResponseCode())){
+            		phoneTextField.setComponentError(new UserError(EResponseCode.RC_PHONE_EXISTS.toString()));
+            		notification.setDescription(EResponseCode.RC_PHONE_EXISTS.toString());
+        	        notification.show(Page.getCurrent());	            		
+            	}else if(EResponseCode.RC_EMAIL_EXISTS.getResponseCode().equals(profileTransferObject.getResponseCode())){
+            		emailTextField.setComponentError(new UserError(EResponseCode.RC_EMAIL_EXISTS.toString()));
+            		notification.setDescription(EResponseCode.RC_EMAIL_EXISTS.toString());
         	        notification.show(Page.getCurrent());	            		
             	}else{
                     nameTextField.setComponentError(null);

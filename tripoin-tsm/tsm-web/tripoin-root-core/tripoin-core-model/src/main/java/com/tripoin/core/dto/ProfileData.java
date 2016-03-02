@@ -64,22 +64,24 @@ public class ProfileData extends AGeneralAuditTrailData {
 	
 	public ProfileData(Profile profile){
 		super(profile);
-		this.id = profile.getId();
-		this.email = profile.getEmail();
-		this.name = profile.getName();
-		this.gender = profile.getGender();
-		this.birthplace = profile.getBirthplace();
-		if(profile.getBirthdate() != null)
-			this.birthdate = ParameterConstant.FORMAT_DEFAULT.format(profile.getBirthdate());
-		this.address = profile.getAddress();
-		this.telp = profile.getTelp();
-		this.phone = profile.getPhone();
-		this.photo = profile.getPhoto();
-		this.bio = profile.getBio();
-		this.resourcesUUID = profile.getResourcesUUID();
-		this.forgotUUID = profile.getForgotUUID();
-		if(profile.getForgotExpired() != null)
-			this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getForgotExpired());
+		if(profile != null){
+			this.id = profile.getId();
+			this.email = profile.getEmail();
+			this.name = profile.getName();
+			this.gender = profile.getGender();
+			this.birthplace = profile.getBirthplace();
+			if(profile.getBirthdate() != null)
+				this.birthdate = ParameterConstant.FORMAT_DEFAULT.format(profile.getBirthdate());
+			this.address = profile.getAddress();
+			this.telp = profile.getTelp();
+			this.phone = profile.getPhone();
+			this.photo = profile.getPhoto();
+			this.bio = profile.getBio();
+			this.resourcesUUID = profile.getResourcesUUID();
+			this.forgotUUID = profile.getForgotUUID();
+			if(profile.getForgotExpired() != null)
+				this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getForgotExpired());
+		}
 	}
 
 	public Integer getId() {
