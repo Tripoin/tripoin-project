@@ -18,6 +18,12 @@ public enum EResponseCode {
 	RC_MAX_FILE_SIZE("80", "Maximum file upload"),
 	RC_FAIL_UPLOAD("90", "File upload failure "),
 	RC_FAIL_PASSWORD("100", "Password not valid"),
+
+	RC_EMAIL_NOTREGISTER("200", "Email is not registered"),
+	RC_ACCOUNT_EXPIRED("201", "Account is expired"),
+	RC_ACCOUNT_NOTACTIVE("202", "Account is no longer active"),
+	RC_URL_EXPIRED("203", "Link has been expired"),
+	RC_URL_NOTFOUND("204", "Link is not found"),
 	
 	RC_OCCUPATION_USED("16", "Occupation is being used"),
 	RC_AREA_USED("17", "Area is being used");

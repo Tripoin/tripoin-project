@@ -15,16 +15,20 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dao.filter.ValueArgument;
 import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.core.dto.exception.WSEndpointFault;
 import com.tripoin.core.pojo.Profile;
 import com.tripoin.core.pojo.SystemParameter;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.core.service.soap.handler.WSEndpointFaultException;
 import com.tripoin.core.service.util.ISystemParameterService;
 import com.tripoin.util.mail.ICoreMailSender;
 
@@ -47,10 +51,11 @@ public class ForgotPasswordVerifyEndpoint extends XReturnStatus {
 	
 	@Autowired
 	private ICoreMailSender iCoreMailSender;
-	
-	private String emailTo;
-	private String emailFrom;
+
+	private WSEndpointFault wsEndpointFault = new WSEndpointFault();
 	private String username;
+	
+	private String emailFrom;
 	private String uuid;
 
 	@Value("${tripoin.email.from}")
@@ -58,6 +63,12 @@ public class ForgotPasswordVerifyEndpoint extends XReturnStatus {
 		this.emailFrom = emailFrom;
 	}
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/anonymous/forgotpassword/verify</code><br>
+	 * @param inMessage
+	 * @return
+	 */
 	@Secured({RoleConstant.ROLE_ANONYMOUS_SECURE})
 	public Message<GeneralTransferObject> forgotPasswordVerify(Message<?> inMessage){
 		GeneralTransferObject connect = new GeneralTransferObject();
@@ -66,57 +77,88 @@ public class ForgotPasswordVerifyEndpoint extends XReturnStatus {
 		try{			
 			if(inMessage.getPayload() != null){
 				String[] rawParameter = ((String)inMessage.getPayload()).split("&");
-				username = rawParameter[0].replaceAll(ParameterConstant.FORGOT_PASSWORD_USERNAME, "");
-				uuid = rawParameter[1].replaceAll(ParameterConstant.FORGOT_PASSWORD_UUID, "");	
-				System.out.println(username);	
-				System.out.println(uuid);
+				if(rawParameter != null && rawParameter.length == 2){
+					if(rawParameter[0].startsWith(ParameterConstant.FORGOT_PASSWORD_USERNAME))
+						username = rawParameter[0].replaceAll(ParameterConstant.FORGOT_PASSWORD_USERNAME, "");
+					else{
+	    				wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString());
+	    				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);					
+					}
+					if(rawParameter[1].startsWith(ParameterConstant.FORGOT_PASSWORD_UUID))
+						uuid = rawParameter[1].replaceAll(ParameterConstant.FORGOT_PASSWORD_UUID, "");
+					else{
+	    				wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString());
+	    				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);					
+					}					
+				}
+				rawParameter = null;
 			}
 			FilterArgument[] filterArguments = new FilterArgument[] { 
 					new FilterArgument("user.username", ECommonOperator.EQUALS),
 					new FilterArgument("forgotUUID", ECommonOperator.EQUALS) 
 			};
 			List<Profile> profileList = iGenericManagerJpa.loadObjectsFilterArgument(Profile.class, filterArguments, new Object[] { username, uuid }, null, null);
-			if(profileList != null && profileList.size() > 0 && profileList.get(0) != null){
-				if(profileList.get(0).getUser().getExpiredDate() != null && new Date().after(profileList.get(0).getUser().getExpiredDate())){					
-					connect.setResponseCode("2");
-					connect.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-					connect.setResponseDesc("Link has been expired");					
+			if(profileList != null && !profileList.isEmpty()){
+				filterArguments = new FilterArgument[] { 
+						new FilterArgument("username", ECommonOperator.EQUALS) 
+				};
+				List<User> userList = iGenericManagerJpa.loadObjectsFilterArgument(User.class, filterArguments, new Object[] { username }, null, null);
+				if(userList.get(0).getExpiredDate() != null && new Date().after(userList.get(0).getExpiredDate())){	
+					wsEndpointFault.setMessage(EResponseCode.RC_URL_EXPIRED.toString());
+    				throw new WSEndpointFaultException(EResponseCode.RC_URL_EXPIRED.getResponseCode(), wsEndpointFault);					
 				}else{
-				    Profile profile = profileList.get(0);
-				    emailTo = profile.getEmail();
-				    User user = profileList.get(0).getUser();
 				    String passwordPlainText = randomGeneratorAlphanumeric(7);
 				    String password = jasyptStringDigester.digest(passwordPlainText);
-				    user.setPassword(password);
-					iGenericManagerJpa.updateObject(user);
+				    ValueArgument[] valueArguments = new ValueArgument[]{
+				    		new ValueArgument("password", password),
+				    		new ValueArgument("username", userList.get(0).getUsername())
+				    };
+				    iGenericManagerJpa.execQueryNotCriteria("UPDATE sec_user SET user_password = :password "
+				    		+ "WHERE user_username = :username", valueArguments);	
 				    
 				    List<SystemParameter> systemParameters = systemParameterService.listValue(new Object[]{ParameterConstant.FORGOT_PASSWORD_VERIFY_SUBJECT, ParameterConstant.FORGOT_PASSWORD_VERIFY_BODY});
 				    Map<String, String> mapSystemParamter = new HashMap<String, String>();
 				    for(SystemParameter systemParameter : systemParameters)
 				    	mapSystemParamter.put(systemParameter.getCode(), systemParameter.getValue());
 				    String content = mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_VERIFY_BODY);
-				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_FULLNAME, profile.getName());
-				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_USERNAME, profile.getUser().getUsername());
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_FULLNAME, profileList.get(0).getName());
+				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_USERNAME, userList.get(0).getUsername());
 				    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_PASSWORD, passwordPlainText);
-					iCoreMailSender.sendMailContent(emailFrom, emailTo, mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_VERIFY_SUBJECT), content);
-					connect.setResponseCode("0");
+					iCoreMailSender.sendMailContent(emailFrom, profileList.get(0).getEmail(), mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_VERIFY_SUBJECT), content);
+					LOGGER.debug("Email Verify Forgot Password has been sent to : "+profileList.get(0).getEmail());
+					connect.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 					connect.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-					connect.setResponseDesc("Verify Forgot Password Success");					
+					connect.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+					valueArguments = null;
+					passwordPlainText = null;
+					password = null;
+					content = null;
+					mapSystemParamter = null;
+					systemParameters = null;
+					userList = null;
 				}	
-			}else{
-				connect.setResponseCode("3");
-				connect.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-				connect.setResponseDesc("Link is not found");				
+			}else{	
+				wsEndpointFault.setMessage(EResponseCode.RC_URL_NOTFOUND.toString());
+				throw new WSEndpointFaultException(EResponseCode.RC_URL_NOTFOUND.getResponseCode(), wsEndpointFault);				
 			}
-		}catch (Exception e){
-			LOGGER.error("Forgot Password System Error : "+e.getMessage(), e);
-			connect.setResponseCode("1");
+			filterArguments = null;
+			profileList = null;
+		} catch (WSEndpointFaultException e) {	
+			connect.setResponseCode(e.getMessage());
 			connect.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			connect.setResponseDesc("Forgot Password System Error : "+e.getMessage());
+			connect.setResponseDesc(e.getFaultInfo().getMessage());
+        } catch (Exception e){
+			LOGGER.error("Forgot Password System Error : "+e.getMessage(), e);
+			connect.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
+			connect.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			connect.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getMessage());
 		}
 		
 		setReturnStatusAndMessage(connect, responseHeaderMap);
 		Message<GeneralTransferObject> message = new GenericMessage<GeneralTransferObject>(connect, responseHeaderMap);
+		connect = null;
+		username = null;
+		uuid = null;
 		return message;	
 	}
 	

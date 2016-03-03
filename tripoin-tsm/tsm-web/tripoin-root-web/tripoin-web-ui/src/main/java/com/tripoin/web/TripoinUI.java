@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.MenuData;
 import com.tripoin.web.authentication.IAccessControl;
@@ -217,29 +218,38 @@ public class TripoinUI extends UI implements ErrorHandler {
     }
     
     private void validateForgotPassword(){
-    	if(WebServiceConstant.HTTP_FORGOT_PASSWORD_PATH.equals(getPage().getLocation().getPath())){
-    		String[] rawParameter = getPage().getLocation().getQuery().split("&");
-    		String username =rawParameter[0].split("=")[1];
-    		String uuid =rawParameter[1].split("=")[1];
-    		GeneralTransferObject generalTransferObject = forgotPasswordService.verifyForgotPassword(username, uuid);
-			Notification notificationVerifyEmail = new Notification("");  
-    		notificationVerifyEmail.setStyleName("system closable");
-    		notificationVerifyEmail.setPosition(Position.BOTTOM_CENTER);
-            notificationVerifyEmail.setDelayMsec(7500);
-    		if("0".equals(generalTransferObject.getResponseCode())){			
-    			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
-    			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
-    			notificationVerifyEmail.show(Page.getCurrent());        			
-    		}else if("2".equals(generalTransferObject.getResponseCode())){			
-    			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
-    			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_EXPIRED_FORGOT_PASSWORD_DESC.toString());
-    			notificationVerifyEmail.show(Page.getCurrent());          			
-    		}else{			
-    			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
-    			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_NULL_FORGOT_PASSWORD_DESC.toString());
-    			notificationVerifyEmail.show(Page.getCurrent());            			
-    		}
-    	}
+    	Notification notificationVerifyEmail = new Notification("");
+		notificationVerifyEmail.setStyleName("humanized dark small closable");
+		notificationVerifyEmail.setPosition(Position.BOTTOM_CENTER);
+    	try {
+        	if(WebServiceConstant.HTTP_FORGOT_PASSWORD_PATH.equals(getPage().getLocation().getPath())){
+        		String[] rawParameter = getPage().getLocation().getQuery().split("&");
+        		if(rawParameter!=null && rawParameter.length == 2){
+        			if(rawParameter[0].startsWith("user=") && rawParameter[1].startsWith("uuid=")){
+                		String username = rawParameter[0].split("=")[1];
+                		String uuid = rawParameter[1].split("=")[1];
+                		GeneralTransferObject generalTransferObject = forgotPasswordService.verifyForgotPassword(username, uuid);
+            			
+                        notificationVerifyEmail.setDelayMsec(7500);
+                		if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+                			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
+                			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
+                		}else if(EResponseCode.RC_URL_EXPIRED.getResponseCode().equals(generalTransferObject.getResponseCode())){			
+                			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+                			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_EXPIRED_FORGOT_PASSWORD_DESC.toString());
+                		}else
+                			throw new Exception();
+        			}else
+        				throw new Exception();
+        		}else
+    				throw new Exception();
+        		notificationVerifyEmail.show(Page.getCurrent());
+        	}
+		} catch (Exception e) {
+			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_NULL_FORGOT_PASSWORD_DESC.toString());
+			notificationVerifyEmail.show(Page.getCurrent());  
+		}
     }
     
     public void updateImageProfile(String urlImage){

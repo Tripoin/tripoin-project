@@ -17,6 +17,7 @@ public enum EWebUIConstant {
         		+ "Keep me logged in."),
     NOTIF_FAILURE_FORGOT_PASSWORD_TITLE("Warning"),
     NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE("Email Failure"),
+    NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_DESC("Email and Re-Type Email must be same."),
     NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE("Link Failure"),
     NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC("Account has been expired."),
     NOTIF_ACOUNT_ENABLED_FORGOT_PASSWORD_DESC("Account is no longer active."),	

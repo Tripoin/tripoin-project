@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IForgotPasswordService;
@@ -194,7 +195,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
     		if(email.getValue().matches(EWebUIConstant.REGEX_EMAIL.toString())){
     			if(captchaPlainText.equalsIgnoreCase(captchaTextField.getValue())){
             		GeneralTransferObject generalTransferObject = forgotPasswordService.forgotPassword(email.getValue());
-            		if("0".equals(generalTransferObject.getResponseCode())){		
+            		if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){		
             			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
                         notificationAfterSend.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
                 		notificationAfterSend.show(Page.getCurrent());
@@ -203,7 +204,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
                     	reTypeEmail.setValue("");        		
                     	Page.getCurrent().setTitle("Tripoin Login");
                         getUI().setContent(loginScreen);
-            		}else if("2".equals(generalTransferObject.getResponseCode())){    			
+            		}else if(EResponseCode.RC_ACCOUNT_NOTACTIVE.getResponseCode().equals(generalTransferObject.getResponseCode())){    			
             			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
                         notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACOUNT_ENABLED_FORGOT_PASSWORD_DESC.toString());
                 		notificationAfterSend.show(Page.getCurrent());
@@ -212,7 +213,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
                     	reTypeEmail.setValue("");    		
                     	Page.getCurrent().setTitle("Tripoin Login");
                         getUI().setContent(loginScreen);    			
-            		}else if("3".equals(generalTransferObject.getResponseCode())){    			
+            		}else if(EResponseCode.RC_ACCOUNT_EXPIRED.getResponseCode().equals(generalTransferObject.getResponseCode())){    			
             			notificationAfterSend.setCaption(EWebUIConstant.NOTIF_FAILURE_FORGOT_PASSWORD_TITLE.toString());
                         notificationAfterSend.setDescription(EWebUIConstant.NOTIF_ACCOUNT_EXPIRED_FORGOT_PASSWORD_DESC.toString());
                 		notificationAfterSend.show(Page.getCurrent()); 
@@ -240,7 +241,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
                 reloadCaptcha.setSource(generateCaptcha());
     		}
     	}else{
-    		showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.LOGIN_FAILED_DESC.toString(),
+    		showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_DESC.toString(),
                     Notification.Type.HUMANIZED_MESSAGE));
     		email.focus();
             reloadCaptcha.setSource(generateCaptcha());
@@ -253,6 +254,8 @@ public class ForgotPasswordScreen extends CssLayout implements View {
 	}	
 
     private void showNotification(Notification notification) {
+    	notification.setStyleName("humanized dark small closable");
+    	notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(1500);
         notification.show(Page.getCurrent());
     }

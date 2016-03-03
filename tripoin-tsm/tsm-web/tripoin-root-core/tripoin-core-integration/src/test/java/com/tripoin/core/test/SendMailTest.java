@@ -57,7 +57,7 @@ public class SendMailTest implements ApplicationContextAware {
 	    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_FULLNAME, "Ridla Fadilah");
 	    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_USERNAME, "ridla");
 	    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_URL, "http://localhost:8080/forgotpassword?user=ridla&uuid=0d0bf53a-0d24-4290-b29b-9190ae5ccf0f");
-		iCoreMailSender.sendMailContent("noreply@tripoin.co.id", "ridla.fadilah@gmail.com", mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_SUBJECT), content);		
+		iCoreMailSender.sendMailContent("tripoinstudio@gmail.com", "ridla.fadilah@gmail.com", mapSystemParamter.get(ParameterConstant.FORGOT_PASSWORD_SUBJECT), content);		
 	}
 	
 	public void runTest1() throws Exception {
