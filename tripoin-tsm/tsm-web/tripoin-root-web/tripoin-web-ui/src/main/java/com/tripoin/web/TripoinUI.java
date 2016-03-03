@@ -280,7 +280,7 @@ public class TripoinUI extends UI implements ErrorHandler {
         }
         navigator.navigateTo(ErrorView.VIEW_NAME);
 		Notification notification = new Notification("Bad Request", ErrorView.DESCRIPTION);
-		notification.setStyleName("system closable");
+		notification.setStyleName("dark small closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(7500);
         if(Page.getCurrent() == null)
