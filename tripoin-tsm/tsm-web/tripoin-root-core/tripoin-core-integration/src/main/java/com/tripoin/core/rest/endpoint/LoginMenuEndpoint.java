@@ -25,9 +25,11 @@ import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dto.MenuData;
 import com.tripoin.core.dto.UserData;
 import com.tripoin.core.dto.UserMenuTransferObject;
+import com.tripoin.core.dto.exception.WSEndpointFault;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.core.service.soap.handler.WSEndpointFaultException;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -45,6 +47,8 @@ public class LoginMenuEndpoint extends XReturnStatus {
 	private String currentRole;
 	
 	private String viewType = ParameterConstant.VIEW_WEB_MOBILE;
+	
+	private WSEndpointFault wsEndpointFault = new WSEndpointFault();
 
 	/**
 	 * <b>Sample Code:</b><br>
@@ -64,8 +68,14 @@ public class LoginMenuEndpoint extends XReturnStatus {
 		}		
 		authentication = null;
 		try {
-			if(inMessage.getPayload() != null)
-				viewType = ((String)inMessage.getPayload()).replaceAll(ParameterConstant.VIEW_TYPE, "");			
+			if(inMessage.getPayload() != null){
+				if(((String)inMessage.getPayload()).startsWith(ParameterConstant.VIEW_TYPE))
+					viewType = ((String)inMessage.getPayload()).replaceAll(ParameterConstant.VIEW_TYPE, "");
+				else{
+    				wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString());
+    				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);					
+				}
+			}			
 			FilterArgument[] filterArguments = new FilterArgument[] { 
 					new FilterArgument("username", ECommonOperator.EQUALS) 
 			};
@@ -94,7 +104,11 @@ public class LoginMenuEndpoint extends XReturnStatus {
 			userList = null;
 			filterArguments = null;
 			menuList = null;
-		} catch (Exception e) {
+		} catch (WSEndpointFaultException e) {	
+			userMenuTransferObject.setResponseCode(e.getMessage());
+			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			userMenuTransferObject.setResponseDesc(e.getFaultInfo().getMessage());
+        }  catch (Exception e) {
 			LOGGER.error("Login Menu System Error : "+e.getMessage(), e);
 			userMenuTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
