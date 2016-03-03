@@ -119,8 +119,10 @@ public class TripoinUI extends UI implements ErrorHandler {
 	        	initLogin();
 	        }       	
         }catch(Exception e){
-    		if(HttpStatus.UNAUTHORIZED.equals(stateFullRest.getStatusCode())){
-    			initLogin();
+        	if(HttpStatus.UNAUTHORIZED.equals(stateFullRest.getStatusCode()) ||
+        			HttpStatus.NOT_FOUND.equals(stateFullRest.getStatusCode()) ||
+        			HttpStatus.INTERNAL_SERVER_ERROR.equals(stateFullRest.getStatusCode())){
+    			setContent(null);
     			close();
     		}else{
                 StringWriter errors = new StringWriter();
@@ -258,14 +260,16 @@ public class TripoinUI extends UI implements ErrorHandler {
 
 	@Override
 	public void close() {
-		if(SecurityContextHolder.getContext().getAuthentication() != null){
-			logoutService.doLogout();	
-			if(stateFullRest != null && stateFullRest.getAdditionalDataMenu() != null && !stateFullRest.getAdditionalDataMenu().isEmpty())
-				stateFullRest.clearAllCookies();
-		}
-		SecurityContextHolder.clearContext();			
-		getSession().close();
-		UI.getCurrent().getPage().setLocation("j_spring_security_logout");		
+		if(getContent() == null || !loginScreen.equals(getContent())){
+			if(SecurityContextHolder.getContext().getAuthentication() != null){
+				logoutService.doLogout();	
+				if(stateFullRest != null && stateFullRest.getAdditionalDataMenu() != null && !stateFullRest.getAdditionalDataMenu().isEmpty())
+					stateFullRest.clearAllCookies();
+			}
+			SecurityContextHolder.clearContext();			
+			getSession().close();
+			UI.getCurrent().getPage().setLocation("j_spring_security_logout");
+		}		
 	}
 
 	@Override
