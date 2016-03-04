@@ -1,5 +1,6 @@
 package com.tripoin.core.rest.endpoint.area;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +18,10 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dao.filter.ECommonOperator;
-import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dto.AreaTransferObject;
-import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.pojo.Area;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -50,62 +49,79 @@ public class AreaDeleteEndpoint extends XReturnStatus {
 	@Qualifier(value = "web-async-task-executor")
 	private ThreadPoolTaskExecutor taskExecutor;
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/area/delete</code><br>
+	 * @param inMessage
+	 * @return
+	 */
 	@Secured({ RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN })
 	public Message<AreaTransferObject> deleteArea(Message<AreaTransferObject> inMessage) {
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 
 		try {
-			FilterArgument[] filterArguments = new FilterArgument[] { 
-    				new FilterArgument(EnumFieldArea.CODE_AREA.toString(), ECommonOperator.EQUALS) 
-    		};
-        	boolean isDeleted = false;
-        	try {
-            	for(String code : inMessage.getPayload().getFindAreaData().keySet()){
-            		Area area = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, filterArguments, new Object[]{ inMessage.getPayload().getFindAreaData().get(code) }, null, null).get(0);
-            		if(area != null)
-            			iGenericManagerJpa.deleteObject(area);
-            	}
-            	isDeleted = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				areaTransferObject.setResponseCode("2");
-				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-				areaTransferObject.setResponseDesc("Delete Area Data Failure, Some Area Data already being used");
-			}	
-        	if(isDeleted){
-				taskExecutor.execute(new Runnable() {
-					@Override
-					public void run() {
-						final TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-						transactionTemplate.execute(new TransactionCallback<Object>() {
-							@Override
-							public Object doInTransaction(TransactionStatus arg0) {
-								try {
-									versionControlSystemTableService.insertValueAndSync(Area.TABLE_NAME, new Long(1),
-											"Table of ".concat(Area.TABLE_NAME));
-								} catch (Exception e) {
-									LOGGER.error("Delete Area System Error : " + e.getLocalizedMessage(), e);
-								}
-								return null;
-							}
-						});
-					}
-				});
-				areaTransferObject.setResponseCode("0");
-				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-				areaTransferObject.setResponseDesc("Delete Area Data Success");
-			}
+        	AreaTransferObject datasTransmit = inMessage.getPayload();
+        	if(datasTransmit != null && !datasTransmit.getFindAreaData().isEmpty()){
+            	boolean isDeleted = false;
+            	try {
+            		Object[] values = new Object[datasTransmit.getFindAreaData().size()];
+            		StringBuffer parameters = new StringBuffer("(");
+            		int i = 0;
+                	for(String code : datasTransmit.getFindAreaData().keySet()){
+                		values[i] = code;
+                		parameters.append("?,");
+                		isDeleted = true;
+                		i++;
+                	}
+                	Long countCheckedEmployee = ((BigInteger)iGenericManagerJpa.getObjectSQLNative("SELECT COUNT(em.employee_id) "
+                			+ "FROM mst_employee em JOIN mst_area ar ON em.area_id = ar.area_id WHERE ar.area_code in ".concat(parameters.deleteCharAt(parameters.length()-1).append(")").toString()), values)).longValue();
+                	if(countCheckedEmployee > 0){
+                		isDeleted = false;
+            			throw new Exception();
+                	}                		
+                	iGenericManagerJpa.execQueryNotCriteria("DELETE FROM mst_area WHERE area_code in ".concat(parameters.deleteCharAt(parameters.length()-1).append(")").toString()), values);
+                	parameters = null;
+                	values = null;
+    			} catch (Exception e) {
+    				areaTransferObject.setResponseCode(EResponseCode.RC_USED.getResponseCode());
+    				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+    				areaTransferObject.setResponseDesc(EResponseCode.RC_USED.toString());
+    			}	
+            	if(isDeleted){
+    				taskExecutor.execute(new Runnable() {
+    					@Override
+    					public void run() {
+    						final TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+    						transactionTemplate.execute(new TransactionCallback<Object>() {
+    							@Override
+    							public Object doInTransaction(TransactionStatus arg0) {
+    								try {
+    									versionControlSystemTableService.insertValueAndSync(Area.TABLE_NAME, new Long(1),
+    											"Table of ".concat(Area.TABLE_NAME));
+    								} catch (Exception e) {
+    									LOGGER.error("Delete Area System Error : " + e.getLocalizedMessage(), e);
+    								}
+    								return null;
+    							}
+    						});
+    					}
+    				});
+    				areaTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
+    				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+    				areaTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+                	isDeleted = false;
+    			}     		
+        	}
 		} catch (Exception e) {
 			LOGGER.error("Delete Area System Error : " + e.getLocalizedMessage(), e);
-			areaTransferObject.setResponseCode("1");
+			areaTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			areaTransferObject.setResponseDesc("Delete Area System Error : " + e.getLocalizedMessage());
+			areaTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getLocalizedMessage());
 		}
-
 		setReturnStatusAndMessage(areaTransferObject, responseHeaderMap);
-		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(areaTransferObject,
-				responseHeaderMap);
+		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(areaTransferObject, responseHeaderMap);
+		areaTransferObject = null;
 		return message;
 	}
 

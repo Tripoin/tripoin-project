@@ -96,7 +96,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
         addComponent(centeringLayout);
         addComponent(loginInformation);
         
-		notificationAfterSend.setStyleName("system closable");
+		notificationAfterSend.setStyleName("system dark small closable");
         notificationAfterSend.setPosition(Position.BOTTOM_CENTER);
         notificationAfterSend.setDelayMsec(5000);
     }
@@ -223,26 +223,22 @@ public class ForgotPasswordScreen extends CssLayout implements View {
                     	Page.getCurrent().setTitle("Tripoin Login");
                         getUI().setContent(loginScreen);    			
             		}else {    			
-            			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString(),
-                                Notification.Type.HUMANIZED_MESSAGE));
+            			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString()));
                         email.focus(); 	
                         reloadCaptcha.setSource(generateCaptcha());		
             		}    	
     			}else{
-        			showNotification(new Notification(EWebUIConstant.NOTIF_CAPTCHA_FAILURE_TITLE.toString(), EWebUIConstant.NOTIF_CAPTCHA_NOTVALID_DESC.toString(),
-                            Notification.Type.HUMANIZED_MESSAGE));
+        			showNotification(new Notification(EWebUIConstant.NOTIF_CAPTCHA_FAILURE_TITLE.toString(), EWebUIConstant.NOTIF_CAPTCHA_NOTVALID_DESC.toString()));
                     captchaTextField.focus();  				
                     reloadCaptcha.setSource(generateCaptcha());
     			}
     		}else{
-    			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString(),
-                        Notification.Type.HUMANIZED_MESSAGE));
+    			showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_NOTVALID_FORGOT_PASSWORD_DESC.toString()));
                 email.focus();
                 reloadCaptcha.setSource(generateCaptcha());
     		}
     	}else{
-    		showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_DESC.toString(),
-                    Notification.Type.HUMANIZED_MESSAGE));
+    		showNotification(new Notification(EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_TITLE.toString(), EWebUIConstant.NOTIF_EMAIL_FAILURE_FORGOT_PASSWORD_DESC.toString()));
     		email.focus();
             reloadCaptcha.setSource(generateCaptcha());
     	}
@@ -254,7 +250,7 @@ public class ForgotPasswordScreen extends CssLayout implements View {
 	}	
 
     private void showNotification(Notification notification) {
-    	notification.setStyleName("humanized dark small closable");
+    	notification.setStyleName("dark small closable");
     	notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(1500);
         notification.show(Page.getCurrent());

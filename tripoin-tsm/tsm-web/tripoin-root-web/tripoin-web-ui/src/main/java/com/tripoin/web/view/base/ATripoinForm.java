@@ -126,17 +126,24 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	
 	protected void pressOkButtonAllEvent(ClickEvent event) {
 		Map<String, ErrorMessage> errorComponents = validateErrorComponents(formPanelDatas, null);
-		if(errorComponents != null && !errorComponents.isEmpty()){
+		if(errorComponents != null && !errorComponents.isEmpty())
 			formContainer.setErrorComponents(errorComponents);
-		}else{
-			GeneralTransferObject generalTransferObject = new GeneralTransferObject();
+		else{
+			GeneralTransferObject generalTransferObject = null;
+			if(event.getButton().getCaption().equalsIgnoreCase(getReOkButtonCaption()))
+				generalTransferObject = doReOkButtonEvent(formPanelDatas, dataOriginalGrid);
+			else if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption()))
+				generalTransferObject = doOkButtonEvent(formPanelDatas, dataOriginalGrid);
 			if(generalTransferObject != null){
 				errorComponents = validateErrorComponents(formPanelDatas, generalTransferObject);
-			}
-			if(errorComponents != null && !errorComponents.isEmpty()){
-				formContainer.setErrorComponents(errorComponents);
-			}else if(!event.getButton().getCaption().equalsIgnoreCase(getReOkButtonCaption())){
-				UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));
+				if(errorComponents != null && !errorComponents.isEmpty())
+					formContainer.setErrorComponents(errorComponents);
+				else{
+					if(event.getButton().getCaption().equalsIgnoreCase(getReOkButtonCaption()))
+						UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));
+					else if(event.getButton().getCaption().equalsIgnoreCase(getOkButtonCaption()))
+						UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_SUBMIT.toString()));
+				}					
 			}
 		}
 	}
@@ -206,7 +213,8 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		if(getReOkButtonCaption().equals(event.getButton().getCaption())){
+		if(getReOkButtonCaption().equals(event.getButton().getCaption()) ||
+				getOkButtonCaption().equals(event.getButton().getCaption())){
 			formPanelDatas = formContainer.getDataField(isFieldReset);
 			if(formPanelDatas != null){
 				formPanelDatas.put(EWebUIConstant.IDENTIFIER_IP.toString(), tripoinIdentifierPlatform.getIPAddress());
@@ -217,6 +225,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 				tripoinNotification.show("Error Submit", "Data form not null!");
 			}
 		}else{
+			formContainer.getParam().getOkButton().setCaption(getReOkButtonCaption());
 			formContainer.setStyleName("tripoin-custom-form");
 			formContainer.setDisabledComponents(false);
 		}

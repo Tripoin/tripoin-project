@@ -30,6 +30,7 @@ public class GenericInsertDaoJpaImpl extends ABaseInsertDaoJpa {
 	@Qualifier(value="web-async-task-executor")
 	private ThreadPoolTaskExecutor taskExecutor; 
 
+	@Override
 	public void saveObjectAndSync(final Object objectType) throws Exception {
 		saveObject(objectType);
 		taskExecutor.execute(new Runnable() {			

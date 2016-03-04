@@ -20,7 +20,6 @@ import com.tripoin.web.view.base.ATripoinPage;
 import com.tripoin.web.view.base.ITripoinConstantComponent;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.TextField;
 
 /**
@@ -62,12 +61,7 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 
 	@Override
 	protected GeneralPagingTransferObject<OccupationData> doDeleteService(List<OccupationData> dataObjectSelect) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		for(OccupationData occupationData : dataObjectSelect)
-			dataMap.put(occupationData.getCode(), occupationData.getCode());
-		OccupationTransferObject occupationTransferObject = new OccupationTransferObject();
-		occupationTransferObject.setFindOccupationData(dataMap);
-		return occupationService.deleteOccupation(occupationTransferObject, VaadinServlet.getCurrent().getServletContext());
+		return null;
 	}
 	
 	@Override

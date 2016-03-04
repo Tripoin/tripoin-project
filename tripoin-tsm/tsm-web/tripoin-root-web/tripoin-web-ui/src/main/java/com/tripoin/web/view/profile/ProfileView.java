@@ -277,7 +277,7 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         bioTextArea.setReadOnly(true);
 		
 		notification.setCaption("Error");
-		notification.setStyleName("system closable");
+		notification.setStyleName("system dark small closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(10000);
     }

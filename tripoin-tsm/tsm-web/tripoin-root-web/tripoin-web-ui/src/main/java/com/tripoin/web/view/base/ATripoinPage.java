@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.web.common.EReportUIConstant;
 import com.tripoin.web.common.EWebUIConstant;
@@ -224,7 +225,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 						if(tripoinMenuItemGridDefault.getDataObjectSelect() != null && tripoinMenuItemGridDefault.getDataObjectSelect().size() > 0){
 							try {
 								GeneralPagingTransferObject<T> response = doDeleteService(tripoinMenuItemGridDefault.getDataObjectSelect());
-								if("2".equals(response.getResponseCode()))
+								if(EResponseCode.RC_USED.getResponseCode().equals(response.getResponseCode()))
 									throw new Exception();
 								tripoinPageable.refreshPageable();
 							} catch (Exception e) {
@@ -353,10 +354,15 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if(dataBeanContainer != null && EWebUIConstant.NAVIGATE_AFTER_FORM.toString().equals(event.getParameters())){
+		if(EWebUIConstant.NAVIGATE_AFTER_FORM.toString().equalsIgnoreCase(event.getParameters())){
 			tripoinPageable.refreshPageable();
-			if(menuItemGridEventDefault.getIndexSelected()!=null)
+			if(menuItemGridEventDefault.getIndexSelected()!=null && dataBeanContainer!=null)
 				gridContainer.getParam().getGrid().select(dataBeanContainer.getIdByIndex(menuItemGridEventDefault.getIndexSelected()));	
+		}else if(EWebUIConstant.NAVIGATE_AFTER_SUBMIT.toString().equalsIgnoreCase(event.getParameters())){
+			tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
+			tripoinPageable.refreshPageable();
+			if(menuItemGridEventDefault.getIndexSelected()!=null && dataBeanContainer!=null)
+				gridContainer.getParam().getGrid().select(dataBeanContainer.getIdByIndex(menuItemGridEventDefault.getIndexSelected()));
 		}
 	}
 

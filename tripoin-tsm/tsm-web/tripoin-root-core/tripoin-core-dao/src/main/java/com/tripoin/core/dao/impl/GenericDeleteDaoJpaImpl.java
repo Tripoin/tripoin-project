@@ -34,6 +34,7 @@ public class GenericDeleteDaoJpaImpl extends ABaseDeleteDaoJpa {
 	
 	private Object objectType;
 
+	@Override
 	public void deleteObjectAndSync(final Object objectType) throws Exception {
 		deleteObject(objectType);
 		this.objectType = objectType;

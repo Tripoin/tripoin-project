@@ -80,8 +80,7 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 
 	@Override
 	protected Object[] getFieldContainerPropertyHeader() {
-		return new Object[]{"name", "remarks", "createdBy", "createdIP", "createdTime", 
-	    		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
+		return new Object[]{"code", "name", "remarks"};
 	}
 	
 	@Override
@@ -91,7 +90,8 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 
 	@Override
 	protected Object[] removeFieldContainerProperty() {
-		return new String[]{"id", "status", "code"};
+		return new String[]{"id", "status", "createdBy", "createdIP", "createdTime", 
+	    		"createdPlatform", "modifiedBy", "modifiedIP", "modifiedTime", "modifiedPlatform"};
 	}
 
 	@Override
@@ -99,8 +99,6 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 		Map<String, String> columns = new HashMap<String, String>();
 		columns.put("name", "Area Name");
 		columns.put("remarks", "Description");
-		columns.put("createdIP", "Created IP Address");
-		columns.put("modifiedIP", "Modified IP Address");
 		return columns;
 	}
 
@@ -116,7 +114,7 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 
 	@Override
 	protected String getPageTitle() {
-		return "Data Area";
+		return PAGE_NAME;
 	}
 
 	@Override

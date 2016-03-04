@@ -29,7 +29,7 @@ public abstract class ATripoinNotification {
 	}
 	
 	private void init(){
-		notification.setStyleName("system closable");
+		notification.setStyleName("system dark small closable");
 		notification.setPosition(Position.BOTTOM_CENTER);
 		notification.setDelayMsec(delayMiliSecond());
 	}

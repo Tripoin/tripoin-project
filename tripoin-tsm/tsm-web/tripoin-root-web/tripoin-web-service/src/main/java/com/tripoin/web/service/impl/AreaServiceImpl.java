@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
@@ -38,18 +39,8 @@ public class AreaServiceImpl implements IAreaService {
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Override
-	public AreaData getArea() {
-		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_AREA), AreaTransferObject.class).getAreaDatas().get(0);
-	}
-
-	@Override
-	public List<AreaData> getAllAreaDatas() {		
-		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL), AreaTransferObject.class).getAreaDatas();
-	}
-
-	@Override
-	public AreaTransferObject getAllAreaDatas(AreaTransferObject areaTransferObject) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL_PAGE), areaTransferObject, AreaTransferObject.class);
+	public AreaTransferObject getAllAreaDatas(GeneralTransferObject generalTransferObject) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL_PAGE), generalTransferObject, AreaTransferObject.class);
 	}
 
 	@Override
@@ -74,7 +65,7 @@ public class AreaServiceImpl implements IAreaService {
 	}
 	
 	private void threadBuildAreaContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
-		if("0".equals(generalTransferObject.getResponseCode())){
+		if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {

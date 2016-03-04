@@ -7,6 +7,8 @@ public enum EResponseCode {
 
 	RC_SUCCESS("00", "Web Service Success"),
 	RC_FAILURE("01", "Web Service Failure "),
+	RC_USED("302", "Some data already being used"),
+	
 	RC_USERNAME_EXISTS("02", "Username already exists, please try others!"),
 	RC_EMAIL_EXISTS("03", "Email already exists, please try others!"),
 	RC_PHONE_EXISTS("04", "Mobile Phone already exists, please try others!"),
@@ -23,10 +25,7 @@ public enum EResponseCode {
 	RC_ACCOUNT_EXPIRED("201", "Account is expired"),
 	RC_ACCOUNT_NOTACTIVE("202", "Account is no longer active"),
 	RC_URL_EXPIRED("203", "Link has been expired"),
-	RC_URL_NOTFOUND("204", "Link is not found"),
-	
-	RC_OCCUPATION_USED("16", "Occupation is being used"),
-	RC_AREA_USED("17", "Area is being used");
+	RC_URL_NOTFOUND("204", "Link is not found");
 
 	private String operator;
 	private String operand;

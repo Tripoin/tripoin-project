@@ -88,4 +88,14 @@ public interface IGenericReadDaoJpa {
 	 */
 	public Object getObjectSQLNative(String sql, FilterArgument[] filterArguments, Object[] values) throws Exception;
 	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>getObjectSQLNative("SELECT COUNT(*) FROM sec_user WHERE sec_user = ?", new Object[]{"admin"})</code><br><br>
+	 * @param sql
+	 * @param values
+	 * @return
+	 * @throws Exception
+	 */
+	public Object getObjectSQLNative(String sql, Object[] values) throws Exception;
+	
 }

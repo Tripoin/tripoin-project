@@ -221,7 +221,7 @@ public class TripoinUI extends UI implements ErrorHandler {
     
     private void validateForgotPassword(){
     	Notification notificationVerifyEmail = new Notification("");
-		notificationVerifyEmail.setStyleName("humanized dark small closable");
+		notificationVerifyEmail.setStyleName("system dark small closable");
 		notificationVerifyEmail.setPosition(Position.BOTTOM_CENTER);
     	try {
         	if(WebServiceConstant.HTTP_FORGOT_PASSWORD_PATH.equals(getPage().getLocation().getPath())){

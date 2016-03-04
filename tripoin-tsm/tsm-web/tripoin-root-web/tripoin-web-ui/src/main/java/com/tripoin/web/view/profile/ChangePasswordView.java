@@ -147,7 +147,7 @@ public class ChangePasswordView extends VerticalLayout implements View, ClickLis
 				+ "No whitespace allowed in the entire string!\n"
 				+ "Must contains one digit from 0-9!\n"
 				+ "Must contains one lowercase or one uppercase characters!");
-		notification.setStyleName("system closable");
+		notification.setStyleName("system dark small closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(10000);
     }

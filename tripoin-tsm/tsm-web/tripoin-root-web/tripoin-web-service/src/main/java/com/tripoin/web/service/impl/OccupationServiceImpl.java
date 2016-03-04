@@ -58,20 +58,6 @@ public class OccupationServiceImpl implements IOccupationService {
 		threadBuildOccupationContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
-
-	@Override
-	public GeneralTransferObject saveOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext) {
-		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_SAVE), dataTransferObject, GeneralTransferObject.class);
-		threadBuildOccupationContainer(generalTransferObject, servletContext);
-		return generalTransferObject;
-	}
-
-	@Override
-	public OccupationTransferObject deleteOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext) {
-		OccupationTransferObject occupationTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_DELETE), dataTransferObject, OccupationTransferObject.class);
-		threadBuildOccupationContainer(occupationTransferObject, servletContext);
-		return occupationTransferObject;
-	}
 	
 	private void threadBuildOccupationContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
 		if("0".equals(generalTransferObject.getResponseCode())){

@@ -47,6 +47,7 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 		return genericReadDao.loadObjects(objectType);
 	}
 
+    @Transactional
 	@Override
 	public <T> List<T> loadObjectsFilterArgument(Class<T> objectType, FilterArgument[] filterArguments, Object[] values, SortArgument sortArgument, PageArgument pageArgument) throws Exception {
 		return genericReadDao.loadObjectsFilterArgument(objectType, filterArguments, values, sortArgument, pageArgument);
@@ -68,6 +69,12 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 	@Override
 	public Object getObjectSQLNative(String sql, FilterArgument[] filterArguments, Object[] values) throws Exception {
 		return genericReadDao.getObjectSQLNative(sql, filterArguments, values);
+	}
+
+    @Transactional
+	@Override
+	public Object getObjectSQLNative(String sql, Object[] values) throws Exception {
+		return genericReadDao.getObjectSQLNative(sql, values);
 	}
 
     @Transactional
@@ -94,21 +101,25 @@ public class GenericManagerJpaImpl implements IGenericManagerJpa {
 		genericDeleteDao.deleteObject(objectType);		
 	}
 
+    @Transactional
 	@Override
 	public void deleteObjectAndSync(Object objectType) throws Exception {
 		genericDeleteDao.deleteObjectAndSync(objectType);
 	}
 
+    @Transactional
 	@Override
 	public void deleteObjectListAndSync(List<Object> objectTypeList) throws Exception {
 		genericDeleteDao.deleteObjectListAndSync(objectTypeList);
 	}
 
+    @Transactional
 	@Override
 	public int execQueryNotCriteria(String query, ValueArgument[] valueArguments) throws Exception {
 		return genericDao.execQueryNotCriteria(query, valueArguments);
 	}
 
+    @Transactional
 	@Override
 	public int execQueryNotCriteria(String query, Object[] values) throws Exception {
 		return genericDao.execQueryNotCriteria(query, values);

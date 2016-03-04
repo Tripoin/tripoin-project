@@ -66,4 +66,13 @@ public class GenericReadDaoJpaImpl extends ABaseReadDaoJpa {
 		}
 		return query.getSingleResult();
 	}
+
+	@Override
+	public Object getObjectSQLNative(String sql, Object[] values) throws Exception {
+		Query query = getEntityManager().createNativeQuery(sql);
+		if (values != null && values.length > 0) {
+			jqlStatement.setParameterStatement(query, values);
+		}
+		return query.getSingleResult();
+	}
 }

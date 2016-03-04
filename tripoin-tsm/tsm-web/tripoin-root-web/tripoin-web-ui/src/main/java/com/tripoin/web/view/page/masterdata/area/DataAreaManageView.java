@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
@@ -67,12 +68,12 @@ public class DataAreaManageView extends ATripoinForm<AreaData> {
 			}
 		}
 		if(generalTransferObject != null){
-			if("1".equals(generalTransferObject.getResponseCode())){
+			if(EResponseCode.RC_FAILURE.getResponseCode().equals(generalTransferObject.getResponseCode())){
 				tripoinNotification.show("Error Update", "Area error, please try again later!");
 				errorComponents.put(EWebUIConstant.EXCEPTION.toString(), new UserError("Area error, please try again later!"));
-			}else if("2".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error Update", "Area name already exist.");
-				errorComponents.put(EnumFieldArea.NAME_AREA.toString(), new UserError("Area name already exist."));
+			}else if(EResponseCode.RC_AREA_EXISTS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error Update", generalTransferObject.getResponseDesc());
+				errorComponents.put(EnumFieldArea.NAME_AREA.toString(), new UserError(generalTransferObject.getResponseDesc()));
 			}
 		}
 		return errorComponents;

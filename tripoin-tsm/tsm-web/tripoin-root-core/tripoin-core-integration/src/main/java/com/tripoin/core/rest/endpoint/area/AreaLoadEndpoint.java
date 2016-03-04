@@ -14,10 +14,9 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dao.filter.ECommonOperator;
-import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
@@ -36,40 +35,13 @@ public class AreaLoadEndpoint extends APageableEndpoint<AreaData> {
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
 
-	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
-	public Message<AreaTransferObject> loadArea(Message<AreaData> inMessage){	
-		AreaTransferObject areaTransferObject = new AreaTransferObject();
-		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
-		try{
-        	AreaData areaDataPayload = inMessage.getPayload();
-        	FilterArgument[] filterArguments = new FilterArgument[] { 
-    				new FilterArgument("code", ECommonOperator.EQUALS) 
-    		};
-    		List<Area> areaList = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, filterArguments, new Object[] { areaDataPayload.getCode() }, null, null);
-			List<AreaData> areaDatas = new ArrayList<AreaData>();
-			if(areaList != null){
-				for(Area area : areaList)
-					areaDatas.add(new AreaData(area));
-				areaTransferObject.setAreaDatas(areaDatas);
-				areaList = null;
-				areaDatas = null;
-			}
-			areaTransferObject.setResponseCode("0");
-			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			areaTransferObject.setResponseDesc("Load Area Data Success");			
-		}catch (Exception e){
-			LOGGER.error("Load All Area System Error : "+e.getLocalizedMessage(), e);
-			areaTransferObject.setResponseCode("1");
-			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			areaTransferObject.setResponseDesc("Load Area System Error : "+e.getLocalizedMessage());
-		}		
-		setReturnStatusAndMessage(areaTransferObject, responseHeaderMap);
-		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(areaTransferObject, responseHeaderMap);
-		areaTransferObject = null;
-		return message;		
-	}
-
-	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_ANONYMOUS_SECURE})
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/area/load/all</code><br>
+	 * @param inMessage
+	 * @return
+	 */
+	@Secured({RoleConstant.ROLE_ANONYMOUS_SECURE})
 	public Message<AreaTransferObject> loadAllAreas(Message<?> inMessage){	
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
@@ -83,14 +55,14 @@ public class AreaLoadEndpoint extends APageableEndpoint<AreaData> {
 				areaList = null;
 				areaDatas = null;
 			}
-			areaTransferObject.setResponseCode("0");
+			areaTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			areaTransferObject.setResponseDesc("Load All Area Data Success");			
+			areaTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());			
 		}catch (Exception e){
 			LOGGER.error("Load All Area System Error : "+e.getLocalizedMessage(), e);
-			areaTransferObject.setResponseCode("1");
+			areaTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			areaTransferObject.setResponseDesc("Load All Area System Error : "+e.getLocalizedMessage());
+			areaTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
 		}		
 		setReturnStatusAndMessage(areaTransferObject, responseHeaderMap);
 		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(areaTransferObject, responseHeaderMap);
@@ -98,6 +70,12 @@ public class AreaLoadEndpoint extends APageableEndpoint<AreaData> {
 		return message;		
 	}
 
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>/wscontext/area/load/paging</code><br>
+	 * @param inMessage
+	 * @return
+	 */
 	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<AreaTransferObject> loadAreaPaging(Message<AreaTransferObject> inMessage){	
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
@@ -115,14 +93,14 @@ public class AreaLoadEndpoint extends APageableEndpoint<AreaData> {
 			areaTransferObject.setPositionPage(getPositionPage());
 			areaTransferObject.setRowPerPage(getRowPerPage());
 			areaTransferObject.setTotalPage(getTotalPage());
-			areaTransferObject.setResponseCode("0");
+			areaTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			areaTransferObject.setResponseDesc("Load Paging Area Data Success");			
+			areaTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());			
 		}catch (Exception e){
 			LOGGER.error("Load Paging Area System Error : "+e.getLocalizedMessage(), e);
-			areaTransferObject.setResponseCode("1");
+			areaTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			areaTransferObject.setResponseDesc("Load Paging Area System Error : "+e.getLocalizedMessage());
+			areaTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
 		}		
 		setReturnStatusAndMessage(areaTransferObject, responseHeaderMap);
 		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(areaTransferObject, responseHeaderMap);

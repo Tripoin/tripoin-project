@@ -12,10 +12,6 @@
 		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
 	
-	<int:channel id="responseChannelAreaLoad"/>
-	<int:channel id="requestChannelAreaLoad"/>
-	<int:channel id="routeChannelAreaLoad"/>
-		
 	<int:channel id="responseChannelAreaLoadAll"/>
 	<int:channel id="requestChannelAreaLoadAll"/>
 		
@@ -35,18 +31,6 @@
 	<int:channel id="requestChannelAreaDelete"/>
 	<int:channel id="routeChannelAreaDelete"/>
 	
-	<int-http:inbound-gateway request-channel="requestChannelAreaLoad"
-		reply-channel="responseChannelAreaLoad"
-		supported-methods="POST" 
-		path="/wscontext/area/load, /wscontext/area/load/{area}"
-		request-payload-type="com.tripoin.core.dto.AreaData">	
-		<int-http:request-mapping consumes="application/json" produces="application/json"/>
-	</int-http:inbound-gateway>
-	<int:router input-channel="routeChannelAreaLoad" expression="headers.http_requestMethod">
-	    <int:mapping value="POST" channel="requestChannelAreaLoad"/>
-	</int:router>	
-	<int:service-activator ref="areaLoadEndpoint" method="loadArea" input-channel="requestChannelAreaLoad" output-channel="responseChannelAreaLoad"/>
-			
 	<int-http:inbound-gateway request-channel="requestChannelAreaLoadAll"
 		reply-channel="responseChannelAreaLoadAll"
 		supported-methods="GET" 
