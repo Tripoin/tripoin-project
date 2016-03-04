@@ -25,34 +25,34 @@
 	<field name="occupation_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_status" class="java.lang.Integer">
+	<field name="status" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_remarks" class="java.lang.String">
+	<field name="remarks" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_created_by" class="java.lang.String">
+	<field name="created_by" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_created_ip" class="java.lang.String">
+	<field name="created_ip" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_created_time" class="java.sql.Timestamp">
+	<field name="created_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_created_platform" class="java.lang.String">
+	<field name="created_platform" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_modified_by" class="java.lang.String">
+	<field name="modified_by" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_modified_ip" class="java.lang.String">
+	<field name="modified_ip" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_modified_time" class="java.sql.Timestamp">
+	<field name="modified_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="occupation_modified_platform" class="java.lang.String">
+	<field name="modified_platform" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -115,7 +115,7 @@
 						<font fontName="Open Sans Semibold" size="14" isBold="false"/>
 						<paragraph lineSpacing="1_1_2"/>
 					</textElement>
-					<text><![CDATA[Created By]]></text>
+					<text><![CDATA[Modified By]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="555" y="0" width="117" height="24" uuid="917e1460-1e0b-4ce7-b7ca-ddde9dc5cccd"/>
@@ -162,7 +162,7 @@
 						<font fontName="Open Sans"/>
 						<paragraph lineSpacing="1_1_2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{occupation_remarks}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" x="428" y="2" width="122" height="20" uuid="2d671a46-fd6f-464e-bd81-293fd27ef48b"/>
@@ -170,7 +170,7 @@
 						<font fontName="Open Sans"/>
 						<paragraph lineSpacing="1_1_2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{occupation_created_by}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{modified_by}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" x="555" y="2" width="112" height="20" uuid="f6659abc-ec98-4764-a54e-31054d67f007"/>
@@ -178,7 +178,7 @@
 						<font fontName="Open Sans"/>
 						<paragraph lineSpacing="1_1_2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{occupation_modified_time}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{modified_time}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" x="672" y="2" width="123" height="20" uuid="6722487b-5f51-4833-860b-078d6dcd8156"/>
@@ -186,7 +186,7 @@
 						<font fontName="Open Sans"/>
 						<paragraph lineSpacing="1_1_2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{occupation_modified_time}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{modified_time}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
