@@ -1,6 +1,7 @@
 package com.tripoin.web.view.base;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 	protected CommonComponent commonComponent = new CommonComponent();
 	private TitleContainer titleContainer;
 	private AFormContainer formContainer;
-	private Map<String, Object> formPanelDatas;
+	private HashMap<String, Object> formPanelDatas;
 
 	private T dataOriginalGrid = null;
 	protected IdentifierPlatform tripoinIdentifierPlatform = new IdentifierPlatform(Page.getCurrent().getWebBrowser());
@@ -148,9 +149,9 @@ public abstract class ATripoinForm<T> extends VerticalLayout implements View, Cl
 		}
 	}
 
-	protected abstract GeneralTransferObject doOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
+	protected abstract GeneralTransferObject doOkButtonEvent(HashMap<String, Object> formPanelDatas, T dataOriginalGrid);
 
-	protected abstract GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, T dataOriginalGrid);
+	protected abstract GeneralTransferObject doReOkButtonEvent(HashMap<String, Object> formPanelDatas, T dataOriginalGrid);
 	
 	protected void doCancelEvent() {
 		UI.getCurrent().getNavigator().navigateTo(afterButtonClickNavigate().concat("/").concat(EWebUIConstant.NAVIGATE_AFTER_FORM.toString()));

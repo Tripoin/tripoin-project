@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.tripoin.core.common.EResponseCode;
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
@@ -38,29 +40,19 @@ public class OccupationServiceImpl implements IOccupationService {
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Override
-	public OccupationData getOccupation() {
-		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION), OccupationTransferObject.class).getOccupationDatas().get(0);
+	public OccupationTransferObject getAllOccupationDatas(GeneralPagingTransferObject generalPagingTransferObject) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL_PAGE), generalPagingTransferObject, OccupationTransferObject.class);
 	}
 
 	@Override
-	public List<OccupationData> getAllOccupationDatas() {		
-		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), OccupationTransferObject.class).getOccupationDatas();
-	}
-
-	@Override
-	public OccupationTransferObject getAllOccupationDatas(OccupationTransferObject occupationTransferObject) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL_PAGE), occupationTransferObject, OccupationTransferObject.class);
-	}
-
-	@Override
-	public GeneralTransferObject updateOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext) {
+	public GeneralTransferObject updateOccupation(GeneralTransferObject dataTransferObject, final ServletContext servletContext) {
 		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_UPDATE), dataTransferObject, GeneralTransferObject.class);
 		threadBuildOccupationContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 	
 	private void threadBuildOccupationContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
-		if("0".equals(generalTransferObject.getResponseCode())){
+		if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {

@@ -11,10 +11,6 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
 		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
-	
-	<int:channel id="responseChannelOccupationLoad"/>
-	<int:channel id="requestChannelOccupationLoad"/>
-	<int:channel id="routeChannelOccupationLoad"/>
 		
 	<int:channel id="responseChannelOccupationLoadAll"/>
 	<int:channel id="requestChannelOccupationLoadAll"/>
@@ -23,30 +19,10 @@
 	<int:channel id="requestChannelOccupationLoadPaging"/>
 	<int:channel id="routeChannelOccupationLoadPaging"/>
 		
-	<int:channel id="responseChannelOccupationSave"/>
-	<int:channel id="requestChannelOccupationSave"/>
-	<int:channel id="routeChannelOccupationSave"/>
-		
 	<int:channel id="responseChannelOccupationUpdate"/>
 	<int:channel id="requestChannelOccupationUpdate"/>
 	<int:channel id="routeChannelOccupationUpdate"/>
 		
-	<int:channel id="responseChannelOccupationDelete"/>
-	<int:channel id="requestChannelOccupationDelete"/>
-	<int:channel id="routeChannelOccupationDelete"/>
-	
-	<int-http:inbound-gateway request-channel="requestChannelOccupationLoad"
-		reply-channel="responseChannelOccupationLoad"
-		supported-methods="POST" 
-		path="/wscontext/occupation/load, /wscontext/occupation/load/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationData">	
-		<int-http:request-mapping consumes="application/json" produces="application/json"/>
-	</int-http:inbound-gateway>
-	<int:router input-channel="routeChannelOccupationLoad" expression="headers.http_requestMethod">
-	    <int:mapping value="POST" channel="requestChannelOccupationLoad"/>
-	</int:router>	
-	<int:service-activator ref="occupationLoadEndpoint" method="loadOccupation" input-channel="requestChannelOccupationLoad" output-channel="responseChannelOccupationLoad"/>
-			
 	<int-http:inbound-gateway request-channel="requestChannelOccupationLoadAll"
 		reply-channel="responseChannelOccupationLoadAll"
 		supported-methods="GET" 
@@ -59,7 +35,7 @@
 		reply-channel="responseChannelOccupationLoadPaging"
 		supported-methods="POST" 
 		path="/wscontext/occupation/load/paging, /wscontext/occupation/load/paging/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
+		request-payload-type="com.tripoin.core.dto.GeneralPagingTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelOccupationLoadPaging" expression="headers.http_requestMethod">
@@ -67,40 +43,16 @@
 	</int:router>	
 	<int:service-activator ref="occupationLoadEndpoint" method="loadOccupationPaging" input-channel="requestChannelOccupationLoadPaging" output-channel="responseChannelOccupationLoadPaging"/>
 	
-	<int-http:inbound-gateway request-channel="requestChannelOccupationSave"
-		reply-channel="responseChannelOccupationSave"
-		supported-methods="POST" 
-		path="/wscontext/occupation/save, /wscontext/occupation/save/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
-		<int-http:request-mapping consumes="application/json" produces="application/json"/>
-	</int-http:inbound-gateway>
-	<int:router input-channel="routeChannelOccupationSave" expression="headers.http_requestMethod">
-	    <int:mapping value="POST" channel="requestChannelOccupationSave"/>
-	</int:router>	
-	<int:service-activator ref="occupationSaveEndpoint" method="saveOccupation" input-channel="requestChannelOccupationSave" output-channel="responseChannelOccupationSave"/>
-		
 	<int-http:inbound-gateway request-channel="requestChannelOccupationUpdate"
 		reply-channel="responseChannelOccupationUpdate"
 		supported-methods="POST" 
 		path="/wscontext/occupation/update, /wscontext/occupation/update/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
+		request-payload-type="com.tripoin.core.dto.GeneralTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelOccupationUpdate" expression="headers.http_requestMethod">
 	    <int:mapping value="POST" channel="requestChannelOccupationUpdate"/>
 	</int:router>	
 	<int:service-activator ref="occupationUpdateEndpoint" method="updateOccupation" input-channel="requestChannelOccupationUpdate" output-channel="responseChannelOccupationUpdate"/>
-			
-	<int-http:inbound-gateway request-channel="requestChannelOccupationDelete"
-		reply-channel="responseChannelOccupationDelete"
-		supported-methods="POST" 
-		path="/wscontext/occupation/delete, /wscontext/occupation/delete/{occupation}"
-		request-payload-type="com.tripoin.core.dto.OccupationTransferObject">	
-		<int-http:request-mapping consumes="application/json" produces="application/json"/>
-	</int-http:inbound-gateway>
-	<int:router input-channel="routeChannelOccupationDelete" expression="headers.http_requestMethod">
-	    <int:mapping value="POST" channel="requestChannelOccupationDelete"/>
-	</int:router>	
-	<int:service-activator ref="occupationDeleteEndpoint" method="deleteOccupation" input-channel="requestChannelOccupationDelete" output-channel="responseChannelOccupationDelete"/>
 			
 </beans>

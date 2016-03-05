@@ -12,10 +12,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "UserRouteTransferObject")
-public class UserRouteTransferObject extends GeneralTransferObject {
+public class UserRouteTransferObject extends ABaseDataTransferObject<UserRouteData> {
 
 	@XmlElement(name = "UserRouteDatas", namespace = "")
 	private List<UserRouteData> userRouteDatas;
+
+	@Override
+	public List<UserRouteData> getDatas() {
+		return userRouteDatas;
+	}
 
 	public List<UserRouteData> getUserRouteDatas() {
 		return userRouteDatas;

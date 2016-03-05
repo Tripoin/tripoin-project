@@ -1,7 +1,5 @@
 package com.tripoin.web.service.impl;
 
-import java.util.List;
-
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +8,14 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.tripoin.core.common.EResponseCode;
-import com.tripoin.core.dto.GeneralTransferObject;
-import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
+import com.tripoin.core.dto.GeneralPagingTransferObject;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
-import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.IAreaService;
+import com.tripoin.web.service.IDataLoadStarted;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -39,29 +37,29 @@ public class AreaServiceImpl implements IAreaService {
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Override
-	public AreaTransferObject getAllAreaDatas(GeneralTransferObject generalTransferObject) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL_PAGE), generalTransferObject, AreaTransferObject.class);
+	public AreaTransferObject getAllAreaDatas(GeneralPagingTransferObject generalPagingTransferObject) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL_PAGE), generalPagingTransferObject, AreaTransferObject.class);
 	}
 
 	@Override
-	public GeneralTransferObject updateArea(AreaTransferObject dataTransferObject, final ServletContext servletContext) {
+	public GeneralTransferObject updateArea(GeneralTransferObject dataTransferObject, final ServletContext servletContext) {
 		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_UPDATE), dataTransferObject, GeneralTransferObject.class);
 		threadBuildAreaContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 
 	@Override
-	public GeneralTransferObject saveArea(AreaTransferObject dataTransferObject, final ServletContext servletContext) {
+	public GeneralTransferObject saveArea(GeneralTransferObject dataTransferObject, final ServletContext servletContext) {
 		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_SAVE), dataTransferObject, GeneralTransferObject.class);
 		threadBuildAreaContainer(generalTransferObject, servletContext);
 		return generalTransferObject;
 	}
 
 	@Override
-	public AreaTransferObject deleteArea(AreaTransferObject dataTransferObject, final ServletContext servletContext) {
-		AreaTransferObject areaTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_DELETE), dataTransferObject, AreaTransferObject.class);
-		threadBuildAreaContainer(areaTransferObject, servletContext);
-		return areaTransferObject;
+	public GeneralTransferObject deleteArea(GeneralTransferObject dataTransferObject, final ServletContext servletContext) {
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_DELETE), dataTransferObject, GeneralTransferObject.class);
+		threadBuildAreaContainer(generalTransferObject, servletContext);
+		return generalTransferObject;
 	}
 	
 	private void threadBuildAreaContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
@@ -69,8 +67,7 @@ public class AreaServiceImpl implements IAreaService {
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {
-					List<AreaData> areaDatas = dataLoadStarted.loadAreaData();
-					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_AREA, areaDatas);
+					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_AREA, dataLoadStarted.loadAreaData());
 				}
 			});
 		}

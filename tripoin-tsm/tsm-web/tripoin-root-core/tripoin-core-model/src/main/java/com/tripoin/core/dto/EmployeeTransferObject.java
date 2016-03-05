@@ -1,7 +1,6 @@
 package com.tripoin.core.dto;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,13 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "EmployeeTransferObject")
-public class EmployeeTransferObject extends GeneralPagingTransferObject<EmployeeData> {
+public class EmployeeTransferObject extends ABaseDataTransferObject<EmployeeData> {
 	
 	@XmlElement(name = "EmployeeDatas", namespace = "")
 	private List<EmployeeData> employeeDatas;
-	
-	@XmlElement(name = "FindEmployeeData", namespace = "")
-	private Map<String, Object> findEmployeeData;
 
 	@Override
 	public List<EmployeeData> getDatas() {
@@ -34,18 +30,9 @@ public class EmployeeTransferObject extends GeneralPagingTransferObject<Employee
 		this.employeeDatas = employeeDatas;
 	}
 
-	public Map<String, Object> getFindEmployeeData() {
-		return findEmployeeData;
-	}
-
-	public void setFindEmployeeData(Map<String, Object> findEmployeeData) {
-		this.findEmployeeData = findEmployeeData;
-	}
-
 	@Override
 	public String toString() {
-		return "EmployeeTransferObject [employeeDatas=" + employeeDatas
-				+ ", findEmployeeData=" + findEmployeeData + "]";
+		return "EmployeeTransferObject [employeeDatas=" + employeeDatas + "]";
 	}
 	
 	public enum EnumFieldEmployee {

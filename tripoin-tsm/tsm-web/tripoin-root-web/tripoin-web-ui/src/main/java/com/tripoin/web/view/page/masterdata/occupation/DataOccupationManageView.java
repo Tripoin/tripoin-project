@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
@@ -65,27 +66,24 @@ public class DataOccupationManageView extends ATripoinForm<OccupationData> {
 			}
 		}
 		if(generalTransferObject != null){
-			if("1".equals(generalTransferObject.getResponseCode())){
+			if(EResponseCode.RC_FAILURE.getResponseCode().equals(generalTransferObject.getResponseCode())){
 				tripoinNotification.show("Error Update", "Occupation error, please try again later!");
 				errorComponents.put(EWebUIConstant.EXCEPTION.toString(), new UserError("Occupation error, please try again later!"));
-			}else if("2".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error Update", "Occupation name already exist.");
-				errorComponents.put(EnumFieldOccupation.NAME_OCCUPATION.toString(), new UserError("Occupation name already exist."));
 			}
 		}
 		return errorComponents;
 	}
 
 	@Override
-	protected GeneralTransferObject doOkButtonEvent(Map<String, Object> formPanelDatas, OccupationData dataOriginalGrid) {
+	protected GeneralTransferObject doOkButtonEvent(HashMap<String, Object> formPanelDatas, OccupationData dataOriginalGrid) {
 		return null;
 	}
 
 	@Override
-	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, OccupationData dataOriginalGrid) {
+	protected GeneralTransferObject doReOkButtonEvent(HashMap<String, Object> formPanelDatas, OccupationData dataOriginalGrid) {
 		formPanelDatas.put(EnumFieldOccupation.CODE_OCCUPATION.toString(), dataOriginalGrid.getCode());
 		OccupationTransferObject dataTransferObject = new OccupationTransferObject();
-		dataTransferObject.setFindOccupationData(formPanelDatas);
+		dataTransferObject.setParameterData(formPanelDatas);
 		GeneralTransferObject generalTransferObject = occupationService.updateOccupation(dataTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}

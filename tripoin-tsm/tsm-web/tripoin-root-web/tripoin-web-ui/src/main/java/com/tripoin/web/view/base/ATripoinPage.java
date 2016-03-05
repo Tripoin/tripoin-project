@@ -1,5 +1,6 @@
 package com.tripoin.web.view.base;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tripoin.core.common.EResponseCode;
+import com.tripoin.core.dto.ABaseDataTransferObject;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.EReportUIConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.ReportUtil;
@@ -83,7 +86,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	};
 	protected ATripoinMenuItemGridDefault<T> tripoinMenuItemGridDefault;
 	protected AMenuItemGridEventDefault<T> menuItemGridEventDefault;
-	protected ATripoinPageable<T> tripoinPageable;
+	protected ATripoinPageable tripoinPageable;
 
 	@PostConstruct
 	protected void init() throws Exception {
@@ -141,7 +144,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 		gridContainer = new GridContainer();
 		this.commonComponent.setGridContainer(gridContainer);
 		addComponent(this.commonComponent.getGridContainer());
-		tripoinPageable = new ATripoinPageable<T>() {
+		tripoinPageable = new ATripoinPageable() {
 			@Override
 			public void refreshPageable() {
 				this.setGeneralPagingTransferObject(constructBeanContainer(this.getGeneralPagingTransferObject()));
@@ -156,11 +159,11 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 			initMenuItemGridDefault();
 	}
 
-	private GeneralPagingTransferObject<T> constructBeanContainer(GeneralPagingTransferObject<T> generalPagingTransferObject) {
-		generalPagingTransferObject = getALlDatasService(generalPagingTransferObject, searchContainer.getDataField(isFieldReset));
-		if(generalPagingTransferObject.getDatas() != null) {
+	private GeneralPagingTransferObject constructBeanContainer(GeneralPagingTransferObject generalPagingTransferObject) {
+		ABaseDataTransferObject<T> aBasedataTransferObject = getAllDatasService(generalPagingTransferObject, searchContainer.getDataField(isFieldReset));
+		if(aBasedataTransferObject.getDatas() != null) {
 			dataBeanContainer.removeAllItems();
-			dataBeanContainer.addAll(generalPagingTransferObject.getDatas());	
+			dataBeanContainer.addAll(aBasedataTransferObject.getDatas());	
 		}
 		if(removeFieldContainerProperty() != null){
 			for(Object property : removeFieldContainerProperty())
@@ -177,7 +180,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 			commonComponent.getGridContainer().getParam().getGrid().getColumn(key).setHeaderCaption(getColumnAlias().get(key));
 		commonComponent.getGridContainer().getParam().getGrid().setFrozenColumnCount(2);
 		isFieldReset = false;
-		return generalPagingTransferObject;
+		return aBasedataTransferObject;
 	}
 	
 	protected void initMenuItemGridDefault() {
@@ -224,7 +227,7 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 		            public void menuSelected(MenuItem selectedItem) {
 						if(tripoinMenuItemGridDefault.getDataObjectSelect() != null && tripoinMenuItemGridDefault.getDataObjectSelect().size() > 0){
 							try {
-								GeneralPagingTransferObject<T> response = doDeleteService(tripoinMenuItemGridDefault.getDataObjectSelect());
+								GeneralTransferObject response = doDeleteService(tripoinMenuItemGridDefault.getDataObjectSelect());
 								if(EResponseCode.RC_USED.getResponseCode().equals(response.getResponseCode()))
 									throw new Exception();
 								tripoinPageable.refreshPageable();
@@ -232,6 +235,17 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 								tripoinNotification.show("Error Delete", "Some data already being used");
 							}
 						}
+		            }
+		        };
+			}
+			@Override
+			protected Command doRefresh() {
+				return new Command() {
+					private static final long serialVersionUID = -6262114274661510612L;
+					@Override
+		            public void menuSelected(MenuItem selectedItem) {
+						tripoinPageable.getGeneralPagingTransferObject().setPositionPage(1);
+						tripoinPageable.refreshPageable();
 		            }
 		        };
 			}
@@ -270,9 +284,9 @@ public abstract class ATripoinPage<T> extends VerticalLayout implements View, Cl
 	
 	protected abstract List<Component> designSearchComponents();
 	
-	protected abstract GeneralPagingTransferObject<T> getALlDatasService(GeneralPagingTransferObject<T> generalPagingTransferObject, Map<String, Object> searchPanelDatas);
+	protected abstract ABaseDataTransferObject<T> getAllDatasService(GeneralPagingTransferObject generalPagingTransferObject, HashMap<String, Object> searchPanelDatas);
 	
-	protected abstract GeneralPagingTransferObject<T> doDeleteService(List<T> dataObjectSelect);
+	protected abstract GeneralTransferObject doDeleteService(List<T> dataObjectSelect);
 
 	protected abstract BeanItemContainer<T> getBeanDataContainer();
 	

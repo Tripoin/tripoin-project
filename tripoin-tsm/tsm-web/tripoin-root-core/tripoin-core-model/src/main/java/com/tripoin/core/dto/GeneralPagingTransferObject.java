@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "GeneralPagingTransferObject")
-public abstract class GeneralPagingTransferObject<T> extends GeneralTransferObject implements IGeneralDataTransferObject<T> {
+public class GeneralPagingTransferObject extends GeneralTransferObject {
 	
 	@XmlElement(name = "PageName", namespace = "")
 	private String pageName;

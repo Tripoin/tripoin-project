@@ -27,7 +27,6 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
-import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.pojo.Area;
@@ -66,7 +65,7 @@ public class AreaSaveEndpoint extends XReturnStatus {
 	 * @return
 	 */
     @Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
-    public Message<GeneralTransferObject> saveArea(Message<AreaTransferObject> inMessage) {
+    public Message<GeneralTransferObject> saveArea(Message<GeneralTransferObject> inMessage) {
     	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -75,15 +74,15 @@ public class AreaSaveEndpoint extends XReturnStatus {
 		}
 		authentication = null;
         try {
-        	AreaTransferObject datasTransmit = inMessage.getPayload();
-        	if(datasTransmit != null && !datasTransmit.getFindAreaData().isEmpty()){
+        	GeneralTransferObject datasTransmit = inMessage.getPayload();
+        	if(datasTransmit.getParameterData() != null && !datasTransmit.getParameterData().isEmpty()){
             	Area area = new Area();
             	FilterArgument[] filterArgumentsCheck = new FilterArgument[] { 
         				new FilterArgument(EnumFieldArea.CODE_AREA.toString(), ECommonOperator.EQUALS) 
         		};
-            	area.setName((String)datasTransmit.getFindAreaData().get(EnumFieldArea.NAME_AREA.toString()));
+            	area.setName((String)datasTransmit.getParameterData().get(EnumFieldArea.NAME_AREA.toString()));
             	area.setCode(area.getName().replace(" ", "").toUpperCase());
-            	area.setRemarks((String)datasTransmit.getFindAreaData().get(EnumFieldArea.DESCRIPTION_AREA.toString()));
+            	area.setRemarks((String)datasTransmit.getParameterData().get(EnumFieldArea.DESCRIPTION_AREA.toString()));
         		List<Area> areaListCheck = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, filterArgumentsCheck, new Object[] { area.getCode() }, null, null);
         		if(areaListCheck == null || areaListCheck.size() == 0){
                     area.setCreatedBy(currentUserName);

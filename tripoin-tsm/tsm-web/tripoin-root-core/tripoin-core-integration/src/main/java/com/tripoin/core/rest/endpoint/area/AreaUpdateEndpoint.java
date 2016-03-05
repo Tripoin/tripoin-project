@@ -19,7 +19,6 @@ import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ValueArgument;
-import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.pojo.Area;
@@ -46,7 +45,7 @@ public class AreaUpdateEndpoint extends XReturnStatus {
 	 * @return
 	 */
     @Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
-    public Message<GeneralTransferObject> updateArea(Message<AreaTransferObject> inMessage) {
+    public Message<GeneralTransferObject> updateArea(Message<GeneralTransferObject> inMessage) {
     	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,15 +54,15 @@ public class AreaUpdateEndpoint extends XReturnStatus {
 		}
 		authentication = null;
         try {
-        	AreaTransferObject datasTransmit = inMessage.getPayload();
-        	if(datasTransmit != null && !datasTransmit.getFindAreaData().isEmpty()){
+        	GeneralTransferObject datasTransmit = inMessage.getPayload();
+        	if(datasTransmit != null && !datasTransmit.getParameterData().isEmpty()){
             	Area area = new Area();
-        		area.setName((String)datasTransmit.getFindAreaData().get(EnumFieldArea.NAME_AREA.toString()));
-        		area.setCode((String)datasTransmit.getFindAreaData().get(EnumFieldArea.CODE_AREA.toString()));
-        		area.setRemarks((String)datasTransmit.getFindAreaData().get(EnumFieldArea.DESCRIPTION_AREA.toString()));
-        		area.setModifiedIP((String)datasTransmit.getFindAreaData().get(ParameterConstant.IDENTIFIER_IP));
-        		area.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.parse((String)datasTransmit.getFindAreaData().get(ParameterConstant.IDENTIFIER_TIME)));
-        		area.setModifiedPlatform((String)datasTransmit.getFindAreaData().get(ParameterConstant.IDENTIFIER_PLATFORM));
+        		area.setName((String)datasTransmit.getParameterData().get(EnumFieldArea.NAME_AREA.toString()));
+        		area.setCode((String)datasTransmit.getParameterData().get(EnumFieldArea.CODE_AREA.toString()));
+        		area.setRemarks((String)datasTransmit.getParameterData().get(EnumFieldArea.DESCRIPTION_AREA.toString()));
+        		area.setModifiedIP((String)datasTransmit.getParameterData().get(ParameterConstant.IDENTIFIER_IP));
+        		area.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.parse((String)datasTransmit.getParameterData().get(ParameterConstant.IDENTIFIER_TIME)));
+        		area.setModifiedPlatform((String)datasTransmit.getParameterData().get(ParameterConstant.IDENTIFIER_PLATFORM));
             	area.setModifiedBy(currentUserName);
             	if(area.getModifiedIP() == null)
             		area.setModifiedIP(ParameterConstant.IP_ADDRESSV4_DEFAULT);
@@ -88,6 +87,7 @@ public class AreaUpdateEndpoint extends XReturnStatus {
                 generalTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
                 area = null;
                 valueArguments = null;
+                datasTransmit = null;
         	}
         } catch (Exception e) {
             LOGGER.error("Update Area System Error : " + e.getMessage(), e);

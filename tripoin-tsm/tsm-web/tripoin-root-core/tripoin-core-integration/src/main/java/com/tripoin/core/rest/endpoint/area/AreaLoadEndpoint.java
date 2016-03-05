@@ -17,9 +17,12 @@ import org.springframework.stereotype.Component;
 import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
+import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.pojo.Area;
 import com.tripoin.core.rest.endpoint.base.APageableEndpoint;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -28,7 +31,7 @@ import com.tripoin.core.service.IGenericManagerJpa;
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 @Component("areaLoadEndpoint")
-public class AreaLoadEndpoint extends APageableEndpoint<AreaData> {
+public class AreaLoadEndpoint extends APageableEndpoint {
 
     private static Logger LOGGER = LoggerFactory.getLogger(AreaLoadEndpoint.class);
 
@@ -77,25 +80,30 @@ public class AreaLoadEndpoint extends APageableEndpoint<AreaData> {
 	 * @return
 	 */
 	@Secured({RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
-	public Message<AreaTransferObject> loadAreaPaging(Message<AreaTransferObject> inMessage){	
+	public Message<AreaTransferObject> loadAreaPaging(Message<GeneralPagingTransferObject> inMessage){	
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
 		try{
-			List<Area> areaList = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, getFilterArguments(), getValues(), null, getPageTransferObject(inMessage.getPayload(), inMessage.getPayload().getFindAreaData()));
-			List<AreaData> areaDatas = new ArrayList<AreaData>();
-			if(areaList != null){
-				for(int i=areaList.size()-1; i>=0; i--)
-					areaDatas.add(new AreaData(areaList.get(i)));					
-				areaTransferObject.setAreaDatas(areaDatas);
-				areaList = null;
-				areaDatas = null;
-			}
-			areaTransferObject.setPositionPage(getPositionPage());
-			areaTransferObject.setRowPerPage(getRowPerPage());
-			areaTransferObject.setTotalPage(getTotalPage());
-			areaTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
-			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			areaTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());			
+			GeneralPagingTransferObject generalPagingTransferObject = inMessage.getPayload();
+			if(generalPagingTransferObject != null){
+				PageArgument pageArgument = getPageTransferObject(generalPagingTransferObject, generalPagingTransferObject.getParameterData());
+				List<Area> areaList = iGenericManagerJpa.loadObjectsFilterArgument(Area.class, getFilterArguments(), getValues(), null, pageArgument);
+				List<AreaData> areaDatas = new ArrayList<AreaData>();
+				if(areaList != null){
+					for(int i=areaList.size()-1; i>=0; i--){
+						areaDatas.add(new AreaData(areaList.get(i)));
+					}
+					areaTransferObject.setAreaDatas(areaDatas);
+					areaList = null;
+					areaDatas = null;
+				}
+				areaTransferObject.setPositionPage(getPositionPage());
+				areaTransferObject.setRowPerPage(getRowPerPage());
+				areaTransferObject.setTotalPage(getTotalPage());
+				areaTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
+				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+				areaTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+			}			
 		}catch (Exception e){
 			LOGGER.error("Load Paging Area System Error : "+e.getLocalizedMessage(), e);
 			areaTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
@@ -109,8 +117,8 @@ public class AreaLoadEndpoint extends APageableEndpoint<AreaData> {
 	}
 
 	@Override
-	protected Long getTotalRowVcsTable() throws Exception {
-		return ((BigInteger)iGenericManagerJpa.getObjectSQLNative("SELECT COUNT(area_id) FROM mst_area WHERE area_name LIKE :".concat(EnumFieldArea.NAME_AREA.toString()), getFilterArguments(), getValues())).longValue();
+	protected Long getTotalRowVcsTable(FilterArgument[] filterArguments, Object[] values) throws Exception {
+		return ((BigInteger)iGenericManagerJpa.getObjectSQLNative("SELECT COUNT(area_id) FROM mst_area WHERE area_name LIKE :".concat(EnumFieldArea.NAME_AREA.toString()), filterArguments, values)).longValue();
 	}
 
 	@Override

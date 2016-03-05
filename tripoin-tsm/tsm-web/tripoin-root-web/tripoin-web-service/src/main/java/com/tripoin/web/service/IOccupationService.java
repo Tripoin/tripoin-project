@@ -1,24 +1,18 @@
 package com.tripoin.web.service;
 
-import java.util.List;
-
 import javax.servlet.ServletContext;
 
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
-import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public interface IOccupationService {
-
-    public OccupationData getOccupation();
     
-    public List<OccupationData> getAllOccupationDatas();
+    public OccupationTransferObject getAllOccupationDatas(GeneralPagingTransferObject generalPagingTransferObject);
     
-    public OccupationTransferObject getAllOccupationDatas(OccupationTransferObject occupationTransferObject);
-    
-    public GeneralTransferObject updateOccupation(OccupationTransferObject dataTransferObject, final ServletContext servletContext);
+    public GeneralTransferObject updateOccupation(GeneralTransferObject dataTransferObject, final ServletContext servletContext);
 
 }

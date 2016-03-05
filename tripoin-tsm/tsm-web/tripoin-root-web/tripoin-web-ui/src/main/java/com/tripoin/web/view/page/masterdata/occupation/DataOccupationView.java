@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.dto.ABaseDataTransferObject;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.core.dto.OccupationTransferObject;
@@ -52,15 +53,15 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 	}
 
 	@Override
-	protected GeneralPagingTransferObject<OccupationData> getALlDatasService(GeneralPagingTransferObject<OccupationData> generalPagingTransferObject, Map<String, Object> searchPanelDatas) {
+	protected ABaseDataTransferObject<OccupationData> getAllDatasService(GeneralPagingTransferObject generalPagingTransferObject, HashMap<String, Object> searchPanelDatas) {
     	occupationTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
     	occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-    	occupationTransferObjectSearch.setFindOccupationData(searchPanelDatas);
+    	occupationTransferObjectSearch.setParameterData(searchPanelDatas);
     	return occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
 	}
 
 	@Override
-	protected GeneralPagingTransferObject<OccupationData> doDeleteService(List<OccupationData> dataObjectSelect) {
+	protected GeneralPagingTransferObject doDeleteService(List<OccupationData> dataObjectSelect) {
 		return null;
 	}
 	

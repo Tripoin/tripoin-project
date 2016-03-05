@@ -1,5 +1,7 @@
 package com.tripoin.core.dto;
 
+import java.util.HashMap;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,6 +22,9 @@ public class GeneralTransferObject {
 
 	@XmlElement(name = "ResponseDesc", namespace = "")
 	protected String responseDesc;
+	
+	@XmlElement(name = "ParameterData", namespace = "")
+	private HashMap<String, Object> parameterData;
 
 	public String getResponseCode() {
 		return responseCode;
@@ -43,6 +48,14 @@ public class GeneralTransferObject {
 
 	public void setResponseDesc(String responseDesc) {
 		this.responseDesc = responseDesc;
+	}
+
+	public HashMap<String, Object> getParameterData() {
+		return parameterData;
+	}
+
+	public void setParameterData(HashMap<String, Object> parameterData) {
+		this.parameterData = parameterData;
 	}
 
 	@Override

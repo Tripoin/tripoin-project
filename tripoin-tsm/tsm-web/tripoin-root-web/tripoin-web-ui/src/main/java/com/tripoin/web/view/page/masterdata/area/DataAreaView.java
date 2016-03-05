@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.dto.ABaseDataTransferObject;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IAreaService;
 import com.tripoin.web.servlet.VaadinView;
@@ -51,21 +53,21 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 	}
 
 	@Override
-	protected GeneralPagingTransferObject<AreaData> getALlDatasService(GeneralPagingTransferObject<AreaData> generalPagingTransferObject, Map<String, Object> searchPanelDatas) {
+	protected ABaseDataTransferObject<AreaData> getAllDatasService(GeneralPagingTransferObject generalPagingTransferObject, HashMap<String, Object> searchPanelDatas) {
     	areaTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
     	areaTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-    	areaTransferObjectSearch.setFindAreaData(searchPanelDatas);
+    	areaTransferObjectSearch.setParameterData(searchPanelDatas);
     	return areaService.getAllAreaDatas(areaTransferObjectSearch);
 	}
 
 	@Override
-	protected GeneralPagingTransferObject<AreaData> doDeleteService(List<AreaData> dataObjectSelect) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	protected GeneralTransferObject doDeleteService(List<AreaData> dataObjectSelect) {
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		for(AreaData areaData : dataObjectSelect)
 			dataMap.put(areaData.getCode(), areaData.getCode());
-		AreaTransferObject areaTransferObject = new AreaTransferObject();
-		areaTransferObject.setFindAreaData(dataMap);
-		return areaService.deleteArea(areaTransferObject, VaadinServlet.getCurrent().getServletContext());
+		GeneralTransferObject generalTransferObject = new GeneralTransferObject();
+		generalTransferObject.setParameterData(dataMap);
+		return areaService.deleteArea(generalTransferObject, VaadinServlet.getCurrent().getServletContext());
 	}
 	
 	@Override

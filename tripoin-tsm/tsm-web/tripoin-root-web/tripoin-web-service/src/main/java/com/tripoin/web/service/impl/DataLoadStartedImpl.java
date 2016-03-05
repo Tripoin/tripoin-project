@@ -3,7 +3,6 @@ package com.tripoin.web.service.impl;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -82,18 +81,18 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 	@Override
 	public List<EmployeeData> loadEmployeeAreaSalesManagerData() {
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
-		Map<String, Object> findEmployeeData = new HashMap<String, Object>();
+		HashMap<String, Object> findEmployeeData = new HashMap<String, Object>();
 		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_AREASALESMANAGER);
-		employeeTransferObject.setFindEmployeeData(findEmployeeData);
+		employeeTransferObject.setParameterData(findEmployeeData);
 		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
 	}
 	
 	@Override
 	public List<EmployeeData> loadEmployeeNationalSalesManagerData() {
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
-		Map<String, Object> findEmployeeData = new HashMap<String, Object>();
+		HashMap<String, Object> findEmployeeData = new HashMap<String, Object>();
 		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_NATIONALSALESMANAGER);
-		employeeTransferObject.setFindEmployeeData(findEmployeeData);
+		employeeTransferObject.setParameterData(findEmployeeData);
 		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
 	}
 	

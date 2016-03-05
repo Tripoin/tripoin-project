@@ -31,7 +31,6 @@ import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dao.filter.ValueArgument;
 import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.pojo.Area;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.Occupation;
@@ -89,7 +88,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	 */
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestQuery();
+		runTestDatabase();
 	}
 	
 	public void runTestQuery() throws Exception {
@@ -102,8 +101,8 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	public void runTestDatabase() throws Exception {
-		List<Area> dataList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Area", null, null);
-		for(Area data : dataList) {
+		List<Profile> dataList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em.profile FROM Employee em", null, null);
+		for(Profile data : dataList) {
 			LOGGER.debug("Data : "+data);
 		}
 	}

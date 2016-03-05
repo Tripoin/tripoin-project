@@ -1,5 +1,6 @@
 package com.tripoin.web.view.base.container;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public abstract class AFormContainer extends FormLayout implements ITripoinCompo
 	
 	protected abstract List<Component> getFormComponents();
 
-	public Map<String, Object> getDataField(boolean isResetField) {
+	public HashMap<String, Object> getDataField(boolean isResetField) {
 		return TripoinDataField.getDataField(this, isResetField);
 	}
 	

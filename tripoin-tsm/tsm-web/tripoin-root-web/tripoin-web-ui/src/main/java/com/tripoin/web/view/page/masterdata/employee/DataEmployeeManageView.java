@@ -311,12 +311,12 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 	}
 
 	@Override
-	protected GeneralTransferObject doOkButtonEvent(Map<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
+	protected GeneralTransferObject doOkButtonEvent(HashMap<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
 		return null;
 	}
 
 	@Override
-	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
+	protected GeneralTransferObject doReOkButtonEvent(HashMap<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
 		if(dataOriginalGrid.getProfileData().getUserData().getUsername() != null)
 			formPanelDatas.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), dataOriginalGrid.getProfileData().getUserData().getUsername());
 		EmployeeData employeeDataParent = (EmployeeData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
@@ -324,7 +324,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
 		formPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getCode());
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
-		employeeTransferObject.setFindEmployeeData(formPanelDatas);
+		employeeTransferObject.setParameterData(formPanelDatas);
 		GeneralTransferObject generalTransferObject = employeeService.updateEmployee(employeeTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}

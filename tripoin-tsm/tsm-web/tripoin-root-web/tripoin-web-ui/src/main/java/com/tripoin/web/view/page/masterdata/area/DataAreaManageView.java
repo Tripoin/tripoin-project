@@ -80,18 +80,18 @@ public class DataAreaManageView extends ATripoinForm<AreaData> {
 	}
 
 	@Override
-	protected GeneralTransferObject doOkButtonEvent(Map<String, Object> formPanelDatas, AreaData dataOriginalGrid) {
+	protected GeneralTransferObject doOkButtonEvent(HashMap<String, Object> formPanelDatas, AreaData dataOriginalGrid) {
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
-		areaTransferObject.setFindAreaData(formPanelDatas);
+		areaTransferObject.setParameterData(formPanelDatas);
 		GeneralTransferObject generalTransferObject = areaService.saveArea(areaTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}
 
 	@Override
-	protected GeneralTransferObject doReOkButtonEvent(Map<String, Object> formPanelDatas, AreaData dataOriginalGrid) {
+	protected GeneralTransferObject doReOkButtonEvent(HashMap<String, Object> formPanelDatas, AreaData dataOriginalGrid) {
 		formPanelDatas.put(EnumFieldArea.CODE_AREA.toString(), dataOriginalGrid.getCode());
 		AreaTransferObject areaTransferObject = new AreaTransferObject();
-		areaTransferObject.setFindAreaData(formPanelDatas);
+		areaTransferObject.setParameterData(formPanelDatas);
 		GeneralTransferObject generalTransferObject = areaService.updateArea(areaTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}

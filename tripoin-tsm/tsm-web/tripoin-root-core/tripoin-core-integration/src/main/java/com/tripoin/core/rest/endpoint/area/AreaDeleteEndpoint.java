@@ -21,7 +21,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dto.AreaTransferObject;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.pojo.Area;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -56,19 +56,19 @@ public class AreaDeleteEndpoint extends XReturnStatus {
 	 * @return
 	 */
 	@Secured({ RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN })
-	public Message<AreaTransferObject> deleteArea(Message<AreaTransferObject> inMessage) {
-		AreaTransferObject areaTransferObject = new AreaTransferObject();
+	public Message<GeneralTransferObject> deleteArea(Message<GeneralTransferObject> inMessage) {
+		GeneralTransferObject generalTransferObject = new GeneralTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 
 		try {
-        	AreaTransferObject datasTransmit = inMessage.getPayload();
-        	if(datasTransmit != null && !datasTransmit.getFindAreaData().isEmpty()){
+			GeneralTransferObject datasTransmit = inMessage.getPayload();
+        	if(datasTransmit.getParameterData() != null && !datasTransmit.getParameterData().isEmpty()){
             	boolean isDeleted = false;
             	try {
-            		Object[] values = new Object[datasTransmit.getFindAreaData().size()];
+            		Object[] values = new Object[datasTransmit.getParameterData().size()];
             		StringBuffer parameters = new StringBuffer("(");
             		int i = 0;
-                	for(String code : datasTransmit.getFindAreaData().keySet()){
+                	for(String code : datasTransmit.getParameterData().keySet()){
                 		values[i] = code;
                 		parameters.append("?,");
                 		isDeleted = true;
@@ -84,9 +84,9 @@ public class AreaDeleteEndpoint extends XReturnStatus {
                 	parameters = null;
                 	values = null;
     			} catch (Exception e) {
-    				areaTransferObject.setResponseCode(EResponseCode.RC_USED.getResponseCode());
-    				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-    				areaTransferObject.setResponseDesc(EResponseCode.RC_USED.toString());
+    				generalTransferObject.setResponseCode(EResponseCode.RC_USED.getResponseCode());
+    				generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+    				generalTransferObject.setResponseDesc(EResponseCode.RC_USED.toString());
     			}	
             	if(isDeleted){
     				taskExecutor.execute(new Runnable() {
@@ -107,21 +107,21 @@ public class AreaDeleteEndpoint extends XReturnStatus {
     						});
     					}
     				});
-    				areaTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
-    				areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-    				areaTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+    				generalTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
+    				generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+    				generalTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
                 	isDeleted = false;
     			}     		
         	}
 		} catch (Exception e) {
 			LOGGER.error("Delete Area System Error : " + e.getLocalizedMessage(), e);
-			areaTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
-			areaTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			areaTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getLocalizedMessage());
+			generalTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
+			generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			generalTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getLocalizedMessage());
 		}
-		setReturnStatusAndMessage(areaTransferObject, responseHeaderMap);
-		Message<AreaTransferObject> message = new GenericMessage<AreaTransferObject>(areaTransferObject, responseHeaderMap);
-		areaTransferObject = null;
+		setReturnStatusAndMessage(generalTransferObject, responseHeaderMap);
+		Message<GeneralTransferObject> message = new GenericMessage<GeneralTransferObject>(generalTransferObject, responseHeaderMap);
+		generalTransferObject = null;
 		return message;
 	}
 

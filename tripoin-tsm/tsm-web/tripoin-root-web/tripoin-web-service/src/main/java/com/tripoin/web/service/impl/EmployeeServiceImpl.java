@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
@@ -40,19 +41,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Override
-	public EmployeeData getEmployee() {
-		List<EmployeeData> employeeDatas = stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE), EmployeeTransferObject.class).getEmployeeDatas();
-		if(employeeDatas == null || employeeDatas.isEmpty())
-			return null;
-		return employeeDatas.get(0);
-	}
-
-	@Override
-	public List<EmployeeData> getAllEmployeeDatas() {
-		return stateFullRest.get(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), EmployeeTransferObject.class).getEmployeeDatas();
-	}
-
-	@Override
 	public EmployeeTransferObject getAllEmployeeDatas(EmployeeTransferObject employeeTransferObject) {
 		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL_PAGE), employeeTransferObject, EmployeeTransferObject.class);
 	}
@@ -60,9 +48,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public EmployeeTransferObject updateEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext) {
 		EmployeeTransferObject employeeTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_UPDATE), dataTransferObject, EmployeeTransferObject.class);
-		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
 			threadBuildEmployeeAreaSalesManagerContainer(employeeTransferObject, servletContext);
-		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
 			threadBuildEmployeeNationalSalesManagerContainer(employeeTransferObject, servletContext);
 		return employeeTransferObject;
 	}
@@ -70,15 +58,15 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public EmployeeTransferObject saveEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext) {
 		EmployeeTransferObject employeeTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_SAVE), dataTransferObject, EmployeeTransferObject.class);
-		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
 			threadBuildEmployeeAreaSalesManagerContainer(employeeTransferObject, servletContext);
-		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
 			threadBuildEmployeeNationalSalesManagerContainer(employeeTransferObject, servletContext);
 		return employeeTransferObject;
 	}
 	
 	private void threadBuildEmployeeAreaSalesManagerContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
-		if("0".equals(generalTransferObject.getResponseCode())){
+		if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {
@@ -91,7 +79,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	}
 	
 	private void threadBuildEmployeeNationalSalesManagerContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){
-		if("0".equals(generalTransferObject.getResponseCode())){
+		if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {

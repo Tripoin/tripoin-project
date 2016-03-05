@@ -35,6 +35,7 @@ public abstract class ATripoinMenuItemGridDefault<T> {
         itemMenuGrid.addSeparator();
         menuItemDelete = itemMenuGrid.addItem(ITripoinConstantComponent.MenuItem.DELETE, FontAwesome.TRASH_O, doDelete());
         menuItemDelete.setEnabled(false);
+		getMenuBar().addItem("", FontAwesome.REFRESH, doRefresh());
 	}
 	
 	protected abstract MenuBar getMenuBar();
@@ -42,6 +43,7 @@ public abstract class ATripoinMenuItemGridDefault<T> {
 	protected abstract Command doGenerateReportSelected();
 	protected abstract Command doCreate();
 	protected abstract Command doDelete();
+	protected abstract Command doRefresh();
 
 	public MenuItem getMenuItemCreate() {
 		return menuItemCreate;

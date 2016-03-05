@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.dto.ABaseDataTransferObject;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
+import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IDataLoadStarted;
@@ -78,7 +80,7 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 	}
 
 	@Override
-	protected GeneralPagingTransferObject<EmployeeData> getALlDatasService(GeneralPagingTransferObject<EmployeeData> generalPagingTransferObject, Map<String, Object> searchPanelDatas) {
+	protected ABaseDataTransferObject<EmployeeData> getAllDatasService(GeneralPagingTransferObject generalPagingTransferObject, HashMap<String, Object> searchPanelDatas) {
 		if(searchPanelDatas != null && !searchPanelDatas.isEmpty()){
 			if(searchPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
 				System.out.println(searchPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString()));
@@ -88,13 +90,12 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 		}
 		employeeTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
 		employeeTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-		employeeTransferObjectSearch.setFindEmployeeData(searchPanelDatas);
+		employeeTransferObjectSearch.setParameterData(searchPanelDatas);
 	    return employeeService.getAllEmployeeDatas(employeeTransferObjectSearch);
 	}
 
 	@Override
-	protected GeneralPagingTransferObject<EmployeeData> doDeleteService(List<EmployeeData> dataObjectSelect) {
-		// TODO Auto-generated method stub
+	protected GeneralTransferObject doDeleteService(List<EmployeeData> dataObjectSelect) {
 		return null;
 	}
 

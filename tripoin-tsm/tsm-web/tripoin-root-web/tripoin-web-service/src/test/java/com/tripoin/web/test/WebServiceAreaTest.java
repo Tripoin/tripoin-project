@@ -1,7 +1,5 @@
 package com.tripoin.web.test;
 
-import java.util.HashMap;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,10 +11,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dto.EmployeeData;
-import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
+import com.tripoin.core.dto.AreaData;
+import com.tripoin.core.dto.AreaTransferObject;
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -26,9 +23,9 @@ import com.tripoin.web.common.WebServiceConstant;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext-web-service-test.xml"})
-public class WebServiceEmployeeTest implements ApplicationContextAware {
+public class WebServiceAreaTest implements ApplicationContextAware {
 	
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(WebServiceEmployeeTest.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WebServiceAreaTest.class);
 	
 	@Autowired
 	private ICommonRest commonRest;
@@ -55,15 +52,14 @@ public class WebServiceEmployeeTest implements ApplicationContextAware {
 		stateFullRestTest.setUsername("admin");
 		stateFullRestTest.setPassword("admin");
 		
-		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
-		HashMap<String, Object> findEmployeeData = new HashMap<String, Object>();
-		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_SALESMAN);
-		employeeTransferObject.setParameterData(findEmployeeData);
+		GeneralPagingTransferObject generalPagingTransferObject = new GeneralPagingTransferObject();
+		generalPagingTransferObject.setPositionPage(1);
+		generalPagingTransferObject.setRowPerPage(10);
 		
-		EmployeeTransferObject menuTransferObject = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class);		
-		LOGGER.debug("Response Message Menu : ".concat(menuTransferObject.getResponseMsg()));
-		for(EmployeeData menuData : menuTransferObject.getEmployeeDatas())
-			LOGGER.debug("Response Data Menu : ".concat(menuData.toString()));
+		AreaTransferObject areaTransferObject = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL_PAGE), generalPagingTransferObject, AreaTransferObject.class);		
+		LOGGER.debug("Response Message Menu : ".concat(areaTransferObject.getResponseCode()));
+		for(AreaData areaData : areaTransferObject.getAreaDatas())
+			LOGGER.debug("Response Data Area : ".concat(areaData.toString()));
 	}
 
 }

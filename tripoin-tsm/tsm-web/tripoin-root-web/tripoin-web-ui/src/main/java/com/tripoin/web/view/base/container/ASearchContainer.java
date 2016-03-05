@@ -1,7 +1,7 @@
 package com.tripoin.web.view.base.container;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -50,7 +50,7 @@ public abstract class ASearchContainer extends FormLayout implements ITripoinCom
 	
 	protected abstract List<Component> getSearchComponents();
 
-	public Map<String, Object> getDataField(boolean isResetField) {
+	public HashMap<String, Object> getDataField(boolean isResetField) {
 		return TripoinDataField.getDataField(this, isResetField);
 	}
 

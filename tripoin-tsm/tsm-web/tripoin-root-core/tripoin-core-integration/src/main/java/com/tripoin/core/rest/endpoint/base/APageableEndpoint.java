@@ -18,7 +18,7 @@ import com.tripoin.core.service.util.IVersionControlSystemTableService;
 /**
 * @author <a href="ridla.fadilah@gmail.com">Ridla Fadilah</a>
 */
-public abstract class APageableEndpoint<T> extends XReturnStatus {
+public abstract class APageableEndpoint extends XReturnStatus {
 	
     protected static Logger LOGGER = LoggerFactory.getLogger(APageableEndpoint.class);
 
@@ -34,9 +34,9 @@ public abstract class APageableEndpoint<T> extends XReturnStatus {
 	private Object[] values;
 	private FilterArgument[] filterArguments;
 
-	protected PageArgument getPageTransferObject(GeneralPagingTransferObject<T> payloadData, Map<String, Object> findData) {
-		Object[] values = null;
-		FilterArgument[] filterArguments = null;
+	protected PageArgument getPageTransferObject(GeneralPagingTransferObject payloadData, Map<String, Object> findData) {
+		values = null;
+		filterArguments = null;
 		if(payloadData != null){			
 			try {					
 				if(findData != null){
@@ -49,7 +49,7 @@ public abstract class APageableEndpoint<T> extends XReturnStatus {
 						i++;
 					}
 					versionControlSystemTable = new VersionControlSystemTable();
-					versionControlSystemTable.setTotalRow(getTotalRowVcsTable());						
+					versionControlSystemTable.setTotalRow(getTotalRowVcsTable(filterArguments, values));						
 				}else versionControlSystemTable = iVersionControlSystemTableService.loadValue(getTableName());						
 				positionPage = payloadData.getPositionPage();
 				rowPerPage = payloadData.getRowPerPage();		
@@ -75,7 +75,7 @@ public abstract class APageableEndpoint<T> extends XReturnStatus {
 		return new PageArgument(minRow, maxRow);
 	}
 	
-	protected abstract Long getTotalRowVcsTable() throws Exception;
+	protected abstract Long getTotalRowVcsTable(FilterArgument[] filterArguments, Object[] values) throws Exception;
 	
 	protected abstract String getTableName();
 

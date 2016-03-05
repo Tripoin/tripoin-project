@@ -107,7 +107,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
 		
         try {
         	EmployeeTransferObject datasTransmit = inMessage.getPayload();
-        	Map<String, Object> findDataEmployee = datasTransmit.getFindEmployeeData();
+        	Map<String, Object> findDataEmployee = datasTransmit.getParameterData();
         	role = new Role();
         	user = new User();
         	profile = new Profile();
@@ -140,7 +140,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
             				new FilterArgument("code", ECommonOperator.EQUALS) 
             		};
                     List<Role> roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { 
-                    		datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null);
+                    		datasTransmit.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null);
                     if(roleList == null || roleList.isEmpty()){
                     	roleList =  iGenericManagerJpa.loadObjectsFilterArgument(Role.class, filterArgumentsRole, new Object[] { 
                     			RoleConstant.ROLE_SALESMAN }, null, null);
@@ -156,7 +156,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                     /**
                      * Set Profile
                      */
-                    if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
+                    if(datasTransmit.getParameterData().get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) != null){
                     	List<Profile> profileListCheckMobileEmail = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE email = ? OR phone = ?",  new Object[] { 
                     			email, 
                     			mobilePhone }, null);
@@ -203,16 +203,16 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
             				new FilterArgument(EnumFieldOccupation.CODE_OCCUPATION.toString(), ECommonOperator.EQUALS) 
             		};
                 	occupation =  iGenericManagerJpa.loadObjectsFilterArgument(Occupation.class, filterArgumentsOccupation, new Object[] { 
-                			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
+                			datasTransmit.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString()) }, null, null).get(0);
                 	/**
                 	 * Set Employee Parent
                 	 */
-                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) != null){
+                	if(datasTransmit.getParameterData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) != null){
                     	FilterArgument[] filterArgumentsParentEmployee = new FilterArgument[] { 
                 				new FilterArgument(EnumFieldEmployee.NIK_EMPLOYE.toString(), ECommonOperator.EQUALS) 
                 		};
                     	List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArgumentsParentEmployee, new Object[] { 
-                    			datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
+                    			datasTransmit.getParameterData().get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) }, null, null);
                     	if(employeeParentList != null && !employeeParentList.isEmpty())
                     		employee.setEmployeeParent(employeeParentList.get(0));
                     	else {
@@ -224,7 +224,7 @@ public class EmployeeSaveEndpoint extends XReturnStatus {
                 	/**
                 	 * Set Employee
                 	 */
-                	if(datasTransmit.getFindEmployeeData().get(EnumFieldEmployee.NIK_EMPLOYE.toString()) != null){
+                	if(datasTransmit.getParameterData().get(EnumFieldEmployee.NIK_EMPLOYE.toString()) != null){
                 		FilterArgument[] filterArgumentsNik = new FilterArgument[] { 
                 				new FilterArgument(EnumFieldEmployee.NIK_EMPLOYE.toString(), ECommonOperator.EQUALS)
                 		};

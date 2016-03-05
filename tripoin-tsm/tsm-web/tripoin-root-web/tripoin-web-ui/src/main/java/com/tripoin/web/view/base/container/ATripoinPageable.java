@@ -1,8 +1,5 @@
 package com.tripoin.web.view.base.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.web.common.EWebUIConstant;
 import com.vaadin.server.FontAwesome;
@@ -10,20 +7,15 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 
-public abstract class ATripoinPageable<T> {
+public abstract class ATripoinPageable {
 
-	private GeneralPagingTransferObject<T> generalPagingTransferObject = new GeneralPagingTransferObject<T>() {
-		@Override
-		public List<T> getDatas() {
-			return new ArrayList<T>();
-		}
-	};
+	private GeneralPagingTransferObject generalPagingTransferObject = new GeneralPagingTransferObject();
 	
 	public ATripoinPageable() {
 		refreshPageable();
 	}
 	
-	public ATripoinPageable(GeneralPagingTransferObject<T> generalPagingTransferObject) {
+	public ATripoinPageable(GeneralPagingTransferObject generalPagingTransferObject) {
 		this.generalPagingTransferObject = generalPagingTransferObject;
 	}
 
@@ -94,11 +86,11 @@ public abstract class ATripoinPageable<T> {
 	
 	protected abstract MenuBar getMenuBar();
 
-	public GeneralPagingTransferObject<T> getGeneralPagingTransferObject() {
+	public GeneralPagingTransferObject getGeneralPagingTransferObject() {
 		return generalPagingTransferObject;
 	}
 
-	public void setGeneralPagingTransferObject(GeneralPagingTransferObject<T> generalPagingTransferObject) {
+	public void setGeneralPagingTransferObject(GeneralPagingTransferObject generalPagingTransferObject) {
 		this.generalPagingTransferObject = generalPagingTransferObject;
 	}
 	

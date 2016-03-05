@@ -1,7 +1,6 @@
 package com.tripoin.core.dto;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,13 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "AreaTransferObject")
-public class AreaTransferObject extends GeneralPagingTransferObject<AreaData> {
+public class AreaTransferObject extends ABaseDataTransferObject<AreaData> {
 
 	@XmlElement(name = "AreaDatas", namespace = "")
 	private List<AreaData> areaDatas;
-
-	@XmlElement(name = "FindAreaData", namespace = "")
-	private Map<String, Object> findAreaData;
 
 	@Override
 	public List<AreaData> getDatas() {
@@ -34,18 +30,9 @@ public class AreaTransferObject extends GeneralPagingTransferObject<AreaData> {
 		this.areaDatas = areaDatas;
 	}
 
-	public Map<String, Object> getFindAreaData() {
-		return findAreaData;
-	}
-
-	public void setFindAreaData(Map<String, Object> findAreaData) {
-		this.findAreaData = findAreaData;
-	}
-
 	@Override
 	public String toString() {
-		return "AreaTransferObject [areaDatas=" + areaDatas + ", findAreaData="
-				+ findAreaData + "]";
+		return "AreaTransferObject [areaDatas=" + areaDatas + "]";
 	}
 
 	public enum EnumFieldArea {

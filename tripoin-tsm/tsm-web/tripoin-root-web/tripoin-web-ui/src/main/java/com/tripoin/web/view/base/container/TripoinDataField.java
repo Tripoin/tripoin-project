@@ -23,8 +23,8 @@ import com.vaadin.ui.TextField;
 */
 public class TripoinDataField {
 
-	public static Map<String, Object> getDataField(HasComponents component, boolean isResetField) {
-		Map<String, Object> searchPanelDatas = new HashMap<String, Object>();
+	public static HashMap<String, Object> getDataField(HasComponents component, boolean isResetField) {
+		HashMap<String, Object> searchPanelDatas = new HashMap<String, Object>();
 		if(dataField(component, isResetField, searchPanelDatas, null, 0).isEmpty())
 			return null;
 		return searchPanelDatas;
