@@ -14,9 +14,6 @@ import com.tripoin.core.pojo.Occupation;
 @XmlRootElement(name = "OccupationData")
 public class OccupationData extends AGeneralAuditTrailData {
 
-	@XmlElement(name = "ID", namespace = "")
-	private Integer id;
-
 	@XmlElement(name = "Code", namespace = "")
 	private String code;
 
@@ -28,18 +25,9 @@ public class OccupationData extends AGeneralAuditTrailData {
 	public OccupationData(Occupation occupation) {
 		super(occupation);
 		if(occupation != null){
-			this.id = occupation.getId();
 			this.code = occupation.getCode();
 			this.name = occupation.getName();	
 		}
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getCode() {
@@ -63,7 +51,6 @@ public class OccupationData extends AGeneralAuditTrailData {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -82,11 +69,6 @@ public class OccupationData extends AGeneralAuditTrailData {
 				return false;
 		} else if (!code.equals(other.code))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -97,7 +79,7 @@ public class OccupationData extends AGeneralAuditTrailData {
 
 	@Override
 	public String toString() {
-		return "OccupationData [id=" + id + ", code=" + code + ", name=" + name + "]";
+		return "OccupationData [code=" + code + ", name=" + name + "]";
 	}
 
 }

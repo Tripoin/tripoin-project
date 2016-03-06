@@ -14,9 +14,6 @@ import com.tripoin.core.pojo.Profile;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "ProfileData")
 public class ProfileData extends AGeneralAuditTrailData {
-
-	@XmlElement(name = "ID", namespace = "")
-	private Integer id;
 	
 	@XmlElement(name = "Email", namespace = "")
 	private String email;
@@ -65,7 +62,6 @@ public class ProfileData extends AGeneralAuditTrailData {
 	public ProfileData(Profile profile){
 		super(profile);
 		if(profile != null){
-			this.id = profile.getId();
 			this.email = profile.getEmail();
 			this.name = profile.getName();
 			this.gender = profile.getGender();
@@ -82,14 +78,6 @@ public class ProfileData extends AGeneralAuditTrailData {
 			if(profile.getForgotExpired() != null)
 				this.forgotExpired = ParameterConstant.FORMAT_DEFAULT.format(profile.getForgotExpired());
 		}
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getEmail() {
@@ -216,7 +204,6 @@ public class ProfileData extends AGeneralAuditTrailData {
 		result = prime * result + ((forgotExpired == null) ? 0 : forgotExpired.hashCode());
 		result = prime * result + ((forgotUUID == null) ? 0 : forgotUUID.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((photo == null) ? 0 : photo.hashCode());
@@ -275,11 +262,6 @@ public class ProfileData extends AGeneralAuditTrailData {
 				return false;
 		} else if (!gender.equals(other.gender))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -315,9 +297,9 @@ public class ProfileData extends AGeneralAuditTrailData {
 
 	@Override
 	public String toString() {
-		return "ProfileData [id=" + id + ", email=" + email + ", name=" + name + ", gender=" + gender + ", birthplace="
-				+ birthplace + ", birthdate=" + birthdate + ", address=" + address + ", telp=" + telp + ", phone="
-				+ phone + ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID="
+		return "ProfileData [email=" + email + ", name=" + name + ", gender=" + gender + ", birthplace=" + birthplace
+				+ ", birthdate=" + birthdate + ", address=" + address + ", telp=" + telp + ", phone=" + phone
+				+ ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID="
 				+ forgotUUID + ", forgotExpired=" + forgotExpired + ", userData=" + userData + "]";
 	}
 

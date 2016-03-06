@@ -14,9 +14,6 @@ import com.tripoin.core.pojo.Employee;
 @XmlRootElement(name = "EmployeeData")
 public class EmployeeData extends AGeneralAuditTrailData {
 	
-	@XmlElement(name = "ID", namespace = "")
-    private Integer id;
-	
 	@XmlElement(name = "Code", namespace = "")
     private String code;
 	
@@ -40,21 +37,12 @@ public class EmployeeData extends AGeneralAuditTrailData {
 	public EmployeeData(Employee employee) {
 		super(employee);
 		if(employee != null){
-			this.id = employee.getId();
 			this.code = employee.getCode();
 			this.nik = employee.getNik();
 			this.occupationData = new OccupationData(employee.getOccupation());
 			if(employee.getArea() != null)
 				this.areaData = new AreaData(employee.getArea());	
 		}
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getCode() {
@@ -112,7 +100,6 @@ public class EmployeeData extends AGeneralAuditTrailData {
 		result = prime * result + ((areaData == null) ? 0 : areaData.hashCode());
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result + ((employeeDataParent == null) ? 0 : employeeDataParent.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nik == null) ? 0 : nik.hashCode());
 		result = prime * result + ((occupationData == null) ? 0 : occupationData.hashCode());
 		result = prime * result + ((profileData == null) ? 0 : profileData.hashCode());
@@ -143,11 +130,6 @@ public class EmployeeData extends AGeneralAuditTrailData {
 				return false;
 		} else if (!employeeDataParent.equals(other.employeeDataParent))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (nik == null) {
 			if (other.nik != null)
 				return false;
@@ -168,9 +150,8 @@ public class EmployeeData extends AGeneralAuditTrailData {
 
 	@Override
 	public String toString() {
-		return "EmployeeData [id=" + id + ", code=" + code + ", nik=" + nik + ", profileData=" + profileData
-				+ ", occupationData=" + occupationData + ", areaData=" + areaData + ", employeeDataParent="
-				+ employeeDataParent + "]";
+		return "EmployeeData [code=" + code + ", nik=" + nik + ", occupationData=" + occupationData + ", profileData="
+				+ profileData + ", areaData=" + areaData + ", employeeDataParent=" + employeeDataParent + "]";
 	}
 	
 }

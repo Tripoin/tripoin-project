@@ -83,9 +83,9 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 	protected ABaseDataTransferObject<EmployeeData> getAllDatasService(GeneralPagingTransferObject generalPagingTransferObject, HashMap<String, Object> searchPanelDatas) {
 		if(searchPanelDatas != null && !searchPanelDatas.isEmpty()){
 			if(searchPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
-				System.out.println(searchPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString()));
 				OccupationData occupationData = (OccupationData)searchPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
-				searchPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getName());
+				searchPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getCode());
+				searchPanelDatas.remove(EnumFieldEmployee.OCCUPATION.toString());
 			}
 		}
 		employeeTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
@@ -106,17 +106,17 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 
 	@Override
 	protected Object[] getFieldContainerPropertyHeader() {
-		return new Object[]{"nik", "profileData.name", "occupationData.name", "employeeDataParent.profileData.name"};
+		return new Object[]{"nik", "profileData.name", "occupationData.name", "employeeDataParent.profileData.name", "areaData.name"};
 	}
 
 	@Override
 	protected Object[] addNestedFieldContainerProperty() {
-		return new Object[]{"profileData.name","occupationData.name","employeeDataParent.profileData.name"};
+		return new Object[]{"profileData.name","occupationData.name","areaData.name","employeeDataParent.profileData.name"};
 	}
 	
 	@Override
 	protected Object[] removeFieldContainerProperty() {
-		return new String[]{"id","code","status","remarks","createdBy","createdIP","createdTime","createdPlatform","modifiedBy","modifiedIP","modifiedTime","modifiedPlatform","profileData","occupationData","employeeDataParent"};
+		return new String[]{"id","code","status","remarks","createdBy","createdIP","createdTime","createdPlatform","modifiedBy","modifiedIP","modifiedTime","modifiedPlatform","profileData","occupationData","areaData","employeeDataParent"};
 	}
 
 	@Override
@@ -125,7 +125,8 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 		columns.put("nik", "NIK");
 		columns.put("profileData.name", "Name");
 		columns.put("occupationData.name", "Name");
-		columns.put("employeeDataParent.profileData.name", "Supervisor");
+		columns.put("employeeDataParent.profileData.name", "Head");
+		columns.put("areaData.name", "Area");
 		return columns;
 	}
 

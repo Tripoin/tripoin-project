@@ -19,12 +19,17 @@ import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
+import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.core.dto.ProfileData;
+import com.tripoin.core.dto.UserData;
+import com.tripoin.core.pojo.Area;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Profile;
+import com.tripoin.core.pojo.User;
 import com.tripoin.core.rest.endpoint.base.APageableEndpoint;
 import com.tripoin.core.service.IGenericManagerJpa;
 
@@ -64,7 +69,15 @@ public class EmployeeLoadEndpoint extends APageableEndpoint {
 				List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
 				if(employeeList != null){
 					for(Employee employee : employeeList){
-						employeeDatas.add(new EmployeeData(employee));
+						EmployeeData employeeData = new EmployeeData(employee);
+						List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+						ProfileData profileData = new ProfileData();
+						profileData.setName(profileList.get(0).getName());
+						employeeData.setProfileData(profileData);
+						employeeDatas.add(employeeData);
+						employeeData = null;
+						profileList = null;
+						profileData = null;
 					}
 					employeeTransferObject.setEmployeeDatas(employeeDatas);
 					employeeList = null;
@@ -101,18 +114,53 @@ public class EmployeeLoadEndpoint extends APageableEndpoint {
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
 		try{
 			GeneralPagingTransferObject generalPagingTransferObject = inMessage.getPayload();
-			if(employeeTransferObject != null){
+			if(generalPagingTransferObject != null){
 				PageArgument pageArgument = getPageTransferObject(generalPagingTransferObject, generalPagingTransferObject.getParameterData());
 				List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, getFilterArguments(), getValues(), null, pageArgument);
-				List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em.profile FROM Employee em", getValues(), getPageTransferObject(generalPagingTransferObject, generalPagingTransferObject.getParameterData()));
 				List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
 				if(employeeList != null){
 					for(int i=employeeList.size()-1; i>=0; i--){
 						EmployeeData employeeData = new EmployeeData(employeeList.get(i));
-						
-						employeeDatas.add(employeeData);					
+						List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+						ProfileData profileData = new ProfileData(profileList.get(0));
+						List<User> userList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile.user FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+						UserData userData = new UserData();
+						userData.setUsername(userList.get(0).getUsername());
+						userData.setEnabled(userList.get(0).getEnabled());
+						profileData.setUserData(userData);
+						employeeData.setProfileData(profileData);
+						if(!RoleConstant.ROLE_NATIONALSALESMANAGER.equals(employeeData.getOccupationData().getCode())){
+							EmployeeData employeeDataParent = new EmployeeData();
+							profileData = new ProfileData();
+							profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.employeeParent.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+							profileData.setName(profileList.get(0).getName());
+							employeeDataParent.setProfileData(profileData);
+							employeeData.setEmployeeDataParent(employeeDataParent);
+							AreaData areaData;
+							if(RoleConstant.ROLE_SALESMAN.equals(employeeData.getOccupationData().getCode())){
+								List<Area> areaList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.employeeParent.area FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+								areaData = new AreaData(areaList.get(0));
+								areaList = null;
+							}else if(RoleConstant.ROLE_AREASALESMANAGER.equals(employeeData.getOccupationData().getCode())){
+								List<Area> areaList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.area FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+								areaData = new AreaData(areaList.get(0));
+								areaList = null;
+							}else
+								areaData = null;
+							employeeData.setAreaData(areaData);
+							employeeDataParent = null;
+						}
+						employeeDatas.add(employeeData);
+						employeeData = null;
+						profileList = null;
+						profileData = null;
+						userList = null;
+						userData = null;
 					}
 					employeeTransferObject.setEmployeeDatas(employeeDatas);
+					employeeList = null;
+					employeeDatas = null;
+					pageArgument = null;
 				}
 				employeeTransferObject.setPositionPage(getPositionPage());
 				employeeTransferObject.setRowPerPage(getRowPerPage());

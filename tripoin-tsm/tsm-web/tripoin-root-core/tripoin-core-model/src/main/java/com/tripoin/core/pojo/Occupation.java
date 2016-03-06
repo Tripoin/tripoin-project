@@ -30,7 +30,6 @@ public class Occupation extends AGeneralAuditTrail {
     
 	public Occupation(OccupationData occupationData) {
 		super(occupationData);
-		setId(occupationData.getId());
 		this.code = occupationData.getCode();
 		this.name = occupationData.getName();
 	}

@@ -53,7 +53,6 @@ public class Profile extends AGeneralAuditTrail {
     public Profile(ProfileData profileData) throws ParseException {
     	super(profileData);
     	if(profileData != null){
-    		this.id = profileData.getId();
     		this.email = profileData.getEmail();
     		this.name = profileData.getName();
     		this.gender = profileData.getGender();

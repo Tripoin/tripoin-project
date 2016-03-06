@@ -90,6 +90,8 @@ public class UserUpdateEndpoint extends XReturnStatus {
 					new ValueArgument("password", newPassword)
 			};
             iGenericManagerJpa.execQueryNotCriteria("UPDATE sec_user SET user_password = :password WHERE user_username = :username", valueArguments);
+            SecurityContextHolder.clearContext();
+            LOGGER.debug(currentUserName.concat(" has been logout."));	
             generalTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
             generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
             generalTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());

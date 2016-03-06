@@ -101,9 +101,9 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	public void runTestDatabase() throws Exception {
-		List<Profile> dataList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em.profile FROM Employee em", null, null);
-		for(Profile data : dataList) {
-			LOGGER.debug("Data : "+data);
+		List<Employee> dataList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em FROM Employee em", null, null);
+		for(Employee data : dataList) {
+			LOGGER.debug("Data : "+data.getEmployeeParent());
 		}
 	}
 	

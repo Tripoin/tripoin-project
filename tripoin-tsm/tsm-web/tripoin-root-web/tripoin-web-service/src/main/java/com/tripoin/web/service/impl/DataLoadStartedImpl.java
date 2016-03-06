@@ -116,6 +116,7 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 		this.employeeContainer.removeContainerProperty("modifiedPlatform");
 		this.employeeContainer.removeContainerProperty("profileData");
 		this.employeeContainer.removeContainerProperty("occupationData");
+		this.employeeContainer.removeContainerProperty("areaData");
 		this.employeeContainer.removeContainerProperty("employeeDataParent");
 		this.employeeContainer.addNestedContainerProperty("profileData.name");
 		return employeeContainer;

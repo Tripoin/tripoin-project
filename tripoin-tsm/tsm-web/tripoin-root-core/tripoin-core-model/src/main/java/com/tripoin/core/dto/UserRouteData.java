@@ -15,9 +15,6 @@ import com.tripoin.core.pojo.UserRoute;
 @XmlRootElement(name = "UserRouteData")
 public class UserRouteData {
 	
-	@XmlElement(name = "ID", namespace = "")
-	private Integer id;
-	
 	@XmlElement(name = "Latitude", namespace = "")
 	private Double latitude;
 	
@@ -72,7 +69,6 @@ public class UserRouteData {
 	public UserRouteData(UserRoute userRoute) {
 		super();
 		if(userRoute != null){
-			this.id = userRoute.getId();
 			this.latitude = userRoute.getLatitude();
 			this.longitude = userRoute.getLongitude();
 			this.center = userRoute.getCenter();
@@ -94,14 +90,6 @@ public class UserRouteData {
 			if(userRoute.getEmployee() != null)
 				this.employeeData = new EmployeeData(userRoute.getEmployee());
 		}
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Double getLatitude() {
@@ -242,15 +230,12 @@ public class UserRouteData {
 
 	@Override
 	public String toString() {
-		return "UserRouteData [id=" + id + ", latitude=" + latitude
-				+ ", longitude=" + longitude + ", center=" + center + ", zoom="
-				+ zoom + ", drag=" + drag + ", marker=" + marker + ", caption="
-				+ caption + ", icon=" + icon + ", createdBy=" + createdBy
-				+ ", createdIP=" + createdIP + ", createdTime=" + createdTime
-				+ ", createdPlatform=" + createdPlatform + ", modifiedBy="
-				+ modifiedBy + ", modifiedIP=" + modifiedIP + ", modifiedTime="
-				+ modifiedTime + ", modifiedPlatform=" + modifiedPlatform
-				+ ", employeeData=" + employeeData + "]";
+		return "UserRouteData [latitude=" + latitude + ", longitude=" + longitude + ", center=" + center + ", zoom="
+				+ zoom + ", drag=" + drag + ", marker=" + marker + ", caption=" + caption + ", icon=" + icon
+				+ ", createdBy=" + createdBy + ", createdIP=" + createdIP + ", createdTime=" + createdTime
+				+ ", createdPlatform=" + createdPlatform + ", modifiedBy=" + modifiedBy + ", modifiedIP=" + modifiedIP
+				+ ", modifiedTime=" + modifiedTime + ", modifiedPlatform=" + modifiedPlatform + ", employeeData="
+				+ employeeData + "]";
 	}
 
 }
