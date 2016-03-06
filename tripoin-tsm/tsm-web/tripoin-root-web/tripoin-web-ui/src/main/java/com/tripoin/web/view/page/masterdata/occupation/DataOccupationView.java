@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.tripoin.core.dto.ABaseDataTransferObject;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.OccupationData;
-import com.tripoin.core.dto.OccupationTransferObject;
 import com.tripoin.core.dto.OccupationTransferObject.EnumFieldOccupation;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IOccupationService;
@@ -36,7 +35,7 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 	 */
 	private static final long serialVersionUID = -3718621115290540326L;
 	public static final String BEAN_NAME = "dataOccupationView";
-	private OccupationTransferObject occupationTransferObjectSearch = new OccupationTransferObject();
+	private GeneralPagingTransferObject generalPagingTransferObjectSearch = new GeneralPagingTransferObject();
 
 	@Autowired
 	private IOccupationService occupationService;
@@ -54,10 +53,10 @@ public class DataOccupationView extends ATripoinPage<OccupationData> {
 
 	@Override
 	protected ABaseDataTransferObject<OccupationData> getAllDatasService(GeneralPagingTransferObject generalPagingTransferObject, HashMap<String, Object> searchPanelDatas) {
-    	occupationTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
-    	occupationTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-    	occupationTransferObjectSearch.setParameterData(searchPanelDatas);
-    	return occupationService.getAllOccupationDatas(occupationTransferObjectSearch);
+    	generalPagingTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
+    	generalPagingTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
+    	generalPagingTransferObjectSearch.setParameterData(searchPanelDatas);
+    	return occupationService.getAllOccupationDatas(generalPagingTransferObjectSearch);
 	}
 
 	@Override

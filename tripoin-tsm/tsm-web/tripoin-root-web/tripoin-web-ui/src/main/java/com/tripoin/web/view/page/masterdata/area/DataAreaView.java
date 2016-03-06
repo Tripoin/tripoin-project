@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.ABaseDataTransferObject;
 import com.tripoin.core.dto.AreaData;
-import com.tripoin.core.dto.AreaTransferObject;
 import com.tripoin.core.dto.AreaTransferObject.EnumFieldArea;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
@@ -36,7 +35,7 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 	private static final long serialVersionUID = -3718621115290540326L;
 	public static final String BEAN_NAME = "dataAreaView";
 	public static final String PAGE_NAME = "Data Area";
-	private AreaTransferObject areaTransferObjectSearch = new AreaTransferObject();
+	private GeneralPagingTransferObject generalPagingTransferObjectSearch = new GeneralPagingTransferObject();
 
 	@Autowired
 	private IAreaService areaService;
@@ -54,10 +53,10 @@ public class DataAreaView extends ATripoinPage<AreaData> {
 
 	@Override
 	protected ABaseDataTransferObject<AreaData> getAllDatasService(GeneralPagingTransferObject generalPagingTransferObject, HashMap<String, Object> searchPanelDatas) {
-    	areaTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
-    	areaTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-    	areaTransferObjectSearch.setParameterData(searchPanelDatas);
-    	return areaService.getAllAreaDatas(areaTransferObjectSearch);
+    	generalPagingTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
+    	generalPagingTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
+    	generalPagingTransferObjectSearch.setParameterData(searchPanelDatas);
+    	return areaService.getAllAreaDatas(generalPagingTransferObjectSearch);
 	}
 
 	@Override

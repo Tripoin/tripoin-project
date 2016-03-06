@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.dto.ABaseDataTransferObject;
 import com.tripoin.core.dto.EmployeeData;
-import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
@@ -42,7 +41,7 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 	 */
 	private static final long serialVersionUID = -960436667387354091L;
 	public static final String BEAN_NAME = "dataEmployeeView";
-	private EmployeeTransferObject employeeTransferObjectSearch = new EmployeeTransferObject();
+	private GeneralPagingTransferObject generalPagingTransferObjectSearch = new GeneralPagingTransferObject();
 	@Autowired
 	private IEmployeeService employeeService;
 	@Autowired
@@ -88,10 +87,10 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 				searchPanelDatas.remove(EnumFieldEmployee.OCCUPATION.toString());
 			}
 		}
-		employeeTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
-		employeeTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
-		employeeTransferObjectSearch.setParameterData(searchPanelDatas);
-	    return employeeService.getAllEmployeeDatas(employeeTransferObjectSearch);
+		generalPagingTransferObjectSearch.setPositionPage(generalPagingTransferObject.getPositionPage());
+		generalPagingTransferObjectSearch.setRowPerPage(EWebUIConstant.ROW_PER_PAGE.getOperatorInt());
+		generalPagingTransferObjectSearch.setParameterData(searchPanelDatas);
+	    return employeeService.getAllEmployeeDatas(generalPagingTransferObjectSearch);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.EmployeeTransferObject;
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.ICommonRest;
@@ -41,28 +42,28 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Override
-	public EmployeeTransferObject getAllEmployeeDatas(EmployeeTransferObject employeeTransferObject) {
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL_PAGE), employeeTransferObject, EmployeeTransferObject.class);
+	public EmployeeTransferObject getAllEmployeeDatas(GeneralPagingTransferObject generalPagingTransferObject) {
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL_PAGE), generalPagingTransferObject, EmployeeTransferObject.class);
 	}
 
 	@Override
-	public EmployeeTransferObject updateEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext) {
-		EmployeeTransferObject employeeTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_UPDATE), dataTransferObject, EmployeeTransferObject.class);
+	public GeneralTransferObject updateEmployee(GeneralTransferObject dataTransferObject, final ServletContext servletContext) {
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_UPDATE), dataTransferObject, EmployeeTransferObject.class);
 		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
-			threadBuildEmployeeAreaSalesManagerContainer(employeeTransferObject, servletContext);
-		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
-			threadBuildEmployeeNationalSalesManagerContainer(employeeTransferObject, servletContext);
-		return employeeTransferObject;
+			threadBuildEmployeeAreaSalesManagerContainer(generalTransferObject, servletContext);
+		else if(RoleConstant.ROLE_NATIONALSALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+			threadBuildEmployeeNationalSalesManagerContainer(generalTransferObject, servletContext);
+		return generalTransferObject;
 	}
 
 	@Override
-	public EmployeeTransferObject saveEmployee(EmployeeTransferObject dataTransferObject, final ServletContext servletContext) {
-		EmployeeTransferObject employeeTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_SAVE), dataTransferObject, EmployeeTransferObject.class);
+	public GeneralTransferObject saveEmployee(GeneralTransferObject dataTransferObject, final ServletContext servletContext) {
+		GeneralTransferObject generalTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_SAVE), dataTransferObject, EmployeeTransferObject.class);
 		if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
-			threadBuildEmployeeAreaSalesManagerContainer(employeeTransferObject, servletContext);
-		else if(RoleConstant.ROLE_AREASALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
-			threadBuildEmployeeNationalSalesManagerContainer(employeeTransferObject, servletContext);
-		return employeeTransferObject;
+			threadBuildEmployeeAreaSalesManagerContainer(generalTransferObject, servletContext);
+		else if(RoleConstant.ROLE_NATIONALSALESMANAGER.equals((String)dataTransferObject.getParameterData().get(EnumFieldEmployee.OCCUPATION_CODE.toString())))
+			threadBuildEmployeeNationalSalesManagerContainer(generalTransferObject, servletContext);
+		return generalTransferObject;
 	}
 	
 	private void threadBuildEmployeeAreaSalesManagerContainer(GeneralTransferObject generalTransferObject, final ServletContext servletContext){

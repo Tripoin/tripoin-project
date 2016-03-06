@@ -15,6 +15,7 @@ public enum EResponseCode {
 	RC_NIK_EXISTS("05", "NIK already exists, please try others!"),
 	RC_OCCUPATION_EXISTS("06", "Occupation already exists, please try others!"),
 	RC_AREA_EXISTS("07", "Area already exists, please try others!"),
+	RC_USERNAME_NOT_EXISTS("08", "Username not exsits"),
 
 	RC_TYPEFILE_NOTALLOW("70", "Type File not Allowed"),
 	RC_MAX_FILE_SIZE("80", "Maximum file upload"),

@@ -13,9 +13,10 @@ import org.springframework.stereotype.Component;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
+import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.EmployeeData;
-import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.web.common.EWebUIConstant;
@@ -59,8 +60,9 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 	private IEmployeeService employeeService;
 	@Autowired
 	private IDataLoadStarted dataLoadStarted;
-	
+
 	private ComboBox parentEmployeeComboBox;
+	private ComboBox areaComboBox;
 
 	@Override
 	protected List<com.vaadin.ui.Component> designFormComponents(final EmployeeData dataGrid) {
@@ -104,6 +106,17 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
         occupationComboBox.setRequired(true);
         occupationComboBox.setWidth("50%");
         
+        areaComboBox = new ComboBox("Area");
+        areaComboBox.setVisible(false);
+		component.add(areaComboBox);
+        BeanItemContainer<AreaData> areaData = dataLoadStarted.getAreaContainer(VaadinServlet.getCurrent().getServletContext());
+        areaComboBox.setContainerDataSource(areaData);
+        areaComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
+		areaComboBox.setId(EnumFieldEmployee.AREA.toString());
+		areaComboBox.addStyleName("small");
+		areaComboBox.setWidth("50%");
+		areaComboBox.setImmediate(true);
+        
 	    parentEmployeeComboBox = new ComboBox("Head");
 		component.add(parentEmployeeComboBox);
 		parentEmployeeComboBox.setId(EnumFieldEmployee.PARENT_EMPLOYE.toString());
@@ -120,6 +133,9 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 		        	parentEmployeeComboBox.setContainerDataSource(null);
 				OccupationData occupationData = (OccupationData)event.getProperty().getValue();
 				if(RoleConstant.ROLE_SALESMAN.equals(occupationData.getCode())){
+			        // TODO Area
+			        areaComboBox.setVisible(false);
+			        // TODO Head
 					BeanItemContainer<EmployeeData> employeeData = dataLoadStarted.employeeAreaSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
 					if(!RoleConstant.ROLE_SALESMAN.equals(dataGrid.getOccupationData().getCode()))
 						employeeData.removeItem(dataGrid);
@@ -129,6 +145,9 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			        	parentEmployeeComboBox.select(employeeData.getItemIds().get(0));
 			        employeeData = null;
 				}else if(RoleConstant.ROLE_AREASALESMANAGER.equals(occupationData.getCode())){
+			        // TODO Area
+			        areaComboBox.setVisible(true);
+			        // TODO Head
 					BeanItemContainer<EmployeeData> employeeData = dataLoadStarted.employeeNationalSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
 					if(!RoleConstant.ROLE_AREASALESMANAGER.equals(dataGrid.getOccupationData().getCode()))
 						employeeData.removeItem(dataGrid);
@@ -137,8 +156,12 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			        if(employeeData.getItemIds() != null)
 			        	parentEmployeeComboBox.select(employeeData.getItemIds().get(0));
 			        employeeData = null;
-				}else
+				}else{
+			        // TODO Area
+			        areaComboBox.setVisible(false);
+			        // TODO Head
 			        parentEmployeeComboBox.setNullSelectionAllowed(true);
+				}
 			}
 		});
         
@@ -321,11 +344,13 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			formPanelDatas.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), dataOriginalGrid.getProfileData().getUserData().getUsername());
 		EmployeeData employeeDataParent = (EmployeeData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
 		formPanelDatas.put(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), employeeDataParent.getNik());
+		formPanelDatas.remove(EnumFieldEmployee.PARENT_EMPLOYE.toString());
 		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
 		formPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getCode());
-		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
-		employeeTransferObject.setParameterData(formPanelDatas);
-		GeneralTransferObject generalTransferObject = employeeService.updateEmployee(employeeTransferObject, VaadinServlet.getCurrent().getServletContext());
+		formPanelDatas.remove(EnumFieldEmployee.OCCUPATION.toString());
+		GeneralPagingTransferObject generalPagingTransferObject = new GeneralPagingTransferObject();
+		generalPagingTransferObject.setParameterData(formPanelDatas);
+		GeneralTransferObject generalTransferObject = employeeService.updateEmployee(generalPagingTransferObject, VaadinServlet.getCurrent().getServletContext());
 		return generalTransferObject;
 	}
 

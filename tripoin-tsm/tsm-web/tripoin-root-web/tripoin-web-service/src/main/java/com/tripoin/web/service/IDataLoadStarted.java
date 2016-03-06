@@ -28,6 +28,8 @@ public interface IDataLoadStarted {
 	
 	public BeanItemContainer<OccupationData> getOccupationContainer(ServletContext servletContext);
 	
+	public BeanItemContainer<AreaData> getAreaContainer(ServletContext servletContext);
+	
 	public BeanItemContainer<EmployeeData> employeeAreaSalesManagerContainer(ServletContext servletContext);
 	
 	public BeanItemContainer<EmployeeData> employeeNationalSalesManagerContainer(ServletContext servletContext);

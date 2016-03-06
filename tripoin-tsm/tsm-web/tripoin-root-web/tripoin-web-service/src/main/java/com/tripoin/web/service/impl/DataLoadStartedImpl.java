@@ -46,16 +46,12 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 	public void setPassword(String password) {this.password = password;}
 
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);
+	private BeanItemContainer<AreaData> areaContainer = new BeanItemContainer<>(AreaData.class);
 	private BeanItemContainer<EmployeeData> employeeContainer = new BeanItemContainer<>(EmployeeData.class);
 	
 	@Override
 	public List<OccupationData> loadOccupationData() {
     	return getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_OCCUPATION_ALL), null, OccupationTransferObject.class).getOccupationDatas();
-	}
-	
-	@Override
-	public List<AreaData> loadAreaData() {
-    	return getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL), null, AreaTransferObject.class).getAreaDatas();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -77,6 +73,31 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
     	this.occupationContainer.removeContainerProperty("modifiedPlatform");
 		return occupationContainer;
 	}
+	
+	@Override
+	public List<AreaData> loadAreaData() {
+    	return getObject(HttpMethod.GET, commonRest.getUrl(WebServiceConstant.HTTP_AREA_ALL), null, AreaTransferObject.class).getAreaDatas();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public BeanItemContainer<AreaData> getAreaContainer(ServletContext servletContext) {
+		this.areaContainer.removeAllItems();
+		this.areaContainer.addAll((List<AreaData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_AREA));
+    	this.areaContainer.removeContainerProperty("id");
+    	this.areaContainer.removeContainerProperty("code");
+    	this.areaContainer.removeContainerProperty("status");
+    	this.areaContainer.removeContainerProperty("remarks");
+    	this.areaContainer.removeContainerProperty("createdBy");
+    	this.areaContainer.removeContainerProperty("createdIP");
+    	this.areaContainer.removeContainerProperty("createdTime");
+    	this.areaContainer.removeContainerProperty("createdPlatform");
+    	this.areaContainer.removeContainerProperty("modifiedBy");
+    	this.areaContainer.removeContainerProperty("modifiedIP");
+    	this.areaContainer.removeContainerProperty("modifiedTime");
+    	this.areaContainer.removeContainerProperty("modifiedPlatform");
+		return areaContainer;
+	}	
 
 	@Override
 	public List<EmployeeData> loadEmployeeAreaSalesManagerData() {
@@ -154,6 +175,6 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		if(isOAuth) return encodeUserCredentials(headers, username, password);	
 		else return headers;
-	}	
+	}
 
 }
