@@ -65,6 +65,13 @@ public class ProfileUpdateEndpoint extends XReturnStatus {
         	ProfileData profileData = inMessage.getPayload();
         	Profile profile = new Profile();
         	if(profileData != null){
+            	if(profileData.getAddress() == null || profileData.getBirthdate() == null ||
+            			profileData.getBirthplace() == null || profileData.getEmail() == null ||
+            			profileData.getPhone() == null || profileData.getGender() == null ||
+            			profileData.getName() == null){
+                	wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString()+"Field not null!");
+    				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);        		
+            	}
             	profile = new Profile(profileData);
             	List<Profile> profileValidateList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile WHERE (email = ? OR phone = ?) AND user.username != ?", new Object[] { profile.getEmail(), profile.getPhone(), currentUserName }, null);
             	if(profileValidateList != null && !profileValidateList.isEmpty()){

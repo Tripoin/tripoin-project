@@ -105,17 +105,17 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 
 	@Override
 	protected Object[] getFieldContainerPropertyHeader() {
-		return new Object[]{"nik", "profileData.name", "occupationData.name", "employeeDataParent.profileData.name", "areaData.name"};
+		return new Object[]{"nik", "profileData.name", "occupationData.name", "employeeParentData.name", "areaData.name"};
 	}
 
 	@Override
 	protected Object[] addNestedFieldContainerProperty() {
-		return new Object[]{"profileData.name","occupationData.name","areaData.name","employeeDataParent.profileData.name"};
+		return new Object[]{"profileData.name","occupationData.name","areaData.name","employeeParentData.name"};
 	}
 	
 	@Override
 	protected Object[] removeFieldContainerProperty() {
-		return new String[]{"id","code","status","remarks","createdBy","createdIP","createdTime","createdPlatform","modifiedBy","modifiedIP","modifiedTime","modifiedPlatform","profileData","occupationData","areaData","employeeDataParent"};
+		return new String[]{"id","code","status","remarks","createdBy","createdIP","createdTime","createdPlatform","modifiedBy","modifiedIP","modifiedTime","modifiedPlatform","profileData","occupationData","areaData","employeeParentData"};
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class DataEmployeeView extends ATripoinPage<EmployeeData> {
 		columns.put("nik", "NIK");
 		columns.put("profileData.name", "Name");
 		columns.put("occupationData.name", "Name");
-		columns.put("employeeDataParent.profileData.name", "Head");
+		columns.put("employeeParentData.name", "Head");
 		columns.put("areaData.name", "Area");
 		return columns;
 	}

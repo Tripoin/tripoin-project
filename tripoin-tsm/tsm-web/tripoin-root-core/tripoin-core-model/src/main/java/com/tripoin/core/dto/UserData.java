@@ -14,9 +14,6 @@ import com.tripoin.core.pojo.User;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "UserData")
 public class UserData {
-
-	@XmlElement(name = "ID", namespace = "")
-	private Integer id;
 	
 	@XmlElement(name = "Username", namespace = "")
 	private String username;
@@ -46,7 +43,6 @@ public class UserData {
 	
 	public UserData(User user) {
 		if(user != null){
-			this.setId(user.getId());
 			this.setUsername(user.getUsername());
 			this.setEnabled(user.getEnabled());
 			if(user.getExpiredDate() != null)
@@ -58,14 +54,6 @@ public class UserData {
 			if(user.getRole() != null)
 				this.setRoleData(new RoleData(user.getRole()));
 		}
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getUsername() {
@@ -140,7 +128,6 @@ public class UserData {
 		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
 		result = prime * result
 				+ ((expiredDate == null) ? 0 : expiredDate.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((nonLocked == null) ? 0 : nonLocked.hashCode());
 		result = prime * result + ((remarks == null) ? 0 : remarks.hashCode());
@@ -176,11 +163,6 @@ public class UserData {
 				return false;
 		} else if (!expiredDate.equals(other.expiredDate))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (nonLocked == null) {
 			if (other.nonLocked != null)
 				return false;
@@ -211,10 +193,10 @@ public class UserData {
 
 	@Override
 	public String toString() {
-		return "UserData [id=" + id + ", username=" + username + ", enabled=" + enabled + ", expiredDate="
-				+ expiredDate + ", nonLocked=" + nonLocked + ", auth=" + auth
-				+ ", status=" + status + ", remarks=" + remarks + ", roleData="
-				+ roleData + "]";
+		return "UserData [username=" + username + ", enabled=" + enabled
+				+ ", expiredDate=" + expiredDate + ", nonLocked=" + nonLocked
+				+ ", auth=" + auth + ", status=" + status + ", remarks="
+				+ remarks + ", roleData=" + roleData + "]";
 	}
 
 }

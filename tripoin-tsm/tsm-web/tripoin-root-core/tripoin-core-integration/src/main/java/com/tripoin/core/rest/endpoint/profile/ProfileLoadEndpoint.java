@@ -20,9 +20,11 @@ import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeePrivateData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.core.dto.ProfileTransferObject;
+import com.tripoin.core.dto.RoleData;
 import com.tripoin.core.dto.UserData;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Profile;
@@ -111,21 +113,18 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 				if(employeeList != null && !employeeList.isEmpty()){
 					employeeData = new EmployeeData(employeeList.get(0));
 					if(employeeList.get(0).getEmployeeParent() != null){
-						List<Employee> employeeParentList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Employee WHERE id = ?", new Object[]{employeeList.get(0).getEmployeeParent().getId()}, null);
 						List<Profile> profileParentList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em.profile FROM Employee em WHERE em.id = ?", new Object[]{employeeList.get(0).getEmployeeParent().getId()}, null);
-						EmployeeData employeeParentData = new EmployeeData(employeeParentList.get(0));
-						ProfileData profileParentData = new ProfileData();
-						profileParentData.setName(profileParentList.get(0).getName());
-						employeeParentData.setProfileData(profileParentData);
-						employeeData.setEmployeeDataParent(employeeParentData);
-						employeeParentList = null;
+						EmployeePrivateData employeePrivateData = new EmployeePrivateData();
+						employeePrivateData.setName(profileParentList.get(0).getName());
+						employeeData.setEmployeeParentData(employeePrivateData);
 						profileParentList = null;
-						employeeParentData = null;
-						profileParentData = null;
 					}
 				}
 				ProfileData profileData = new ProfileData(profileList.get(0));
-				profileData.setUserData(new UserData(userList.get(0)));
+				UserData userData = new UserData();
+				userData.setUsername(userList.get(0).getUsername());
+				userData.setRoleData(new RoleData(userList.get(0).getRole()));
+				profileData.setUserData(userData);
 				employeeData.setProfileData(profileData);
 				employeeDatas.add(employeeData);
 				employeeTransferObject.setEmployeeDatas(employeeDatas);
@@ -135,6 +134,7 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 				employeeList = null;
 				employeeData = null;
 				employeeDatas = null;
+				userData = null;
 			}
 			employeeTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);

@@ -21,6 +21,8 @@ import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeePrivateData;
+import com.tripoin.core.dto.EmployeePrivateTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
@@ -51,8 +53,8 @@ public class EmployeeLoadEndpoint extends APageableEndpoint {
 	 * @return
 	 */
 	@Secured({RoleConstant.ROLE_ANONYMOUS_SECURE})
-	public Message<EmployeeTransferObject> loadEmployeeAllByParam(Message<GeneralTransferObject> inMessage){	
-		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
+	public Message<EmployeePrivateTransferObject> loadEmployeeAllByParam(Message<GeneralTransferObject> inMessage){	
+		EmployeePrivateTransferObject employeePrivateTransferObject = new EmployeePrivateTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();		
 		try{			
 			GeneralTransferObject generalTransferObject = inMessage.getPayload();
@@ -66,39 +68,38 @@ public class EmployeeLoadEndpoint extends APageableEndpoint {
 					i++;
 				}
 				List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, values, null, null);
-				List<EmployeeData> employeeDatas = new ArrayList<EmployeeData>();
+				List<EmployeePrivateData> employeePrivateDatas = new ArrayList<EmployeePrivateData>();
 				if(employeeList != null){
 					for(Employee employee : employeeList){
-						EmployeeData employeeData = new EmployeeData(employee);
-						List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
-						ProfileData profileData = new ProfileData();
-						profileData.setName(profileList.get(0).getName());
-						employeeData.setProfileData(profileData);
-						employeeDatas.add(employeeData);
-						employeeData = null;
+						EmployeePrivateData employeePrivateData = new EmployeePrivateData();
+						employeePrivateData.setNik(employee.getNik());
+						employeePrivateData.setOccupationCode(employee.getOccupation().getCode());
+						List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeePrivateData.getNik()}, null);
+						employeePrivateData.setName(profileList.get(0).getName());
+						employeePrivateDatas.add(employeePrivateData);
+						employeePrivateData = null;
 						profileList = null;
-						profileData = null;
 					}
-					employeeTransferObject.setEmployeeDatas(employeeDatas);
+					employeePrivateTransferObject.setEmployeePrivateDatas(employeePrivateDatas);
 					employeeList = null;
-					employeeDatas = null;
+					employeePrivateDatas = null;
 				}
-				employeeTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
-				employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-				employeeTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+				employeePrivateTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
+				employeePrivateTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+				employeePrivateTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
 				values = null;
 				filterArguments = null;
 			}
 			generalTransferObject = null;
 		}catch (Exception e){
 			LOGGER.error("Load All Employee System Error : "+e.getLocalizedMessage(), e);
-			employeeTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
-			employeeTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			employeeTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
+			employeePrivateTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
+			employeePrivateTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			employeePrivateTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString()+e.getLocalizedMessage());
 		}		
-		setReturnStatusAndMessage(employeeTransferObject, responseHeaderMap);
-		Message<EmployeeTransferObject> message = new GenericMessage<EmployeeTransferObject>(employeeTransferObject, responseHeaderMap);
-		employeeTransferObject = null;
+		setReturnStatusAndMessage(employeePrivateTransferObject, responseHeaderMap);
+		Message<EmployeePrivateTransferObject> message = new GenericMessage<EmployeePrivateTransferObject>(employeePrivateTransferObject, responseHeaderMap);
+		employeePrivateTransferObject = null;
 		return message;		
 	}
 	
@@ -121,34 +122,33 @@ public class EmployeeLoadEndpoint extends APageableEndpoint {
 				if(employeeList != null){
 					for(int i=employeeList.size()-1; i>=0; i--){
 						EmployeeData employeeData = new EmployeeData(employeeList.get(i));
-						List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+						List<Profile> profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getNik()}, null);
 						ProfileData profileData = new ProfileData(profileList.get(0));
-						List<User> userList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile.user FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+						List<User> userList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.profile.user FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getNik()}, null);
 						UserData userData = new UserData();
 						userData.setUsername(userList.get(0).getUsername());
 						userData.setEnabled(userList.get(0).getEnabled());
 						profileData.setUserData(userData);
 						employeeData.setProfileData(profileData);
 						if(!RoleConstant.ROLE_NATIONALSALESMANAGER.equals(employeeData.getOccupationData().getCode())){
-							EmployeeData employeeDataParent = new EmployeeData();
-							profileData = new ProfileData();
-							profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.employeeParent.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
-							profileData.setName(profileList.get(0).getName());
-							employeeDataParent.setProfileData(profileData);
-							employeeData.setEmployeeDataParent(employeeDataParent);
+							profileList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.employeeParent.profile FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getNik()}, null);
+							EmployeePrivateData employeePrivateData = new EmployeePrivateData();
+							employeePrivateData.setNik(employeeList.get(i).getEmployeeParent().getNik());
+							employeePrivateData.setName(profileList.get(0).getName());
+							employeePrivateData.setOccupationCode(employeeList.get(i).getEmployeeParent().getOccupation().getCode());
+							employeeData.setEmployeeParentData(employeePrivateData);
 							AreaData areaData;
 							if(RoleConstant.ROLE_SALESMAN.equals(employeeData.getOccupationData().getCode())){
-								List<Area> areaList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.employeeParent.area FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+								List<Area> areaList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.employeeParent.area FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getNik()}, null);
 								areaData = new AreaData(areaList.get(0));
 								areaList = null;
 							}else if(RoleConstant.ROLE_AREASALESMANAGER.equals(employeeData.getOccupationData().getCode())){
-								List<Area> areaList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.area FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getCode()}, null);
+								List<Area> areaList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT obj.area FROM Employee obj WHERE obj.code = ?", new Object[]{employeeData.getNik()}, null);
 								areaData = new AreaData(areaList.get(0));
 								areaList = null;
 							}else
 								areaData = null;
 							employeeData.setAreaData(areaData);
-							employeeDataParent = null;
 						}
 						employeeDatas.add(employeeData);
 						employeeData = null;

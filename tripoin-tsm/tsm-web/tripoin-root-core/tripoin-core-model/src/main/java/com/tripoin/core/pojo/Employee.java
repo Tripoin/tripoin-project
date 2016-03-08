@@ -45,7 +45,6 @@ public class Employee extends AGeneralAuditTrail {
 	public Employee(EmployeeData employeeData) {
 		super(employeeData);
 		if(employeeData != null){
-			this.code = employeeData.getCode();
 			this.nik = employeeData.getNik();
 			this.occupation = new Occupation(employeeData.getOccupationData());
 			if(employeeData.getAreaData() != null)

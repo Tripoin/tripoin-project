@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeePrivateData;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
@@ -116,6 +118,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 		areaComboBox.addStyleName("small");
 		areaComboBox.setWidth("50%");
 		areaComboBox.setImmediate(true);
+		areaComboBox.setRequired(true);
         
 	    parentEmployeeComboBox = new ComboBox("Head");
 		component.add(parentEmployeeComboBox);
@@ -128,7 +131,6 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			private static final long serialVersionUID = -536223779275547217L;
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-		        parentEmployeeComboBox.setNullSelectionAllowed(false);
 		        if(parentEmployeeComboBox.getContainerDataSource() != null)
 		        	parentEmployeeComboBox.setContainerDataSource(null);
 				OccupationData occupationData = (OccupationData)event.getProperty().getValue();
@@ -136,35 +138,53 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			        // TODO Area
 			        areaComboBox.setVisible(false);
 			        // TODO Head
-					BeanItemContainer<EmployeeData> employeeData = dataLoadStarted.employeeAreaSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
-					if(!RoleConstant.ROLE_SALESMAN.equals(dataGrid.getOccupationData().getCode()))
-						employeeData.removeItem(dataGrid);
-					parentEmployeeComboBox.setContainerDataSource(employeeData);
+					BeanItemContainer<EmployeePrivateData> employeeParentData = dataLoadStarted.employeeAreaSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
+					if(!RoleConstant.ROLE_SALESMAN.equals(dataGrid.getOccupationData().getCode())){
+						EmployeePrivateData selfEmployeeParent = new EmployeePrivateData();
+						selfEmployeeParent.setNik(dataGrid.getNik());
+						selfEmployeeParent.setName(dataGrid.getProfileData().getName());
+						selfEmployeeParent.setOccupationCode(dataGrid.getOccupationData().getCode());
+						employeeParentData.removeItem(selfEmployeeParent);
+					}
+					parentEmployeeComboBox.setVisible(true);
+					parentEmployeeComboBox.setContainerDataSource(employeeParentData);
 			        parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
-			        if(employeeData.getItemIds() != null)
-			        	parentEmployeeComboBox.select(employeeData.getItemIds().get(0));
-			        employeeData = null;
+			        parentEmployeeComboBox.setNullSelectionAllowed(false);
+	            	parentEmployeeComboBox.setRequired(true);
+			        if(employeeParentData != null && employeeParentData.size() > 0)
+			        	parentEmployeeComboBox.select(employeeParentData.getItemIds().get(0));
+			        employeeParentData = null;
 				}else if(RoleConstant.ROLE_AREASALESMANAGER.equals(occupationData.getCode())){
 			        // TODO Area
 			        areaComboBox.setVisible(true);
+			        if(dataGrid.getAreaData() != null)
+			        	areaComboBox.select(dataGrid.getAreaData());
 			        // TODO Head
-					BeanItemContainer<EmployeeData> employeeData = dataLoadStarted.employeeNationalSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
-					if(!RoleConstant.ROLE_AREASALESMANAGER.equals(dataGrid.getOccupationData().getCode()))
-						employeeData.removeItem(dataGrid);
-					parentEmployeeComboBox.setContainerDataSource(employeeData);
+					BeanItemContainer<EmployeePrivateData> employeeParentData = dataLoadStarted.employeeNationalSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
+					if(!RoleConstant.ROLE_AREASALESMANAGER.equals(dataGrid.getOccupationData().getCode())){
+						EmployeePrivateData selfEmployeeParent = new EmployeePrivateData();
+						selfEmployeeParent.setNik(dataGrid.getNik());
+						selfEmployeeParent.setName(dataGrid.getProfileData().getName());
+						selfEmployeeParent.setOccupationCode(dataGrid.getOccupationData().getCode());
+						employeeParentData.removeItem(selfEmployeeParent);
+					}
+					parentEmployeeComboBox.setVisible(true);
+					parentEmployeeComboBox.setContainerDataSource(employeeParentData);
 			        parentEmployeeComboBox.setItemCaptionMode(ItemCaptionMode.ITEM);
-			        if(employeeData.getItemIds() != null)
-			        	parentEmployeeComboBox.select(employeeData.getItemIds().get(0));
-			        employeeData = null;
+			        parentEmployeeComboBox.setNullSelectionAllowed(false);
+	            	parentEmployeeComboBox.setRequired(true);
+	            	if(employeeParentData != null && employeeParentData.size() > 0)
+			        	parentEmployeeComboBox.select(employeeParentData.getItemIds().get(0));
+			        employeeParentData = null;
 				}else{
 			        // TODO Area
 			        areaComboBox.setVisible(false);
 			        // TODO Head
-			        parentEmployeeComboBox.setNullSelectionAllowed(true);
+			        parentEmployeeComboBox.setVisible(false);
+	            	parentEmployeeComboBox.setRequired(false);
 				}
 			}
 		});
-        
 	    TextField birthPlaceTextField = new TextField();
 	    DateField birthDateDateField = new DateField();
         CssLayout placeDateOfBirth = new CssLayout();
@@ -235,7 +255,14 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
             employeeNameTextField.setValue(dataGrid.getProfileData().getName());
             nikTextField.setValue(dataGrid.getNik());
             occupationComboBox.setValue(dataGrid.getOccupationData());
-            parentEmployeeComboBox.setValue(dataGrid.getEmployeeDataParent());
+            if(dataGrid.getEmployeeParentData() != null){
+            	parentEmployeeComboBox.select(dataGrid.getEmployeeParentData());
+            	parentEmployeeComboBox.setRequired(true);
+            	parentEmployeeComboBox.setVisible(true);
+            }else{
+            	parentEmployeeComboBox.setRequired(false);
+            	parentEmployeeComboBox.setVisible(false);
+            }
             usernameTextField.setValue(dataGrid.getProfileData().getUserData().getUsername());
             birthPlaceTextField.setValue(dataGrid.getProfileData().getBirthplace());
             try {
@@ -253,8 +280,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
             emailTextField.setValue(dataGrid.getProfileData().getEmail());
             addressTextArea.setValue(dataGrid.getProfileData().getAddress());
             enabledAccount.setValue((double)dataGrid.getProfileData().getUserData().getEnabled());
-    	}
-    	
+    	}    	
 		return component;			
 	}
 
@@ -265,64 +291,128 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			if(formPanelDatas.get(EnumFieldEmployee.NAME_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.NAME_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.NAME_EMPLOYE.toString(), new UserError("Employee Name can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.NIK_EMPLOYE.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.NAME_EMPLOYE.toString(), new UserError("Employee Name can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.NIK_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.NIK_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.NIK_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.NIK_EMPLOYE.toString(), new UserError("Employee NIK can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.NIK_EMPLOYE.toString(), new UserError("Employee NIK can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString()) == null || formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.OCCUPATION.toString(), new UserError("Employee Occupation can not null!"));
+			}else{
+				OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
+				if(RoleConstant.ROLE_AREASALESMANAGER.equals(occupationData.getCode()) && 
+						(formPanelDatas.get(EnumFieldEmployee.AREA.toString()) == null || formPanelDatas.get(EnumFieldEmployee.AREA.toString()).toString().isEmpty())){
+					errorComponents.put(EnumFieldEmployee.AREA.toString(), new UserError("Area can not null!"));
+				}
+				occupationData = null;
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.PARENT_EMPLOYE.toString())){
+		}else{
+			if(formPanelDatas.containsKey(EnumFieldEmployee.OCCUPATION_CODE.toString())){
+				if(formPanelDatas.get(EnumFieldEmployee.OCCUPATION_CODE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.OCCUPATION_CODE.toString()).toString().isEmpty()){
+					errorComponents.put(EnumFieldEmployee.OCCUPATION.toString(), new UserError("Employee Occupation can not null!"));
+				}else{
+					if(RoleConstant.ROLE_AREASALESMANAGER.equals(formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString())) && 
+							(formPanelDatas.get(EnumFieldEmployee.AREA.toString()) == null || formPanelDatas.get(EnumFieldEmployee.AREA.toString()).toString().isEmpty())){
+						errorComponents.put(EnumFieldEmployee.AREA.toString(), new UserError("Area can not null!"));
+					}
+				}
+			}else
+				errorComponents.put(EnumFieldEmployee.OCCUPATION.toString(), new UserError("Employee Occupation can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.PARENT_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.PARENT_EMPLOYE.toString(), new UserError("Employee Parent can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.USERNAME_EMPLOYE.toString())){
+		}else{
+			if(formPanelDatas.containsKey(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString())){
+				if(formPanelDatas.get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString()).toString().isEmpty()){
+					errorComponents.put(EnumFieldEmployee.PARENT_EMPLOYE.toString(), new UserError("Employee Parent can not null!"));
+				}
+			}else
+				errorComponents.put(EnumFieldEmployee.PARENT_EMPLOYE.toString(), new UserError("Employee Parent can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.USERNAME_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.USERNAME_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.USERNAME_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), new UserError("Username can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.BIRTHPLACE_EMPLOYE.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), new UserError("Username can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.BIRTHPLACE_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.BIRTHPLACE_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.BIRTHPLACE_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.BIRTHPLACE_EMPLOYE.toString(), new UserError("Employee Birthplace can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.BIRTHDATE_EMPLOYE.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.BIRTHPLACE_EMPLOYE.toString(), new UserError("Employee Birthplace can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.BIRTHDATE_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.BIRTHDATE_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.BIRTHDATE_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.BIRTHDATE_EMPLOYE.toString(), new UserError("Employee Birthdate can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.GENDER_EMPLOYE.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.BIRTHDATE_EMPLOYE.toString(), new UserError("Employee Birthdate can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.GENDER_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.GENDER_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.GENDER_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.GENDER_EMPLOYE.toString(), new UserError("Employee Gender can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.PHONE_EMPLOYE.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.GENDER_EMPLOYE.toString(), new UserError("Employee Gender can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.PHONE_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.PHONE_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.PHONE_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.PHONE_EMPLOYE.toString(), new UserError("Mobile Phone can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.EMAIL_EMPLOYE.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.PHONE_EMPLOYE.toString(), new UserError("Mobile Phone can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.EMAIL_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.EMAIL_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.EMAIL_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.EMAIL_EMPLOYE.toString(), new UserError("Email can not null!"));
 			}
-		}else if(formPanelDatas.containsKey(EnumFieldEmployee.ADDRESS_EMPLOYE.toString())){
+		}else{
+			errorComponents.put(EnumFieldEmployee.EMAIL_EMPLOYE.toString(), new UserError("Email can not null!"));
+		}
+		if(formPanelDatas.containsKey(EnumFieldEmployee.ADDRESS_EMPLOYE.toString())){
 			if(formPanelDatas.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString()) == null || formPanelDatas.get(EnumFieldEmployee.ADDRESS_EMPLOYE.toString()).toString().isEmpty()){
 				errorComponents.put(EnumFieldEmployee.ADDRESS_EMPLOYE.toString(), new UserError("Employee Address can not null!"));
 			}
 		}
 
 		if(generalTransferObject != null){
-			if("1".equals(generalTransferObject.getResponseCode())){
+			if(EResponseCode.RC_FAILURE.getResponseCode().equals(generalTransferObject.getResponseCode())){
 				tripoinNotification.show("Error", "Employee error, please try again later!");
 				errorComponents.put(EWebUIConstant.EXCEPTION.toString(), new UserError("Employee error, please try again later!"));
-			}else if("2".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error", "Username already exist.");
-				errorComponents.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), new UserError("Username already exist."));
-			}else if("3".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error", "NIK already exists.");
-				errorComponents.put(EnumFieldEmployee.NIK_EMPLOYE.toString(), new UserError("NIK already exist."));
-			}else if("4".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error", "Mobile Phone already exists.");
-				errorComponents.put(EnumFieldEmployee.PHONE_EMPLOYE.toString(), new UserError("Mobile Phone already exists."));
-			}else if("5".equals(generalTransferObject.getResponseCode())){
-				tripoinNotification.show("Error", "Email already exists.");
-				errorComponents.put(EnumFieldEmployee.EMAIL_EMPLOYE.toString(), new UserError("Email already exists."));
+			}else if(EResponseCode.RC_USERNAME_EXISTS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_USERNAME_EXISTS.toString());
+				errorComponents.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), new UserError(EResponseCode.RC_USERNAME_EXISTS.toString()));
+			}else if(EResponseCode.RC_NIK_EXISTS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_NIK_EXISTS.toString());
+				errorComponents.put(EnumFieldEmployee.NIK_EMPLOYE.toString(), new UserError(EResponseCode.RC_NIK_EXISTS.toString()));
+			}else if(EResponseCode.RC_PHONE_EXISTS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_PHONE_EXISTS.toString());
+				errorComponents.put(EnumFieldEmployee.PHONE_EMPLOYE.toString(), new UserError(EResponseCode.RC_PHONE_EXISTS.toString()));
+			}else if(EResponseCode.RC_EMAIL_EXISTS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_EMAIL_EXISTS.toString());
+				errorComponents.put(EnumFieldEmployee.EMAIL_EMPLOYE.toString(), new UserError(EResponseCode.RC_EMAIL_EXISTS.toString()));
+			}else if(EResponseCode.RC_GENDER_NOT_DEFINE.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_GENDER_NOT_DEFINE.toString());
+				errorComponents.put(EnumFieldEmployee.GENDER_EMPLOYE.toString(), new UserError(EResponseCode.RC_GENDER_NOT_DEFINE.toString()));
+			}else if(EResponseCode.RC_AREA_NOTNULL.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_AREA_NOTNULL.toString());
+				errorComponents.put(EnumFieldEmployee.AREA.toString(), new UserError(EResponseCode.RC_AREA_NOTNULL.toString()));
+			}else if(EResponseCode.RC_SALESMAN_REALLOCATE.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_SALESMAN_REALLOCATE.toString());
+				errorComponents.put(EnumFieldEmployee.OCCUPATION.toString(), new UserError(EResponseCode.RC_SALESMAN_REALLOCATE.toString()));
+			}else if(EResponseCode.RC_EMPLOYEE_PARENT_NOTNULL.getResponseCode().equals(generalTransferObject.getResponseCode())){
+				tripoinNotification.show("Error", EResponseCode.RC_EMPLOYEE_PARENT_NOTNULL.toString());
+				errorComponents.put(EnumFieldEmployee.PARENT_EMPLOYE.toString(), new UserError(EResponseCode.RC_EMPLOYEE_PARENT_NOTNULL.toString()));
 			}
 		}
 		return errorComponents;
@@ -342,12 +432,19 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 	protected GeneralTransferObject doReOkButtonEvent(HashMap<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
 		if(dataOriginalGrid.getProfileData().getUserData().getUsername() != null)
 			formPanelDatas.put(EnumFieldEmployee.USERNAME_EMPLOYE.toString(), dataOriginalGrid.getProfileData().getUserData().getUsername());
-		EmployeeData employeeDataParent = (EmployeeData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
-		formPanelDatas.put(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), employeeDataParent.getNik());
-		formPanelDatas.remove(EnumFieldEmployee.PARENT_EMPLOYE.toString());
+		if(formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString()) != null){
+			EmployeePrivateData employeeDataParent = (EmployeePrivateData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
+			formPanelDatas.put(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), employeeDataParent.getNik());
+		}
+		formPanelDatas.remove(EnumFieldEmployee.PARENT_EMPLOYE.toString());	
 		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
 		formPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getCode());
 		formPanelDatas.remove(EnumFieldEmployee.OCCUPATION.toString());
+		if(formPanelDatas.get(EnumFieldEmployee.AREA.toString()) != null){
+			AreaData areaData = (AreaData)formPanelDatas.get(EnumFieldEmployee.AREA.toString());
+			formPanelDatas.put(EnumFieldEmployee.AREA_CODE.toString(), areaData.getCode());
+		}
+		formPanelDatas.remove(EnumFieldEmployee.AREA.toString());
 		GeneralPagingTransferObject generalPagingTransferObject = new GeneralPagingTransferObject();
 		generalPagingTransferObject.setParameterData(formPanelDatas);
 		GeneralTransferObject generalTransferObject = employeeService.updateEmployee(generalPagingTransferObject, VaadinServlet.getCurrent().getServletContext());

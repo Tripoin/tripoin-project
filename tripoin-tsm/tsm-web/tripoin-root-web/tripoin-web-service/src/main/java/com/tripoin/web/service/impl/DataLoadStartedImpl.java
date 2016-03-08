@@ -15,7 +15,8 @@ import org.springframework.http.MediaType;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dto.AreaData;
 import com.tripoin.core.dto.AreaTransferObject;
-import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeePrivateData;
+import com.tripoin.core.dto.EmployeePrivateTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
 import com.tripoin.core.dto.OccupationData;
@@ -47,7 +48,7 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 
 	private BeanItemContainer<OccupationData> occupationContainer = new BeanItemContainer<>(OccupationData.class);
 	private BeanItemContainer<AreaData> areaContainer = new BeanItemContainer<>(AreaData.class);
-	private BeanItemContainer<EmployeeData> employeeContainer = new BeanItemContainer<>(EmployeeData.class);
+	private BeanItemContainer<EmployeePrivateData> employeeContainer = new BeanItemContainer<>(EmployeePrivateData.class);
 	
 	@Override
 	public List<OccupationData> loadOccupationData() {
@@ -100,71 +101,42 @@ public class DataLoadStartedImpl extends ABaseHttpRest implements IDataLoadStart
 	}	
 
 	@Override
-	public List<EmployeeData> loadEmployeeAreaSalesManagerData() {
+	public List<EmployeePrivateData> loadEmployeeAreaSalesManagerData() {
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		HashMap<String, Object> findEmployeeData = new HashMap<String, Object>();
 		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_AREASALESMANAGER);
 		employeeTransferObject.setParameterData(findEmployeeData);
-		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
+		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeePrivateTransferObject.class).getEmployeePrivateDatas();		
 	}
 	
 	@Override
-	public List<EmployeeData> loadEmployeeNationalSalesManagerData() {
+	public List<EmployeePrivateData> loadEmployeeNationalSalesManagerData() {
 		EmployeeTransferObject employeeTransferObject = new EmployeeTransferObject();
 		HashMap<String, Object> findEmployeeData = new HashMap<String, Object>();
 		findEmployeeData.put(EnumFieldEmployee.ROLE_EMPLOYE.toString(), RoleConstant.ROLE_NATIONALSALESMANAGER);
 		employeeTransferObject.setParameterData(findEmployeeData);
-		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeeTransferObject.class).getEmployeeDatas();		
+		return getObject(HttpMethod.POST, commonRest.getUrl(WebServiceConstant.HTTP_EMPLOYEE_ALL), employeeTransferObject, EmployeePrivateTransferObject.class).getEmployeePrivateDatas();		
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public BeanItemContainer<EmployeeData> employeeAreaSalesManagerContainer(ServletContext servletContext) {
+	public BeanItemContainer<EmployeePrivateData> employeeAreaSalesManagerContainer(ServletContext servletContext) {
 		this.employeeContainer.removeAllItems();
-		this.employeeContainer.addAll((List<EmployeeData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER));
-		this.employeeContainer.removeContainerProperty("id");
+		this.employeeContainer.addAll((List<EmployeePrivateData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER));
 		this.employeeContainer.removeContainerProperty("code");
 		this.employeeContainer.removeContainerProperty("nik");
-		this.employeeContainer.removeContainerProperty("status");
-		this.employeeContainer.removeContainerProperty("remarks");
-		this.employeeContainer.removeContainerProperty("createdBy");
-		this.employeeContainer.removeContainerProperty("createdIP");
-		this.employeeContainer.removeContainerProperty("createdTime");
-		this.employeeContainer.removeContainerProperty("createdPlatform");
-		this.employeeContainer.removeContainerProperty("modifiedBy");
-		this.employeeContainer.removeContainerProperty("modifiedIP");
-		this.employeeContainer.removeContainerProperty("modifiedTime");
-		this.employeeContainer.removeContainerProperty("modifiedPlatform");
-		this.employeeContainer.removeContainerProperty("profileData");
-		this.employeeContainer.removeContainerProperty("occupationData");
-		this.employeeContainer.removeContainerProperty("areaData");
-		this.employeeContainer.removeContainerProperty("employeeDataParent");
-		this.employeeContainer.addNestedContainerProperty("profileData.name");
+		this.employeeContainer.removeContainerProperty("occupationCode");
 		return employeeContainer;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public BeanItemContainer<EmployeeData> employeeNationalSalesManagerContainer(ServletContext servletContext) {
+	public BeanItemContainer<EmployeePrivateData> employeeNationalSalesManagerContainer(ServletContext servletContext) {
 		this.employeeContainer.removeAllItems();
-		this.employeeContainer.addAll((List<EmployeeData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER));
-		this.employeeContainer.removeContainerProperty("id");
+		this.employeeContainer.addAll((List<EmployeePrivateData>) servletContext.getAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER));
 		this.employeeContainer.removeContainerProperty("code");
 		this.employeeContainer.removeContainerProperty("nik");
-		this.employeeContainer.removeContainerProperty("status");
-		this.employeeContainer.removeContainerProperty("remarks");
-		this.employeeContainer.removeContainerProperty("createdBy");
-		this.employeeContainer.removeContainerProperty("createdIP");
-		this.employeeContainer.removeContainerProperty("createdTime");
-		this.employeeContainer.removeContainerProperty("createdPlatform");
-		this.employeeContainer.removeContainerProperty("modifiedBy");
-		this.employeeContainer.removeContainerProperty("modifiedIP");
-		this.employeeContainer.removeContainerProperty("modifiedTime");
-		this.employeeContainer.removeContainerProperty("modifiedPlatform");
-		this.employeeContainer.removeContainerProperty("profileData");
-		this.employeeContainer.removeContainerProperty("occupationData");
-		this.employeeContainer.removeContainerProperty("employeeDataParent");
-		this.employeeContainer.addNestedContainerProperty("profileData.name");
+		this.employeeContainer.removeContainerProperty("occupationCode");
 		return employeeContainer;
 	}
 	

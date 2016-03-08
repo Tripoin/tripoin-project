@@ -35,7 +35,6 @@ public class SecurityUser extends User implements UserDetails {
 	
 	public SecurityUser(User user) {
 		if(user != null){
-			this.setId(user.getId());
 			this.setUsername(user.getUsername());
 			this.setPassword(user.getPassword());
 			this.setAuth(user.getAuth());
@@ -64,7 +63,6 @@ public class SecurityUser extends User implements UserDetails {
     
     public SecurityUser(UserData userData) {
 		if(userData != null){
-			this.setId(userData.getId());
 			this.setUsername(userData.getUsername());
 			this.setAuth(userData.getAuth());
 			if(userData.getEnabled() == 1)
@@ -92,7 +90,6 @@ public class SecurityUser extends User implements UserDetails {
 			this.setStatus(userData.getStatus());
 			this.setRemarks(userData.getRemarks());
 			Role role = new Role();
-			role.setId(userData.getRoleData().getId());
 			role.setCode(userData.getRoleData().getCode());
 			role.setStatus(userData.getRoleData().getStatus());
 			role.setRemarks(userData.getRoleData().getRemarks());

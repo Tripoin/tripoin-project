@@ -7,7 +7,7 @@ import javax.servlet.ServletContext;
 import org.springframework.http.HttpStatus;
 
 import com.tripoin.core.dto.AreaData;
-import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeePrivateData;
 import com.tripoin.core.dto.OccupationData;
 import com.vaadin.data.util.BeanItemContainer;
 
@@ -20,9 +20,9 @@ public interface IDataLoadStarted {
     
 	public List<OccupationData> loadOccupationData();
     
-	public List<EmployeeData> loadEmployeeAreaSalesManagerData();
+	public List<EmployeePrivateData> loadEmployeeAreaSalesManagerData();
     
-	public List<EmployeeData> loadEmployeeNationalSalesManagerData();
+	public List<EmployeePrivateData> loadEmployeeNationalSalesManagerData();
 	
 	public List<AreaData> loadAreaData();
 	
@@ -30,8 +30,8 @@ public interface IDataLoadStarted {
 	
 	public BeanItemContainer<AreaData> getAreaContainer(ServletContext servletContext);
 	
-	public BeanItemContainer<EmployeeData> employeeAreaSalesManagerContainer(ServletContext servletContext);
+	public BeanItemContainer<EmployeePrivateData> employeeAreaSalesManagerContainer(ServletContext servletContext);
 	
-	public BeanItemContainer<EmployeeData> employeeNationalSalesManagerContainer(ServletContext servletContext);
+	public BeanItemContainer<EmployeePrivateData> employeeNationalSalesManagerContainer(ServletContext servletContext);
 	
 }

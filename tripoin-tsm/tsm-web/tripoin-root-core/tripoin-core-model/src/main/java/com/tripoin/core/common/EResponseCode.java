@@ -17,6 +17,11 @@ public enum EResponseCode {
 	RC_AREA_EXISTS("07", "Area already exists, please try others!"),
 	RC_USERNAME_NOT_EXISTS("08", "Username not exsits"),
 
+	RC_GENDER_NOT_DEFINE("10", "Gender Not Define"),
+	RC_SALESMAN_REALLOCATE("11", "Salesman Current must be reallocate!"),
+	RC_EMPLOYEE_PARENT_NOTNULL("12", "Head not null"),
+	RC_AREA_NOTNULL("17", "Area cannot be null"),
+
 	RC_TYPEFILE_NOTALLOW("70", "Type File not Allowed"),
 	RC_MAX_FILE_SIZE("80", "Maximum file upload"),
 	RC_FAIL_UPLOAD("90", "File upload failure "),

@@ -40,7 +40,6 @@ public class Role implements IBaseModel {
 
 	public Role(RoleData roleData) {
 		if(roleData != null){
-			this.setId(roleData.getId());
 			this.setCode(roleData.getCode());
 			this.setStatus(roleData.getStatus());
 			this.setRemarks(roleData.getRemarks());

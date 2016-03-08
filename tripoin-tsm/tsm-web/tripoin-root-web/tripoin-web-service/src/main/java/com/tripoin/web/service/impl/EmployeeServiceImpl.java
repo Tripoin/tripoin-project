@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeePrivateData;
 import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.EmployeeTransferObject.EnumFieldEmployee;
+import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
@@ -71,9 +71,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {
-					List<EmployeeData> employeeDatas = dataLoadStarted.loadEmployeeAreaSalesManagerData();
-					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER, employeeDatas);
-					employeeDatas = null;
+					List<EmployeePrivateData> employeePrivateDatas = dataLoadStarted.loadEmployeeAreaSalesManagerData();
+					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER, employeePrivateDatas);
+					employeePrivateDatas = null;
 				}
 			});
 		}
@@ -84,9 +84,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			taskExecutor.execute(new Runnable() {				
 				@Override
 				public void run() {
-					List<EmployeeData> employeeDatas = dataLoadStarted.loadEmployeeNationalSalesManagerData();
-					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER, employeeDatas);
-					employeeDatas = null;
+					List<EmployeePrivateData> employeePrivateDatas = dataLoadStarted.loadEmployeeNationalSalesManagerData();
+					servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER, employeePrivateDatas);
+					employeePrivateDatas = null;
 				}
 			});
 		}

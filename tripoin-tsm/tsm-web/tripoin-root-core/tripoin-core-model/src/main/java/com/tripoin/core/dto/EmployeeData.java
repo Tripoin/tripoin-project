@@ -14,9 +14,6 @@ import com.tripoin.core.pojo.Employee;
 @XmlRootElement(name = "EmployeeData")
 public class EmployeeData extends AGeneralAuditTrailData {
 	
-	@XmlElement(name = "Code", namespace = "")
-    private String code;
-	
 	@XmlElement(name = "NIK", namespace = "")
     private String nik;
 	
@@ -29,28 +26,19 @@ public class EmployeeData extends AGeneralAuditTrailData {
 	@XmlElement(name = "AreaData", namespace = "")
     private AreaData areaData;
 	
-	@XmlElement(name = "EmployeeDataParent", namespace = "")
-    private EmployeeData employeeDataParent;
+	@XmlElement(name = "EmployeeParentData", namespace = "")
+    private EmployeePrivateData employeeParentData;
 	
 	public EmployeeData() {}
 	
 	public EmployeeData(Employee employee) {
 		super(employee);
 		if(employee != null){
-			this.code = employee.getCode();
 			this.nik = employee.getNik();
 			this.occupationData = new OccupationData(employee.getOccupation());
 			if(employee.getArea() != null)
 				this.areaData = new AreaData(employee.getArea());	
 		}
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public String getNik() {
@@ -85,24 +73,29 @@ public class EmployeeData extends AGeneralAuditTrailData {
 		this.areaData = areaData;
 	}
 
-	public EmployeeData getEmployeeDataParent() {
-		return employeeDataParent;
+	public EmployeePrivateData getEmployeeParentData() {
+		return employeeParentData;
 	}
 
-	public void setEmployeeDataParent(EmployeeData employeeDataParent) {
-		this.employeeDataParent = employeeDataParent;
+	public void setEmployeeParentData(EmployeePrivateData employeePrivateData) {
+		this.employeeParentData = employeePrivateData;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((areaData == null) ? 0 : areaData.hashCode());
-		result = prime * result + ((code == null) ? 0 : code.hashCode());
-		result = prime * result + ((employeeDataParent == null) ? 0 : employeeDataParent.hashCode());
+		result = prime * result
+				+ ((areaData == null) ? 0 : areaData.hashCode());
+		result = prime
+				* result
+				+ ((employeeParentData == null) ? 0 : employeeParentData
+						.hashCode());
 		result = prime * result + ((nik == null) ? 0 : nik.hashCode());
-		result = prime * result + ((occupationData == null) ? 0 : occupationData.hashCode());
-		result = prime * result + ((profileData == null) ? 0 : profileData.hashCode());
+		result = prime * result
+				+ ((occupationData == null) ? 0 : occupationData.hashCode());
+		result = prime * result
+				+ ((profileData == null) ? 0 : profileData.hashCode());
 		return result;
 	}
 
@@ -120,15 +113,10 @@ public class EmployeeData extends AGeneralAuditTrailData {
 				return false;
 		} else if (!areaData.equals(other.areaData))
 			return false;
-		if (code == null) {
-			if (other.code != null)
+		if (employeeParentData == null) {
+			if (other.employeeParentData != null)
 				return false;
-		} else if (!code.equals(other.code))
-			return false;
-		if (employeeDataParent == null) {
-			if (other.employeeDataParent != null)
-				return false;
-		} else if (!employeeDataParent.equals(other.employeeDataParent))
+		} else if (!employeeParentData.equals(other.employeeParentData))
 			return false;
 		if (nik == null) {
 			if (other.nik != null)
@@ -150,8 +138,10 @@ public class EmployeeData extends AGeneralAuditTrailData {
 
 	@Override
 	public String toString() {
-		return "EmployeeData [code=" + code + ", nik=" + nik + ", occupationData=" + occupationData + ", profileData="
-				+ profileData + ", areaData=" + areaData + ", employeeDataParent=" + employeeDataParent + "]";
+		return "EmployeeData [nik=" + nik + ", occupationData="
+				+ occupationData + ", profileData=" + profileData
+				+ ", areaData=" + areaData + ", employeeParentData="
+				+ employeeParentData + "]";
 	}
 	
 }

@@ -174,9 +174,9 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
             occupationTextField.setValue(employeeData.getOccupationData().getName());
             occupationTextField.setWidth("100%");
             occupationTextField.setRequired(true);
-            if(employeeData.getEmployeeDataParent() != null){
+            if(employeeData.getEmployeeParentData() != null){
                 personalInfoFormLayout.addComponent(headTextField);
-                headTextField.setValue(employeeData.getEmployeeDataParent().getProfileData().getName());
+                headTextField.setValue(employeeData.getEmployeeParentData().getName());
                 headTextField.setWidth("100%");
                 headTextField.setRequired(true);	
             }        	

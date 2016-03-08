@@ -49,8 +49,7 @@ public class User implements IBaseModel {
     public User(){}
 
     public User(UserData userData) {
-        if (userData.getId() != null) {
-            this.id = userData.getId();
+        if (userData != null) {
             this.username = userData.getUsername();
             this.enabled = userData.getEnabled();
             if(userData.getExpiredDate() != null){
@@ -69,8 +68,7 @@ public class User implements IBaseModel {
     }
     
     public User(UserData userData, String password) {
-        if (userData.getId() != null) {
-            this.id = userData.getId();
+        if (userData != null) {
             this.username = userData.getUsername();
             this.enabled = userData.getEnabled();
             if(userData.getExpiredDate() != null){

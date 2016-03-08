@@ -4,6 +4,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -20,28 +27,21 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.tripoin.core.dto.AreaData;
-import com.tripoin.core.dto.EmployeeData;
+import com.tripoin.core.dto.EmployeePrivateData;
 import com.tripoin.core.dto.OccupationData;
 import com.tripoin.web.common.WebServiceConstant;
 import com.tripoin.web.service.IDataLoadStarted;
 import com.tripoin.web.service.impl.DataLoadStartedImpl;
 import com.tripoin.web.servlet.view.ValoThemeSessionInitListener;
 import com.vaadin.server.Constants;
+import com.vaadin.server.DeploymentConfiguration;
+import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionDestroyEvent;
 import com.vaadin.server.SessionDestroyListener;
 import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
-import com.vaadin.server.DeploymentConfiguration;
-import com.vaadin.server.ServiceException;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -190,7 +190,7 @@ public class SpringVaadinServlet extends VaadinServlet implements SessionInitLis
 		try {
 			List<OccupationData> occupationDatas = dataLoadStarted.loadOccupationData();
 			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_OCCUPATION, occupationDatas);
-			List<EmployeeData> employeeNotSalesmanList = dataLoadStarted.loadEmployeeAreaSalesManagerData();
+			List<EmployeePrivateData> employeeNotSalesmanList = dataLoadStarted.loadEmployeeAreaSalesManagerData();
 			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_AREASALESMANAGER, employeeNotSalesmanList);
 			employeeNotSalesmanList = dataLoadStarted.loadEmployeeNationalSalesManagerData();
 			servletContext.setAttribute(WebServiceConstant.CONTEXT_CONSTANT_EMPLOYEE_NATIONALSALESMANAGER, employeeNotSalesmanList);
