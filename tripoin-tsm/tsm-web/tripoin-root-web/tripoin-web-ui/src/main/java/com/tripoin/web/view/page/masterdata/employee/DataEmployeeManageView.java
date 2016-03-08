@@ -89,7 +89,6 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
         employeeNameTextField.setRequired(true);
         employeeNameTextField.setWidth("50%");
         employeeNameTextField.addStyleName("small");
-        employeeNameTextField.focus();
         
 	    TextField nikTextField = new TextField("NIK");
 		component.add(nikTextField);
@@ -139,12 +138,14 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			        areaComboBox.setVisible(false);
 			        // TODO Head
 					BeanItemContainer<EmployeePrivateData> employeeParentData = dataLoadStarted.employeeAreaSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
-					if(!RoleConstant.ROLE_SALESMAN.equals(dataGrid.getOccupationData().getCode())){
-						EmployeePrivateData selfEmployeeParent = new EmployeePrivateData();
-						selfEmployeeParent.setNik(dataGrid.getNik());
-						selfEmployeeParent.setName(dataGrid.getProfileData().getName());
-						selfEmployeeParent.setOccupationCode(dataGrid.getOccupationData().getCode());
-						employeeParentData.removeItem(selfEmployeeParent);
+					if(dataGrid != null){
+						if(!RoleConstant.ROLE_SALESMAN.equals(dataGrid.getOccupationData().getCode())){
+							EmployeePrivateData selfEmployeeParent = new EmployeePrivateData();
+							selfEmployeeParent.setNik(dataGrid.getNik());
+							selfEmployeeParent.setName(dataGrid.getProfileData().getName());
+							selfEmployeeParent.setOccupationCode(dataGrid.getOccupationData().getCode());
+							employeeParentData.removeItem(selfEmployeeParent);
+						}
 					}
 					parentEmployeeComboBox.setVisible(true);
 					parentEmployeeComboBox.setContainerDataSource(employeeParentData);
@@ -161,12 +162,14 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 			        	areaComboBox.select(dataGrid.getAreaData());
 			        // TODO Head
 					BeanItemContainer<EmployeePrivateData> employeeParentData = dataLoadStarted.employeeNationalSalesManagerContainer(VaadinServlet.getCurrent().getServletContext());
-					if(!RoleConstant.ROLE_AREASALESMANAGER.equals(dataGrid.getOccupationData().getCode())){
-						EmployeePrivateData selfEmployeeParent = new EmployeePrivateData();
-						selfEmployeeParent.setNik(dataGrid.getNik());
-						selfEmployeeParent.setName(dataGrid.getProfileData().getName());
-						selfEmployeeParent.setOccupationCode(dataGrid.getOccupationData().getCode());
-						employeeParentData.removeItem(selfEmployeeParent);
+					if(dataGrid != null){
+						if(!RoleConstant.ROLE_AREASALESMANAGER.equals(dataGrid.getOccupationData().getCode())){
+							EmployeePrivateData selfEmployeeParent = new EmployeePrivateData();
+							selfEmployeeParent.setNik(dataGrid.getNik());
+							selfEmployeeParent.setName(dataGrid.getProfileData().getName());
+							selfEmployeeParent.setOccupationCode(dataGrid.getOccupationData().getCode());
+							employeeParentData.removeItem(selfEmployeeParent);
+						}	
 					}
 					parentEmployeeComboBox.setVisible(true);
 					parentEmployeeComboBox.setContainerDataSource(employeeParentData);
@@ -250,6 +253,7 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
     	enabledAccount.setMax(1);
 
     	if(dataGrid != null){
+            employeeNameTextField.focus();
     		component.add(sectionAccountStatus);
     		component.add(enabledAccount);
             employeeNameTextField.setValue(dataGrid.getProfileData().getName());
@@ -280,7 +284,10 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
             emailTextField.setValue(dataGrid.getProfileData().getEmail());
             addressTextArea.setValue(dataGrid.getProfileData().getAddress());
             enabledAccount.setValue((double)dataGrid.getProfileData().getUserData().getEnabled());
-    	}    	
+    	}else{
+    		usernameTextField.focus();
+    		usernameTextField.setRequired(true);
+    	}
 		return component;			
 	}
 
@@ -425,7 +432,23 @@ public class DataEmployeeManageView extends ATripoinForm<EmployeeData> {
 
 	@Override
 	protected GeneralTransferObject doOkButtonEvent(HashMap<String, Object> formPanelDatas, EmployeeData dataOriginalGrid) {
-		return null;
+		if(formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString()) != null){
+			EmployeePrivateData employeeDataParent = (EmployeePrivateData)formPanelDatas.get(EnumFieldEmployee.PARENT_EMPLOYE.toString());
+			formPanelDatas.put(EnumFieldEmployee.NIK_PARENT_EMPLOYE.toString(), employeeDataParent.getNik());
+		}
+		formPanelDatas.remove(EnumFieldEmployee.PARENT_EMPLOYE.toString());	
+		OccupationData occupationData = (OccupationData)formPanelDatas.get(EnumFieldEmployee.OCCUPATION.toString());
+		formPanelDatas.put(EnumFieldEmployee.OCCUPATION_CODE.toString(), occupationData.getCode());
+		formPanelDatas.remove(EnumFieldEmployee.OCCUPATION.toString());
+		if(formPanelDatas.get(EnumFieldEmployee.AREA.toString()) != null){
+			AreaData areaData = (AreaData)formPanelDatas.get(EnumFieldEmployee.AREA.toString());
+			formPanelDatas.put(EnumFieldEmployee.AREA_CODE.toString(), areaData.getCode());
+		}
+		formPanelDatas.remove(EnumFieldEmployee.AREA.toString());
+		GeneralPagingTransferObject generalPagingTransferObject = new GeneralPagingTransferObject();
+		generalPagingTransferObject.setParameterData(formPanelDatas);
+		GeneralTransferObject generalTransferObject = employeeService.saveEmployee(generalPagingTransferObject, VaadinServlet.getCurrent().getServletContext());
+		return generalTransferObject;
 	}
 
 	@Override

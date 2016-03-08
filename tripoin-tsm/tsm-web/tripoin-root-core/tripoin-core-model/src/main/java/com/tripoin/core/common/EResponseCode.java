@@ -20,6 +20,7 @@ public enum EResponseCode {
 	RC_GENDER_NOT_DEFINE("10", "Gender Not Define"),
 	RC_SALESMAN_REALLOCATE("11", "Salesman Current must be reallocate!"),
 	RC_EMPLOYEE_PARENT_NOTNULL("12", "Head not null"),
+	RC_USERNAME_NIK_EMAIL_EXISTS("13", "Username / NIK / Email already exists, please try others!"),
 	RC_AREA_NOTNULL("17", "Area cannot be null"),
 
 	RC_TYPEFILE_NOTALLOW("70", "Type File not Allowed"),

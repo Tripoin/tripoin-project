@@ -93,7 +93,12 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
             			gender == null || mobilePhone == null || email == null || address == null || occupationCode == null){
                 	wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString()+"Field not null!");
     				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);            		
-            	}
+            	}   
+    			// TODO Validate Gender  
+    			if(!(ParameterConstant.FEMALE.equals(gender) || ParameterConstant.MALE.equals(gender))){
+                	wsEndpointFault.setMessage(EResponseCode.RC_GENDER_NOT_DEFINE.toString());
+    				throw new WSEndpointFaultException(EResponseCode.RC_GENDER_NOT_DEFINE.getResponseCode(), wsEndpointFault);
+    			}
             	// TODO Validate User
         		List<Employee> employeeList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em FROM Employee em "
         				+ "WHERE em.profile.user.username = ?", 
@@ -112,12 +117,7 @@ public class EmployeeUpdateEndpoint extends XReturnStatus {
                  	}else{
                     	wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString()+"NIK not null!");
         				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);
-                 	}   
-        			// TODO Validate Gender  
-        			if(!(ParameterConstant.FEMALE.equals(gender) || ParameterConstant.MALE.equals(gender))){
-                    	wsEndpointFault.setMessage(EResponseCode.RC_GENDER_NOT_DEFINE.toString());
-        				throw new WSEndpointFaultException(EResponseCode.RC_GENDER_NOT_DEFINE.getResponseCode(), wsEndpointFault);
-        			}
+                 	}
         			// TODO Validate Mobile Phone
         			if(mobilePhone != null){
                      	List<Profile> profileMobilePhoneList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Profile "
