@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 05, 2016 at 03:03 PM
--- Server version: 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- Host: 127.0.0.1
+-- Generation Time: Mar 08, 2016 at 08:36 PM
+-- Server version: 5.6.20
+-- PHP Version: 5.5.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `tripoin`
@@ -26,8 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `geo_user_route`
 --
 
-CREATE TABLE `geo_user_route` (
-  `user_route_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `geo_user_route` (
+`user_route_id` bigint(20) NOT NULL,
   `user_route_lat` double(30,25) NOT NULL,
   `user_route_lon` double(30,25) NOT NULL,
   `user_route_center` smallint(5) NOT NULL DEFAULT '0',
@@ -47,7 +47,7 @@ CREATE TABLE `geo_user_route` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `geo_user_route`
@@ -64,8 +64,8 @@ INSERT INTO `geo_user_route` (`user_route_id`, `user_route_lat`, `user_route_lon
 -- Table structure for table `mst_area`
 --
 
-CREATE TABLE `mst_area` (
-  `area_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_area` (
+`area_id` bigint(20) NOT NULL,
   `area_code` varchar(150) NOT NULL,
   `area_name` varchar(255) NOT NULL,
   `status` smallint(5) DEFAULT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE `mst_area` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `mst_area`
@@ -128,8 +128,8 @@ INSERT INTO `mst_area` (`area_id`, `area_code`, `area_name`, `status`, `remarks`
 -- Table structure for table `mst_bussiness_sector`
 --
 
-CREATE TABLE `mst_bussiness_sector` (
-  `bussiness_sector_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_bussiness_sector` (
+`bussiness_sector_id` bigint(20) NOT NULL,
   `bussiness_sector_code` varchar(150) NOT NULL,
   `bussiness_sector_name` varchar(255) NOT NULL,
   `bussiness_sector_description` text,
@@ -143,7 +143,7 @@ CREATE TABLE `mst_bussiness_sector` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `mst_bussiness_sector`
@@ -164,8 +164,8 @@ INSERT INTO `mst_bussiness_sector` (`bussiness_sector_id`, `bussiness_sector_cod
 -- Table structure for table `mst_country`
 --
 
-CREATE TABLE `mst_country` (
-  `country_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_country` (
+`country_id` bigint(20) NOT NULL,
   `country_code` varchar(150) NOT NULL,
   `country_name` varchar(255) NOT NULL,
   `status` smallint(5) DEFAULT NULL,
@@ -178,7 +178,7 @@ CREATE TABLE `mst_country` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -186,8 +186,8 @@ CREATE TABLE `mst_country` (
 -- Table structure for table `mst_customer`
 --
 
-CREATE TABLE `mst_customer` (
-  `customer_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_customer` (
+`customer_id` bigint(20) NOT NULL,
   `customer_code` varchar(150) NOT NULL,
   `customer_company_name` varchar(255) NOT NULL,
   `customer_company_address1` text NOT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE `mst_customer` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -222,12 +222,12 @@ CREATE TABLE `mst_customer` (
 -- Table structure for table `mst_customer_financing`
 --
 
-CREATE TABLE `mst_customer_financing` (
-  `customer_financing_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_customer_financing` (
+`customer_financing_id` bigint(20) NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   `financing_id` bigint(20) NOT NULL,
   `customer_financing_value` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -235,12 +235,12 @@ CREATE TABLE `mst_customer_financing` (
 -- Table structure for table `mst_customer_operational`
 --
 
-CREATE TABLE `mst_customer_operational` (
-  `customer_operational_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_customer_operational` (
+`customer_operational_id` bigint(20) NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   `unit_populate_id` bigint(20) NOT NULL,
   `total` bigint(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -248,11 +248,11 @@ CREATE TABLE `mst_customer_operational` (
 -- Table structure for table `mst_customer_pic`
 --
 
-CREATE TABLE `mst_customer_pic` (
-  `customer_pic_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_customer_pic` (
+`customer_pic_id` bigint(20) NOT NULL,
   `pic_id` bigint(20) NOT NULL,
   `customer_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -260,11 +260,11 @@ CREATE TABLE `mst_customer_pic` (
 -- Table structure for table `mst_customer_project`
 --
 
-CREATE TABLE `mst_customer_project` (
-  `customer_project_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_customer_project` (
+`customer_project_id` bigint(20) NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   `project_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -272,11 +272,11 @@ CREATE TABLE `mst_customer_project` (
 -- Table structure for table `mst_customer_site`
 --
 
-CREATE TABLE `mst_customer_site` (
-  `customer_site_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_customer_site` (
+`customer_site_id` bigint(20) NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   `site_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -284,11 +284,11 @@ CREATE TABLE `mst_customer_site` (
 -- Table structure for table `mst_customer_type`
 --
 
-CREATE TABLE `mst_customer_type` (
-  `customer_type_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_customer_type` (
+`customer_type_id` bigint(20) NOT NULL,
   `customer_type_code` varchar(150) NOT NULL,
   `customer_type_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `mst_customer_type`
@@ -304,8 +304,8 @@ INSERT INTO `mst_customer_type` (`customer_type_id`, `customer_type_code`, `cust
 -- Table structure for table `mst_employee`
 --
 
-CREATE TABLE `mst_employee` (
-  `employee_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_employee` (
+`employee_id` bigint(20) NOT NULL,
   `employee_code` varchar(150) NOT NULL,
   `employee_nik` varchar(150) NOT NULL,
   `profile_id` bigint(20) NOT NULL,
@@ -322,7 +322,7 @@ CREATE TABLE `mst_employee` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `mst_employee`
@@ -339,15 +339,15 @@ INSERT INTO `mst_employee` (`employee_id`, `employee_code`, `employee_nik`, `pro
 -- Table structure for table `mst_finance`
 --
 
-CREATE TABLE `mst_finance` (
-  `finance_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_finance` (
+`finance_id` bigint(20) NOT NULL,
   `finance_code` varchar(150) NOT NULL,
   `finance_average_gross` varchar(150) NOT NULL,
   `finance_credit_monthly` varchar(150) NOT NULL,
   `finance_no_rek` varchar(150) NOT NULL,
   `finance_bank_address` text NOT NULL,
   `finance_bank_telpfax` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -355,12 +355,12 @@ CREATE TABLE `mst_finance` (
 -- Table structure for table `mst_financing`
 --
 
-CREATE TABLE `mst_financing` (
-  `financing_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_financing` (
+`financing_id` bigint(20) NOT NULL,
   `financing_code` varchar(150) NOT NULL,
   `financing_name` varchar(255) NOT NULL,
   `financing_description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `mst_financing`
@@ -382,8 +382,8 @@ INSERT INTO `mst_financing` (`financing_id`, `financing_code`, `financing_name`,
 -- Table structure for table `mst_fptengine`
 --
 
-CREATE TABLE `mst_fptengine` (
-  `fptengine_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_fptengine` (
+`fptengine_id` bigint(20) NOT NULL,
   `fptengine_code` varchar(150) NOT NULL,
   `fptengine_name` varchar(255) NOT NULL,
   `fptengine_detail` text,
@@ -399,7 +399,7 @@ CREATE TABLE `mst_fptengine` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `mst_fptengine`
@@ -414,8 +414,8 @@ INSERT INTO `mst_fptengine` (`fptengine_id`, `fptengine_code`, `fptengine_name`,
 -- Table structure for table `mst_occupation`
 --
 
-CREATE TABLE `mst_occupation` (
-  `occupation_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_occupation` (
+`occupation_id` bigint(20) NOT NULL,
   `occupation_code` varchar(150) NOT NULL,
   `occupation_name` varchar(255) NOT NULL,
   `status` smallint(5) DEFAULT NULL,
@@ -428,7 +428,7 @@ CREATE TABLE `mst_occupation` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `mst_occupation`
@@ -445,8 +445,8 @@ INSERT INTO `mst_occupation` (`occupation_id`, `occupation_code`, `occupation_na
 -- Table structure for table `mst_pic`
 --
 
-CREATE TABLE `mst_pic` (
-  `pic_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_pic` (
+`pic_id` bigint(20) NOT NULL,
   `pic_code` varchar(150) NOT NULL,
   `pic_name` varchar(255) NOT NULL,
   `pic_occupation` varchar(255) NOT NULL,
@@ -464,7 +464,7 @@ CREATE TABLE `mst_pic` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -472,11 +472,11 @@ CREATE TABLE `mst_pic` (
 -- Table structure for table `mst_product`
 --
 
-CREATE TABLE `mst_product` (
-  `product_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_product` (
+`product_id` bigint(20) NOT NULL,
   `product_type_id` bigint(20) NOT NULL,
   `product_mapping_code` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `mst_product`
@@ -506,8 +506,8 @@ INSERT INTO `mst_product` (`product_id`, `product_type_id`, `product_mapping_cod
 -- Table structure for table `mst_product_type`
 --
 
-CREATE TABLE `mst_product_type` (
-  `product_type_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_product_type` (
+`product_type_id` bigint(20) NOT NULL,
   `product_type_code` varchar(150) NOT NULL,
   `product_type_name` varchar(255) NOT NULL,
   `status` smallint(5) DEFAULT NULL,
@@ -520,7 +520,7 @@ CREATE TABLE `mst_product_type` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `mst_product_type`
@@ -537,8 +537,8 @@ INSERT INTO `mst_product_type` (`product_type_id`, `product_type_code`, `product
 -- Table structure for table `mst_profile`
 --
 
-CREATE TABLE `mst_profile` (
-  `profile_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_profile` (
+`profile_id` bigint(20) NOT NULL,
   `profile_email` varchar(255) NOT NULL,
   `profile_name` varchar(255) NOT NULL,
   `profile_gender` varchar(255) NOT NULL,
@@ -563,7 +563,7 @@ CREATE TABLE `mst_profile` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `mst_profile`
@@ -581,8 +581,8 @@ INSERT INTO `mst_profile` (`profile_id`, `profile_email`, `profile_name`, `profi
 -- Table structure for table `mst_project`
 --
 
-CREATE TABLE `mst_project` (
-  `project_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_project` (
+`project_id` bigint(20) NOT NULL,
   `project_code` varchar(150) NOT NULL,
   `project_name` varchar(255) NOT NULL,
   `project_location` varchar(255) NOT NULL,
@@ -593,7 +593,7 @@ CREATE TABLE `mst_project` (
   `project_gradient_road` varchar(150) DEFAULT NULL,
   `project_width_road` varchar(150) DEFAULT NULL,
   `project_texture_road` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -601,11 +601,11 @@ CREATE TABLE `mst_project` (
 -- Table structure for table `mst_project_target`
 --
 
-CREATE TABLE `mst_project_target` (
-  `project_target_id` bigint(20) NOT NULL COMMENT ' ',
+CREATE TABLE IF NOT EXISTS `mst_project_target` (
+`project_target_id` bigint(20) NOT NULL COMMENT ' ',
   `project_id` bigint(20) NOT NULL,
   `target_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -613,8 +613,8 @@ CREATE TABLE `mst_project_target` (
 -- Table structure for table `mst_segment`
 --
 
-CREATE TABLE `mst_segment` (
-  `segment_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_segment` (
+`segment_id` bigint(20) NOT NULL,
   `segment_code` varchar(150) NOT NULL,
   `segment_name` varchar(255) NOT NULL,
   `status` smallint(5) DEFAULT NULL,
@@ -627,7 +627,7 @@ CREATE TABLE `mst_segment` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `mst_segment`
@@ -647,8 +647,8 @@ INSERT INTO `mst_segment` (`segment_id`, `segment_code`, `segment_name`, `status
 -- Table structure for table `mst_site`
 --
 
-CREATE TABLE `mst_site` (
-  `site_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_site` (
+`site_id` bigint(20) NOT NULL,
   `site_code` varchar(150) NOT NULL,
   `site_pm` varchar(150) NOT NULL,
   `site_land_owner` varchar(150) NOT NULL,
@@ -658,7 +658,7 @@ CREATE TABLE `mst_site` (
   `site_land_area` varchar(150) NOT NULL,
   `site_calories_stone` varchar(150) NOT NULL,
   `site_distance_village` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -666,8 +666,8 @@ CREATE TABLE `mst_site` (
 -- Table structure for table `mst_spareparts`
 --
 
-CREATE TABLE `mst_spareparts` (
-  `spareparts_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_spareparts` (
+`spareparts_id` bigint(20) NOT NULL,
   `spareparts_code` varchar(150) NOT NULL,
   `spareparts_name` varchar(255) NOT NULL,
   `spareparts_detail` text,
@@ -683,7 +683,7 @@ CREATE TABLE `mst_spareparts` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `mst_spareparts`
@@ -698,8 +698,8 @@ INSERT INTO `mst_spareparts` (`spareparts_id`, `spareparts_code`, `spareparts_na
 -- Table structure for table `mst_target`
 --
 
-CREATE TABLE `mst_target` (
-  `target_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_target` (
+`target_id` bigint(20) NOT NULL,
   `target_code` varchar(150) NOT NULL,
   `target_mine` varchar(255) NOT NULL,
   `target_ob` varchar(255) NOT NULL,
@@ -708,7 +708,7 @@ CREATE TABLE `mst_target` (
   `target_gradient_road` varchar(255) NOT NULL,
   `target_width_road` varchar(255) NOT NULL,
   `target_texture_road` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -716,8 +716,8 @@ CREATE TABLE `mst_target` (
 -- Table structure for table `mst_truck`
 --
 
-CREATE TABLE `mst_truck` (
-  `truck_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_truck` (
+`truck_id` bigint(20) NOT NULL,
   `truck_type_id` bigint(20) NOT NULL,
   `truck_model_id` bigint(20) NOT NULL,
   `truck_axle_id` bigint(20) NOT NULL,
@@ -733,7 +733,7 @@ CREATE TABLE `mst_truck` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `mst_truck`
@@ -761,8 +761,8 @@ INSERT INTO `mst_truck` (`truck_id`, `truck_type_id`, `truck_model_id`, `truck_a
 -- Table structure for table `mst_truck_axle`
 --
 
-CREATE TABLE `mst_truck_axle` (
-  `truck_axle_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_truck_axle` (
+`truck_axle_id` bigint(20) NOT NULL,
   `truck_axle_code` varchar(150) NOT NULL,
   `truck_axle_name` varchar(255) NOT NULL,
   `truck_axle_detail` text,
@@ -776,7 +776,7 @@ CREATE TABLE `mst_truck_axle` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `mst_truck_axle`
@@ -798,8 +798,8 @@ INSERT INTO `mst_truck_axle` (`truck_axle_id`, `truck_axle_code`, `truck_axle_na
 -- Table structure for table `mst_truck_model`
 --
 
-CREATE TABLE `mst_truck_model` (
-  `truck_model_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_truck_model` (
+`truck_model_id` bigint(20) NOT NULL,
   `truck_model_code` varchar(150) NOT NULL,
   `truck_model_name` varchar(255) NOT NULL,
   `truck_model_detail` text,
@@ -813,7 +813,7 @@ CREATE TABLE `mst_truck_model` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `mst_truck_model`
@@ -832,8 +832,8 @@ INSERT INTO `mst_truck_model` (`truck_model_id`, `truck_model_code`, `truck_mode
 -- Table structure for table `mst_truck_type`
 --
 
-CREATE TABLE `mst_truck_type` (
-  `truck_type_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_truck_type` (
+`truck_type_id` bigint(20) NOT NULL,
   `truck_type_code` varchar(150) NOT NULL,
   `truck_type_name` varchar(255) NOT NULL,
   `truck_type_detail` text,
@@ -847,7 +847,7 @@ CREATE TABLE `mst_truck_type` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `mst_truck_type`
@@ -865,13 +865,13 @@ INSERT INTO `mst_truck_type` (`truck_type_id`, `truck_type_code`, `truck_type_na
 -- Table structure for table `mst_unit_brand`
 --
 
-CREATE TABLE `mst_unit_brand` (
-  `unit_brand_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_unit_brand` (
+`unit_brand_id` bigint(20) NOT NULL,
   `unit_brand_code` varchar(150) NOT NULL,
   `unit_brand_name` varchar(255) NOT NULL,
   `unit_brand_description` text,
   `country_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -879,11 +879,11 @@ CREATE TABLE `mst_unit_brand` (
 -- Table structure for table `mst_unit_populate`
 --
 
-CREATE TABLE `mst_unit_populate` (
-  `unit_populate_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_unit_populate` (
+`unit_populate_id` bigint(20) NOT NULL,
   `unit_brand_id` bigint(20) NOT NULL,
   `unit_type_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -891,13 +891,13 @@ CREATE TABLE `mst_unit_populate` (
 -- Table structure for table `mst_unit_type`
 --
 
-CREATE TABLE `mst_unit_type` (
-  `unit_type_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mst_unit_type` (
+`unit_type_id` bigint(20) NOT NULL,
   `unit_type_code` varchar(150) NOT NULL,
   `unit_type_name` varchar(255) NOT NULL,
   `unit_type_group` varchar(255) DEFAULT NULL,
   `unit_type_description` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -905,12 +905,12 @@ CREATE TABLE `mst_unit_type` (
 -- Table structure for table `sec_role`
 --
 
-CREATE TABLE `sec_role` (
-  `role_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sec_role` (
+`role_id` bigint(20) NOT NULL,
   `role_code` varchar(50) NOT NULL,
   `role_status` smallint(5) NOT NULL,
   `role_remarks` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `sec_role`
@@ -929,8 +929,8 @@ INSERT INTO `sec_role` (`role_id`, `role_code`, `role_status`, `role_remarks`) V
 -- Table structure for table `sec_user`
 --
 
-CREATE TABLE `sec_user` (
-  `user_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sec_user` (
+`user_id` bigint(20) NOT NULL,
   `user_username` varchar(20) NOT NULL,
   `user_password` varchar(255) NOT NULL,
   `user_enabled` smallint(5) NOT NULL,
@@ -940,7 +940,7 @@ CREATE TABLE `sec_user` (
   `user_status` smallint(5) NOT NULL,
   `user_remarks` varchar(255) DEFAULT NULL,
   `role_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `sec_user`
@@ -960,8 +960,8 @@ INSERT INTO `sec_user` (`user_id`, `user_username`, `user_password`, `user_enabl
 -- Table structure for table `sys_menu`
 --
 
-CREATE TABLE `sys_menu` (
-  `menu_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sys_menu` (
+`menu_id` bigint(20) NOT NULL,
   `menu_code` varchar(150) NOT NULL,
   `menu_name` varchar(255) DEFAULT NULL,
   `menu_parent_id` bigint(20) DEFAULT NULL,
@@ -980,7 +980,7 @@ CREATE TABLE `sys_menu` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `sys_menu`
@@ -1021,11 +1021,11 @@ INSERT INTO `sys_menu` (`menu_id`, `menu_code`, `menu_name`, `menu_parent_id`, `
 -- Table structure for table `sys_menu_role`
 --
 
-CREATE TABLE `sys_menu_role` (
-  `menu_role_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sys_menu_role` (
+`menu_role_id` bigint(20) NOT NULL,
   `menu_id` bigint(20) NOT NULL,
   `role_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
 
 --
 -- Dumping data for table `sys_menu_role`
@@ -1077,8 +1077,8 @@ INSERT INTO `sys_menu_role` (`menu_role_id`, `menu_id`, `role_id`) VALUES
 -- Table structure for table `sys_system_parameter`
 --
 
-CREATE TABLE `sys_system_parameter` (
-  `system_parameter_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sys_system_parameter` (
+`system_parameter_id` bigint(20) NOT NULL,
   `system_parameter_code` varchar(100) NOT NULL,
   `system_parameter_value` text NOT NULL,
   `system_parameter_status` smallint(5) DEFAULT NULL,
@@ -1091,7 +1091,7 @@ CREATE TABLE `sys_system_parameter` (
   `system_parameter_modified_ip` varchar(150) DEFAULT NULL,
   `system_parameter_modified_time` timestamp NULL DEFAULT NULL,
   `system_parameter_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `sys_system_parameter`
@@ -1101,7 +1101,9 @@ INSERT INTO `sys_system_parameter` (`system_parameter_id`, `system_parameter_cod
 (1, 'TRIPOIN.EMAIL.FORGOT.PASSWORD.SUBJECT', 'Request Reset Password', 1, 'Subject Email Forgot Password', 'admin', '127.0.0.1', '2015-10-31 17:00:00', NULL, NULL, NULL, NULL, NULL),
 (2, 'TRIPOIN.EMAIL.FORGOT.PASSWORD.BODY.MESSAGE', '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> <html>  	<head> 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /> 	<meta name="apple-mobile-web-app-capable" content="yes" /> 	<style type="text/css"> 	@media only screen and (max-width: 320px) { 	table[class="edu-module"]{ 	border-radius: 0px !important; 	-webkit-border-radius: 0px !important; 	-moz-border-radius: 0px !important; 	} 	td[class="edu-margins"]{ 	background-color: #f5f8fa; 	} 	td[class="edu-collapse"]{ 	width: 0px !important; 	} 	td[class="edu-space"]{ 	height: 10px !important; 	background-color: #f5f8fa; 	} 	td[class="mobile-height"]{ 	height: 30px !important; 	} 	} 	@media only screen and (max-width: 420px) { 	span[class="address"] a { 	line-height:18px !important; 	} 	td[class="margins"]{ 	width:18px !important; 	} 	td[class="edu-margins"]{ 	width:18px !important; 	} 	td[class="logo_space"]{ 	height:12px !important; 				} 			}  			@media only screen and (max-width: 480px) { 				table[class="collapse"]{ 					width:100% !important; 				} 				table[class="edu-module"]{ 					width:100% !important; 				} 				span[class="address"]{ 					display:block !important; 					width:240px !important; 				} 				td[class="cut"]{ 					display:none !important; 				} 			} 		</style> 	</head> 	<body bgcolor="#FAFAFA" style="margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;"> 		<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FAFAFA" style="background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;" class="body_wrapper"> 			<tbody> 				<tr> 					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 						<table class="collapse" id="header" align="center" width="650" style="width: 650px;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0"> 							<tbody> 								<tr> 									<td style="min-width: 650px;height:1px;padding:0;margin:0;line-height:1px;font-size:1px;" class="cut"></td> 								</tr> 							</tbody> 						</table>  					</td> 				</tr> 				<tr> 					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 					<!--///////////////////header///////////////////////////--> 						<table class="collapse" id="header" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0"> 							<tbody> 								<tr> 									<td height="15" style="height:15px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space"> &nbsp; </td> 								</tr> 								<tr> 									<td style="padding:0;margin:0;line-height:1px;font-size:1px;"> 										<table cellpadding="0" cellspacing="0" border="0" align="left" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 											<tbody> 												<tr align="left"> 													<td align="left" width="15" style="width:15px;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 													<td align="left" width="28" style="padding:0;margin:0;line-height:1px;font-size:1px;"></td> 													<td align="left" width="10" style="width:10px;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 													<td align="left" class="greeting" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#66757f;font-size:16px;padding:0px;margin:0px;font-weight:300;line-height:100%;text-align:left;"> Dear ${TRIPOIN.CONTENT.FULLNAME}, </td> 													<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" align="left"></td> 												</tr> 											</tbody> 										</table>  									</td> 								</tr> 								<tr> 								<td height="14" style="height:14px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space"> &nbsp; </td> 								</tr> 							</tbody> 						</table> 						<!--////////////////////border//////////////////////////--> 						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0"> 							<tbody> 								<tr id="border"> 									<td colspan="2" height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 								</tr> 							</tbody> 						</table> 						<!--//////////////////////////////////////////////--> 						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0"> 							<tbody> 								<tr> 								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td> 								<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 									<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" class="collapse" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 										<tbody> 										<tr> 											<td height="30" style="height:45px;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 										</tr> 										<tr> 											<td align="left" class="display" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:22px;line-height:30px;font-weight:300;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;"> We received a request to reset the password for your account. </td> 										</tr> 										<tr> 											<td height="30" style="height:30px;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 										</tr> 										<tr> 											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;"> If you requested a reset for username <span style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;border:none;text-decoration:none;font-weight:400;color:#1879DB;">${TRIPOIN.CONTENT.USERNAME}</span>, click the button below. If you didn''t make this request, please ignore this email. </td> 										</tr> 										<tr> 											<td height="25" style="height:25px;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 										</tr> 										<!--*********** button ************--> 										<tr> 											<td align="left" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 												<table border="0" cellspacing="0" cellpadding="0" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 													<tbody> 														<tr> 															<td style="padding:0;margin:0;line-height:1px;font-size:1px;"> 																<!-- Tap, click, press, push the button --> 																<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 																	<tbody> 																		<tr> 																			<td style="padding:0;margin:0;line-height:1px;font-size:1px;"> 																				<table border="0" cellspacing="0" cellpadding="0" style="padding:0;margin:0;line-height:1px;font-size:1px;"> 																					<tbody> 																						<tr> 																							<td align="center" class="bulletproof-btn-1" bgcolor="#1879DB" style="padding:0;margin:0;line-height:1px;font-size:1px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;line-height:18px;"> 																								<a href="${TRIPOIN.CONTENT.URL}" target="_blank" class="bulletproof-btn-2" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:650;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#ffffff;text-align:center;text-decoration:none;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;padding:11px 30px;border:1px solid #1879DB;display:inline-block;"> 																									<strong>Reset password</strong> 																								</a> 																							</td> 																						</tr> 																					</tbody> 																				</table>  																			</td> 																		</tr> 																	</tbody> 																</table>  															</td> 														</tr> 													</tbody> 												</table>  											</td> 										</tr> 										<!--*********** end button ************--> 										<tr> 											<td height="55" style="height:55px;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 										</tr> 										</tbody> 									</table>  								</td> 								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td> 								</tr> 							</tbody> 						</table> 						<!--//////////////////////////////////////////////--> 						<table class="collapse" id="footer" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0"> 							<tbody> 								<tr> 									<td height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 								</tr> 								<tr> 									<td height="20" style="height:20;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 								</tr> 								<tr> 									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"> <span class="footer_type" style="font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;">  <a href="http://www.tripoin.co.id" class="footer_link" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#1879DB;font-size:12px;padding:0px;margin:0px;font-weight:600;line-height:12px;">Tripoin, Inc.</a>  </span> </td> 								</tr> 								<tr> 									<td height="10" style="height:10px;line-height:1px;font-size:1px;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 								</tr> 								<tr> 									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"> <span class="address"> <a href="" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;cursor:default;">Indonesia, Jakarta</a> </span> </td> 								</tr> 								<tr> 									<td height="26" style="height:26;padding:0;margin:0;line-height:1px;font-size:1px;"></td> 								</tr> 							</tbody> 						</table>					 					</td> 				</tr> 			</tbody> 		</table> 	</body> </html>', 1, 'Body Email Forgot Password', 'admin', '127.0.0.1', '2015-10-31 19:02:05', NULL, NULL, NULL, NULL, NULL),
 (3, 'TRIPOIN.EMAIL.FORGOT.PASSWORD.VERIFY.SUBJECT', 'Verify Reset Password', 1, 'Subject Email Verify Forgot Password', 'admin', '127.0.0.1', '2015-11-01 17:00:00', NULL, NULL, NULL, NULL, NULL),
-(4, 'TRIPOIN.EMAIL.FORGOT.PASSWORD.VERIFY.BODY.MESSAGE', '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html> 	<head>	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />	<meta name="apple-mobile-web-app-capable" content="yes" />	<style type="text/css">	@media only screen and (max-width: 320px) { 	table[class="edu-module"]{ 	border-radius: 0px !important; 	-webkit-border-radius: 0px !important; 	-moz-border-radius: 0px !important; 	} 	td[class="edu-margins"]{ 	background-color: #f5f8fa; 	} 	td[class="edu-collapse"]{ 	width: 0px !important; 	} 	td[class="edu-space"]{ 	height: 10px !important; 	background-color: #f5f8fa; 	} 	td[class="mobile-height"]{ 	height: 30px !important; 	} 	} 	@media only screen and (max-width: 420px) { 	span[class="address"] a { 	line-height:18px !important; 	} 	td[class="margins"]{ 	width:18px !important; 	} 	td[class="edu-margins"]{ 	width:18px !important; 	} 	td[class="logo_space"]{ 	height:12px !important; 				} 			}  			@media only screen and (max-width: 480px) { 				table[class="collapse"]{ 					width:100% !important; 				} 				table[class="edu-module"]{ 					width:100% !important; 				} 				span[class="address"]{ 					display:block !important; 					width:240px !important; 				} 				td[class="cut"]{ 					display:none !important; 				} 			} 		</style>	</head>	<body bgcolor="#FAFAFA" style="margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">		<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FAFAFA" style="background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;" class="body_wrapper">			<tbody>				<tr>					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">						<table class="collapse" id="header" align="center" width="650" style="width: 650px;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td style="min-width: 650px;height:1px;padding:0;margin:0;line-height:1px;font-size:1px;" class="cut"></td>								</tr>							</tbody>						</table> 					</td>				</tr>				<tr>					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">					<!--///////////////////header///////////////////////////-->						<table class="collapse" id="header" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td height="15" style="height:15px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space">&nbsp; </td>								</tr>								<tr>									<td style="padding:0;margin:0;line-height:1px;font-size:1px;">										<table cellpadding="0" cellspacing="0" border="0" align="left" style="padding:0;margin:0;line-height:1px;font-size:1px;">											<tbody>												<tr align="left">													<td align="left" width="15" style="width:15px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" width="28" style="padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" width="10" style="width:10px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" class="greeting" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#66757f;font-size:16px;padding:0px;margin:0px;font-weight:300;line-height:100%;text-align:left;">														Dear ${TRIPOIN.CONTENT.FULLNAME}, 													</td>													<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" align="left"></td>												</tr>											</tbody>										</table> 									</td>								</tr>								<tr>								<td height="14" style="height:14px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space">&nbsp; </td>								</tr>							</tbody>						</table>						<!--////////////////////border//////////////////////////-->						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr id="border">									<td colspan="2" height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>							</tbody>						</table>						<!--//////////////////////////////////////////////-->						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td>								<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">									<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" class="collapse" style="padding:0;margin:0;line-height:1px;font-size:1px;">										<tbody>										<tr>											<td height="30" style="height:45px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="display" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:22px;line-height:30px;font-weight:300;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												We received a request to reset the password for this account.											</td>										</tr>										<tr>											<td height="30" style="height:45px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Username : <span style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;border:none;text-decoration:none;font-weight:400;color:#1879DB;">${TRIPOIN.CONTENT.USERNAME}</span>											</td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Password : <span style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;border:none;text-decoration:none;font-weight:400;color:#1879DB;">${TRIPOIN.CONTENT.PASSWORD}</span>											</td>										</tr>										<tr>											<td height="30" style="height:15px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Please use this new password to login and then change your password to something more to your liking.											</td>										</tr>										<tr>											<td height="25" style="height:25px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td height="55" style="height:55px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										</tbody>									</table> 								</td>								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td>								</tr>							</tbody>						</table>						<!--//////////////////////////////////////////////-->						<table class="collapse" id="footer" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td height="20" style="height:20;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"><span class="footer_type" style="font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;"> <a href="http://www.tripoin.co.id" class="footer_link" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#1879DB;font-size:12px;padding:0px;margin:0px;font-weight:600;line-height:12px;">Tripoin, Inc.</a> </span></td>								</tr>								<tr>									<td height="10" style="height:10px;line-height:1px;font-size:1px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"><span class="address"><a href="" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;cursor:default;">Indonesia, Jakarta</a></span></td>								</tr>								<tr>									<td height="26" style="height:26;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>							</tbody>						</table>					 					</td>				</tr>			</tbody>		</table>	</body></html>', 1, 'Body Email Verify Forgot Password', 'admin', '127.0.0.1', '2015-11-01 17:22:52', NULL, NULL, NULL, NULL, NULL);
+(4, 'TRIPOIN.EMAIL.FORGOT.PASSWORD.VERIFY.BODY.MESSAGE', '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html> 	<head>	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />	<meta name="apple-mobile-web-app-capable" content="yes" />	<style type="text/css">	@media only screen and (max-width: 320px) { 	table[class="edu-module"]{ 	border-radius: 0px !important; 	-webkit-border-radius: 0px !important; 	-moz-border-radius: 0px !important; 	} 	td[class="edu-margins"]{ 	background-color: #f5f8fa; 	} 	td[class="edu-collapse"]{ 	width: 0px !important; 	} 	td[class="edu-space"]{ 	height: 10px !important; 	background-color: #f5f8fa; 	} 	td[class="mobile-height"]{ 	height: 30px !important; 	} 	} 	@media only screen and (max-width: 420px) { 	span[class="address"] a { 	line-height:18px !important; 	} 	td[class="margins"]{ 	width:18px !important; 	} 	td[class="edu-margins"]{ 	width:18px !important; 	} 	td[class="logo_space"]{ 	height:12px !important; 				} 			}  			@media only screen and (max-width: 480px) { 				table[class="collapse"]{ 					width:100% !important; 				} 				table[class="edu-module"]{ 					width:100% !important; 				} 				span[class="address"]{ 					display:block !important; 					width:240px !important; 				} 				td[class="cut"]{ 					display:none !important; 				} 			} 		</style>	</head>	<body bgcolor="#FAFAFA" style="margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">		<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FAFAFA" style="background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;" class="body_wrapper">			<tbody>				<tr>					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">						<table class="collapse" id="header" align="center" width="650" style="width: 650px;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td style="min-width: 650px;height:1px;padding:0;margin:0;line-height:1px;font-size:1px;" class="cut"></td>								</tr>							</tbody>						</table> 					</td>				</tr>				<tr>					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">					<!--///////////////////header///////////////////////////-->						<table class="collapse" id="header" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td height="15" style="height:15px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space">&nbsp; </td>								</tr>								<tr>									<td style="padding:0;margin:0;line-height:1px;font-size:1px;">										<table cellpadding="0" cellspacing="0" border="0" align="left" style="padding:0;margin:0;line-height:1px;font-size:1px;">											<tbody>												<tr align="left">													<td align="left" width="15" style="width:15px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" width="28" style="padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" width="10" style="width:10px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" class="greeting" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#66757f;font-size:16px;padding:0px;margin:0px;font-weight:300;line-height:100%;text-align:left;">														Dear ${TRIPOIN.CONTENT.FULLNAME}, 													</td>													<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" align="left"></td>												</tr>											</tbody>										</table> 									</td>								</tr>								<tr>								<td height="14" style="height:14px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space">&nbsp; </td>								</tr>							</tbody>						</table>						<!--////////////////////border//////////////////////////-->						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr id="border">									<td colspan="2" height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>							</tbody>						</table>						<!--//////////////////////////////////////////////-->						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td>								<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">									<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" class="collapse" style="padding:0;margin:0;line-height:1px;font-size:1px;">										<tbody>										<tr>											<td height="30" style="height:45px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="display" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:22px;line-height:30px;font-weight:300;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												We received a request to reset the password for this account.											</td>										</tr>										<tr>											<td height="30" style="height:45px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Username : <span style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;border:none;text-decoration:none;font-weight:400;color:#1879DB;">${TRIPOIN.CONTENT.USERNAME}</span>											</td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Password : <span style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;border:none;text-decoration:none;font-weight:400;color:#1879DB;">${TRIPOIN.CONTENT.PASSWORD}</span>											</td>										</tr>										<tr>											<td height="30" style="height:15px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Please use this new password to login and then change your password to something more to your liking.											</td>										</tr>										<tr>											<td height="25" style="height:25px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td height="55" style="height:55px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										</tbody>									</table> 								</td>								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td>								</tr>							</tbody>						</table>						<!--//////////////////////////////////////////////-->						<table class="collapse" id="footer" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td height="20" style="height:20;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"><span class="footer_type" style="font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;"> <a href="http://www.tripoin.co.id" class="footer_link" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#1879DB;font-size:12px;padding:0px;margin:0px;font-weight:600;line-height:12px;">Tripoin, Inc.</a> </span></td>								</tr>								<tr>									<td height="10" style="height:10px;line-height:1px;font-size:1px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"><span class="address"><a href="" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;cursor:default;">Indonesia, Jakarta</a></span></td>								</tr>								<tr>									<td height="26" style="height:26;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>							</tbody>						</table>					 					</td>				</tr>			</tbody>		</table>	</body></html>', 1, 'Body Email Verify Forgot Password', 'admin', '127.0.0.1', '2015-11-01 17:22:52', NULL, NULL, NULL, NULL, NULL),
+(5, 'TRIPOIN.EMAIL.NEW.USER.SUBJECT', 'Tripoin Sales Management Account', 1, 'Subject Email New User', 'admin', '127.0.0.1', '2016-03-08 11:38:21', NULL, NULL, NULL, NULL, NULL),
+(6, 'TRIPOIN.EMAIL.NEW.USER.BODY.MESSAGE', '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html> 	<head>	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />	<meta name="apple-mobile-web-app-capable" content="yes" />	<style type="text/css">	@media only screen and (max-width: 320px) { 	table[class="edu-module"]{ 	border-radius: 0px !important; 	-webkit-border-radius: 0px !important; 	-moz-border-radius: 0px !important; 	} 	td[class="edu-margins"]{ 	background-color: #f5f8fa; 	} 	td[class="edu-collapse"]{ 	width: 0px !important; 	} 	td[class="edu-space"]{ 	height: 10px !important; 	background-color: #f5f8fa; 	} 	td[class="mobile-height"]{ 	height: 30px !important; 	} 	} 	@media only screen and (max-width: 420px) { 	span[class="address"] a { 	line-height:18px !important; 	} 	td[class="margins"]{ 	width:18px !important; 	} 	td[class="edu-margins"]{ 	width:18px !important; 	} 	td[class="logo_space"]{ 	height:12px !important; 				} 			}  			@media only screen and (max-width: 480px) { 				table[class="collapse"]{ 					width:100% !important; 				} 				table[class="edu-module"]{ 					width:100% !important; 				} 				span[class="address"]{ 					display:block !important; 					width:240px !important; 				} 				td[class="cut"]{ 					display:none !important; 				} 			} 		</style>	</head>	<body bgcolor="#FAFAFA" style="margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">		<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FAFAFA" style="background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;" class="body_wrapper">			<tbody>				<tr>					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">						<table class="collapse" id="header" align="center" width="650" style="width: 650px;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td style="min-width: 650px;height:1px;padding:0;margin:0;line-height:1px;font-size:1px;" class="cut"></td>								</tr>							</tbody>						</table> 					</td>				</tr>				<tr>					<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">					<!--///////////////////header///////////////////////////-->						<table class="collapse" id="header" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td height="15" style="height:15px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space">&nbsp; </td>								</tr>								<tr>									<td style="padding:0;margin:0;line-height:1px;font-size:1px;">										<table cellpadding="0" cellspacing="0" border="0" align="left" style="padding:0;margin:0;line-height:1px;font-size:1px;">											<tbody>												<tr align="left">													<td align="left" width="15" style="width:15px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" width="28" style="padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" width="10" style="width:10px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>													<td align="left" class="greeting" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#66757f;font-size:16px;padding:0px;margin:0px;font-weight:300;line-height:100%;text-align:left;">														Dear ${TRIPOIN.CONTENT.FULLNAME}, 													</td>													<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" align="left"></td>												</tr>											</tbody>										</table> 									</td>								</tr>								<tr>								<td height="14" style="height:14px;padding:0;margin:0;line-height:1px;font-size:1px;" class="logo_space">&nbsp; </td>								</tr>							</tbody>						</table>						<!--////////////////////border//////////////////////////-->						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr id="border">									<td colspan="2" height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>							</tbody>						</table>						<!--//////////////////////////////////////////////-->						<table class="collapse" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td>								<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;">									<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" class="collapse" style="padding:0;margin:0;line-height:1px;font-size:1px;">										<tbody>										<tr>											<td height="30" style="height:45px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="display" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:22px;line-height:30px;font-weight:300;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												We received a request to create account in Tripoin Sales Management.											</td>										</tr>										<tr>											<td height="30" style="height:45px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Username : <span style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;border:none;text-decoration:none;font-weight:400;color:#1879DB;">${TRIPOIN.CONTENT.USERNAME}</span>											</td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Password : <span style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;border:none;text-decoration:none;font-weight:400;color:#1879DB;">${TRIPOIN.CONTENT.PASSWORD}</span>											</td>										</tr>										<tr>											<td height="30" style="height:15px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td align="left" class="body-text" style="padding:0;margin:0;line-height:1px;font-size:1px;font-family:''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;line-height:22px;font-weight:400;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;text-align:left;color:#292f33;">												Please use this new password to login and then change your password to something more to your liking.											</td>										</tr>										<tr>											<td height="25" style="height:25px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										<tr>											<td height="55" style="height:55px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>										</tr>										</tbody>									</table> 								</td>								<td width="50" style="width:50px;padding:0;margin:0;line-height:1px;font-size:1px;" class="margins"></td>								</tr>							</tbody>						</table>						<!--//////////////////////////////////////////////-->						<table class="collapse" id="footer" align="center" width="650" style="width:650px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px;" cellpadding="0" cellspacing="0" border="0">							<tbody>								<tr>									<td height="1" style="line-height:1px;display:block;height:1px;background-color:#FAFAFA;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td height="20" style="height:20;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"><span class="footer_type" style="font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;"> <a href="http://www.tripoin.co.id" class="footer_link" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;color:#1879DB;font-size:12px;padding:0px;margin:0px;font-weight:600;line-height:12px;">Tripoin, Inc.</a> </span></td>								</tr>								<tr>									<td height="10" style="height:10px;line-height:1px;font-size:1px;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>								<tr>									<td align="center" style="padding:0;margin:0;line-height:1px;font-size:1px;"><span class="address"><a href="" style="text-decoration:none;border-style:none;border:0;padding:0;margin:0;font-family:''Helvetica Neue Light'', Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;color:#8899a6;font-size:12px;padding:0px;margin:0px;font-weight:normal;line-height:12px;cursor:default;">Indonesia, Jakarta</a></span></td>								</tr>								<tr>									<td height="26" style="height:26;padding:0;margin:0;line-height:1px;font-size:1px;"></td>								</tr>							</tbody>						</table>					 					</td>				</tr>			</tbody>		</table>	</body></html>', 1, 'Body Email New User', 'admin', '127.0.0.1', '2016-03-08 11:46:51', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1109,12 +1111,12 @@ INSERT INTO `sys_system_parameter` (`system_parameter_id`, `system_parameter_cod
 -- Table structure for table `trx_availability`
 --
 
-CREATE TABLE `trx_availability` (
-  `availability_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_availability` (
+`availability_id` bigint(20) NOT NULL,
   `availability_code` varchar(150) NOT NULL,
   `availability_name` varchar(255) NOT NULL,
   `availability_value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `trx_availability`
@@ -1132,12 +1134,12 @@ INSERT INTO `trx_availability` (`availability_id`, `availability_code`, `availab
 -- Table structure for table `trx_balance_status`
 --
 
-CREATE TABLE `trx_balance_status` (
-  `balance_status_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_balance_status` (
+`balance_status_id` bigint(20) NOT NULL,
   `balance_status_code` varchar(150) NOT NULL,
   `balance_status_name` varchar(255) NOT NULL,
   `balance_status_value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `trx_balance_status`
@@ -1156,8 +1158,8 @@ INSERT INTO `trx_balance_status` (`balance_status_id`, `balance_status_code`, `b
 -- Table structure for table `trx_call_plan_detail`
 --
 
-CREATE TABLE `trx_call_plan_detail` (
-  `call_plan_detail_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_call_plan_detail` (
+`call_plan_detail_id` bigint(20) NOT NULL,
   `call_plan_header_id` bigint(20) NOT NULL,
   `call_plan_detail_code` varchar(150) NOT NULL,
   `call_plan_detail_approved` varchar(150) NOT NULL DEFAULT 'N',
@@ -1172,7 +1174,7 @@ CREATE TABLE `trx_call_plan_detail` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1180,8 +1182,8 @@ CREATE TABLE `trx_call_plan_detail` (
 -- Table structure for table `trx_call_plan_header`
 --
 
-CREATE TABLE `trx_call_plan_header` (
-  `call_plan_header_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_call_plan_header` (
+`call_plan_header_id` bigint(20) NOT NULL,
   `employee_id` bigint(20) NOT NULL,
   `employee_parent_current_id` bigint(20) NOT NULL,
   `call_plan_header_code` varchar(150) NOT NULL,
@@ -1198,7 +1200,7 @@ CREATE TABLE `trx_call_plan_header` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1206,8 +1208,8 @@ CREATE TABLE `trx_call_plan_header` (
 -- Table structure for table `trx_call_plan_list`
 --
 
-CREATE TABLE `trx_call_plan_list` (
-  `call_plan_list_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_call_plan_list` (
+`call_plan_list_id` bigint(20) NOT NULL,
   `call_plan_detail_id` bigint(20) NOT NULL,
   `user_route_id` bigint(20) NOT NULL,
   `customer_id` bigint(20) NOT NULL,
@@ -1226,7 +1228,7 @@ CREATE TABLE `trx_call_plan_list` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1234,8 +1236,8 @@ CREATE TABLE `trx_call_plan_list` (
 -- Table structure for table `trx_call_report`
 --
 
-CREATE TABLE `trx_call_report` (
-  `call_report_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_call_report` (
+`call_report_id` bigint(20) NOT NULL,
   `call_report_refno` varchar(150) NOT NULL,
   `call_plan_list_id` bigint(20) NOT NULL,
   `segment_id` bigint(20) NOT NULL,
@@ -1252,7 +1254,7 @@ CREATE TABLE `trx_call_report` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1260,11 +1262,11 @@ CREATE TABLE `trx_call_report` (
 -- Table structure for table `trx_call_report_product`
 --
 
-CREATE TABLE `trx_call_report_product` (
-  `call_report_product_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_call_report_product` (
+`call_report_product_id` bigint(20) NOT NULL,
   `call_report_id` bigint(20) NOT NULL,
   `product_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1272,11 +1274,11 @@ CREATE TABLE `trx_call_report_product` (
 -- Table structure for table `trx_cis`
 --
 
-CREATE TABLE `trx_cis` (
-  `cis_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_cis` (
+`cis_id` bigint(20) NOT NULL,
   `cis_code` varchar(150) NOT NULL,
   `cis_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `trx_cis`
@@ -1294,12 +1296,12 @@ INSERT INTO `trx_cis` (`cis_id`, `cis_code`, `cis_name`) VALUES
 -- Table structure for table `trx_competitor`
 --
 
-CREATE TABLE `trx_competitor` (
-  `competitor_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_competitor` (
+`competitor_id` bigint(20) NOT NULL,
   `competitor_code` varchar(150) NOT NULL,
   `competitor_name` varchar(255) NOT NULL,
   `competitor_description` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1307,11 +1309,11 @@ CREATE TABLE `trx_competitor` (
 -- Table structure for table `trx_customer_status`
 --
 
-CREATE TABLE `trx_customer_status` (
-  `customer_status_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_customer_status` (
+`customer_status_id` bigint(20) NOT NULL,
   `customer_status_code` varchar(150) NOT NULL,
   `customer_status_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `trx_customer_status`
@@ -1337,13 +1339,13 @@ INSERT INTO `trx_customer_status` (`customer_status_id`, `customer_status_code`,
 -- Table structure for table `trx_deal_report`
 --
 
-CREATE TABLE `trx_deal_report` (
-  `deal_report_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_deal_report` (
+`deal_report_id` bigint(20) NOT NULL,
   `call_report_id` bigint(20) NOT NULL,
   `dp_status_id` bigint(20) NOT NULL,
   `balance_status_id` bigint(20) NOT NULL,
   `availabilty_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1351,12 +1353,12 @@ CREATE TABLE `trx_deal_report` (
 -- Table structure for table `trx_dp_status`
 --
 
-CREATE TABLE `trx_dp_status` (
-  `dp_status_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_dp_status` (
+`dp_status_id` bigint(20) NOT NULL,
   `dp_status_code` varchar(150) NOT NULL,
   `dp_status_name` varchar(255) NOT NULL,
   `dp_status_value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `trx_dp_status`
@@ -1372,12 +1374,12 @@ INSERT INTO `trx_dp_status` (`dp_status_id`, `dp_status_code`, `dp_status_name`,
 -- Table structure for table `trx_lost_reason`
 --
 
-CREATE TABLE `trx_lost_reason` (
-  `lost_reason_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_lost_reason` (
+`lost_reason_id` bigint(20) NOT NULL,
   `lost_eason_code` varchar(150) NOT NULL,
   `lost_reason_name` varchar(255) NOT NULL,
   `lost_reason_description` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `trx_lost_reason`
@@ -1406,8 +1408,8 @@ INSERT INTO `trx_lost_reason` (`lost_reason_id`, `lost_eason_code`, `lost_reason
 -- Table structure for table `trx_lost_report`
 --
 
-CREATE TABLE `trx_lost_report` (
-  `lost_report_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_lost_report` (
+`lost_report_id` bigint(20) NOT NULL,
   `call_report_id` bigint(20) NOT NULL,
   `cis_id` bigint(20) NOT NULL,
   `status` smallint(5) DEFAULT NULL,
@@ -1420,7 +1422,7 @@ CREATE TABLE `trx_lost_report` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1428,13 +1430,13 @@ CREATE TABLE `trx_lost_report` (
 -- Table structure for table `trx_lost_report_competitor`
 --
 
-CREATE TABLE `trx_lost_report_competitor` (
-  `lost_report_competitor_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_lost_report_competitor` (
+`lost_report_competitor_id` bigint(20) NOT NULL,
   `lost_report_id` bigint(20) NOT NULL,
   `competitor_id` bigint(20) NOT NULL,
   `lost_reason_id` bigint(20) NOT NULL,
   `lost_report_competitor_description` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1442,11 +1444,11 @@ CREATE TABLE `trx_lost_report_competitor` (
 -- Table structure for table `trx_placeofvisit`
 --
 
-CREATE TABLE `trx_placeofvisit` (
-  `placeofvisit_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_placeofvisit` (
+`placeofvisit_id` bigint(20) NOT NULL,
   `placeofvisit_code` varchar(150) NOT NULL,
   `placeofvisit_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `trx_placeofvisit`
@@ -1465,8 +1467,8 @@ INSERT INTO `trx_placeofvisit` (`placeofvisit_id`, `placeofvisit_code`, `placeof
 -- Table structure for table `trx_quotation`
 --
 
-CREATE TABLE `trx_quotation` (
-  `quotation_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `trx_quotation` (
+`quotation_id` bigint(20) NOT NULL,
   `quotation_refno` varchar(150) NOT NULL,
   `quotation_price` varchar(150) NOT NULL,
   `quotation_place` varchar(255) NOT NULL DEFAULT 'Jakarta',
@@ -1482,7 +1484,7 @@ CREATE TABLE `trx_quotation` (
   `modified_ip` varchar(150) DEFAULT NULL,
   `modified_time` timestamp NULL DEFAULT NULL,
   `modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1490,8 +1492,8 @@ CREATE TABLE `trx_quotation` (
 -- Table structure for table `vcs_table`
 --
 
-CREATE TABLE `vcs_table` (
-  `vcs_table_id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `vcs_table` (
+`vcs_table_id` bigint(20) NOT NULL,
   `vcs_table_code` varchar(100) NOT NULL,
   `vcs_table_total_row` bigint(20) NOT NULL,
   `vcs_table_status` smallint(5) DEFAULT NULL,
@@ -1504,7 +1506,7 @@ CREATE TABLE `vcs_table` (
   `vcs_table_modified_ip` varchar(150) DEFAULT NULL,
   `vcs_table_modified_time` timestamp NULL DEFAULT NULL,
   `vcs_table_modified_platform` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `vcs_table`
@@ -1521,7 +1523,7 @@ INSERT INTO `vcs_table` (`vcs_table_id`, `vcs_table_code`, `vcs_table_total_row`
 -- Table structure for table `vcs_user`
 --
 
-CREATE TABLE `vcs_user` (
+CREATE TABLE IF NOT EXISTS `vcs_user` (
   `vcs_user_id` int(11) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `vcs_user_version` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -1535,389 +1537,343 @@ CREATE TABLE `vcs_user` (
 -- Indexes for table `geo_user_route`
 --
 ALTER TABLE `geo_user_route`
-  ADD PRIMARY KEY (`user_route_id`);
+ ADD PRIMARY KEY (`user_route_id`);
 
 --
 -- Indexes for table `mst_area`
 --
 ALTER TABLE `mst_area`
-  ADD PRIMARY KEY (`area_id`),
-  ADD UNIQUE KEY `occupation_code` (`area_code`);
+ ADD PRIMARY KEY (`area_id`), ADD UNIQUE KEY `occupation_code` (`area_code`);
 
 --
 -- Indexes for table `mst_bussiness_sector`
 --
 ALTER TABLE `mst_bussiness_sector`
-  ADD PRIMARY KEY (`bussiness_sector_id`),
-  ADD UNIQUE KEY `bussiness_sector_code` (`bussiness_sector_code`);
+ ADD PRIMARY KEY (`bussiness_sector_id`), ADD UNIQUE KEY `bussiness_sector_code` (`bussiness_sector_code`);
 
 --
 -- Indexes for table `mst_country`
 --
 ALTER TABLE `mst_country`
-  ADD PRIMARY KEY (`country_id`),
-  ADD UNIQUE KEY `country_code` (`country_code`);
+ ADD PRIMARY KEY (`country_id`), ADD UNIQUE KEY `country_code` (`country_code`);
 
 --
 -- Indexes for table `mst_customer`
 --
 ALTER TABLE `mst_customer`
-  ADD PRIMARY KEY (`customer_id`),
-  ADD UNIQUE KEY `customer_code` (`customer_code`);
+ ADD PRIMARY KEY (`customer_id`), ADD UNIQUE KEY `customer_code` (`customer_code`);
 
 --
 -- Indexes for table `mst_customer_financing`
 --
 ALTER TABLE `mst_customer_financing`
-  ADD PRIMARY KEY (`customer_financing_id`);
+ ADD PRIMARY KEY (`customer_financing_id`);
 
 --
 -- Indexes for table `mst_customer_operational`
 --
 ALTER TABLE `mst_customer_operational`
-  ADD PRIMARY KEY (`customer_operational_id`);
+ ADD PRIMARY KEY (`customer_operational_id`);
 
 --
 -- Indexes for table `mst_customer_pic`
 --
 ALTER TABLE `mst_customer_pic`
-  ADD PRIMARY KEY (`customer_pic_id`);
+ ADD PRIMARY KEY (`customer_pic_id`);
 
 --
 -- Indexes for table `mst_customer_project`
 --
 ALTER TABLE `mst_customer_project`
-  ADD PRIMARY KEY (`customer_project_id`);
+ ADD PRIMARY KEY (`customer_project_id`);
 
 --
 -- Indexes for table `mst_customer_site`
 --
 ALTER TABLE `mst_customer_site`
-  ADD PRIMARY KEY (`customer_site_id`);
+ ADD PRIMARY KEY (`customer_site_id`);
 
 --
 -- Indexes for table `mst_customer_type`
 --
 ALTER TABLE `mst_customer_type`
-  ADD PRIMARY KEY (`customer_type_id`),
-  ADD UNIQUE KEY `customer_type_code` (`customer_type_code`);
+ ADD PRIMARY KEY (`customer_type_id`), ADD UNIQUE KEY `customer_type_code` (`customer_type_code`);
 
 --
 -- Indexes for table `mst_employee`
 --
 ALTER TABLE `mst_employee`
-  ADD PRIMARY KEY (`employee_id`),
-  ADD UNIQUE KEY `employee_code` (`employee_code`),
-  ADD UNIQUE KEY `employee_nik` (`employee_nik`);
+ ADD PRIMARY KEY (`employee_id`), ADD UNIQUE KEY `employee_code` (`employee_code`), ADD UNIQUE KEY `employee_nik` (`employee_nik`);
 
 --
 -- Indexes for table `mst_finance`
 --
 ALTER TABLE `mst_finance`
-  ADD PRIMARY KEY (`finance_id`),
-  ADD UNIQUE KEY `finance_code` (`finance_code`);
+ ADD PRIMARY KEY (`finance_id`), ADD UNIQUE KEY `finance_code` (`finance_code`);
 
 --
 -- Indexes for table `mst_financing`
 --
 ALTER TABLE `mst_financing`
-  ADD PRIMARY KEY (`financing_id`),
-  ADD UNIQUE KEY `financing_code` (`financing_code`);
+ ADD PRIMARY KEY (`financing_id`), ADD UNIQUE KEY `financing_code` (`financing_code`);
 
 --
 -- Indexes for table `mst_fptengine`
 --
 ALTER TABLE `mst_fptengine`
-  ADD PRIMARY KEY (`fptengine_id`),
-  ADD UNIQUE KEY `fptengine_code` (`fptengine_code`);
+ ADD PRIMARY KEY (`fptengine_id`), ADD UNIQUE KEY `fptengine_code` (`fptengine_code`);
 
 --
 -- Indexes for table `mst_occupation`
 --
 ALTER TABLE `mst_occupation`
-  ADD PRIMARY KEY (`occupation_id`),
-  ADD UNIQUE KEY `occupation_code` (`occupation_code`);
+ ADD PRIMARY KEY (`occupation_id`), ADD UNIQUE KEY `occupation_code` (`occupation_code`);
 
 --
 -- Indexes for table `mst_pic`
 --
 ALTER TABLE `mst_pic`
-  ADD PRIMARY KEY (`pic_id`),
-  ADD UNIQUE KEY `pic_code` (`pic_code`);
+ ADD PRIMARY KEY (`pic_id`), ADD UNIQUE KEY `pic_code` (`pic_code`);
 
 --
 -- Indexes for table `mst_product`
 --
 ALTER TABLE `mst_product`
-  ADD PRIMARY KEY (`product_id`),
-  ADD UNIQUE KEY `product_mapping_code` (`product_mapping_code`);
+ ADD PRIMARY KEY (`product_id`), ADD UNIQUE KEY `product_mapping_code` (`product_mapping_code`);
 
 --
 -- Indexes for table `mst_product_type`
 --
 ALTER TABLE `mst_product_type`
-  ADD PRIMARY KEY (`product_type_id`),
-  ADD UNIQUE KEY `type_product_code` (`product_type_code`);
+ ADD PRIMARY KEY (`product_type_id`), ADD UNIQUE KEY `type_product_code` (`product_type_code`);
 
 --
 -- Indexes for table `mst_profile`
 --
 ALTER TABLE `mst_profile`
-  ADD PRIMARY KEY (`profile_id`),
-  ADD UNIQUE KEY `profile_phone` (`profile_phone`),
-  ADD UNIQUE KEY `profile_email` (`profile_email`),
-  ADD UNIQUE KEY `user_id` (`user_id`);
+ ADD PRIMARY KEY (`profile_id`), ADD UNIQUE KEY `profile_phone` (`profile_phone`), ADD UNIQUE KEY `profile_email` (`profile_email`), ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `mst_project`
 --
 ALTER TABLE `mst_project`
-  ADD PRIMARY KEY (`project_id`),
-  ADD UNIQUE KEY `ext_project_code` (`project_code`);
+ ADD PRIMARY KEY (`project_id`), ADD UNIQUE KEY `ext_project_code` (`project_code`);
 
 --
 -- Indexes for table `mst_project_target`
 --
 ALTER TABLE `mst_project_target`
-  ADD PRIMARY KEY (`project_target_id`);
+ ADD PRIMARY KEY (`project_target_id`);
 
 --
 -- Indexes for table `mst_segment`
 --
 ALTER TABLE `mst_segment`
-  ADD PRIMARY KEY (`segment_id`),
-  ADD UNIQUE KEY `segment_product_code` (`segment_code`);
+ ADD PRIMARY KEY (`segment_id`), ADD UNIQUE KEY `segment_product_code` (`segment_code`);
 
 --
 -- Indexes for table `mst_site`
 --
 ALTER TABLE `mst_site`
-  ADD PRIMARY KEY (`site_id`),
-  ADD UNIQUE KEY `site_code` (`site_code`);
+ ADD PRIMARY KEY (`site_id`), ADD UNIQUE KEY `site_code` (`site_code`);
 
 --
 -- Indexes for table `mst_spareparts`
 --
 ALTER TABLE `mst_spareparts`
-  ADD PRIMARY KEY (`spareparts_id`),
-  ADD UNIQUE KEY `spareparts_code` (`spareparts_code`);
+ ADD PRIMARY KEY (`spareparts_id`), ADD UNIQUE KEY `spareparts_code` (`spareparts_code`);
 
 --
 -- Indexes for table `mst_target`
 --
 ALTER TABLE `mst_target`
-  ADD PRIMARY KEY (`target_id`),
-  ADD UNIQUE KEY `target_code` (`target_code`);
+ ADD PRIMARY KEY (`target_id`), ADD UNIQUE KEY `target_code` (`target_code`);
 
 --
 -- Indexes for table `mst_truck`
 --
 ALTER TABLE `mst_truck`
-  ADD PRIMARY KEY (`truck_id`),
-  ADD UNIQUE KEY `truck_code` (`truck_code`);
+ ADD PRIMARY KEY (`truck_id`), ADD UNIQUE KEY `truck_code` (`truck_code`);
 
 --
 -- Indexes for table `mst_truck_axle`
 --
 ALTER TABLE `mst_truck_axle`
-  ADD PRIMARY KEY (`truck_axle_id`),
-  ADD UNIQUE KEY `axle_code` (`truck_axle_code`);
+ ADD PRIMARY KEY (`truck_axle_id`), ADD UNIQUE KEY `axle_code` (`truck_axle_code`);
 
 --
 -- Indexes for table `mst_truck_model`
 --
 ALTER TABLE `mst_truck_model`
-  ADD PRIMARY KEY (`truck_model_id`),
-  ADD UNIQUE KEY `model_truck_code` (`truck_model_code`);
+ ADD PRIMARY KEY (`truck_model_id`), ADD UNIQUE KEY `model_truck_code` (`truck_model_code`);
 
 --
 -- Indexes for table `mst_truck_type`
 --
 ALTER TABLE `mst_truck_type`
-  ADD PRIMARY KEY (`truck_type_id`),
-  ADD UNIQUE KEY `type_truck_code` (`truck_type_code`);
+ ADD PRIMARY KEY (`truck_type_id`), ADD UNIQUE KEY `type_truck_code` (`truck_type_code`);
 
 --
 -- Indexes for table `mst_unit_brand`
 --
 ALTER TABLE `mst_unit_brand`
-  ADD PRIMARY KEY (`unit_brand_id`),
-  ADD UNIQUE KEY `unit_brand_code` (`unit_brand_code`);
+ ADD PRIMARY KEY (`unit_brand_id`), ADD UNIQUE KEY `unit_brand_code` (`unit_brand_code`);
 
 --
 -- Indexes for table `mst_unit_populate`
 --
 ALTER TABLE `mst_unit_populate`
-  ADD PRIMARY KEY (`unit_populate_id`);
+ ADD PRIMARY KEY (`unit_populate_id`);
 
 --
 -- Indexes for table `mst_unit_type`
 --
 ALTER TABLE `mst_unit_type`
-  ADD PRIMARY KEY (`unit_type_id`),
-  ADD UNIQUE KEY `unit_type_code` (`unit_type_code`);
+ ADD PRIMARY KEY (`unit_type_id`), ADD UNIQUE KEY `unit_type_code` (`unit_type_code`);
 
 --
 -- Indexes for table `sec_role`
 --
 ALTER TABLE `sec_role`
-  ADD PRIMARY KEY (`role_id`),
-  ADD UNIQUE KEY `role_code` (`role_code`);
+ ADD PRIMARY KEY (`role_id`), ADD UNIQUE KEY `role_code` (`role_code`);
 
 --
 -- Indexes for table `sec_user`
 --
 ALTER TABLE `sec_user`
-  ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `user_username` (`user_username`);
+ ADD PRIMARY KEY (`user_id`), ADD UNIQUE KEY `user_username` (`user_username`);
 
 --
 -- Indexes for table `sys_menu`
 --
 ALTER TABLE `sys_menu`
-  ADD PRIMARY KEY (`menu_id`),
-  ADD UNIQUE KEY `menu_code` (`menu_code`);
+ ADD PRIMARY KEY (`menu_id`), ADD UNIQUE KEY `menu_code` (`menu_code`);
 
 --
 -- Indexes for table `sys_menu_role`
 --
 ALTER TABLE `sys_menu_role`
-  ADD PRIMARY KEY (`menu_role_id`);
+ ADD PRIMARY KEY (`menu_role_id`);
 
 --
 -- Indexes for table `sys_system_parameter`
 --
 ALTER TABLE `sys_system_parameter`
-  ADD PRIMARY KEY (`system_parameter_id`),
-  ADD UNIQUE KEY `system_parameter_code` (`system_parameter_code`);
+ ADD PRIMARY KEY (`system_parameter_id`), ADD UNIQUE KEY `system_parameter_code` (`system_parameter_code`);
 
 --
 -- Indexes for table `trx_availability`
 --
 ALTER TABLE `trx_availability`
-  ADD PRIMARY KEY (`availability_id`),
-  ADD UNIQUE KEY `availability_code` (`availability_code`);
+ ADD PRIMARY KEY (`availability_id`), ADD UNIQUE KEY `availability_code` (`availability_code`);
 
 --
 -- Indexes for table `trx_balance_status`
 --
 ALTER TABLE `trx_balance_status`
-  ADD PRIMARY KEY (`balance_status_id`),
-  ADD UNIQUE KEY `balance_status_code` (`balance_status_code`);
+ ADD PRIMARY KEY (`balance_status_id`), ADD UNIQUE KEY `balance_status_code` (`balance_status_code`);
 
 --
 -- Indexes for table `trx_call_plan_detail`
 --
 ALTER TABLE `trx_call_plan_detail`
-  ADD PRIMARY KEY (`call_plan_detail_id`),
-  ADD UNIQUE KEY `call_plan_detail_code` (`call_plan_detail_code`);
+ ADD PRIMARY KEY (`call_plan_detail_id`), ADD UNIQUE KEY `call_plan_detail_code` (`call_plan_detail_code`);
 
 --
 -- Indexes for table `trx_call_plan_header`
 --
 ALTER TABLE `trx_call_plan_header`
-  ADD PRIMARY KEY (`call_plan_header_id`),
-  ADD UNIQUE KEY `call_plan_header_code` (`call_plan_header_code`);
+ ADD PRIMARY KEY (`call_plan_header_id`), ADD UNIQUE KEY `call_plan_header_code` (`call_plan_header_code`);
 
 --
 -- Indexes for table `trx_call_plan_list`
 --
 ALTER TABLE `trx_call_plan_list`
-  ADD PRIMARY KEY (`call_plan_list_id`),
-  ADD UNIQUE KEY `call_plan_list_code` (`call_plan_list_code`);
+ ADD PRIMARY KEY (`call_plan_list_id`), ADD UNIQUE KEY `call_plan_list_code` (`call_plan_list_code`);
 
 --
 -- Indexes for table `trx_call_report`
 --
 ALTER TABLE `trx_call_report`
-  ADD PRIMARY KEY (`call_report_id`),
-  ADD UNIQUE KEY `call_report_refno` (`call_report_refno`);
+ ADD PRIMARY KEY (`call_report_id`), ADD UNIQUE KEY `call_report_refno` (`call_report_refno`);
 
 --
 -- Indexes for table `trx_call_report_product`
 --
 ALTER TABLE `trx_call_report_product`
-  ADD PRIMARY KEY (`call_report_product_id`);
+ ADD PRIMARY KEY (`call_report_product_id`);
 
 --
 -- Indexes for table `trx_cis`
 --
 ALTER TABLE `trx_cis`
-  ADD PRIMARY KEY (`cis_id`),
-  ADD UNIQUE KEY `cis_code` (`cis_code`);
+ ADD PRIMARY KEY (`cis_id`), ADD UNIQUE KEY `cis_code` (`cis_code`);
 
 --
 -- Indexes for table `trx_competitor`
 --
 ALTER TABLE `trx_competitor`
-  ADD PRIMARY KEY (`competitor_id`),
-  ADD UNIQUE KEY `competitor_code` (`competitor_code`);
+ ADD PRIMARY KEY (`competitor_id`), ADD UNIQUE KEY `competitor_code` (`competitor_code`);
 
 --
 -- Indexes for table `trx_customer_status`
 --
 ALTER TABLE `trx_customer_status`
-  ADD PRIMARY KEY (`customer_status_id`),
-  ADD UNIQUE KEY `customer_status_code` (`customer_status_code`);
+ ADD PRIMARY KEY (`customer_status_id`), ADD UNIQUE KEY `customer_status_code` (`customer_status_code`);
 
 --
 -- Indexes for table `trx_deal_report`
 --
 ALTER TABLE `trx_deal_report`
-  ADD PRIMARY KEY (`deal_report_id`);
+ ADD PRIMARY KEY (`deal_report_id`);
 
 --
 -- Indexes for table `trx_dp_status`
 --
 ALTER TABLE `trx_dp_status`
-  ADD PRIMARY KEY (`dp_status_id`),
-  ADD UNIQUE KEY `dp_status_code` (`dp_status_code`);
+ ADD PRIMARY KEY (`dp_status_id`), ADD UNIQUE KEY `dp_status_code` (`dp_status_code`);
 
 --
 -- Indexes for table `trx_lost_reason`
 --
 ALTER TABLE `trx_lost_reason`
-  ADD PRIMARY KEY (`lost_reason_id`),
-  ADD UNIQUE KEY `lost_other_reason_code` (`lost_eason_code`);
+ ADD PRIMARY KEY (`lost_reason_id`), ADD UNIQUE KEY `lost_other_reason_code` (`lost_eason_code`);
 
 --
 -- Indexes for table `trx_lost_report`
 --
 ALTER TABLE `trx_lost_report`
-  ADD PRIMARY KEY (`lost_report_id`);
+ ADD PRIMARY KEY (`lost_report_id`);
 
 --
 -- Indexes for table `trx_lost_report_competitor`
 --
 ALTER TABLE `trx_lost_report_competitor`
-  ADD PRIMARY KEY (`lost_report_competitor_id`);
+ ADD PRIMARY KEY (`lost_report_competitor_id`);
 
 --
 -- Indexes for table `trx_placeofvisit`
 --
 ALTER TABLE `trx_placeofvisit`
-  ADD PRIMARY KEY (`placeofvisit_id`),
-  ADD UNIQUE KEY `placeofvisit_code` (`placeofvisit_code`);
+ ADD PRIMARY KEY (`placeofvisit_id`), ADD UNIQUE KEY `placeofvisit_code` (`placeofvisit_code`);
 
 --
 -- Indexes for table `trx_quotation`
 --
 ALTER TABLE `trx_quotation`
-  ADD PRIMARY KEY (`quotation_id`),
-  ADD UNIQUE KEY `quotation_refno` (`quotation_refno`);
+ ADD PRIMARY KEY (`quotation_id`), ADD UNIQUE KEY `quotation_refno` (`quotation_refno`);
 
 --
 -- Indexes for table `vcs_table`
 --
 ALTER TABLE `vcs_table`
-  ADD PRIMARY KEY (`vcs_table_id`),
-  ADD UNIQUE KEY `system_parameter_code` (`vcs_table_code`);
+ ADD PRIMARY KEY (`vcs_table_id`), ADD UNIQUE KEY `system_parameter_code` (`vcs_table_code`);
 
 --
 -- Indexes for table `vcs_user`
 --
 ALTER TABLE `vcs_user`
-  ADD PRIMARY KEY (`vcs_user_id`);
+ ADD PRIMARY KEY (`vcs_user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1927,277 +1883,282 @@ ALTER TABLE `vcs_user`
 -- AUTO_INCREMENT for table `geo_user_route`
 --
 ALTER TABLE `geo_user_route`
-  MODIFY `user_route_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `user_route_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `mst_area`
 --
 ALTER TABLE `mst_area`
-  MODIFY `area_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+MODIFY `area_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `mst_bussiness_sector`
 --
 ALTER TABLE `mst_bussiness_sector`
-  MODIFY `bussiness_sector_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+MODIFY `bussiness_sector_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `mst_country`
 --
 ALTER TABLE `mst_country`
-  MODIFY `country_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `country_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_customer`
 --
 ALTER TABLE `mst_customer`
-  MODIFY `customer_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `customer_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_customer_financing`
 --
 ALTER TABLE `mst_customer_financing`
-  MODIFY `customer_financing_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `customer_financing_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_customer_operational`
 --
 ALTER TABLE `mst_customer_operational`
-  MODIFY `customer_operational_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `customer_operational_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_customer_pic`
 --
 ALTER TABLE `mst_customer_pic`
-  MODIFY `customer_pic_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `customer_pic_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_customer_project`
 --
 ALTER TABLE `mst_customer_project`
-  MODIFY `customer_project_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `customer_project_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_customer_site`
 --
 ALTER TABLE `mst_customer_site`
-  MODIFY `customer_site_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `customer_site_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_customer_type`
 --
 ALTER TABLE `mst_customer_type`
-  MODIFY `customer_type_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+MODIFY `customer_type_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `mst_employee`
 --
 ALTER TABLE `mst_employee`
-  MODIFY `employee_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `employee_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `mst_finance`
 --
 ALTER TABLE `mst_finance`
-  MODIFY `finance_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `finance_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_financing`
 --
 ALTER TABLE `mst_financing`
-  MODIFY `financing_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+MODIFY `financing_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `mst_fptengine`
 --
 ALTER TABLE `mst_fptengine`
-  MODIFY `fptengine_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+MODIFY `fptengine_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `mst_occupation`
 --
 ALTER TABLE `mst_occupation`
-  MODIFY `occupation_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `occupation_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `mst_pic`
 --
 ALTER TABLE `mst_pic`
-  MODIFY `pic_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `pic_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_product`
 --
 ALTER TABLE `mst_product`
-  MODIFY `product_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+MODIFY `product_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `mst_product_type`
 --
 ALTER TABLE `mst_product_type`
-  MODIFY `product_type_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `product_type_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `mst_profile`
+--
+ALTER TABLE `mst_profile`
+MODIFY `profile_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `mst_project`
 --
 ALTER TABLE `mst_project`
-  MODIFY `project_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `project_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_project_target`
 --
 ALTER TABLE `mst_project_target`
-  MODIFY `project_target_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT ' ';
+MODIFY `project_target_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT ' ';
 --
 -- AUTO_INCREMENT for table `mst_segment`
 --
 ALTER TABLE `mst_segment`
-  MODIFY `segment_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+MODIFY `segment_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `mst_site`
 --
 ALTER TABLE `mst_site`
-  MODIFY `site_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `site_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_spareparts`
 --
 ALTER TABLE `mst_spareparts`
-  MODIFY `spareparts_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+MODIFY `spareparts_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `mst_target`
 --
 ALTER TABLE `mst_target`
-  MODIFY `target_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `target_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_truck`
 --
 ALTER TABLE `mst_truck`
-  MODIFY `truck_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+MODIFY `truck_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `mst_truck_axle`
 --
 ALTER TABLE `mst_truck_axle`
-  MODIFY `truck_axle_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+MODIFY `truck_axle_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `mst_truck_model`
 --
 ALTER TABLE `mst_truck_model`
-  MODIFY `truck_model_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+MODIFY `truck_model_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `mst_truck_type`
 --
 ALTER TABLE `mst_truck_type`
-  MODIFY `truck_type_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+MODIFY `truck_type_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `mst_unit_brand`
 --
 ALTER TABLE `mst_unit_brand`
-  MODIFY `unit_brand_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `unit_brand_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_unit_populate`
 --
 ALTER TABLE `mst_unit_populate`
-  MODIFY `unit_populate_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `unit_populate_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mst_unit_type`
 --
 ALTER TABLE `mst_unit_type`
-  MODIFY `unit_type_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `unit_type_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sec_role`
 --
 ALTER TABLE `sec_role`
-  MODIFY `role_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+MODIFY `role_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `sec_user`
 --
 ALTER TABLE `sec_user`
-  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `sys_menu`
 --
 ALTER TABLE `sys_menu`
-  MODIFY `menu_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+MODIFY `menu_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `sys_menu_role`
 --
 ALTER TABLE `sys_menu_role`
-  MODIFY `menu_role_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+MODIFY `menu_role_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT for table `sys_system_parameter`
 --
 ALTER TABLE `sys_system_parameter`
-  MODIFY `system_parameter_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+MODIFY `system_parameter_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `trx_availability`
 --
 ALTER TABLE `trx_availability`
-  MODIFY `availability_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+MODIFY `availability_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `trx_balance_status`
 --
 ALTER TABLE `trx_balance_status`
-  MODIFY `balance_status_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+MODIFY `balance_status_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `trx_call_plan_detail`
 --
 ALTER TABLE `trx_call_plan_detail`
-  MODIFY `call_plan_detail_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `call_plan_detail_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_call_plan_header`
 --
 ALTER TABLE `trx_call_plan_header`
-  MODIFY `call_plan_header_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `call_plan_header_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_call_plan_list`
 --
 ALTER TABLE `trx_call_plan_list`
-  MODIFY `call_plan_list_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `call_plan_list_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_call_report`
 --
 ALTER TABLE `trx_call_report`
-  MODIFY `call_report_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `call_report_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_call_report_product`
 --
 ALTER TABLE `trx_call_report_product`
-  MODIFY `call_report_product_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `call_report_product_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_cis`
 --
 ALTER TABLE `trx_cis`
-  MODIFY `cis_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+MODIFY `cis_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `trx_competitor`
 --
 ALTER TABLE `trx_competitor`
-  MODIFY `competitor_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `competitor_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_customer_status`
 --
 ALTER TABLE `trx_customer_status`
-  MODIFY `customer_status_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+MODIFY `customer_status_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `trx_deal_report`
 --
 ALTER TABLE `trx_deal_report`
-  MODIFY `deal_report_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `deal_report_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_dp_status`
 --
 ALTER TABLE `trx_dp_status`
-  MODIFY `dp_status_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+MODIFY `dp_status_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `trx_lost_reason`
 --
 ALTER TABLE `trx_lost_reason`
-  MODIFY `lost_reason_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+MODIFY `lost_reason_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `trx_lost_report`
 --
 ALTER TABLE `trx_lost_report`
-  MODIFY `lost_report_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `lost_report_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_lost_report_competitor`
 --
 ALTER TABLE `trx_lost_report_competitor`
-  MODIFY `lost_report_competitor_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `lost_report_competitor_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trx_placeofvisit`
 --
 ALTER TABLE `trx_placeofvisit`
-  MODIFY `placeofvisit_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+MODIFY `placeofvisit_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `trx_quotation`
 --
 ALTER TABLE `trx_quotation`
-  MODIFY `quotation_id` bigint(20) NOT NULL AUTO_INCREMENT;
+MODIFY `quotation_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `vcs_table`
 --
 ALTER TABLE `vcs_table`
-  MODIFY `vcs_table_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `vcs_table_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
