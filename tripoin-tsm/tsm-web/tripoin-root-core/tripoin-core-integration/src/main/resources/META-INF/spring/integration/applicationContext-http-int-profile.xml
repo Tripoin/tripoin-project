@@ -46,7 +46,7 @@
 		reply-channel="responseChannelProfileUpdate"
 		supported-methods="POST" 
 		path="/wscontext/profile/update, /wscontext/profile/update/{profile}"
-		request-payload-type="com.tripoin.core.dto.ProfileData">	
+		request-payload-type="com.tripoin.core.dto.GeneralTransferObject">	
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelProfileUpdate" expression="headers.http_requestMethod">

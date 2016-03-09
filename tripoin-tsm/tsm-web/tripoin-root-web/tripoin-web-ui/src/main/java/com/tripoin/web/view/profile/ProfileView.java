@@ -21,7 +21,7 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dto.EmployeeData;
 import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.ProfileData;
-import com.tripoin.core.dto.ProfileTransferObject;
+import com.tripoin.core.dto.ProfileTransferObject.EnumFieldProfile;
 import com.tripoin.util.time.TimeAgo;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
 import com.tripoin.web.TripoinUI;
@@ -470,30 +470,31 @@ public class ProfileView extends VerticalLayout implements View, ClickListener, 
         		isValid=false;
         	}	
         	if(isValid){
-            	profileData.setName(nameTextField.getValue());
-            	profileData.setBirthplace(birthPlaceTextField.getValue());
-            	profileData.setBirthdate(ParameterConstant.FORMAT_DEFAULT.format(birthDateDateField.getValue()));
-            	profileData.setGender(genderOptionGroup.getValue().toString().toUpperCase());
-            	profileData.setAddress(addressTextArea.getValue());
-            	profileData.setPhone(phoneTextField.getValue());
-            	profileData.setTelp(telpTextField.getValue());
-            	profileData.setEmail(emailTextField.getValue());
-            	profileData.setBio(bioTextArea.getValue());
-            	profileData.setModifiedIP(identifierPlatform.getIPAddress());
-            	profileData.setModifiedTime(ParameterConstant.FORMAT_DEFAULT.format(new Date()));
-            	profileData.setModifiedPlatform(identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));        	
-            	ProfileTransferObject profileTransferObject = profileService.updateProfile(profileData);
-            	if(profileTransferObject.getProfileDatas() != null && !profileTransferObject.getProfileDatas().isEmpty())
-            		profileData = profileTransferObject.getProfileDatas().get(0);
-            	
-            	if(EResponseCode.RC_FAILURE.getResponseCode().equals(profileTransferObject.getResponseCode())){
+        		GeneralTransferObject generalTransferObject  = new GeneralTransferObject();
+        		HashMap<String, Object> dataFieldMap = new HashMap<String, Object>();        		
+        		dataFieldMap.put(EnumFieldProfile.NAME_PROFILE.toString(), nameTextField.getValue());
+        		dataFieldMap.put(EnumFieldProfile.BIRTHPLACE_PROFILE.toString(), birthPlaceTextField.getValue());
+        		dataFieldMap.put(EnumFieldProfile.BIRTHDATE_PROFILE.toString(), ParameterConstant.FORMAT_DEFAULT.format(birthDateDateField.getValue()));
+        		dataFieldMap.put(EnumFieldProfile.GENDER_PROFILE.toString(), genderOptionGroup.getValue().toString());
+        		dataFieldMap.put(EnumFieldProfile.ADDRESS_PROFILE.toString(), addressTextArea.getValue());
+        		dataFieldMap.put(EnumFieldProfile.PHONE_PROFILE.toString(), phoneTextField.getValue());
+        		dataFieldMap.put(EnumFieldProfile.TELP_PROFILE.toString(), telpTextField.getValue());
+        		dataFieldMap.put(EnumFieldProfile.EMAIL_PROFILE.toString(), emailTextField.getValue());
+        		dataFieldMap.put(EnumFieldProfile.BIO_PROFILE.toString(), bioTextArea.getValue());
+        		dataFieldMap.put(ParameterConstant.IDENTIFIER_IP.toString(), identifierPlatform.getIPAddress());
+            	dataFieldMap.put(ParameterConstant.IDENTIFIER_TIME.toString(), ParameterConstant.FORMAT_DEFAULT.format(new Date()));            	
+            	dataFieldMap.put(ParameterConstant.IDENTIFIER_PLATFORM.toString(), identifierPlatform.getDevice().concat(" | ").concat(identifierPlatform.getOperatingSystem()).concat(" | ").concat(identifierPlatform.getBrowser()));
+            	generalTransferObject.setParameterData(dataFieldMap);
+            	generalTransferObject = profileService.updateProfile(generalTransferObject);
+            	dataFieldMap = null;
+            	if(EResponseCode.RC_FAILURE.getResponseCode().equals(generalTransferObject.getResponseCode())){
             		notification.setDescription("Update account error, please try again later!");
         	        notification.show(Page.getCurrent());	            		
-            	}else if(EResponseCode.RC_PHONE_EXISTS.getResponseCode().equals(profileTransferObject.getResponseCode())){
+            	}else if(EResponseCode.RC_PHONE_EXISTS.getResponseCode().equals(generalTransferObject.getResponseCode())){
             		phoneTextField.setComponentError(new UserError(EResponseCode.RC_PHONE_EXISTS.toString()));
             		notification.setDescription(EResponseCode.RC_PHONE_EXISTS.toString());
         	        notification.show(Page.getCurrent());	            		
-            	}else if(EResponseCode.RC_EMAIL_EXISTS.getResponseCode().equals(profileTransferObject.getResponseCode())){
+            	}else if(EResponseCode.RC_EMAIL_EXISTS.getResponseCode().equals(generalTransferObject.getResponseCode())){
             		emailTextField.setComponentError(new UserError(EResponseCode.RC_EMAIL_EXISTS.toString()));
             		notification.setDescription(EResponseCode.RC_EMAIL_EXISTS.toString());
         	        notification.show(Page.getCurrent());	            		

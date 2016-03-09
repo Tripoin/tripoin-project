@@ -44,8 +44,8 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public ProfileTransferObject updateProfile(ProfileData profileData) {		
-		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE_UPDATE), profileData, ProfileTransferObject.class);
+	public GeneralTransferObject updateProfile(GeneralTransferObject dataTransferObject) {		
+		return stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_PROFILE_UPDATE), dataTransferObject, GeneralTransferObject.class);
 	}
 
 	@Override
