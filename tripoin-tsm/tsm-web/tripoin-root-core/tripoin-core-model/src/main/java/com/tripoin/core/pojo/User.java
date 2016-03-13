@@ -1,10 +1,6 @@
 package com.tripoin.core.pojo;
 
-import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.UserData;
-
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -47,45 +43,6 @@ public class User implements IBaseModel {
     private Profile profile;
  
     public User(){}
-
-    public User(UserData userData) {
-        if (userData != null) {
-            this.username = userData.getUsername();
-            this.enabled = userData.getEnabled();
-            if(userData.getExpiredDate() != null){
-				try {
-					this.expiredDate = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}            	
-            }
-            this.role = new Role(userData.getRoleData());
-            this.nonLocked = userData.getNonLocked();
-            this.auth = userData.getAuth();
-            this.status = userData.getStatus();
-            this.remarks = userData.getRemarks();
-        }
-    }
-    
-    public User(UserData userData, String password) {
-        if (userData != null) {
-            this.username = userData.getUsername();
-            this.enabled = userData.getEnabled();
-            if(userData.getExpiredDate() != null){
-				try {
-					this.expiredDate = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(userData.getExpiredDate()).getTime());
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}            	
-            }
-            this.password = password;
-            this.role = new Role(userData.getRoleData());
-            this.nonLocked = userData.getNonLocked();
-            this.auth = userData.getAuth();
-            this.status = userData.getStatus();
-            this.remarks = userData.getRemarks();
-        }
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

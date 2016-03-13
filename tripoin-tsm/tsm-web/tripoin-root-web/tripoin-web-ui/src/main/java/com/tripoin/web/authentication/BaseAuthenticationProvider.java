@@ -54,15 +54,11 @@ public class BaseAuthenticationProvider implements AuthenticationProvider {
             	else
             		return null;            	
             	if(userData != null){
-            		if(userData.getRoleData() != null){
-                        List<GrantedAuthority> grantedAuths = new ArrayList<>();
-                        grantedAuths.add(new SimpleGrantedAuthority(userData.getRoleData().getCode()));
-                        Authentication auth = new UsernamePasswordAuthenticationToken(userData.getUsername(), password, grantedAuths);
-                        LOGGER.debug("User [{}] successfully logged in web service", userData.getUsername());
-                        return auth;            			
-            		}else{
-            			return null;
-            		}
+                    List<GrantedAuthority> grantedAuths = new ArrayList<>();
+                    grantedAuths.add(new SimpleGrantedAuthority(userData.getRole()));
+                    Authentication auth = new UsernamePasswordAuthenticationToken(userData.getUsername(), password, grantedAuths);
+                    LOGGER.debug("User [{}] successfully logged in web service", userData.getUsername());
+                    return auth; 
             	}else{
             		return null;
             	}

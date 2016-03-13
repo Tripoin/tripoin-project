@@ -24,7 +24,6 @@ import com.tripoin.core.dto.EmployeePrivateData;
 import com.tripoin.core.dto.EmployeeTransferObject;
 import com.tripoin.core.dto.ProfileData;
 import com.tripoin.core.dto.ProfileTransferObject;
-import com.tripoin.core.dto.RoleData;
 import com.tripoin.core.dto.UserData;
 import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Profile;
@@ -123,7 +122,7 @@ public class ProfileLoadEndpoint extends XReturnStatus {
 				ProfileData profileData = new ProfileData(profileList.get(0));
 				UserData userData = new UserData();
 				userData.setUsername(userList.get(0).getUsername());
-				userData.setRoleData(new RoleData(userList.get(0).getRole()));
+				userData.setRole(userList.get(0).getRole().getCode());
 				profileData.setUserData(userData);
 				employeeData.setProfileData(profileData);
 				employeeDatas.add(employeeData);

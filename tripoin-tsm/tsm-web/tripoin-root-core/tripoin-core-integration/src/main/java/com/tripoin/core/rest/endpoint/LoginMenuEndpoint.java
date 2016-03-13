@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,6 @@ import org.springframework.stereotype.Component;
 import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dao.filter.ECommonOperator;
-import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dto.MenuData;
 import com.tripoin.core.dto.UserData;
 import com.tripoin.core.dto.UserMenuTransferObject;
@@ -30,6 +30,7 @@ import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.service.IGenericManagerJpa;
 import com.tripoin.core.service.soap.handler.WSEndpointFaultException;
+import com.tripoin.core.servlet.ApplicationContextConstant;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -41,6 +42,9 @@ public class LoginMenuEndpoint extends XReturnStatus {
 
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
+	
+	@Autowired
+    private ServletContext context;
 
 	private String currentUserName;
 	
@@ -56,6 +60,7 @@ public class LoginMenuEndpoint extends XReturnStatus {
 	 * @param inMessage
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
 	public Message<UserMenuTransferObject> getUserMenu(Message<?> inMessage){
 		UserMenuTransferObject userMenuTransferObject = new UserMenuTransferObject();
@@ -75,35 +80,61 @@ public class LoginMenuEndpoint extends XReturnStatus {
     				wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString());
     				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);					
 				}
-			}			
-			FilterArgument[] filterArguments = new FilterArgument[] { 
-					new FilterArgument("username", ECommonOperator.EQUALS) 
-			};
-			List<User> userList = iGenericManagerJpa.loadObjectsFilterArgument(User.class, filterArguments, new Object[] { this.currentUserName }, null, null);
+			}
+			List<User> userList = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[] { this.currentUserName }, null);
 			if (userList != null) {
-				UserData userData = new UserData(userList.get(0));
 				List<UserData> userDatas = new ArrayList<UserData>();
-				userDatas.add(userData);
+				userDatas.add(new UserData(userList.get(0)));
 				userMenuTransferObject.setUserDatas(userDatas);
-				userData = null;
 				userDatas = null;
+			}else
+				throw new Exception();
+
+			List<MenuData> menuDatas = new ArrayList<MenuData>();
+			switch (this.currentRole) {
+				case RoleConstant.ROLE_ADMIN:
+					if(ParameterConstant.VIEW_WEB.equals(this.viewType))
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_ADMIN_WEB);
+					else
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_ADMIN_MOBILE);
+					break;
+				case RoleConstant.ROLE_SALESMAN:
+					if(ParameterConstant.VIEW_WEB.equals(this.viewType))
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_SALESMAN_WEB);
+					else
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_SALESMAN_MOBILE);
+					break;
+				case RoleConstant.ROLE_AREASALESMANAGER:
+					if(ParameterConstant.VIEW_WEB.equals(this.viewType))
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_AREASALESMANAGER_WEB);
+					else
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_AREASALESMANAGER_MOBILE);
+					break;
+				case RoleConstant.ROLE_NATIONALSALESMANAGER:
+					if(ParameterConstant.VIEW_WEB.equals(this.viewType))
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_NATIONALSALESMANAGER_WEB);
+					else
+						menuDatas = (List<MenuData>)context.getAttribute(ApplicationContextConstant.CONTEXT_MENU_ROLE_NATIONALSALESMANAGER_MOBILE);
+					break;
+				default:
+					throw new Exception();
 			}
-			List<Menu> menuList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? AND (mn.viewType = ? OR mn.viewType = ?) ORDER BY mn.tree ASC", new Object[] { this.currentRole, this.viewType, ParameterConstant.VIEW_WEB_MOBILE }, null);
-			if (menuList != null) {
-				List<MenuData> menuDatas = new ArrayList<MenuData>();
-				for (Menu menu : menuList) {
-					MenuData menuData = new MenuData(menu);
-					menuDatas.add(menuData);
+			if(menuDatas == null || menuDatas.isEmpty()){
+				List<Menu> menuList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? AND (mn.viewType = ? OR mn.viewType = ?) ORDER BY mn.tree ASC", new Object[] { this.currentRole, this.viewType, ParameterConstant.VIEW_WEB_MOBILE }, null);
+				if (menuList != null) {
+					for (Menu menu : menuList) {
+						MenuData menuData = new MenuData(menu);
+						menuDatas.add(menuData);
+					}
 				}
-				userMenuTransferObject.setMenuDatas(menuDatas);
-				menuDatas = null;
+				menuList = null;
 			}
+			userMenuTransferObject.setMenuDatas(menuDatas);
 			userMenuTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
 			userMenuTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
 			userList = null;
-			filterArguments = null;
-			menuList = null;
+			menuDatas = null;
 		} catch (WSEndpointFaultException e) {	
 			userMenuTransferObject.setResponseCode(e.getMessage());
 			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);

@@ -24,20 +24,8 @@ public class UserData {
 	@XmlElement(name = "ExpiredDate", namespace = "")
 	private String expiredDate;
 	
-	@XmlElement(name = "NonLocked", namespace = "")
-	private Integer nonLocked;
-	
-	@XmlElement(name = "Auth", namespace = "")
-	private String auth;
-	
-	@XmlElement(name = "Status", namespace = "")
-	private Integer status;
-	
-	@XmlElement(name = "Remarks", namespace = "")
-	private String remarks;
-	
-	@XmlElement(name = "RoleData", namespace = "")
-	private RoleData roleData;
+	@XmlElement(name = "Role", namespace = "")
+	private String role;
 	
 	public UserData(){}
 	
@@ -47,12 +35,8 @@ public class UserData {
 			this.setEnabled(user.getEnabled());
 			if(user.getExpiredDate() != null)
 				this.setExpiredDate(ParameterConstant.FORMAT_DEFAULT.format(user.getExpiredDate()));
-			this.setNonLocked(user.getNonLocked());
-			this.setAuth(user.getAuth());
-			this.setStatus(user.getStatus());
-			this.setRemarks(user.getRemarks());
 			if(user.getRole() != null)
-				this.setRoleData(new RoleData(user.getRole()));
+				this.setRole(user.getRole().getCode());
 		}
 	}
 
@@ -80,62 +64,22 @@ public class UserData {
 		this.expiredDate = expiredDate;
 	}
 
-	public Integer getNonLocked() {
-		return nonLocked;
+	public String getRole() {
+		return role;
 	}
 
-	public void setNonLocked(Integer nonLocked) {
-		this.nonLocked = nonLocked;
-	}
-
-	public String getAuth() {
-		return auth;
-	}
-
-	public void setAuth(String auth) {
-		this.auth = auth;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getRemarks() {
-		return remarks;
-	}
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-
-	public RoleData getRoleData() {
-		return roleData;
-	}
-
-	public void setRoleData(RoleData roleData) {
-		this.roleData = roleData;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((auth == null) ? 0 : auth.hashCode());
 		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
-		result = prime * result
-				+ ((expiredDate == null) ? 0 : expiredDate.hashCode());
-		result = prime * result
-				+ ((nonLocked == null) ? 0 : nonLocked.hashCode());
-		result = prime * result + ((remarks == null) ? 0 : remarks.hashCode());
-		result = prime * result
-				+ ((roleData == null) ? 0 : roleData.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((expiredDate == null) ? 0 : expiredDate.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -148,11 +92,6 @@ public class UserData {
 		if (getClass() != obj.getClass())
 			return false;
 		UserData other = (UserData) obj;
-		if (auth == null) {
-			if (other.auth != null)
-				return false;
-		} else if (!auth.equals(other.auth))
-			return false;
 		if (enabled == null) {
 			if (other.enabled != null)
 				return false;
@@ -163,25 +102,10 @@ public class UserData {
 				return false;
 		} else if (!expiredDate.equals(other.expiredDate))
 			return false;
-		if (nonLocked == null) {
-			if (other.nonLocked != null)
+		if (role == null) {
+			if (other.role != null)
 				return false;
-		} else if (!nonLocked.equals(other.nonLocked))
-			return false;
-		if (remarks == null) {
-			if (other.remarks != null)
-				return false;
-		} else if (!remarks.equals(other.remarks))
-			return false;
-		if (roleData == null) {
-			if (other.roleData != null)
-				return false;
-		} else if (!roleData.equals(other.roleData))
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
+		} else if (!role.equals(other.role))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -193,10 +117,8 @@ public class UserData {
 
 	@Override
 	public String toString() {
-		return "UserData [username=" + username + ", enabled=" + enabled
-				+ ", expiredDate=" + expiredDate + ", nonLocked=" + nonLocked
-				+ ", auth=" + auth + ", status=" + status + ", remarks="
-				+ remarks + ", roleData=" + roleData + "]";
+		return "UserData [username=" + username + ", enabled=" + enabled + ", expiredDate=" + expiredDate + ", role="
+				+ role + "]";
 	}
 
 }
