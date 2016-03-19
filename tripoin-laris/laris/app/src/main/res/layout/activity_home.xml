@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white">
+
+    <!--    <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="470dp">
+        </FrameLayout>-->
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/navbar_background"
+        >
+        <RadioButton
+            android:id="@+id/btCallPlan"
+            style="@style/navbar_button"
+            android:text="@string/call_plan"
+            android:drawableTop="@drawable/ic_select_call_plan"
+            android:background="@android:color/transparent"
+            />
+        <RadioButton
+            android:id="@+id/btCallReport"
+            style="@style/navbar_button"
+            android:text="@string/call_report"
+            android:drawableTop="@drawable/ic_select_call_report"
+            android:background="@android:color/transparent"
+            />
+        <RadioButton
+            android:id="@+id/btnQuotation"
+            style="@style/navbar_button"
+            android:text="@string/quotation"
+            android:drawableTop="@drawable/ic_select_quotation"
+            android:background="@android:color/transparent"
+            />
+        <RadioButton
+            android:id="@+id/btCustomer"
+            style="@style/navbar_button"
+            android:text="@string/customer"
+            android:drawableTop="@drawable/ic_select_customer"
+            android:background="@android:color/transparent"
+            />
+        <RadioButton
+            android:id="@+id/btNotification"
+            style="@style/navbar_button"
+            android:text="@string/notification"
+            android:drawableTop="@drawable/ic_select_notification"
+            android:background="@android:color/transparent"
+            />
+        <RadioButton
+            android:id="@+id/btProfile"
+            style="@style/navbar_button"
+            android:text="@string/profile"
+            android:drawableTop="@drawable/ic_select_profile"
+            android:background="@android:color/transparent"
+            />
+    </RadioGroup>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/radiogroup"
+        android:id="@+id/fab"
+        app:backgroundTint="@color/primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_create_call_report" />
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/radiogroup">
+    </FrameLayout>
+
+
+</RelativeLayout>
