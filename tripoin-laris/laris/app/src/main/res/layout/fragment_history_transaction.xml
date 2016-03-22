@@ -1,0 +1,21 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbarFHistoryTransaction"
+        layout="@layout/toolbar_fragment_history_transaction"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/history_transaction"
+        android:layout_gravity="left"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:id="@+id/toolbarTitle"/>
+</LinearLayout>

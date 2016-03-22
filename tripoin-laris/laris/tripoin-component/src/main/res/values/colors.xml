@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="margin_color">#ffbbbbbb</color>
+    <color name="gradient_start">#ffffffff</color>
+    <color name="gradient_end">#ffeeeeee</color>
+    <color name="white">#ffffffff</color>
+    <color name="black_light">#92000000</color>
+    <color name="red_dark_holo">#ffcc0000</color>
+</resources>

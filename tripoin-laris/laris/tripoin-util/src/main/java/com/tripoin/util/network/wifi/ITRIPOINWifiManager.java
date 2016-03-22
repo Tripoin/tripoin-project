@@ -5,7 +5,7 @@ package com.tripoin.util.network.wifi;
  *
  * @author <a href="fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
  */
-public interface IFWifiManager {
+public interface ITRIPOINWifiManager {
 
     void turnOffWIfi();
 

@@ -27,6 +27,12 @@
 
     <!--ACTIVITY LEARN TSM-->
     <string name="skip">Skip into</string>
+    <string name="title_intro_1">Intro 1</string>
+    <string name="title_intro_2">Intro 2</string>
+    <string name="title_intro_3">Intro 3</string>
+    <string name="content_intro_1">Content Intro 1</string>
+    <string name="content_intro_2">Content Intro 2</string>
+    <string name="content_intro_3">Content Intro 3</string>
 
     <!--Fragment Home-->
     <string name="search_laris">Search Laris</string>

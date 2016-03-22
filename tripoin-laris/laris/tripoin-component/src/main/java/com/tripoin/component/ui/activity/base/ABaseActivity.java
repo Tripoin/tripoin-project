@@ -17,6 +17,8 @@ import com.tripoin.component.R;
 import com.tripoin.component.app.base.ATRIPOINApplication;
 import com.tripoin.component.ui.activity.IActivity;
 import com.tripoin.component.ui.activity.impl.NavigatorActivity;
+import com.tripoin.dao.DAOComponent;
+import com.tripoin.util.network.NetworkComponent;
 
 import java.io.Serializable;
 import java.util.List;
@@ -45,7 +47,10 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
         ButterKnife.bind(this);
 
         ((ATRIPOINApplication)getApplication()).getDaoComponent().inject(this);
-        ((ATRIPOINApplication)getApplication()).getNetworkComponent().inject(this);
+        Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Successfull inject ".concat(DAOComponent.class.getName()));
+
+        ((ATRIPOINApplication) getApplication()).getNetworkComponent().inject(this);
+        Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Successfull inject ".concat(NetworkComponent.class.getName()));
 
         navigatorActivity = new NavigatorActivity();
         navigatorActivity.setParameter(this);

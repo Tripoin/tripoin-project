@@ -73,6 +73,8 @@ public abstract class ATRIPOINApplication extends MultiDexApplication implements
         busComponent = DaggerBusComponent.builder().busModule(new BusModule()).build();
 
         daoComponent.inject(getContext());
+        networkComponent.inject(getContext());
+
     }
 
     private void initBaseDatabaseComponent(){

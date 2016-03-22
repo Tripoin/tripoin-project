@@ -8,12 +8,12 @@ import android.net.wifi.WifiManager;
  *
  * @author <a href="fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
  */
-public class FWifiManager implements IFWifiManager{
+public class TRIPOINWifiManager implements ITRIPOINWifiManager {
 
     private Context context;
     private WifiManager wifiManager;
 
-    public FWifiManager(Context p_Context) {
+    public TRIPOINWifiManager(Context p_Context) {
         this.context = p_Context;
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
     }
