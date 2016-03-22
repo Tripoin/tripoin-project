@@ -2,15 +2,39 @@
     <string name="app_name">tripoin-component</string>
 
     <string name="sign_in">Sign in</string>
-    
-    <!--Home Activity-->
-    <string name="personal_info">Personal Info</string>
-    <string name="bengkel_terdekat">Customer Data</string>
-    <string name="about">About</string>
-    <string name="log_out">Logout</string>
 
+    <!--Common Word-->
+    <string name="or">Or</string>
+    <string name="signup_using">Sign up using</string>
+    <string name="send">Send</string>
+    <string name="home">Home</string>
+    <string name="upload">Upload</string>
+    <string name="search">Search</string>
+    <string name="customer">Customer</string>
+    <string name="profile">Profile</string>
+    <string name="about">About</string>
+    <string name="login">LOGIN</string>
+
+    <string name="to">To</string>
+    <string name="to_sender">To : </string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="skip_intro">Skip intro</string>
+    <string name="like">Like</string>
+    <string name="comment">Comment</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_out">Logout</string>
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.
+        Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.
+    </string>
     <!--ASplashScreen-->
     <string name="start_ss">Starting Splash Screen</string>
+
+    <!--MESSAGE-->
+    <string name="message_enable_google_location_service">Please Enable Google Location Service</string>
 
     <!--Login Handler-->
     <string name="user_is_not_found">"User is not found , application initiate the new one"</string>
@@ -24,9 +48,6 @@
     <!--Logout Handler-->
     <string name="logout_pd_message">Logging out</string>
     <string name="logout_failed">Logout Failed</string>
-
-    <!--Upload-->
-    <string name="upload">Uploading Evidence</string>
 
     <!--UI-->
     <string name="no_type_face">No TypeFace Assignment found</string>

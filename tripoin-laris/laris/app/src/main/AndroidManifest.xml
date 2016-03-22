@@ -34,11 +34,11 @@
     <application
         android:name=".LARISApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_tsm_logo"
+        android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.tripoin.laris.activity.ActivitySplashScreen"
+            android:name="com.tripoin.laris.activity.ActivityLogin"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -48,8 +48,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tripoin.laris.activity.ActivityHomeBottomBar" />
-        <activity android:name="com.tripoin.laris.activity.ActivityLogin" />
+        <activity
+            android:name="com.tripoin.laris.activity.ActivityHomeBottomBar"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            />
+        <activity android:name="com.tripoin.laris.activity.ActivitySplashScreen" />
         <activity android:name="com.tripoin.laris.activity.TRIPOINActivityIntro" />
         <activity android:name="com.tripoin.laris.activity.ActivityScanTicket" />
     </application>

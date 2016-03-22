@@ -63,6 +63,7 @@ public interface ApplicationConstant {
             String BASE_TICKETING_INQUIRY = "/rqid={rqid}&app={app}&action={action}&book_code={book_code}";
             String CHECK_TICKET         = BASE_TICKETING_INQUIRY;
             String GET_TICKET           = BASE_TICKETING_INQUIRY;
+            String DUMMY_IMAGE          = "http://javatechig.com/?json=get_recent_posts&count=45";
         }
 
         /**

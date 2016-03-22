@@ -3,6 +3,7 @@ package com.tripoin.laris.fragment.profile;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.tripoin.common.constant.GeneralConstant;
 import com.tripoin.component.ui.fragment.impl.ABaseFragment;
 import com.tripoin.laris.R;
 
@@ -27,7 +28,7 @@ public class FragmentProfile extends ABaseFragment {
 
     @Override
     public void initWidget() {
-        toolbarProfile.setTitle(getFragmentTitle());
+        toolbarProfile.setTitle(GeneralConstant.Punctuation.EMPTY);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarProfile);
     }
 

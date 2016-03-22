@@ -26,11 +26,13 @@ public class ActivityLogin extends ABaseActivity{
     @Bind(R.id.txt_password)
     EditText txtPassword;
 
-
     private ALoginHandler loginHandler;
 
     @Override
     public void initWidget() {
+        getSupportActionBar().hide();
+        txtUserName.setFocusable(true);
+
         loginHandler = new ALoginHandler() {
             @Override
             public Context getContext() {
@@ -60,10 +62,10 @@ public class ActivityLogin extends ABaseActivity{
         return R.layout.activity_login;
     }
 
-    @OnCheckedChanged(R.id.chkShowPassword)
+    /*@OnCheckedChanged(R.id.chkShowPassword)
     public void onChecked(boolean isChecked){
         loginHandler.onChecked(isChecked);
-    }
+    }*/
 
     @OnClick(R.id.btLogin)
     public void doLogin(){

@@ -7,10 +7,14 @@
     <include
         android:id="@+id/toolbarFCustomer"
         layout="@layout/toolbar_fragment_customer"
-        ></include>
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/customer"/>
+        android:text="@string/customer"
+        android:layout_gravity="left"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:id="@+id/toolbarTitle"/>
 </LinearLayout>

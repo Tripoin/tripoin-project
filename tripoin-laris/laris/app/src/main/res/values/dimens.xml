@@ -6,4 +6,7 @@
     <dimen name="menu_bar_bottom_width">60dp</dimen>
     <dimen name="menu_bar_bottom_height">58dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="rb_menu_height">70dp</dimen>
+    <dimen name="rb_menu_width">120dp</dimen>
 </resources>

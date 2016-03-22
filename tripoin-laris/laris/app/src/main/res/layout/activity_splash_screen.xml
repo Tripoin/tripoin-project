@@ -14,17 +14,8 @@
         android:layout_height="170dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_tsm_logo"
+        android:src="@drawable/ic_logo"
         android:id="@+id/imgLogo">
     </ImageView>
-
-    <!--<ImageView
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_tripoin_logo"
-        >
-    </ImageView>-->
 
 </LinearLayout>

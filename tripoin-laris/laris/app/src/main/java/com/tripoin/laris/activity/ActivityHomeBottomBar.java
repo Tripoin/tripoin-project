@@ -1,5 +1,6 @@
 package com.tripoin.laris.activity;
 
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.CompoundButton;
@@ -13,12 +14,11 @@ import butterknife.OnClick;
 import com.tripoin.component.ui.activity.base.ABaseActivity;
 import com.tripoin.component.ui.fragment.impl.NavigatorFragment;
 import com.tripoin.laris.R;
-import com.tripoin.laris.fragment.callplan.FragmentCallPlan;
-import com.tripoin.laris.fragment.callreport.FragmentCallReport;
-import com.tripoin.laris.fragment.customer.FragmentCustomer;
+import com.tripoin.laris.fragment.home.FragmentHome;
+import com.tripoin.laris.fragment.paymentcart.FragmentPaymentCart;
 import com.tripoin.laris.fragment.notification.FragmentNotification;
 import com.tripoin.laris.fragment.profile.FragmentProfile;
-import com.tripoin.laris.fragment.quotation.FragmentQuotation;
+import com.tripoin.laris.fragment.historytransaction.FragmentHistoryTransaction;
 
 /**
  * Created on 2/21/2016 : 7:55 PM.
@@ -27,18 +27,16 @@ import com.tripoin.laris.fragment.quotation.FragmentQuotation;
  */
 public class ActivityHomeBottomBar extends ABaseActivity implements CompoundButton.OnCheckedChangeListener{
 
-    @Bind(R.id.btCallReport) RadioButton btCallReport;
-    @Bind(R.id.btnQuotation) RadioButton btQuotation;
-    @Bind(R.id.btCallPlan)  RadioButton btCallPlan;
+    @Bind(R.id.btHome)  RadioButton btHome;
+    @Bind(R.id.btPaymentCart) RadioButton btPaymentCart;
+    @Bind(R.id.btnHistoryTransaction) RadioButton btQuotation;
     @Bind(R.id.btNotification) RadioButton btNotification;
-    @Bind(R.id.btCustomer)  RadioButton btCustomer;
     @Bind(R.id.btProfile)  RadioButton btProfile;
 
-    @BindString(R.string.customer) String strCustomer;
-    @BindString(R.string.call_report) String strCallReport;
-    @BindString(R.string.quotation) String strQuotation;
+    @BindString(R.string.payment_cart) String strPaymentCart;
+    @BindString(R.string.history_transaction) String strHistoryTransaction;
     @BindString(R.string.notification) String strNotification;
-    @BindString(R.string.call_plan) String strCallPlan;
+    @BindString(R.string.home) String strHome;
     @BindString(R.string.profile) String strProfile;
 
     private Fragment fragmentView = null;
@@ -54,16 +52,15 @@ public class ActivityHomeBottomBar extends ABaseActivity implements CompoundButt
             }
         };
 
-        btCallPlan.setChecked(true);
-        fragmentView = new FragmentCallPlan();
+        btHome.setChecked(true);
+        fragmentView = new FragmentHome();
         navigatorFragment.gotoNextFragment(containerId, fragmentView);
 
-        btCallReport.setOnCheckedChangeListener(this);
+        btPaymentCart.setOnCheckedChangeListener(this);
         btQuotation.setOnCheckedChangeListener(this);
-        btCustomer.setOnCheckedChangeListener( this );
         btNotification.setOnCheckedChangeListener( this );
         btProfile.setOnCheckedChangeListener(this);
-        btCallPlan.setOnCheckedChangeListener(this);
+        btHome.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -76,29 +73,20 @@ public class ActivityHomeBottomBar extends ABaseActivity implements CompoundButt
         if (p_IsChecked) {
             String textSelector = (String) p_CompoundButton.getText();
 
-            if (textSelector.equals(strCallReport)) {
-                fragmentView = new FragmentCallReport();
-            } else if (textSelector.equals(strQuotation)) {
-                fragmentView = new FragmentQuotation();
-            } else if (textSelector.equals(strCustomer)) {
-                fragmentView = new FragmentCustomer();
+            if (textSelector.equals(strPaymentCart)) {
+                fragmentView = new FragmentPaymentCart();
+            } else if (textSelector.equals(strHistoryTransaction)) {
+                fragmentView = new FragmentHistoryTransaction();
             } else if (textSelector.equals(strNotification)) {
                 fragmentView = new FragmentNotification();
             } else if (textSelector.equals(strProfile)) {
                 fragmentView = new FragmentProfile();
-            }else if(textSelector.equals(strCallPlan)) {
-                fragmentView = new FragmentCallPlan();
+            }else if(textSelector.equals(strHome)) {
+                fragmentView = new FragmentHome();
             }
 
             navigatorFragment.gotoNextFragment(containerId, fragmentView);
         }
     }
 
-    @OnClick(R.id.fab)
-    public void onClickFab(){
-        Toast.makeText(this, "Hello I am floating action button", Toast.LENGTH_LONG).show();
-
-        /*Snackbar snackbar = Snackbar.make(ActivityHomeBottomBar.this, "Welcome to AndroidHive", Snackbar.LENGTH_LONG);
-        snackbar.show();*/
-    }
 }

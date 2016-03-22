@@ -1,21 +1,17 @@
 package com.tripoin.laris.fragment.notification;
 
+import android.content.res.ColorStateList;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-
+import com.tripoin.common.constant.GeneralConstant;
 import com.tripoin.component.ui.fragment.impl.ABaseFragment;
 import com.tripoin.laris.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.BindString;
 
 /**
@@ -25,13 +21,12 @@ import butterknife.BindString;
  */
 public class FragmentNotification extends ABaseFragment {
 
-    @BindString(R.string.notification) String titleFragmentNotification;
-    @BindString(R.string.reminder) String strReminder;
-    @BindString(R.string.approve) String strApprove;
+    @BindString(R.string.notification)
+    String titleFragmentNotification;
 
-    @Bind(R.id.toolbarNotification) Toolbar toolbar;
-    @Bind(R.id.tabsNotification) TabLayout tabLayout;
-    @Bind(R.id.viewpagerNotification) ViewPager viewPager;
+    @Bind(R.id.toolbarNotification)
+    Toolbar toolbarNotification;
+
 
     @Override
     public String getFragmentTitle() {
@@ -40,54 +35,13 @@ public class FragmentNotification extends ABaseFragment {
 
     @Override
     public void initWidget() {
-        setupToolBar();
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new FragmentReminder(), strReminder);
-        adapter.addFragment(new FragmentApprove(), strApprove);
-        viewPager.setAdapter(adapter);
-    }
-
-    private void setupToolBar(){
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
+        toolbarNotification.setTitle(GeneralConstant.Punctuation.EMPTY);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarNotification);
     }
 
     @Override
     public int getViewLayoutId() {
         return R.layout.fragment_notification;
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
     }
 
 }

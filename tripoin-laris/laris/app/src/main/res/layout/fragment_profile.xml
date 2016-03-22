@@ -7,10 +7,14 @@
     <include
         android:id="@+id/toolbarFProfile"
         layout="@layout/toolbar_fragment_profile"
-        ></include>
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/profile"/>
+        android:text="@string/profile"
+        android:layout_gravity="left"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:id="@+id/toolbarTitle"/>
 </LinearLayout>
