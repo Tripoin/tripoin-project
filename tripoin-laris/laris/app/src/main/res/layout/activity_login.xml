@@ -19,7 +19,7 @@
         android:id="@+id/imgLogo">
     </ImageView>
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -30,12 +30,11 @@
                 <EditText
                     android:id="@+id/txt_password"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="35dp"
                     android:inputType="textPassword"
+                    android:gravity="center"
                     android:textColorHint="@color/white"
                     android:textColor="@color/white"
-                    android:drawableLeft="@drawable/ic_lock_custom"
-                    android:drawableStart="@drawable/ic_lock_custom"
                     android:background="@drawable/custom_edit_text_password"
                     android:hint="@string/password" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
