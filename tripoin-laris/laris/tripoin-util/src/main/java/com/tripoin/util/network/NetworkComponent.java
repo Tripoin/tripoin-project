@@ -21,4 +21,5 @@ public interface NetworkComponent {
     NetworkConnectivity provideNetworkConnectivity();
 
     void inject(Context p_Context);
+
 }

@@ -14,12 +14,11 @@ import android.widget.ProgressBar;
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.enums.SnackbarType;
-
 import com.tripoin.common.constant.ApplicationConstant;
 import com.tripoin.common.constant.GeneralConstant;
 import com.tripoin.component.ui.fragment.impl.ABaseFragment;
 import com.tripoin.laris.R;
-import com.tripoin.util.network.NetworkComponent;
+import com.tripoin.util.network.NetworkConnectivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,8 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -66,8 +63,7 @@ public class FragmentHome extends ABaseFragment implements SearchView.OnQueryTex
     @Bind(R.id.progressBarFragmentSearchImageLoader)
     ProgressBar progressBarImageLoader;
 
-    @Inject
-    NetworkComponent networkComponent;
+    NetworkConnectivity networkConnectivity;
 
     private GridImageAdapter gridImageAdapter;
     private ArrayList<GridImageItem> gridImageItems;
@@ -81,12 +77,14 @@ public class FragmentHome extends ABaseFragment implements SearchView.OnQueryTex
     public void initWidget() {
         toolbarHome.setTitle(GeneralConstant.Punctuation.EMPTY);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarHome);
+
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint(searchLARIS);
         searchView.setIconifiedByDefault(true);
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
-        if(networkComponent.provideNetworkConnectivity().isConnected()){
+        networkConnectivity = networkComponent.provideNetworkConnectivity();
+        if(networkConnectivity.isConnected()){
             Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Network is Connected");
         }else{
             Log.w(ApplicationConstant.LogTag.TRIPOIN_WARNING, "Network is not Connected");

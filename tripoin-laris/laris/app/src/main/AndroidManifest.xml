@@ -38,7 +38,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.tripoin.laris.activity.ActivityLogin"
+            android:name=".activity.ActivityLogin"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -49,10 +49,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tripoin.laris.activity.ActivityHomeBottomBar"
+            android:name=".activity.ActivityHomeBottomBar"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             />
-        <activity android:name="com.tripoin.laris.activity.ActivitySplashScreen" />
+        <activity android:name=".activity.ActivitySplashScreen" />
         <activity android:name="com.tripoin.laris.activity.TRIPOINActivityIntro" />
         <activity android:name="com.tripoin.laris.activity.ActivityScanTicket" />
     </application>

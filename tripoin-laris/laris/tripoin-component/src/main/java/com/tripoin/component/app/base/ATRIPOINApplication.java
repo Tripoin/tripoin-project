@@ -71,10 +71,6 @@ public abstract class ATRIPOINApplication extends MultiDexApplication implements
         daoComponent = DaggerDAOComponent.builder().dAOModule(new DAOModule(this)).build();
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(getContext())).build();
         busComponent = DaggerBusComponent.builder().busModule(new BusModule()).build();
-
-        daoComponent.inject(getContext());
-        networkComponent.inject(getContext());
-
     }
 
     private void initBaseDatabaseComponent(){

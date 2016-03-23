@@ -1,6 +1,8 @@
 package com.tripoin.laris.activity;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import butterknife.Bind;
@@ -10,7 +12,8 @@ import com.tripoin.component.ui.activity.impl.NavigatorActivity;
 import com.tripoin.component.ui.handler.login.ALoginHandler;
 import com.tripoin.laris.R;
 
-import butterknife.OnCheckedChanged;
+import java.util.List;
+
 import butterknife.OnClick;
 
 /**
@@ -18,7 +21,7 @@ import butterknife.OnClick;
  *
  * @author <a href="mailto:fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
  */
-public class ActivityLogin extends ABaseActivity{
+public class ActivityLogin extends ABaseActivity {
 
     @Bind(R.id.txt_username)
     EditText txtUserName;
@@ -26,10 +29,21 @@ public class ActivityLogin extends ABaseActivity{
     @Bind(R.id.txt_password)
     EditText txtPassword;
 
+    @Bind(R.id.btLogin)
+    Button btLogin;
+
     private ALoginHandler loginHandler;
 
     @Override
     public void initWidget() {
+        View decorView = getWindow().getDecorView();
+
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+        // Remember that you should never show the action bar if the
+        // status bar is hidden, so hide that too if necessary.
         getSupportActionBar().hide();
         txtUserName.setFocusable(true);
 
@@ -60,6 +74,12 @@ public class ActivityLogin extends ABaseActivity{
     @Override
     public int getViewLayoutId() {
         return R.layout.activity_login;
+    }
+
+    @Override
+    public List<Button> getButtons() {
+        buttons.add(btLogin);
+        return buttons;
     }
 
     /*@OnCheckedChanged(R.id.chkShowPassword)

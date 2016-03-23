@@ -1,7 +1,6 @@
 package com.tripoin.laris.activity;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;

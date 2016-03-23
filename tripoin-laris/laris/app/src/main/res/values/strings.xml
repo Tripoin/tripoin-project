@@ -20,6 +20,7 @@
     <!--ACTIVITY LOGIN-->
     <string name="user_name">User Name</string>
     <string name="password">Password</string>
+    <string name="password_upper_case">PASSWORD</string>
     <string name="show_password">Show Password</string>
     <string name="sign_in">Sign In</string>
     <string name="title_activity_activity_sample">ActivitySample</string>
@@ -33,6 +34,11 @@
     <string name="content_intro_1">Content Intro 1</string>
     <string name="content_intro_2">Content Intro 2</string>
     <string name="content_intro_3">Content Intro 3</string>
+    <string name="welcome_to_laris">Welcome to Laris</string>
+    <string name="buy_and_sell_on_shop">Buy and sell on social media shop</string>
+    <string name="buy_and_sell_on">Buy and sell on social media</string>
+    <string name="buy_and_sell_less">Buy and Sell less 30 Sec</string>
+    <string name="anytime_anywhere">anytime, anywhere</string>
 
     <!--Fragment Home-->
     <string name="search_laris">Search Laris</string>

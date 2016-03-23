@@ -1,24 +1,23 @@
 package com.tripoin.laris.activity;
 
-import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.Toast;
-
-import butterknife.Bind;
-import butterknife.BindString;
-import butterknife.OnClick;
 
 import com.tripoin.component.ui.activity.base.ABaseActivity;
 import com.tripoin.component.ui.fragment.impl.NavigatorFragment;
+import com.tripoin.dao.DAOComponent;
 import com.tripoin.laris.R;
-import com.tripoin.laris.fragment.home.FragmentHome;
-import com.tripoin.laris.fragment.paymentcart.FragmentPaymentCart;
-import com.tripoin.laris.fragment.notification.FragmentNotification;
-import com.tripoin.laris.fragment.profile.FragmentProfile;
 import com.tripoin.laris.fragment.historytransaction.FragmentHistoryTransaction;
+import com.tripoin.laris.fragment.home.FragmentHome;
+import com.tripoin.laris.fragment.notification.FragmentNotification;
+import com.tripoin.laris.fragment.paymentcart.FragmentPaymentCart;
+import com.tripoin.laris.fragment.profile.FragmentProfile;
+import com.tripoin.util.network.NetworkComponent;
+
+import butterknife.Bind;
+import butterknife.BindString;
 
 /**
  * Created on 2/21/2016 : 7:55 PM.
@@ -43,6 +42,8 @@ public class ActivityHomeBottomBar extends ABaseActivity implements CompoundButt
     private NavigatorFragment navigatorFragment;
     private int containerId = R.id.content_frame;
 
+    //NetworkConnectivity networkConnectivity;
+
     @Override
     public void initWidget() {
         navigatorFragment = new NavigatorFragment() {
@@ -61,6 +62,18 @@ public class ActivityHomeBottomBar extends ABaseActivity implements CompoundButt
         btNotification.setOnCheckedChangeListener( this );
         btProfile.setOnCheckedChangeListener(this);
         btHome.setOnCheckedChangeListener(this);
+
+        //networkConnectivity = networkComponent.provideNetworkConnectivity();
+    }
+
+    @Override
+    public void injectDAOComponent(DAOComponent p_DAOComponent) {
+        p_DAOComponent.inject(ActivityHomeBottomBar.this.getApplicationContext());
+    }
+
+    @Override
+    public void injectNetworkComponent(NetworkComponent p_NetworkComponent) {
+        p_NetworkComponent.inject(ActivityHomeBottomBar.this.getApplicationContext());
     }
 
     @Override

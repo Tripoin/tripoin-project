@@ -3,39 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/base_color"
-    android:gravity="center"
+    android:background="@drawable/ic_intro_3"
+    android:gravity="left"
     android:orientation="vertical"
-    tools:context="com.tripoin.laris.activity.ActivityLogin">
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_logo"
-        android:id="@+id/imgLogo">
-    </ImageView>
+    tools:context=".activity.ActivityLogin">
 
     <TextView
+        android:layout_marginTop="80dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="12sp"
-        android:id="@+id/lblVersion"
-        android:textColor="@android:color/white"
-        android:text="@string/version"/>
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:ems="6"
+        android:textSize="22sp"
+        android:id="@+id/lblWelcome"
+        android:textColor="@color/base_color"
+        android:text="@string/buy_and_sell_on"/>
 
-    <TextView
+    <include
+        layout="@layout/content_intro_general"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:layout_gravity="center"
-        android:id="@+id/lblAllRight"
-        android:textSize="12sp"
-        android:textColor="@android:color/white"
-        android:text="@string/all_right_reserved"/>
-
-
+        android:layout_marginLeft="30dp"
+        />
 
 </LinearLayout>

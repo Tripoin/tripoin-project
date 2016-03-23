@@ -12,10 +12,10 @@ import android.widget.TextView;
 import com.tripoin.common.bus.BusProvider;
 import com.tripoin.common.constant.ApplicationConstant;
 import com.tripoin.component.ComponentConstant;
-
 import com.tripoin.component.R;
 import com.tripoin.component.app.base.ATRIPOINApplication;
 import com.tripoin.component.ui.activity.IActivity;
+import com.tripoin.component.ui.activity.IComponentInjector;
 import com.tripoin.component.ui.activity.impl.NavigatorActivity;
 import com.tripoin.dao.DAOComponent;
 import com.tripoin.util.network.NetworkComponent;
@@ -30,13 +30,16 @@ import butterknife.ButterKnife;
  *
  * @author <a href="mailto:fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
  */
-public abstract class ABaseActivity extends AppCompatActivity implements IActivity {
+public abstract class ABaseActivity extends AppCompatActivity implements IActivity, IComponentInjector {
 
     protected Typeface typeface;
     protected List<TextView> textViews;
     protected List<EditText> editTexts;
     protected List<Button> buttons;
     protected NavigatorActivity navigatorActivity;
+
+    protected NetworkComponent networkComponent;
+    protected DAOComponent daoComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +49,34 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
 
         ButterKnife.bind(this);
 
-        ((ATRIPOINApplication)getApplication()).getDaoComponent().inject(this);
-        Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Successfull inject ".concat(DAOComponent.class.getName()));
+        daoComponent = ((ATRIPOINApplication)getApplication()).getDaoComponent();
+        injectDAOComponent(daoComponent);
+        Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Successful inject ".concat(DAOComponent.class.getName()));
 
-        ((ATRIPOINApplication) getApplication()).getNetworkComponent().inject(this);
-        Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Successfull inject ".concat(NetworkComponent.class.getName()));
+        networkComponent = ((ATRIPOINApplication) getApplication()).getNetworkComponent();
+        injectNetworkComponent(networkComponent);
+        Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Successful inject ".concat(NetworkComponent.class.getName()));
 
         navigatorActivity = new NavigatorActivity();
         navigatorActivity.setParameter(this);
+        initWidget();
     }
 
+
+    @Override
+    public void injectDAOComponent(DAOComponent p_DAOComponet) {
+        /*Not defined yet*/
+    }
+
+    @Override
+    public void injectNetworkComponent(NetworkComponent p_NetworkComponent) {
+        /*Not defined yet*/
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
         onLowMemory();
-        initWidget();
     }
 
     @Override
@@ -115,7 +130,7 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
             if(getEditTexts().size()>0 || getEditTexts() != null){
                 assignEditTextTypeFace(getEditTexts());
             }
-            typeface = Typeface.createFromAsset( getAssets(), initFontAssets()[2] );
+            typeface = Typeface.createFromAsset( getAssets(), initFontAssets()[3] );
             if(getButtons().size()>0 || getButtons() != null){
                 assignButtonTypeFace(getButtons());
             }
@@ -145,7 +160,8 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
         return new String[]{
                 ComponentConstant.fonts.ROBOT_LIGHT,
                 ComponentConstant.fonts.ROBOT_LIGHT_ITALIC,
-                ComponentConstant.fonts.ROBOT_BOLD
+                ComponentConstant.fonts.ROBOT_BOLD,
+                ComponentConstant.fonts.HELVETICA
         };
     }
 

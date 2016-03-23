@@ -2,47 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:float="http://schemas.android.com/apk/res-auto"
-    android:background="@color/base_color"
+    android:background="@drawable/ic_intro_1"
     android:layout_gravity="center"
     android:id="@+id/linearBackground"
     android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:layout_width="200dp"
         android:layout_height="170dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_logo"
+        android:src="@drawable/login_logo"
         android:id="@+id/imgLogo">
     </ImageView>
     <LinearLayout
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            <!--<com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 float:fletTextAppearance="@style/floatlabelededittext"
-                float:fletPadding="10dp">
+                float:fletPadding="10dp">-->
                 <EditText
                     android:id="@+id/txt_password"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="40dp"
                     android:inputType="textPassword"
                     android:gravity="center"
                     android:textColorHint="@color/white"
                     android:textColor="@color/white"
                     android:background="@drawable/custom_edit_text_password"
-                    android:hint="@string/password" />
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+                    android:hint="\u2022\u2022\u2022\u2022\u2022" />
+            <!--</com.wrapp.floatlabelededittext.FloatLabeledEditText>-->
         <Button
             android:layout_marginTop="5dp"
             android:id="@+id/btLogin"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:background="@drawable/bt_login_transparant_bordered"
             android:layout_gravity="center"
             android:textColor="@color/white"

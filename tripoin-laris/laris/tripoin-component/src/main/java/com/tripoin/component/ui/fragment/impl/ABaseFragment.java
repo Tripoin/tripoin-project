@@ -18,7 +18,13 @@ import android.widget.TextView;
 import com.tripoin.common.constant.ApplicationConstant;
 import com.tripoin.common.constant.GeneralConstant;
 import com.tripoin.component.ComponentConstant;
+import com.tripoin.component.app.base.ATRIPOINApplication;
+import com.tripoin.component.ui.activity.IComponentInjector;
 import com.tripoin.component.ui.fragment.INavigationDrawerFragment;
+import com.tripoin.dao.DAOComponent;
+import com.tripoin.util.network.DaggerNetworkComponent;
+import com.tripoin.util.network.NetworkComponent;
+import com.tripoin.util.network.NetworkModule;
 
 import java.util.List;
 
@@ -28,13 +34,16 @@ import butterknife.ButterKnife;
  * Created on 4/25/2015 : 11:20 PM.
  * @author <a href="mailto:fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
  */
-public abstract class ABaseFragment extends Fragment implements INavigationDrawerFragment {
+public abstract class ABaseFragment extends Fragment implements INavigationDrawerFragment, IComponentInjector {
 
     protected Typeface typeface;
     protected List<TextView> textViews;
     protected List<Button> buttons;
     protected List<EditText> editTexts;
     protected View rootView = null;
+
+    protected NetworkComponent networkComponent;
+    protected DAOComponent daoComponent;
 
     protected ABaseFragment() {
     }
@@ -53,7 +62,12 @@ public abstract class ABaseFragment extends Fragment implements INavigationDrawe
                 e.printStackTrace();
             }
         }
+
         ButterKnife.bind(this, rootView);
+        networkComponent = ((ATRIPOINApplication)getActivity().getApplication()).getNetworkComponent();
+        injectNetworkComponent(networkComponent);
+        daoComponent = ((ATRIPOINApplication)getActivity().getApplication()).getDaoComponent();
+        injectDAOComponent(daoComponent);
 
         initializeFragment();
 
@@ -61,6 +75,15 @@ public abstract class ABaseFragment extends Fragment implements INavigationDrawe
         return rootView;
     }
 
+    @Override
+    public void injectDAOComponent(DAOComponent p_DAOComponet) {
+
+    }
+
+    @Override
+    public void injectNetworkComponent(NetworkComponent p_NetworkComponent) {
+
+    }
 
     @Override
     public void onStart() {
