@@ -44,6 +44,7 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handlingStatusBar();
         setContentView(getViewLayoutId());
         setupTypeFace();
 
@@ -61,6 +62,8 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
         navigatorActivity.setParameter(this);
         initWidget();
     }
+
+    public void handlingStatusBar(){}
 
 
     @Override
