@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
+        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
+	
+	<int:channel id="responseChannelProductLoad"/>
+	<int:channel id="requestChannelProductLoad"/>	
+	<int:channel id="responseChannelProductSave"/>
+	<int:channel id="requestChannelProductSave"/>
+	<int:channel id="routeChannelProductSave"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelProductLoad"
+		reply-channel="responseChannelProductLoad"
+		supported-methods="GET" 
+		path="/wscontext/product/load">
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>	
+	<int:service-activator ref="productLoadEndpoint" method="getAllProduct" input-channel="requestChannelProductLoad" output-channel="responseChannelProductLoad"/>		
+	
+	<int-http:inbound-gateway request-channel="requestChannelProductSave"
+		reply-channel="responseChannelProductSave"
+		supported-methods="POST" 
+		path="/wscontext/product/save, /wscontext/product/save/{product}"
+		request-payload-type="com.tripoin.core.dto.ProductData">	
+		<int-http:request-mapping consumes="application/json" produces="application/json"/>
+	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelProductSave" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelProductSave"/>
+	</int:router>	
+	<int:service-activator ref="productSaveEndpoint" method="saveProduct" input-channel="requestChannelProductSave" output-channel="responseChannelProductSave"/>
+		
+</beans>
