@@ -23,13 +23,13 @@ public class APIType extends AGeneralAuditTrail {
 	private Integer id;
     private String code;
     private String name;
-    private String username;
+    private String identifier;
+    private String secret;
     private String host;
     private String port;
     private String protocol;
     private String authorization;
-    private String token;
-    private String userCredentials;
+    private String additional;
 
     public APIType() {}
 	
@@ -62,13 +62,22 @@ public class APIType extends AGeneralAuditTrail {
 		this.name = name;
 	}
 
-	@Column(name="api_type_username")
-	public String getUsername() {
-		return username;
+	@Column(name="api_type_identifier")
+	public String getIdentifier() {
+		return identifier;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	@Column(name="api_type_secret")
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
 	}
 
 	@Column(name="api_type_host")
@@ -107,22 +116,13 @@ public class APIType extends AGeneralAuditTrail {
 		this.authorization = authorization;
 	}
 
-	@Column(name="api_type_token")
-	public String getToken() {
-		return token;
+	@Column(name="api_type_additional")
+	public String getAdditional() {
+		return additional;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	@Column(name="api_type_user_credentials")
-	public String getUserCredentials() {
-		return userCredentials;
-	}
-
-	public void setUserCredentials(String userCredentials) {
-		this.userCredentials = userCredentials;
+	public void setAdditional(String additional) {
+		this.additional = additional;
 	}
 
 	@Override
@@ -132,11 +132,9 @@ public class APIType extends AGeneralAuditTrail {
 
 	@Override
 	public String toString() {
-		return "APIType [id=" + id + ", code=" + code + ", name=" + name
-				+ ", username=" + username + ", host=" + host + ", port="
-				+ port + ", protocol=" + protocol + ", authorization="
-				+ authorization + ", token=" + token + ", userCredentials="
-				+ userCredentials + ", auditTrail=" + super.toString() + "]";
+		return "APIType [id=" + id + ", code=" + code + ", name=" + name + ", identifier=" + identifier + ", secret="
+				+ secret + ", host=" + host + ", port=" + port + ", protocol=" + protocol + ", authorization="
+				+ authorization + ", additional=" + additional + "]";
 	}
 
 }

@@ -59,7 +59,7 @@ public class AccountFinance extends AGeneralAuditTrail {
 		this.code = code;
 	}
 
-	@Column(name="account_finance_number", unique=true, length=150)
+	@Column(name="account_finance_number")
 	public String getNumber() {
 		return number;
 	}

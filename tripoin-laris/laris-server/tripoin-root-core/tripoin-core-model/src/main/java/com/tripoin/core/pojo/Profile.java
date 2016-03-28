@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -46,6 +47,8 @@ public class Profile extends AGeneralAuditTrail {
     private String forgotUUID;
     private Timestamp forgotExpired;
     private User user;
+    private ZipCode zipCode;
+    private Country country;
     
     public Profile() {}
     
@@ -226,6 +229,26 @@ public class Profile extends AGeneralAuditTrail {
 		this.user = user;
 	}
 
+	@ManyToOne
+    @JoinColumn(name = "zipcode_id")
+	public ZipCode getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(ZipCode zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	@ManyToOne
+    @JoinColumn(name = "country_id")
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
 	@Override
 	public String tableName() {
 		return TABLE_NAME;
@@ -236,7 +259,8 @@ public class Profile extends AGeneralAuditTrail {
 		return "Profile [id=" + id + ", email=" + email + ", name=" + name + ", gender=" + gender + ", birthplace="
 				+ birthplace + ", birthdate=" + birthdate + ", address=" + address + ", telp=" + telp + ", phone="
 				+ phone + ", photo=" + photo + ", bio=" + bio + ", resourcesUUID=" + resourcesUUID + ", forgotUUID="
-				+ forgotUUID + ", forgotExpired=" + forgotExpired + ", user.id=" + user.getId() 
+				+ forgotUUID + ", forgotExpired=" + forgotExpired + ", user.id=" + user.getId() + ", zipCode="
+				+ zipCode + ", country=" + country
 				+ ", auditTrail=" + super.toString() + "]";
 	}
 	

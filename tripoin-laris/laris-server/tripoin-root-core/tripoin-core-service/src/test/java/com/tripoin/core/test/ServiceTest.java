@@ -28,16 +28,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
-import com.tripoin.core.dao.filter.PageArgument;
 import com.tripoin.core.dao.filter.ValueArgument;
-import com.tripoin.core.dto.EmployeeTransferObject;
-import com.tripoin.core.pojo.Employee;
 import com.tripoin.core.pojo.Menu;
-import com.tripoin.core.pojo.Occupation;
 import com.tripoin.core.pojo.Profile;
 import com.tripoin.core.pojo.SystemParameter;
 import com.tripoin.core.pojo.User;
-import com.tripoin.core.pojo.UserRoute;
 import com.tripoin.core.service.IGenericManagerJpa;
 import com.tripoin.core.service.util.ISystemParameterService;
 
@@ -88,7 +83,7 @@ public class ServiceTest implements ApplicationContextAware  {
 	 */
 	@Test
 	public void runtTestMain() throws Exception{
-		runTestDatabase();
+		runTestUser();
 	}
 	
 	public void runTestQuery() throws Exception {
@@ -98,21 +93,6 @@ public class ServiceTest implements ApplicationContextAware  {
 		};
 		int i = iGenericManagerJpa.execQueryNotCriteria("UPDATE mst_area SET area_name = :name WHERE area_code = :code", valueArguments);
 		LOGGER.debug("Return : "+i);
-	}
-	
-	public void runTestDatabase() throws Exception {
-		List<Employee> dataList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT em FROM Employee em", null, null);
-		for(Employee data : dataList) {
-			LOGGER.debug("Data : "+data.getEmployeeParent());
-		}
-	}
-	
-	public void runTestTotalRowData() throws Exception {
-		FilterArgument[] filterArguments = new FilterArgument[]{
-			new FilterArgument("name", ECommonOperator.LIKE_SIDE_LEFT)
-		};
-		Long totalRow = iGenericManagerJpa.totalRowData(Occupation.class, filterArguments, new Object[]{"occupation"}, null, null);
-		LOGGER.debug(totalRow.toString());
 	}
 	
 	public void runTestSQLNative() throws Exception {
@@ -146,10 +126,11 @@ public class ServiceTest implements ApplicationContextAware  {
 	}
 	
 	public void runTestUser() throws Exception {
-		String username = "ridla";	
+		String username = "081221356663";	
 		
 		List<User> users = iGenericManagerJpa.loadObjectsJQLStatement("FROM User WHERE username = ?", new Object[]{username}, null);
-		for(User user : users) LOGGER.debug("User Data : "+user);
+		for(User user : users) 
+			LOGGER.debug("User Data : "+user);
 		
 		FilterArgument[] filterArguments = new FilterArgument[] { 
 				new FilterArgument("user.username", ECommonOperator.EQUALS) 
@@ -171,37 +152,6 @@ public class ServiceTest implements ApplicationContextAware  {
 		List<SystemParameter> systemParameters = systemParameterService.listValue(new Object[]{ParameterConstant.FORGOT_PASSWORD_SUBJECT, ParameterConstant.FORGOT_PASSWORD_BODY});
 		for(SystemParameter systemParameter : systemParameters) {
 			LOGGER.debug("System Parameter : "+systemParameter);
-		}
-	}
-	
-	public void runTestOccupation() throws Exception {		
-		List<Occupation> occupationList = iGenericManagerJpa.loadObjectsJQLStatement("FROM Occupation", null, new PageArgument(0, 10));
-		for(Occupation occupation : occupationList) {
-			LOGGER.debug("Occupation Data : "+occupation);
-		}
-	}
-	
-	public void runTestEmployee() throws Exception {
-		String username = "ROLE_SALESMAN";
-		
-		FilterArgument[] filterArguments = new FilterArgument[] { 
-				new FilterArgument(EmployeeTransferObject.EnumFieldEmployee.ROLE_EMPLOYE.toString(), ECommonOperator.EQUALS) 
-		};
-		List<Employee> employeeList = iGenericManagerJpa.loadObjectsFilterArgument(Employee.class, filterArguments, new Object[] { username }, null, null);
-		for(Employee employee : employeeList) {
-			LOGGER.debug("Employee Data : "+employee);
-		}
-	}
-	
-	public void runTestUserRoute() throws Exception {
-		String nik = "TSM201511250001";
-		
-		FilterArgument[] filterArguments = new FilterArgument[] { 
-				new FilterArgument("employee.nik", ECommonOperator.EQUALS) 
-		};
-		List<UserRoute> userRouteList = iGenericManagerJpa.loadObjectsFilterArgument(UserRoute.class, filterArguments, new Object[] { nik }, null, null);
-		for(UserRoute userRoute : userRouteList) {
-			LOGGER.debug("User Route Data : "+userRoute);
 		}
 	}
 	

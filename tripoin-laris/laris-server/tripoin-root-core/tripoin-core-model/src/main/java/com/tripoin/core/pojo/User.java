@@ -41,6 +41,7 @@ public class User implements IBaseModel {
     private Integer status;
     private String remarks;
     private Role role;
+    
     private Profile profile;
     private AccountFinance accountFinance;
  

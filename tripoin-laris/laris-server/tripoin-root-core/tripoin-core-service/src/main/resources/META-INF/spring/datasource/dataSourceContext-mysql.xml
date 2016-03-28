@@ -36,6 +36,7 @@
 			<list>
 				<value>/WEB-INF/properties-files/resources-mysql.properties</value>
 				<value>/WEB-INF/properties-files/resources-integration.properties</value>
+				<value>/WEB-INF/properties-files/resources-api.properties</value>
 			</list>
 		</property>
 	</bean>
