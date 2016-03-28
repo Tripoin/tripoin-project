@@ -7,10 +7,10 @@ public class RoleConstant {
 
 	public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
 	public static final String ROLE_ANONYMOUS_SECURE = "ROLE_ANONYMOUS_SECURE";
+	public static final String ROLE_GATEWAY = "ROLE_GATEWAY";
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 	
-	public static final String ROLE_SALESMAN = "ROLE_SALESMAN";
-	public static final String ROLE_AREASALESMANAGER = "ROLE_AREASALESMANAGER";
-	public static final String ROLE_NATIONALSALESMANAGER = "ROLE_NATIONALSALESMANAGER";	
+	public static final String ROLE_BUYER = "ROLE_BUYER";
+	public static final String ROLE_SELLER = "ROLE_SELLER";	
 
 }
