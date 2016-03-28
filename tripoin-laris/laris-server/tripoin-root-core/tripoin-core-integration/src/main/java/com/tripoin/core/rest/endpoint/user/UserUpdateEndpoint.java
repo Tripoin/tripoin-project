@@ -52,7 +52,7 @@ public class UserUpdateEndpoint extends XReturnStatus {
 	 * @param inMessage
 	 * @return
 	 */
-    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_BUYER, RoleConstant.ROLE_SELLER, RoleConstant.ROLE_ADMIN})
     public Message<GeneralTransferObject> updateUser(Message<?> inMessage) {
     	GeneralTransferObject generalTransferObject = new GeneralTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

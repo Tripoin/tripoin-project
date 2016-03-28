@@ -22,19 +22,20 @@
                            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 	
 	<import resource="anonymous/applicationContext-http-int-forgot-password.xml" />
+	<import resource="api/applicationContext-http-int-api-authentication.xml" />
 	<import resource="applicationContext-http-int-connection.xml" />
-	<import resource="applicationContext-http-int-employee.xml" />
-	<import resource="applicationContext-http-int-area.xml" />
 	<import resource="applicationContext-http-int-login-menu.xml" />
 	<import resource="applicationContext-http-int-login.xml" />
 	<import resource="applicationContext-http-int-logout.xml" />
-	<import resource="applicationContext-http-int-occupation.xml" />
-	<import resource="applicationContext-http-int-profile.xml" />
 	<import resource="applicationContext-http-int-report.xml" />
 	<import resource="applicationContext-http-int-upload.xml" />
     <import resource="applicationContext-http-int-user.xml" />
 	
 	<context:component-scan base-package="com.tripoin.core.rest.endpoint">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+    </context:component-scan>	
+    
+	<context:component-scan base-package="com.tripoin.core.rest.template">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
     </context:component-scan>			
 

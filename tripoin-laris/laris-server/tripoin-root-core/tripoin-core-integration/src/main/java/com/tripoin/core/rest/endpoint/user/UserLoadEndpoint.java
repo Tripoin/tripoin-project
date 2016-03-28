@@ -46,7 +46,7 @@ public class UserLoadEndpoint extends XReturnStatus {
 	 * @param inMessage
 	 * @return
 	 */
-    @Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
+    @Secured({RoleConstant.ROLE_BUYER, RoleConstant.ROLE_SELLER, RoleConstant.ROLE_ADMIN})
     public Message<UserTransferObject> loadUser(Message<?> inMessage) {
         UserTransferObject userTransferObject = new UserTransferObject();
         Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
