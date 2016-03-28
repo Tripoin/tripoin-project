@@ -39,7 +39,7 @@ public class LoginEndpoint extends XReturnStatus {
 
 	private String currentUserName;
 
-	@Secured({RoleConstant.ROLE_SALESMAN, RoleConstant.ROLE_AREASALESMANAGER, RoleConstant.ROLE_NATIONALSALESMANAGER, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_BUYER, RoleConstant.ROLE_SELLER, RoleConstant.ROLE_GATEWAY, RoleConstant.ROLE_ADMIN})
 	public Message<UserTransferObject> getUser(Message<?> inMessage){	
 		UserTransferObject userTransferObject = new UserTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
