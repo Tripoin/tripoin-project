@@ -57,6 +57,12 @@ public class FragmentHome extends ABaseFragment implements SearchView.OnQueryTex
     @BindString(R.string.search_laris)
     String searchLARIS;
 
+    @BindString(R.string.internet_unavailable)
+    String internetUnAvailable;
+
+    @BindString(R.string.internet_available)
+    String internetAvailable;
+
     @Bind(R.id.gridImageHome)
     GridView gridImageSearch;
 
@@ -85,9 +91,9 @@ public class FragmentHome extends ABaseFragment implements SearchView.OnQueryTex
 
         networkConnectivity = networkComponent.provideNetworkConnectivity();
         if(networkConnectivity.isConnected()){
-            Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, "Network is Connected");
+            Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, internetUnAvailable);
         }else{
-            Log.w(ApplicationConstant.LogTag.TRIPOIN_WARNING, "Network is not Connected");
+            Log.w(ApplicationConstant.LogTag.TRIPOIN_WARNING, internetAvailable);
         }
         //initUserImageGallery();
     }

@@ -7,6 +7,20 @@
     <string name="title_activity_actvity_splash_screen">ActvitySplashScreen</string>
     <string name="title_activity_sample">SampleActivity</string>
 
+    <!--ACTIVITY LOGIN-->
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="password_upper_case">PASSWORD</string>
+    <string name="sign_in">Sign In</string>
+    <string name="title_activity_activity_sample">ActivitySample</string>
+    <string name="learn_about">Learn about Laris</string>
+
+    <!--ACTIVITY REGISTRATION-->
+    <string name="terms_and_condition_title">Terms and Conditions</string>
+    <string name="terms_and_condition_content">These Terms of Sale (“Terms”), together with the Laris Account Terms of Service, set out the terms and conditions that will apply when you place an order through Laris operated mobile shops. Please note that the terms and conditions that apply to ordering pre-order products differ on certain parts from the terms and conditions that apply to ordering other products. Such differences will be explained later in these Terms. If you are unable to understand, or have any questions about these Terms please contact Laris. You will be required to confirm that you have read and accept these Terms before you submit an order to Laris. Please note that these Terms are subject to change so review and save or print a copy of the current terms and conditions prior to each order that you submit.</string>
+    <string name="merchant_upper">MERCHANT</string>
+    <string name="buyer_upper">BUYER</string>
+
     <!--ACTIVITY HOME-->
     <string name="menu_nearest_workshop">Nearest Workshop</string>
     <string name="menu_tracking_location">Tracking Location</string>
@@ -15,16 +29,6 @@
     <string name="notification">Notification</string>
     <string name="profile">Profile</string>
     <string name="about">About</string>
-
-
-    <!--ACTIVITY LOGIN-->
-    <string name="user_name">User Name</string>
-    <string name="password">Password</string>
-    <string name="password_upper_case">PASSWORD</string>
-    <string name="show_password">Show Password</string>
-    <string name="sign_in">Sign In</string>
-    <string name="title_activity_activity_sample">ActivitySample</string>
-    <string name="learn_about">Learn about Laris</string>
 
     <!--ACTIVITY LEARN TSM-->
     <string name="skip">Skip into</string>

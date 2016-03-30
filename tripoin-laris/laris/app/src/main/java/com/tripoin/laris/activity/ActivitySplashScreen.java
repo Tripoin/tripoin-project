@@ -18,7 +18,7 @@ public class ActivitySplashScreen extends ABaseSplashScreenActivity {
 
     @Override
     public Class getLoginActivity() {
-        return ActivityLogin.class;
+        return ActivityTermsAndCondition.class;
     }
 
     @Override

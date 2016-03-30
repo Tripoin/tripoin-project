@@ -2,8 +2,6 @@ package com.tripoin.laris.activity;
 
 import android.content.Context;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -39,22 +37,21 @@ public class ActivityLogin extends ABaseActivity {
     @Override
     public void handlingStatusBar() {
         super.handlingStatusBar();
-        /*View decorView = getWindow().getDecorView();
 
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);*/
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        // Remember that you should never show the action bar if the
-        // status bar is hidden, so hide that too if necessary.
-        getSupportActionBar().hide();
     }
 
     @Override
     public void initWidget() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+        getSupportActionBar().hide();
+
         txtUserName.setFocusable(true);
 
         loginHandler = new ALoginHandler() {
@@ -101,16 +98,5 @@ public class ActivityLogin extends ABaseActivity {
     public void doLogin(){
         loginHandler.doLogin();
     }
-
-    @OnClick(R.id.lblLearnAbout)
-    public void learnTsm(){
-        NavigatorActivity navigatorActivity = new NavigatorActivity();
-        navigatorActivity.setParameter(this);
-        navigatorActivity.gotoNextActivity(
-                TRIPOINActivityIntro.class,
-                GeneralConstant.Punctuation.EMPTY,
-                GeneralConstant.Punctuation.EMPTY
-        );
-    }
-
+    
 }
