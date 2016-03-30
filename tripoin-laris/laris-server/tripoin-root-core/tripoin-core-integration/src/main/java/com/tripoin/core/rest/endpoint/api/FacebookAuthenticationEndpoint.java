@@ -3,12 +3,17 @@ package com.tripoin.core.rest.endpoint.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.scribe.builder.api.FacebookApi;
+import org.scribe.model.Token;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 
@@ -22,7 +27,7 @@ import com.tripoin.core.pojo.APIType;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.rest.template.IStateFullRest;
 import com.tripoin.core.service.IGenericManagerJpa;
-import com.tripoin.util.api.instagram.dto.TokenInstagramTransferObject;
+import com.tripoin.util.api.facebook.OAuthServiceProvider;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -37,15 +42,13 @@ public class FacebookAuthenticationEndpoint extends XReturnStatus {
 	
 	@Autowired
 	private IStateFullRest stateFullRest;
+
+	@Autowired
+	private OAuthServiceProvider<FacebookApi> facebookServiceProvider;
 	
-	private String tokenPath;
-
-	@Value("${api.instagram.token}")
-	public void setTokenPath(String tokenPath) {this.tokenPath = tokenPath;}
-
 	/**
 	 * <b>Sample Code:</b><br>
-	 * <code>/wscontext/login-menu</code><br>
+	 * <code>/api/secret/facebook{authentication}</code><br>
 	 * @param inMessage
 	 * @return
 	 */
@@ -54,19 +57,21 @@ public class FacebookAuthenticationEndpoint extends XReturnStatus {
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 		try {
 			LinkedMultiValueMap<String, String> dataPayload = inMessage.getPayload();
+			OAuthService oAuthService = facebookServiceProvider.getService();
+			Verifier verifier = new Verifier(dataPayload.getFirst(APIConstant.CODE.toString()));
+			Token accessToken = oAuthService
+					.getAccessToken(Token.empty(), verifier);
 			FilterArgument[] filterArgument = new FilterArgument[]{
-				new FilterArgument("code", ECommonOperator.EQUALS)	
+					new FilterArgument("code", ECommonOperator.EQUALS)	
 			};
 			APIType apiType = iGenericManagerJpa.loadObjectsFilterArgument(APIType.class, filterArgument, 
-					new Object[]{APIConstant.INSTAGRAM.getOperator()}, null, null).get(0);
-			String url = apiType.getHost().concat(tokenPath);
-			String data = APIConstant.CLIENT_ID.toString().concat("=").concat(apiType.getIdentifier()).concat("&")
-					.concat(APIConstant.CLIENT_SECRET.toString()).concat("=").concat(apiType.getSecret()).concat("&")
-					.concat(APIConstant.REDIRECT_URI.toString()).concat("=").concat(apiType.getAdditional()).concat("&")
-					.concat(APIConstant.GRANT_TYPE.toString()).concat("=").concat(APIConstant.AUTHORIZATION_CODE.toString()).concat("&")
-					.concat(APIConstant.CODE.toString()).concat("=").concat(dataPayload.getFirst(APIConstant.CODE.toString()));
-			TokenInstagramTransferObject responseInstagram = stateFullRest.post(url, data, TokenInstagramTransferObject.class);
-			System.err.println(responseInstagram);
+					new Object[]{APIConstant.FACEBOOK.getOperator()}, null, null).get(0);
+
+			Facebook facebook = new FacebookTemplate(accessToken.getToken());
+			String userId = facebook.userOperations().getUserProfile().getId();
+
+			LOGGER.info("Logged in User Id : {}", userId);
+			LOGGER.info("Access Token : {}", accessToken.getToken());
 			generalTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
 			generalTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
