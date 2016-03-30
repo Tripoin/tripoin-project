@@ -3,13 +3,14 @@
 	version="3.0" metadata-complete="true">
          
         <display-name>Tripoin Core Integration</display-name>
-         
+        
         <context-param>
+	        <param-name>contextClass</param-name>
+	        <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    	</context-param>
+    	<context-param>
 	        <param-name>contextConfigLocation</param-name>
-	        <param-value>
-	             <!-- Spring application context declaration -->
-	             /WEB-INF/config/core-integration-config.xml        
-	        </param-value>
+	        <param-value>com.tripoin.core.config.SocialConfig</param-value>
     	</context-param>
     	
     	<!--

@@ -22,4 +22,14 @@
 	</int-http:inbound-gateway>
 	<int:service-activator ref="instagramAuthenticationEndpoint" method="getAuthentication" input-channel="requestChannelInstagramAuthentication" output-channel="responseChannelInstagramAuthentication"/>
 		
+	<int:channel id="responseChannelFacebookAuthentication"/>
+	<int:channel id="requestChannelFacebookAuthentication"/>
+	
+	<int-http:inbound-gateway request-channel="requestChannelFacebookAuthentication"
+		reply-channel="responseChannelFacebookAuthentication"
+		supported-methods="GET" 
+		path="/api/secret/facebook{authentication}">
+	</int-http:inbound-gateway>
+	<int:service-activator ref="facebookAuthenticationEndpoint" method="getAuthentication" input-channel="requestChannelFacebookAuthentication" output-channel="responseChannelFacebookAuthentication"/>
+		
 </beans>

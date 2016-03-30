@@ -45,7 +45,7 @@ public class InstagramAuthenticationEndpoint extends XReturnStatus {
 
 	/**
 	 * <b>Sample Code:</b><br>
-	 * <code>/wscontext/login-menu</code><br>
+	 * <code>/api/secret/instagram{authentication}</code><br>
 	 * @param inMessage
 	 * @return
 	 */
