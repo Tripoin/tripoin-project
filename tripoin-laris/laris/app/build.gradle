@@ -1,3 +1,4 @@
+
 apply plugin: 'com.android.application'
 
 
@@ -6,13 +7,18 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.tripoin.tsm"
+        applicationId "com.tripoin.laris"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
 
         multiDexEnabled true
+    }
+	
+	dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
     }
 
     packagingOptions {
@@ -39,7 +45,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile project(':tripoin-component')
     compile project(':tripoin-rest')
     compile project(':tripoin-service')
     compile project(':tripoin-util')
