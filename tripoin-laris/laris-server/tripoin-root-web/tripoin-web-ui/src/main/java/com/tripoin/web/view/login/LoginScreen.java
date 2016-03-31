@@ -14,16 +14,19 @@ import com.tripoin.web.view.security.ForgotPasswordScreen;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -31,7 +34,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
@@ -127,10 +132,12 @@ public class LoginScreen extends CssLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				urlFacebook = urlFacebook.concat("client_id=").concat(clientIdFacebook).concat("&response_type=code&")
+						.concat("type=").concat("user_agent").concat("&")
+						.concat("response_type=").concat("token").concat("&")
 						.concat("redirect_uri=").concat(callbackFacebook).concat("&")
 						.concat("scope=").concat(scopesFacebook).concat("&")
 						.concat("state=").concat(UUID.randomUUID().toString());
-				Page.getCurrent().setLocation(urlFacebook);
+				Page.getCurrent().open(urlFacebook, "_top");
 			}
 		});
 
