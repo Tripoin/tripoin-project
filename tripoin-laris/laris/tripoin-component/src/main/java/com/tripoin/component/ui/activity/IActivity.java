@@ -45,4 +45,11 @@ public interface IActivity extends INavigationActivity {
      * @return String[] array of font assets
      */
     String[] initFontAssets();
+
+    /**
+     * <p>
+     *     to hide status bar. Using AppCompatActivity
+     * </p>
+     */
+    void hideStatusBar();
 }

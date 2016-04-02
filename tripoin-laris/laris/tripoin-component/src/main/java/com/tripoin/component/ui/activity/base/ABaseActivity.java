@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,7 +45,6 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handlingStatusBar();
         setContentView(getViewLayoutId());
         setupTypeFace();
 
@@ -62,8 +62,6 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
         navigatorActivity.setParameter(this);
         initWidget();
     }
-
-    public void handlingStatusBar(){}
 
 
     @Override
@@ -192,4 +190,10 @@ public abstract class ABaseActivity extends AppCompatActivity implements IActivi
         /*Not defined yet*/
     }
 
+    @Override
+    public void hideStatusBar() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
 }

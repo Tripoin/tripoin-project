@@ -37,18 +37,11 @@ public class ActivityLogin extends ABaseActivity {
     @Override
     public void handlingStatusBar() {
         super.handlingStatusBar();
-
-
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
     }
 
     @Override
     public void initWidget() {
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        hideStatusBar();
 
         getSupportActionBar().hide();
 
@@ -72,7 +65,6 @@ public class ActivityLogin extends ABaseActivity {
 
             @Override
             public Class getSuccessClass() {
-                //return ActivityHomeNavigationDrawerMode.class;
                 return ActivityHomeBottomBar.class;
             }
         };
@@ -98,5 +90,5 @@ public class ActivityLogin extends ABaseActivity {
     public void doLogin(){
         loginHandler.doLogin();
     }
-    
+
 }
