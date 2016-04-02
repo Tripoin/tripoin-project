@@ -2,4 +2,4 @@
 Repository For Tripoin Laris
 
 #####Full Documentation :
-Please Check here : [http://localhost:8081/tripoin/wscontext/connection](http://localhost:8081/tripoin/wscontext/connection "wscontext/connection")
+Please Check here : https://github.com/Tripoin/tripoin-mobile/tree/master/tripoin-android
