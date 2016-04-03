@@ -2,13 +2,14 @@ package com.tripoin.dto.response;
 
 import com.google.gson.annotations.SerializedName;
 import com.tripoin.dto.app.DTOMenu;
+import com.tripoin.dto.app.GeneralTransferObject;
 
 /**
  * Created on 4/3/2016 : 2:40 PM.
  *
  * @author <a href="fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
  */
-public class DTOResponseLogin {
+public class DTOResponseLogin extends GeneralTransferObject{
 
     @SerializedName("menu")
     DTOMenu menu;
