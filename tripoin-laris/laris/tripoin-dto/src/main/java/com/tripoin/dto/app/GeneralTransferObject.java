@@ -1,7 +1,5 @@
 package com.tripoin.dto.app;
 
-import java.util.HashMap;
-
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */

@@ -1,7 +1,7 @@
 package com.tripoin.dto.response;
 
 import com.google.gson.annotations.SerializedName;
-import com.tripoin.dto.app.DTOMenu;
+import com.tripoin.dto.app.MenuData;
 import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.dto.app.UserData;
 
@@ -15,31 +15,30 @@ import java.util.List;
 public class DTOResponseLogin extends GeneralTransferObject{
 
     @SerializedName("menu")
-    List<DTOMenu> dtoMenus;
+    List<MenuData> menuDatas;
 
     @SerializedName("userData")
     UserData userData;
 
-    public List<DTOMenu> getDtoMenus() {
-        return dtoMenus;
-    }
+	public List<MenuData> getMenuDatas() {
+		return menuDatas;
+	}
 
-    public void setDtoMenus(List<DTOMenu> dtoMenus) {
-        this.dtoMenus = dtoMenus;
-    }
+	public void setMenuDatas(List<MenuData> menuDatas) {
+		this.menuDatas = menuDatas;
+	}
 
-    public UserData getUserData() {
-        return userData;
-    }
+	public UserData getUserData() {
+		return userData;
+	}
 
-    public void setUserData(UserData userData) {
-        this.userData = userData;
-    }
+	public void setUserData(UserData userData) {
+		this.userData = userData;
+	}
 
-    @Override
-    public String toString() {
-        return "DTOResponseLogin{" +
-                "menu=" + dtoMenus +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "DTOResponseLogin [menuDatas=" + menuDatas + ", userData=" + userData + "]";
+	}
+	
 }

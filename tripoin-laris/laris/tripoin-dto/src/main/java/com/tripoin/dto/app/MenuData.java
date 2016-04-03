@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author <a href="fauzi.knightmaster.achmad@gmail.com">Achmad Fauzi</a>
  */
-public class DTOMenu {
+public class MenuData {
 
     @SerializedName("code")
     String code;
@@ -28,7 +28,7 @@ public class DTOMenu {
     String viewType;
 
     @SerializedName("parent")
-    DTOMenu dtoMenu;
+    MenuData dtoMenu;
 
     public String getCode() {
         return code;
@@ -78,11 +78,11 @@ public class DTOMenu {
         this.viewType = viewType;
     }
 
-    public DTOMenu getDtoMenu() {
+    public MenuData getDtoMenu() {
         return dtoMenu;
     }
 
-    public void setDtoMenu(DTOMenu dtoMenu) {
+    public void setDtoMenu(MenuData dtoMenu) {
         this.dtoMenu = dtoMenu;
     }
 
@@ -91,7 +91,7 @@ public class DTOMenu {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DTOMenu dtoMenu1 = (DTOMenu) o;
+        MenuData dtoMenu1 = (MenuData) o;
 
         if (level != dtoMenu1.level) return false;
         if (order != dtoMenu1.order) return false;
