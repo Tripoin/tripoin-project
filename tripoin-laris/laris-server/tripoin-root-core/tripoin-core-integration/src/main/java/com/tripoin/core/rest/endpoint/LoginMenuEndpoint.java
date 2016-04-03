@@ -22,6 +22,7 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dto.MenuDataExt;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.service.IGenericManagerJpa;
@@ -100,7 +101,7 @@ public class LoginMenuEndpoint extends XReturnStatus {
 			if (menuList != null) {
 				List<MenuData> menuDatas = new ArrayList<MenuData>();
 				for (Menu menu : menuList) {
-					menuDatas.add(getMenuData(menu));
+					menuDatas.add(new MenuDataExt(menu));
 				}
 				dtoResponseLogin.setMenuDatas(menuDatas);
 				menuDatas = null;
@@ -127,19 +128,6 @@ public class LoginMenuEndpoint extends XReturnStatus {
 		this.currentUserName = null;
 		this.currentRole = null;
 		return message;	
-	}
-
-	public MenuData getMenuData(Menu menu){
-		MenuData menuData = new MenuData();
-		menuData.setCode(menu.getCode());
-		menuData.setLevel(menu.getLevel());
-		menuData.setOrder(menu.getOrder());
-		menuData.setTree(menu.getTree());
-		menuData.setViewType(menu.getViewType());
-		menuData.setName(menu.getName());
-		if(menu.getMenuParent() != null)
-			menuData.setDtoMenu(getMenuData(menu.getMenuParent()));
-		return menuData;
 	}
 	
 }
