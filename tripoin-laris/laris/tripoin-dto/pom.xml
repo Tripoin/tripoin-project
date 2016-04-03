@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.tripoin.core</groupId>
+	<version>1.0.0</version>
+	<artifactId>tripoin-dto</artifactId>
+	<name>tripoin-dto</name>
+	<description>Core Model Component</description>
+	<organization>
+		<name>Tripoin</name>
+		<url>http://www.tripoin.net</url>
+	</organization>
+	<developers>
+		<developer>
+			<name>Ridla Fadilah</name>
+			<email>ridla.fadilah@gmail.com</email>
+		</developer>
+	</developers>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>true</filtering>
+		        <excludes>
+		          <exclude>**/*Sample.java</exclude>
+		        </excludes>
+			</resource>
+		</resources>
+		<defaultGoal>install</defaultGoal>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.6.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.parceler</groupId>
+		    <artifactId>parceler</artifactId>
+		    <version>1.0.4</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.parceler</groupId>
+		    <artifactId>parceler-api</artifactId>
+		    <version>1.0.4</version>
+		</dependency>
+		<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+    		<exclusions>
+        		<exclusion>
+            		<artifactId>hamcrest-core</artifactId>
+            		<groupId>org.hamcrest</groupId>
+        		</exclusion>
+    		</exclusions>
+        </dependency>
+	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>default</id>
+			<url>http://central.maven.org/maven2</url>
+		</repository>
+	</repositories>
+
+</project>
