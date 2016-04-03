@@ -5,8 +5,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.parceler.Parcel;
-
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -14,7 +12,6 @@ import com.google.gson.annotations.SerializedName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "AGeneralAuditTrailData")
-@Parcel
 public class AGeneralAuditTrailData {
 
 	@XmlElement(name = "Status", namespace = "")
