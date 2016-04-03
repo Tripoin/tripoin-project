@@ -1,6 +1,6 @@
 package com.tripoin.web.service;
 
-import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.dto.app.GeneralTransferObject;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>

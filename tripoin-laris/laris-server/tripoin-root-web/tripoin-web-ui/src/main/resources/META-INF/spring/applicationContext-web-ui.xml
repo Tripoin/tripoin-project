@@ -23,15 +23,16 @@
     	
     <bean id="loginScreen" class="com.tripoin.web.view.login.LoginScreen" scope="prototype"/>   
     <bean id="forgotPasswordScreen" class="com.tripoin.web.view.security.ForgotPasswordScreen" scope="prototype"/>
+    <bean id="rootMenuLayout" class="com.tripoin.web.view.menu.RootMenuLayout" scope="prototype"/>
     <bean id="errorView" class="com.tripoin.web.view.error.ErrorView" scope="prototype"/>	 
-    <bean id="homeView" class="com.tripoin.web.view.home.HomeView" scope="prototype"/>
+    <bean id="home" class="com.tripoin.web.view.main.customer.HomeCustomerView" scope="prototype"/>
 	<bean id="tripoinUI" class="com.tripoin.web.TripoinUI" scope="prototype"/>   
     
 	<context:component-scan base-package="com.tripoin.web.view.profile">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
     </context:component-scan>   
     
-	<context:component-scan base-package="com.tripoin.web.view.page">
+	<context:component-scan base-package="com.tripoin.web.view.main">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
     </context:component-scan>
     

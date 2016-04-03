@@ -13,9 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.MenuData;
-import com.tripoin.core.dto.UserData;
-import com.tripoin.core.dto.UserMenuTransferObject;
+import com.tripoin.dto.app.MenuData;
+import com.tripoin.dto.app.UserData;
+import com.tripoin.dto.request.DTORequestLogin;
+import com.tripoin.dto.response.DTOResponseLogin;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -45,10 +46,12 @@ public class BaseAuthenticationProvider implements AuthenticationProvider {
         try{
         	stateFullRest.setUsername(username);
         	stateFullRest.setPassword(password);
-    		UserMenuTransferObject userMenuTransferObject = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_LOGIN_MENU), ParameterConstant.VIEW_TYPE.concat(ParameterConstant.VIEW_WEB), UserMenuTransferObject.class);
-            if(userMenuTransferObject != null){
-            	List<MenuData> menuDatas = userMenuTransferObject.getMenuDatas();
-            	UserData userData = userMenuTransferObject.getUserDatas().get(0);
+        	DTORequestLogin dtoRequestLogin = new DTORequestLogin();
+    		dtoRequestLogin.setViewType(ParameterConstant.VIEW_WEB);
+    		DTOResponseLogin dtoResponseLogin = stateFullRest.post(commonRest.getUrl(WebServiceConstant.HTTP_LOGIN_MENU), dtoRequestLogin, DTOResponseLogin.class);
+            if(dtoResponseLogin != null){
+            	List<MenuData> menuDatas = dtoResponseLogin.getMenuDatas();
+            	UserData userData = dtoResponseLogin.getUserData();
             	if(menuDatas != null)
             		stateFullRest.setMenuDatas(menuDatas);
             	else

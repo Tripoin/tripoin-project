@@ -4,7 +4,7 @@
 	<inherits name="com.vaadin.DefaultWidgetSet" />
 	
 	<set-configuration-property name="devModeRedirectEnabled"
-		value="true" />
+		value="false" />
 
 	<!-- Uncomment the following to compile the widgetset for one browser only. 
 		This can reduce the GWT compilation time significantly when debugging. The 

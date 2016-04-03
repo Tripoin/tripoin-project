@@ -15,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Component;
 
-import com.tripoin.core.dto.MenuData;
+import com.tripoin.dto.app.MenuData;
 import com.tripoin.web.common.ABaseHttpRest;
 import com.tripoin.web.common.IStateFullRest;
 

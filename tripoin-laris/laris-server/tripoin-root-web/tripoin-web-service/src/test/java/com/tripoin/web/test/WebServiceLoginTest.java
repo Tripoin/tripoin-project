@@ -12,8 +12,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.MenuData;
-import com.tripoin.core.dto.MenuTransferObject;
+import com.tripoin.dto.app.MenuData;
+import com.tripoin.dto.request.DTORequestLogin;
+import com.tripoin.dto.response.DTOResponseLogin;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -52,9 +53,12 @@ public class WebServiceLoginTest implements ApplicationContextAware {
 		stateFullRestTest.setUsername("081221356663");
 		stateFullRestTest.setPassword("admin");
 		
-		MenuTransferObject menuTransferObject = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_LOGIN_MENU), ParameterConstant.VIEW_TYPE.concat(ParameterConstant.VIEW_WEB), MenuTransferObject.class);		
-		LOGGER.debug("Response Message Menu : ".concat(menuTransferObject.getResponseMsg()));
-		for(MenuData menuData : menuTransferObject.getMenuDatas())
+		DTORequestLogin dtoRequestLogin = new DTORequestLogin();
+		dtoRequestLogin.setViewType(ParameterConstant.VIEW_WEB);
+		
+		DTOResponseLogin dtoResponseLogin = stateFullRestTest.post(commonRest.getUrl(WebServiceConstant.HTTP_LOGIN_MENU), dtoRequestLogin, DTOResponseLogin.class);		
+		LOGGER.debug("Response Message Menu : ".concat(dtoResponseLogin.getResponseMsg()));
+		for(MenuData menuData : dtoResponseLogin.getMenuDatas())
 			LOGGER.debug("Response Data Menu : ".concat(menuData.toString()));
 	}
 

@@ -1,4 +1,4 @@
-package com.tripoin.web.view.home;
+package com.tripoin.web.view.main.admin;
 
 import javax.annotation.PostConstruct;
 
@@ -18,11 +18,11 @@ import com.vaadin.ui.VerticalLayout;
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-@VaadinView(value = HomeView.VIEW_NAME, cached = true)
-public class HomeView extends VerticalLayout implements View {
+@VaadinView(value = HomeAdminView.BEAN_NAME, cached = true)
+public class HomeAdminView extends VerticalLayout implements View {
 
 	private static final long serialVersionUID = 3293749140955725830L;
-	public static final String VIEW_NAME = "";
+	public static final String BEAN_NAME = "";
 	
 	private String versionApplication;
 

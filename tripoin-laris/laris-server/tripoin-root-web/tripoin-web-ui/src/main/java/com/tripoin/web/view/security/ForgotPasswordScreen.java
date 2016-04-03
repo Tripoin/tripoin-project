@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.tripoin.core.common.EResponseCode;
-import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IForgotPasswordService;
 import com.tripoin.web.view.login.LoginScreen;

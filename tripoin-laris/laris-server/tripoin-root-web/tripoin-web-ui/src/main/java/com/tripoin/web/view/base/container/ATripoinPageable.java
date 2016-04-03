@@ -1,6 +1,6 @@
 package com.tripoin.web.view.base.container;
 
-import com.tripoin.core.dto.GeneralPagingTransferObject;
+import com.tripoin.dto.app.GeneralPagingTransferObject;
 import com.tripoin.web.common.EWebUIConstant;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.tripoin.core.dto.GeneralReportTransferObject;
+import com.tripoin.dto.app.GeneralReportTransferObject;
 import com.tripoin.web.service.IGeneralReportService;
 import com.vaadin.server.StreamResource;
 

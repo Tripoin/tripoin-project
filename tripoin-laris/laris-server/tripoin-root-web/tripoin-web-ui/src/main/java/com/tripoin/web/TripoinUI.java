@@ -17,8 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.tripoin.core.common.EResponseCode;
-import com.tripoin.core.dto.GeneralTransferObject;
-import com.tripoin.core.dto.MenuData;
+import com.tripoin.core.common.RoleConstant;
+import com.tripoin.dto.app.GeneralTransferObject;
+import com.tripoin.dto.app.MenuData;
 import com.tripoin.web.authentication.IAccessControl;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.IStateFullRest;
@@ -27,9 +28,12 @@ import com.tripoin.web.service.IForgotPasswordService;
 import com.tripoin.web.service.ILogoutService;
 import com.tripoin.web.servlet.DiscoveryNavigator;
 import com.tripoin.web.view.error.ErrorView;
-import com.tripoin.web.view.home.HomeView;
 import com.tripoin.web.view.login.LoginScreen;
 import com.tripoin.web.view.login.LoginScreen.LoginListener;
+import com.tripoin.web.view.main.admin.HomeAdminView;
+import com.tripoin.web.view.main.customer.HomeCustomerView;
+import com.tripoin.web.view.menu.RootMenuLayout;
+import com.tripoin.web.view.menu.RootMenuLayout.LogoutListener;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -71,6 +75,9 @@ public class TripoinUI extends UI implements ErrorHandler {
     private ApplicationContext applicationContext;
     
     @Autowired
+	private RootMenuLayout rootMenuLayout;
+    
+    @Autowired
     private ErrorView errorView;
     
     @Autowired
@@ -103,7 +110,28 @@ public class TripoinUI extends UI implements ErrorHandler {
     	getSession().setErrorHandler(this);
         Responsive.makeResponsive(this);
         setLocale(Locale.US);
-        initLogin();
+        try{
+        	validateForgotPassword();	        
+	        if (accessControl.isUserSignedIn()){
+	        	removeStyleName(ValoTheme.UI_WITH_MENU);
+	    		rootMenuLayout.removeComponenRootMenuLayout();
+	    		rootMenuLayout.initializedRootMenuLayout();
+	            mainView();
+	        }else{
+	        	initLogin();
+	        }       	
+        }catch(Exception e){
+        	if(HttpStatus.UNAUTHORIZED.equals(stateFullRest.getStatusCode()) ||
+        			HttpStatus.NOT_FOUND.equals(stateFullRest.getStatusCode()) ||
+        			HttpStatus.INTERNAL_SERVER_ERROR.equals(stateFullRest.getStatusCode())){
+    			setContent(null);
+    			close();
+    		}else{
+                StringWriter errors = new StringWriter();
+                e.printStackTrace(new PrintWriter(errors));
+            	error(new com.vaadin.server.ErrorEvent(e));	
+    		}
+        }
     }
 	
 	protected void initLogin() {
@@ -112,12 +140,133 @@ public class TripoinUI extends UI implements ErrorHandler {
 			private static final long serialVersionUID = 5327649431527930757L;
 			@Override
 			public void loginSuccessful() {
-				
+				mainView();
 			}
 		});
     	getPage().setTitle("Tripoin Login");
         setContent(loginScreen);
 	}
+
+    protected void mainView() {
+    	getPage().setTitle("Tripoin Web Application");
+    	setTheme("tripoin-valo");
+    	rootMenuLayout.addLogoutListener(new LogoutListener() {
+			private static final long serialVersionUID = -1972163138035282956L;
+			@Override
+			public void doLogout() {
+				close();
+			}
+		});
+    	if(stateFullRest != null && stateFullRest.getMenuDatas() != null && !stateFullRest.getMenuDatas().isEmpty())
+    		rootMenuLayout.setMenuDatas(stateFullRest.getMenuDatas()); 
+    	rootMenuLayout.constructMenu(); 
+    	if(menuItemsLayout == null)
+    		menuItemsLayout = rootMenuLayout.getMenuItemsLayout();
+    	rootMenuLayout.updateUser(accessControl.getUsername());
+        if (getPage().getWebBrowser().isIE() && getPage().getWebBrowser().getBrowserMajorVersion() == 9) {
+        	rootMenuLayout.setWidth("320px");
+        }
+        rootMenuLayout.setWidth("100%"); 
+        addStyleName(ValoTheme.UI_WITH_MENU);
+		removeStyleName("login-screen");
+		removeStyleName("login-information");
+		removeStyleName("login-form");
+		removeStyleName("centering-layout");
+        setContent(rootMenuLayout);
+    	generateNavigator();
+    }
+    
+    private void generateNavigator(){
+    	if(navigator == null){
+        	viewDisplay = rootMenuLayout.getContentContainer();
+            navigator = new DiscoveryNavigator(this, viewDisplay);
+            navigator.addView("errorView", errorView);
+            navigator.setErrorView(errorView);
+            navigator.addViewChangeListener(new ViewChangeListener() {
+    			private static final long serialVersionUID = -1255484519903571054L;
+    			@Override
+                public boolean beforeViewChange(final ViewChangeEvent event) {
+                    return true;
+                }
+                @Override
+                public void afterViewChange(final ViewChangeEvent event) {
+                    for (final Iterator<com.vaadin.ui.Component> it = menuItemsLayout.iterator(); it.hasNext();) {
+                        it.next().removeStyleName("selected");
+                    }
+                    for (MenuData menuData : stateFullRest.getMenuDatas()) {
+                        if (event.getViewName().equals(menuData.getCode())) {
+                            for (final Iterator<com.vaadin.ui.Component> it = menuItemsLayout.iterator(); it.hasNext();) {
+                                final com.vaadin.ui.Component c = it.next();
+                                if (c.getCaption() != null && c.getCaption().startsWith(menuData.getName())) {
+                                    c.addStyleName("selected");
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    rootMenuLayout.removeStyleName("valo-menu-visible");
+                }
+            });
+    	}
+        final String f = Page.getCurrent().getUriFragment();
+        if (f == null || f.isEmpty() || EWebUIConstant.HOME_VIEW.toString().equals(f) || EWebUIConstant.NAVIGATE_NULL.toString().equals(f)){
+        	Page.getCurrent().setUriFragment(null, true);
+        	if(RoleConstant.ROLE_BUYER.equals(accessControl.getRole()) || 
+        			RoleConstant.ROLE_SELLER.equals(accessControl.getRole()))
+        		navigator.navigateTo(HomeCustomerView.BEAN_NAME);
+        	else
+        		navigator.navigateTo(HomeAdminView.BEAN_NAME);
+        }else if(f.startsWith("!") && rootMenuLayout.getMapDataMenu().containsKey(f.split("/")[0].substring(1))){
+        	navigator.navigateTo(f.split("/")[0].substring(1));
+        }else{
+    		Page.getCurrent().setUriFragment(null, true);
+    		if(RoleConstant.ROLE_BUYER.equals(accessControl.getRole()) || 
+        			RoleConstant.ROLE_SELLER.equals(accessControl.getRole()))
+        		navigator.navigateTo(HomeCustomerView.BEAN_NAME);
+        	else
+        		navigator.navigateTo(HomeAdminView.BEAN_NAME);
+        }
+    }
+    
+    private void validateForgotPassword(){
+    	Notification notificationVerifyEmail = new Notification("");
+		notificationVerifyEmail.setStyleName("system dark small closable");
+		notificationVerifyEmail.setPosition(Position.BOTTOM_CENTER);
+    	try {
+        	if(WebServiceConstant.HTTP_FORGOT_PASSWORD_PATH.equals(getPage().getLocation().getPath())){
+        		String[] rawParameter = getPage().getLocation().getQuery().split("&");
+        		if(rawParameter!=null && rawParameter.length == 2){
+        			if(rawParameter[0].startsWith("user=") && rawParameter[1].startsWith("uuid=")){
+                		String username = rawParameter[0].split("=")[1];
+                		String uuid = rawParameter[1].split("=")[1];
+                		GeneralTransferObject generalTransferObject = forgotPasswordService.verifyForgotPassword(username, uuid);
+            			
+                        notificationVerifyEmail.setDelayMsec(7500);
+                		if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
+                			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_TITLE.toString());
+                			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_SUCCESS_FORGOT_PASSWORD_DESC.toString());
+                		}else if(EResponseCode.RC_URL_EXPIRED.getResponseCode().equals(generalTransferObject.getResponseCode())){			
+                			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+                			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_EXPIRED_FORGOT_PASSWORD_DESC.toString());
+                		}else
+                			throw new Exception();
+        			}else
+        				throw new Exception();
+        		}else
+    				throw new Exception();
+        		notificationVerifyEmail.show(Page.getCurrent());
+        	}
+		} catch (Exception e) {
+			notificationVerifyEmail.setCaption(EWebUIConstant.NOTIF_EMAIL_FAILURE_VERIFY_FORGOT_PASSWORD_TITLE.toString());
+			notificationVerifyEmail.setDescription(EWebUIConstant.NOTIF_LINK_NULL_FORGOT_PASSWORD_DESC.toString());
+			notificationVerifyEmail.show(Page.getCurrent());  
+		}
+    }
+    
+    public void updateImageProfile(String urlImage){
+    	rootMenuLayout.updateImageProfile(urlImage);
+    }
 
 	@Override
 	public void close() {

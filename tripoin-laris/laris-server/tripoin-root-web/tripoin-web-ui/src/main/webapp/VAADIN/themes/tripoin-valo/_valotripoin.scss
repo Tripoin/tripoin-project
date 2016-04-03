@@ -2,6 +2,7 @@ $form-info-width: 80% !default;
 $v-layout-margin-top: round($v-unit-size / 1.5) !default;
 
 @mixin valotripoin {
+  @include v-font(icomoon, '../../../../tripoin-valo/fonts/icomoon');
   @include valo;
   .tripoin-custom-screen {
     width: 100%;

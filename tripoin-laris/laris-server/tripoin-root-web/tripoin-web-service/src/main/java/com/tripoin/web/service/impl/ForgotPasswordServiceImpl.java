@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.web.common.ICommonRest;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;

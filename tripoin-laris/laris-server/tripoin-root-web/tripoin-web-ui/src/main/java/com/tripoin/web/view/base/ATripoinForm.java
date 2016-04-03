@@ -10,13 +10,13 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.tripoin.web.view.base.container.ATripoinNotification;
 import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.GeneralTransferObject;
+import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.util.ui.platform.IdentifierPlatform;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.view.base.container.AFormContainer;
+import com.tripoin.web.view.base.container.ATripoinNotification;
 import com.tripoin.web.view.base.container.TitleContainer;
 import com.tripoin.web.view.exception.TripoinViewException;
 import com.vaadin.navigator.View;
