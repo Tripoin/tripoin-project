@@ -15,8 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.tripoin.core.dto.MenuData;
-
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
@@ -42,20 +40,6 @@ public class Menu extends AGeneralAuditTrail {
     private List<Role> roles;
 
     public Menu() {}
-    
-	public Menu(MenuData menuData) {
-		super(menuData);
-		this.id = menuData.getId();
-		this.code = menuData.getCode();
-		this.name = menuData.getName();
-		if(menuData.getMenuParent() != null)
-			this.menuParent = new Menu(menuData.getMenuParent());
-		this.level = menuData.getLevel();
-		this.order = menuData.getOrder();
-		this.tree = menuData.getTree();
-		this.function = menuData.getFunction();
-		this.viewType = menuData.getViewType();
-	}
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

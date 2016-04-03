@@ -13,8 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.tripoin.core.dto.RoleData;
-
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
@@ -37,14 +35,6 @@ public class Role implements IBaseModel {
 	private List<Menu> menus;
 	
 	public Role(){}
-
-	public Role(RoleData roleData) {
-		if(roleData != null){
-			this.setCode(roleData.getCode());
-			this.setStatus(roleData.getStatus());
-			this.setRemarks(roleData.getRemarks());
-		}
-	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

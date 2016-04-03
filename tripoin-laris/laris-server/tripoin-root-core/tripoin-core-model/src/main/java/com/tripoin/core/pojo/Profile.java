@@ -2,7 +2,6 @@ package com.tripoin.core.pojo;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.ParseException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.ProfileData;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -51,34 +47,6 @@ public class Profile extends AGeneralAuditTrail {
     private Country country;
     
     public Profile() {}
-    
-    public Profile(ProfileData profileData) throws ParseException {
-    	super(profileData);
-    	if(profileData != null){
-    		this.email = profileData.getEmail();
-    		this.name = profileData.getName();
-    		this.gender = profileData.getGender();
-    		this.birthplace = profileData.getBirthplace();
-    		try {
-				this.birthdate = new Date(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getBirthdate()).getTime());
-			} catch (ParseException e) {
-				this.birthdate = new Date(new java.util.Date().getTime());
-			}
-    		this.address = profileData.getAddress();
-    		this.telp = profileData.getTelp();
-    		this.phone = profileData.getPhone();
-    		this.photo = profileData.getPhoto();
-    		this.bio = profileData.getBio();
-    		this.resourcesUUID = profileData.getResourcesUUID();
-    		this.forgotUUID = profileData.getForgotUUID();
-    		try {
-    			if(profileData.getForgotExpired() != null)
-    				this.forgotExpired = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(profileData.getForgotExpired()).getTime());
-			} catch (ParseException e) {
-				this.forgotExpired = new Timestamp(new java.util.Date().getTime());
-			}
-    	}
-    }
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

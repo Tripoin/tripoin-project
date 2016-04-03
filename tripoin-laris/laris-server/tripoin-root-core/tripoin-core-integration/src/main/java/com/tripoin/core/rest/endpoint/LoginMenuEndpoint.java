@@ -26,7 +26,7 @@ import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.service.IGenericManagerJpa;
 import com.tripoin.core.service.soap.handler.WSEndpointFaultException;
-import com.tripoin.dto.app.DTOMenu;
+import com.tripoin.dto.app.MenuData;
 import com.tripoin.dto.app.RoleData;
 import com.tripoin.dto.app.UserData;
 import com.tripoin.dto.request.DTORequestLogin;
@@ -78,7 +78,7 @@ public class LoginMenuEndpoint extends XReturnStatus {
 				User user = userList.get(0);
 				UserData userData = new UserData();
 				userData.setUsername(user.getUsername());
-				userData.setAuth(user.getUsername());
+				userData.setAuth(user.getAuth());
 				userData.setEnabled(user.getEnabled());
 				if(user.getExpiredDate() != null)
 					userData.setExpiredDate(ParameterConstant.FORMAT_DEFAULT.format(user.getExpiredDate()));
@@ -98,12 +98,12 @@ public class LoginMenuEndpoint extends XReturnStatus {
 					+ "AND (mn.viewType = ? OR mn.viewType = ?) ORDER BY mn.tree ASC", 
 					new Object[] { this.currentRole, this.viewType, ParameterConstant.VIEW_WEB_MOBILE }, null);
 			if (menuList != null) {
-				List<DTOMenu> dtoMenus = new ArrayList<DTOMenu>();
+				List<MenuData> menuDatas = new ArrayList<MenuData>();
 				for (Menu menu : menuList) {
-					dtoMenus.add(getMenuData(menu));
+					menuDatas.add(getMenuData(menu));
 				}
-				dtoResponseLogin.setDtoMenus(dtoMenus);
-				dtoMenus = null;
+				dtoResponseLogin.setMenuDatas(menuDatas);
+				menuDatas = null;
 			}
 			dtoResponseLogin.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 			dtoResponseLogin.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
@@ -129,8 +129,8 @@ public class LoginMenuEndpoint extends XReturnStatus {
 		return message;	
 	}
 
-	public DTOMenu getMenuData(Menu menu){
-		DTOMenu menuData = new DTOMenu();
+	public MenuData getMenuData(Menu menu){
+		MenuData menuData = new MenuData();
 		menuData.setCode(menu.getCode());
 		menuData.setLevel(menu.getLevel());
 		menuData.setOrder(menu.getOrder());

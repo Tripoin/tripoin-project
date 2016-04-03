@@ -17,11 +17,11 @@ import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
-import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.pojo.APIType;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.rest.template.IStateFullRest;
 import com.tripoin.core.service.IGenericManagerJpa;
+import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.util.api.instagram.dto.TokenInstagramTransferObject;
 
 /**

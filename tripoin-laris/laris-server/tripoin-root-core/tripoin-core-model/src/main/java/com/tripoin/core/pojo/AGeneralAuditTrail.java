@@ -1,14 +1,10 @@
 package com.tripoin.core.pojo;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
-import com.tripoin.core.common.ParameterConstant;
-import com.tripoin.core.dto.AGeneralAuditTrailData;
 
 /**
  * @author <a href="ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -32,30 +28,6 @@ public abstract class AGeneralAuditTrail implements IBaseModel {
 	private String modifiedPlatform;
 	
 	public AGeneralAuditTrail() {}
-	
-	public AGeneralAuditTrail(AGeneralAuditTrailData aGeneralAuditTrailData) {
-		super();
-		if(aGeneralAuditTrailData != null){
-			this.status = aGeneralAuditTrailData.getStatus();
-			this.remarks = aGeneralAuditTrailData.getRemarks();
-			this.createdBy = aGeneralAuditTrailData.getCreatedBy();
-			this.createdIP = aGeneralAuditTrailData.getCreatedIP();
-			try {
-				this.createdTime = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(aGeneralAuditTrailData.getCreatedTime()).getTime());
-			} catch (ParseException e) {
-				this.createdTime = new Timestamp(new java.util.Date().getTime());
-			}
-			this.createdPlatform = aGeneralAuditTrailData.getCreatedPlatform();
-			this.modifiedBy = aGeneralAuditTrailData.getModifiedBy();
-			this.modifiedIP = aGeneralAuditTrailData.getModifiedIP();
-			try {
-				this.modifiedTime = new Timestamp(ParameterConstant.FORMAT_DEFAULT.parse(aGeneralAuditTrailData.getModifiedTime()).getTime());
-			} catch (ParseException e) {
-				this.modifiedTime = new Timestamp(new Date().getTime());
-			}
-			this.modifiedPlatform = aGeneralAuditTrailData.getModifiedPlatform();
-		}
-	}
 
 
 	@Column(name="status")

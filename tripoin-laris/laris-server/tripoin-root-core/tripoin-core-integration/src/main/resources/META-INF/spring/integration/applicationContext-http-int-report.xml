@@ -20,7 +20,7 @@
 		reply-channel="responseChannelGeneralSelectedReport"
 		supported-methods="POST"
 		path="/wscontext/report/select, /wscontext/report/select/{report}"
-		request-payload-type="com.tripoin.core.dto.GeneralReportTransferObject">
+		request-payload-type="com.tripoin.dto.app.GeneralTransferObject">
 		<int-http:request-mapping consumes="application/json" produces="application/xhtml+xml,text/html,*/*"/>		
 	</int-http:inbound-gateway>
 	<int:router input-channel="routeChannelGeneralSelectedReport" expression="headers.http_requestMethod">

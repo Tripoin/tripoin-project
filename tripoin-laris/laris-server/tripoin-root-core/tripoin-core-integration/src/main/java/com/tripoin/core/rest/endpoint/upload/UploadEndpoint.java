@@ -17,8 +17,8 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
+import com.tripoin.dto.app.GeneralTransferObject;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>

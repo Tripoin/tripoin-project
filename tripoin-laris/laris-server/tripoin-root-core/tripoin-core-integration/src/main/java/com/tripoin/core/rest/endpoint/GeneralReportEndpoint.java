@@ -26,7 +26,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
-import com.tripoin.core.dto.GeneralReportTransferObject;
+import com.tripoin.dto.app.GeneralReportTransferObject;
 import com.tripoin.util.report.ReportGenerator;
 import com.tripoin.util.report.common.EReportUtilConstant;
 

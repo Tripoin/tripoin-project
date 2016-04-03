@@ -21,7 +21,6 @@ import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.ValueArgument;
-import com.tripoin.core.dto.GeneralTransferObject;
 import com.tripoin.core.dto.exception.WSEndpointFault;
 import com.tripoin.core.pojo.Profile;
 import com.tripoin.core.pojo.SystemParameter;
@@ -30,6 +29,7 @@ import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.IGenericManagerJpa;
 import com.tripoin.core.service.soap.handler.WSEndpointFaultException;
 import com.tripoin.core.service.util.ISystemParameterService;
+import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.util.mail.ICoreMailSender;
 
 /**

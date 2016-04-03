@@ -10,10 +10,10 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.PageArgument;
-import com.tripoin.core.dto.GeneralPagingTransferObject;
 import com.tripoin.core.pojo.VersionControlSystemTable;
 import com.tripoin.core.rest.endpoint.XReturnStatus;
 import com.tripoin.core.service.util.IVersionControlSystemTableService;
+import com.tripoin.dto.app.GeneralPagingTransferObject;
 
 /**
 * @author <a href="ridla.fadilah@gmail.com">Ridla Fadilah</a>
