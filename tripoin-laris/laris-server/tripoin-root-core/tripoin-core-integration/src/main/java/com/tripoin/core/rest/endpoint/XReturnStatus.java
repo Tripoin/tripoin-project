@@ -13,5 +13,10 @@ public class XReturnStatus {
 		responseHeaderMap.put("Return-Status", generalTransferObject.getResponseCode());
 		responseHeaderMap.put("Return-Status-Msg", generalTransferObject.getResponseDesc());
 	}
+
+	public void setReturnStatusAndMessage(com.tripoin.dto.app.GeneralTransferObject generalTransferObject, Map<String, Object> responseHeaderMap){		
+		responseHeaderMap.put("Return-Status", generalTransferObject.getResponseCode());
+		responseHeaderMap.put("Return-Status-Msg", generalTransferObject.getResponseDesc());
+	}
 	
 }

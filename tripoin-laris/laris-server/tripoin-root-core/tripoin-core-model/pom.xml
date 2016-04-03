@@ -45,6 +45,11 @@
 	</build>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.tripoin.core</groupId>
+			<version>1.0.0</version>
+			<artifactId>tripoin-dto</artifactId>
+		</dependency>
 		<!-- refer database -->
 		<!-- <dependency> -->
 		<!-- <groupId>com.oracle</groupId> -->

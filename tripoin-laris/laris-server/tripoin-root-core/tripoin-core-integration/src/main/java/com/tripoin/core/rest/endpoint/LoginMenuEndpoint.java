@@ -22,14 +22,15 @@ import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
-import com.tripoin.core.dto.MenuData;
-import com.tripoin.core.dto.UserData;
-import com.tripoin.core.dto.UserMenuTransferObject;
-import com.tripoin.core.dto.exception.WSEndpointFault;
 import com.tripoin.core.pojo.Menu;
 import com.tripoin.core.pojo.User;
 import com.tripoin.core.service.IGenericManagerJpa;
 import com.tripoin.core.service.soap.handler.WSEndpointFaultException;
+import com.tripoin.dto.app.DTOMenu;
+import com.tripoin.dto.app.RoleData;
+import com.tripoin.dto.app.UserData;
+import com.tripoin.dto.request.DTORequestLogin;
+import com.tripoin.dto.response.DTOResponseLogin;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
@@ -47,8 +48,6 @@ public class LoginMenuEndpoint extends XReturnStatus {
 	private String currentRole;
 	
 	private String viewType = ParameterConstant.VIEW_WEB_MOBILE;
-	
-	private WSEndpointFault wsEndpointFault = new WSEndpointFault();
 
 	/**
 	 * <b>Sample Code:</b><br>
@@ -57,8 +56,8 @@ public class LoginMenuEndpoint extends XReturnStatus {
 	 * @return
 	 */
 	@Secured({RoleConstant.ROLE_BUYER, RoleConstant.ROLE_SELLER, RoleConstant.ROLE_GATEWAY, RoleConstant.ROLE_ADMIN})
-	public Message<UserMenuTransferObject> getUserMenu(Message<?> inMessage){
-		UserMenuTransferObject userMenuTransferObject = new UserMenuTransferObject();
+	public Message<DTOResponseLogin> getUserMenu(Message<DTORequestLogin> inMessage){
+		DTOResponseLogin dtoResponseLogin = new DTOResponseLogin();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -69,57 +68,78 @@ public class LoginMenuEndpoint extends XReturnStatus {
 		authentication = null;
 		try {
 			if(inMessage.getPayload() != null){
-				if(((String)inMessage.getPayload()).startsWith(ParameterConstant.VIEW_TYPE))
-					viewType = ((String)inMessage.getPayload()).replaceAll(ParameterConstant.VIEW_TYPE, "");
-				else{
-    				wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString());
-    				throw new WSEndpointFaultException(EResponseCode.RC_FAILURE.getResponseCode(), wsEndpointFault);					
-				}
+				viewType = inMessage.getPayload().getViewType();
 			}			
 			FilterArgument[] filterArguments = new FilterArgument[] { 
 					new FilterArgument("username", ECommonOperator.EQUALS) 
 			};
 			List<User> userList = iGenericManagerJpa.loadObjectsFilterArgument(User.class, filterArguments, new Object[] { this.currentUserName }, null, null);
 			if (userList != null) {
-				UserData userData = new UserData(userList.get(0));
-				List<UserData> userDatas = new ArrayList<UserData>();
-				userDatas.add(userData);
-				userMenuTransferObject.setUserDatas(userDatas);
+				User user = userList.get(0);
+				UserData userData = new UserData();
+				userData.setUsername(user.getUsername());
+				userData.setAuth(user.getUsername());
+				userData.setEnabled(user.getEnabled());
+				if(user.getExpiredDate() != null)
+					userData.setExpiredDate(ParameterConstant.FORMAT_DEFAULT.format(user.getExpiredDate()));
+				userData.setNonLocked(user.getNonLocked());
+				userData.setStatus(user.getStatus());
+				userData.setRemarks(user.getRemarks());
+				RoleData roleData = new RoleData();
+				roleData.setCode(user.getRole().getCode());
+				roleData.setStatus(user.getRole().getStatus());
+				roleData.setRemarks(user.getRole().getRemarks());
+				userData.setRoleData(roleData);
+				dtoResponseLogin.setUserData(userData);
 				userData = null;
-				userDatas = null;
+				roleData = null;
 			}
-			List<Menu> menuList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? AND (mn.viewType = ? OR mn.viewType = ?) ORDER BY mn.tree ASC", new Object[] { this.currentRole, this.viewType, ParameterConstant.VIEW_WEB_MOBILE }, null);
+			List<Menu> menuList = iGenericManagerJpa.loadObjectsJQLStatement("SELECT mn FROM Menu mn INNER JOIN mn.roles role WHERE role.code = ? "
+					+ "AND (mn.viewType = ? OR mn.viewType = ?) ORDER BY mn.tree ASC", 
+					new Object[] { this.currentRole, this.viewType, ParameterConstant.VIEW_WEB_MOBILE }, null);
 			if (menuList != null) {
-				List<MenuData> menuDatas = new ArrayList<MenuData>();
+				List<DTOMenu> dtoMenus = new ArrayList<DTOMenu>();
 				for (Menu menu : menuList) {
-					MenuData menuData = new MenuData(menu);
-					menuDatas.add(menuData);
+					dtoMenus.add(getMenuData(menu));
 				}
-				userMenuTransferObject.setMenuDatas(menuDatas);
-				menuDatas = null;
+				dtoResponseLogin.setDtoMenus(dtoMenus);
+				dtoMenus = null;
 			}
-			userMenuTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
-			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
-			userMenuTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
+			dtoResponseLogin.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
+			dtoResponseLogin.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
+			dtoResponseLogin.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
 			userList = null;
 			filterArguments = null;
 			menuList = null;
 		} catch (WSEndpointFaultException e) {	
-			userMenuTransferObject.setResponseCode(e.getMessage());
-			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			userMenuTransferObject.setResponseDesc(e.getFaultInfo().getMessage());
+			dtoResponseLogin.setResponseCode(e.getMessage());
+			dtoResponseLogin.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			dtoResponseLogin.setResponseDesc(e.getFaultInfo().getMessage());
         }  catch (Exception e) {
 			LOGGER.error("Login Menu System Error : "+e.getMessage(), e);
-			userMenuTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
-			userMenuTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
-			userMenuTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getMessage());
+			dtoResponseLogin.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
+			dtoResponseLogin.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
+			dtoResponseLogin.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getMessage());
 		}
-		setReturnStatusAndMessage(userMenuTransferObject, responseHeaderMap);
-		Message<UserMenuTransferObject> message = new GenericMessage<UserMenuTransferObject>(userMenuTransferObject, responseHeaderMap);
-		userMenuTransferObject = null;
+		setReturnStatusAndMessage(dtoResponseLogin, responseHeaderMap);
+		Message<DTOResponseLogin> message = new GenericMessage<DTOResponseLogin>(dtoResponseLogin, responseHeaderMap);
+		dtoResponseLogin = null;
 		this.currentUserName = null;
 		this.currentRole = null;
 		return message;	
+	}
+
+	public DTOMenu getMenuData(Menu menu){
+		DTOMenu menuData = new DTOMenu();
+		menuData.setCode(menu.getCode());
+		menuData.setLevel(menu.getLevel());
+		menuData.setOrder(menu.getOrder());
+		menuData.setTree(menu.getTree());
+		menuData.setViewType(menu.getViewType());
+		menuData.setName(menu.getName());
+		if(menu.getMenuParent() != null)
+			menuData.setDtoMenu(getMenuData(menu.getMenuParent()));
+		return menuData;
 	}
 	
 }

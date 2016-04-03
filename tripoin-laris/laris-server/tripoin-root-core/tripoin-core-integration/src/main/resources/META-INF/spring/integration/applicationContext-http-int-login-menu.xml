@@ -20,7 +20,7 @@
 		reply-channel="responseChannelLoginMenu"
 		supported-methods="POST" 
 		path="/wscontext/login-menu, /wscontext/login-menu/{viewType}"
-		request-payload-type="java.lang.String">
+		request-payload-type="com.tripoin.dto.request.DTORequestLogin">
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>	
 	<int:router input-channel="routeChannelLoginMenu" expression="headers.http_requestMethod">
