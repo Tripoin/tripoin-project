@@ -3,6 +3,7 @@ package com.tripoin.dto.response;
 import com.google.gson.annotations.SerializedName;
 import com.tripoin.dto.app.DTOMenu;
 import com.tripoin.dto.app.GeneralTransferObject;
+import com.tripoin.dto.app.UserData;
 
 /**
  * Created on 4/3/2016 : 2:40 PM.
@@ -13,6 +14,9 @@ public class DTOResponseLogin extends GeneralTransferObject{
 
     @SerializedName("menu")
     DTOMenu menu;
+
+    @SerializedName("userData")
+    UserData userData;
 
     public DTOMenu getMenu() {
         return menu;
