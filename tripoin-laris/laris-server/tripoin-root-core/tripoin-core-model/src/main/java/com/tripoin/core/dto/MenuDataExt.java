@@ -16,6 +16,7 @@ public class MenuDataExt extends MenuData {
 		setOrder(menu.getOrder());
 		setTree(menu.getTree());
 		setViewType(menu.getViewType());
+		setFunction(menu.getFunction());
 		setName(menu.getName());
 		if(menu.getMenuParent() != null)
 			setDtoMenu(new MenuDataExt(menu.getMenuParent()));
