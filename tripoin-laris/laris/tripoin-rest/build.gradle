@@ -21,18 +21,13 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     /*OKHTTP*/
     compile 'com.squareup.okhttp:okhttp:2.4.0'
-    /*REST CLIENT*/
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-
-
     compile project(':tripoin-common')
     compile project(':tripoin-dao')
-
     /*Jackson*/
     /*compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.2'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'*/
+            compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'*/
     apt "org.parceler:parceler:1.0.4"
+    compile project(':tripoin-dto')
 }

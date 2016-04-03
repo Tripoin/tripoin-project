@@ -1,4 +1,4 @@
-package com.tripoin.rest.dto.app;
+package com.tripoin.dto.app;
 
 import org.parceler.Parcel;
 
