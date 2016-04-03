@@ -22,10 +22,6 @@
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
-				<filtering>true</filtering>
-		        <excludes>
-		          <exclude>**/*Sample.java</exclude>
-		        </excludes>
 			</resource>
 		</resources>
 		<defaultGoal>install</defaultGoal>
