@@ -1,8 +1,8 @@
 $form-info-width: 80% !default;
 $v-layout-margin-top: round($v-unit-size / 1.5) !default;
+@import "../valo/valo";
 
 @mixin valotripoin {
-  @include v-font(icomoon, '../../../../tripoin-valo/fonts/icomoon');
   @include valo;
   .tripoin-custom-screen {
     width: 100%;
@@ -220,4 +220,28 @@ $v-layout-margin-top: round($v-unit-size / 1.5) !default;
     }
   }
   
+  
+}
+ //@include v-font(icomoon, '../../../../tripoin-valo/fonts/icomoon');
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('fonts/icomoon.eot?qx3rjo');
+    src: url('fonts/icomoon.eot?qx3rjo#iefix') format('embedded-opentype'),
+         url('fonts/icomoon.woff?qx3rjo') format('woff'),
+         url('fonts/icomoon.ttf?qx3rjo') format('truetype'),
+         url('fonts/icomoon.svg?qx3rjo#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.icomoon {
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }

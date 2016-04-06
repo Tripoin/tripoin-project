@@ -7,20 +7,22 @@ import com.vaadin.server.FontIcon;
 */
 public enum IcoMoon implements FontIcon {
 
-    PAYMENT_CART(0xe900),
-    NOTIFICATION(0xe901),
-    ORDER(0xe902),
-    HOME(0xe903),
-    HISTORY_TRANSACTION(0xe904);
+    PAYMENT_CART(0xe900, "PaymentCartWeb"),
+    NOTIFICATION(0xe901, "NotificationWeb"),
+    ORDER(0xe902, "OrderWeb"),
+    HOME(0xe903, "HomeWeb"),
+    HISTORY_TRANSACTION(0xe904, "HistoryTransactionWeb");
 
     private int codepoint;
     private String fontFamily = "icomoon";
+    private String icon;
 
-    IcoMoon(int codepoint) {
+    IcoMoon(int codepoint, String icon) {
         this.codepoint = codepoint;
+        this.icon = icon;
     }
 
-    @Override
+	@Override
     public String getFontFamily() {
         return fontFamily;
     }
@@ -32,7 +34,8 @@ public enum IcoMoon implements FontIcon {
 
     @Override
     public String getHtml() {
-        return "<span class=\"v-icon icomoon\">&#x"
+        return "<span class=\"v-icon v-icon-" + icon
+                + "\" style=\"font-family: " + fontFamily + ";\">&#x"
                 + Integer.toHexString(codepoint) + ";</span>";
     }
 

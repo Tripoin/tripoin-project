@@ -223,6 +223,14 @@ public class RootMenuLayout extends HorizontalLayout implements View {
 	            b.setPrimaryStyleName("valo-menu-item");
 	            if("home".equals(menuData.getCode())){
 	            	b.setIcon(IcoMoon.HOME);
+	            }else if("paymentCart".equals(menuData.getCode())){
+	            	b.setIcon(IcoMoon.PAYMENT_CART);
+	            }else if("order".equals(menuData.getCode())){
+	            	b.setIcon(IcoMoon.ORDER);
+	            }else if("historyTransaction".equals(menuData.getCode())){
+	            	b.setIcon(IcoMoon.HISTORY_TRANSACTION);
+	            }else if("notification".equals(menuData.getCode())){
+	            	b.setIcon(IcoMoon.NOTIFICATION);
 	            }else
 	            	b.setIcon(baseIcon.get());
 	            menuItemsLayout.addComponent(b);				

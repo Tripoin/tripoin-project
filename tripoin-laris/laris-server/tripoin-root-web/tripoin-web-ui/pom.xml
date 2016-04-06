@@ -465,10 +465,10 @@
 						<configuration>
 							<filesets>
 								<fileset>
-									<directory>src/main/webapp/VAADIN/widgetsets</directory>
+									<directory>${basedir}/src/main/webapp/VAADIN/widgetsets</directory>
 								</fileset>
 								<fileset>
-									<directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
+									<directory>${basedir}/src/main/webapp/VAADIN/gwt-unitCache</directory>
 								</fileset>
 							</filesets>
 						</configuration>
@@ -481,6 +481,7 @@
 							<!-- <runTarget>mobilemail</runTarget> -->
 							<!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This 
 								way compatible with Vaadin eclipse plugin. -->
+							<persistentunitcachedir>${basedir}/target/tmp/gwt-unitCache</persistentunitcachedir>
 							<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets
 							</webappDirectory>
 							<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets
@@ -504,10 +505,10 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>resources</goal>
+									<goal>update-widgetset</goal>
 									<goal>compile-theme</goal>
 									<goal>compile</goal>
-									<!-- <goal>update-theme</goal>
-									<goal>update-widgetset</goal> -->
+									<!-- <goal>update-theme</goal> -->
 								</goals>
 							</execution>
 						</executions>
@@ -535,10 +536,10 @@
 												</versionRange>
 												<goals>
 													<goal>resources</goal>
-													<goal>compile-theme</goal>
+													<goal>update-widgetset</goal>
 													<goal>compile</goal>
-													<!-- <goal>update-theme</goal>
-													<goal>update-widgetset</goal> -->
+													<goal>update-theme</goal>
+													<goal>compile-theme</goal>
 												</goals>
 											</pluginExecutionFilter>
 											<action>
@@ -569,6 +570,17 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
+		        	<packagingExcludes>
+						**/VAADIN/gwt-unitCache/**,
+						**/VAADIN/widgetsets/WEB-INF/**,
+						**/WEB-INF/lib/servlet-api-*.jar,
+						**/WEB-INF/lib/vaadin-client-*.jar,
+						**/WEB-INF/lib/jetty-*.jar,
+						**/WEB-INF/lib/ant-*.jar,
+						**/WEB-INF/classes/gwt-unitCache/**,
+						**/WEB-INF/classes/themes/**,
+						**/WEB-INF/classes/widgetsets/**
+					</packagingExcludes>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>

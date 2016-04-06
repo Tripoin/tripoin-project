@@ -30,6 +30,6 @@
     <inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
     
     <!-- GWTWidgetSetGeolocation -->
-    <inherits name="com.tripoin.util.ui.geo.GeolocatorWidgetSet" />    
+        
 
 </module>
