@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="96px" height="63px" viewBox="0 0 96 63" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.2 (15855) - http://www.bohemiancoding.com/sketch -->
+    <title>Default Image</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Home-List" sketch:type="MSArtboardGroup" transform="translate(-64.000000, -907.000000)" fill="#D5D5D5">
+            <g id="List-Product" sketch:type="MSLayerGroup" transform="translate(-2.000000, 358.000000)">
+                <path d="M66,611.545455 L85.8168816,579.251721 L99.8813939,591.772867 L126.968603,560 L161.348522,611.024588 L66,611.545455 Z M96.8269657,563.579545 C100.786329,563.579545 103.996027,560.374311 103.996027,556.420455 C103.996027,552.466598 100.786329,549.261364 96.8269657,549.261364 C92.867602,549.261364 89.6579039,552.466598 89.6579039,556.420455 C89.6579039,560.374311 92.867602,563.579545 96.8269657,563.579545 Z" id="Default-Image" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>

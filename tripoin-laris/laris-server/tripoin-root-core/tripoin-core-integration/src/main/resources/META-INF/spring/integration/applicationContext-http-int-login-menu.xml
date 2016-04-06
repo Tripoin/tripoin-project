@@ -4,28 +4,48 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:int="http://www.springframework.org/schema/integration"
 	xmlns:int-http="http://www.springframework.org/schema/integration/http"
-	xmlns:oxm="http://www.springframework.org/schema/oxm" 
 	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
-		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
-        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.2.xsd">
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd">
 	
-	<int:channel id="responseChannelLoginMenu"/>
-	<int:channel id="requestChannelLoginMenu"/>
-	<int:channel id="routeChannelLoginMenu"/>
+	<int:channel id="responseChannelLoginMenu">
+		<int:interceptors>
+			<int:wire-tap channel="logResponseChannelLoginMenu" />
+		</int:interceptors>
+	</int:channel>
+	<int:logging-channel-adapter id="logResponseChannelLoginMenu"
+		level="INFO" logger-name="responseChannelLoginMenu" log-full-message="true" />
+	<int:channel id="requestChannelLoginMenu">
+		<int:interceptors>
+			<int:wire-tap channel="logRequestChannelLoginMenu" />
+		</int:interceptors>
+	</int:channel>
+	<int:logging-channel-adapter id="logRequestChannelLoginMenu"
+		level="INFO" logger-name="requestChannelLoginMenu" log-full-message="true" />
+	<int:channel id="routeChannelLoginMenu">
+		<int:interceptors>
+			<int:wire-tap channel="logRouteChannelLoginMenu" />
+		</int:interceptors>
+	</int:channel>
+	<int:logging-channel-adapter id="logRouteChannelLoginMenu"
+		level="INFO" logger-name="routeChannelLoginMenu" log-full-message="true" />
 	
 	<int-http:inbound-gateway request-channel="requestChannelLoginMenu"
 		reply-channel="responseChannelLoginMenu"
 		supported-methods="POST" 
-		path="/wscontext/login-menu, /wscontext/login-menu/{viewType}"
+		path="/wscontext/login-menu"
 		request-payload-type="com.tripoin.dto.request.DTORequestLogin">
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>	
 	<int:router input-channel="routeChannelLoginMenu" expression="headers.http_requestMethod">
 	    <int:mapping value="POST" channel="requestChannelLoginMenu"/>
-	</int:router>	
-	<int:service-activator ref="loginMenuEndpoint" method="getUserMenu" input-channel="requestChannelLoginMenu" output-channel="responseChannelLoginMenu"/>
-		
+	</int:router>
+	<int:service-activator ref="loginMenuEndpoint" method="getUserMenu" 
+		input-channel="requestChannelLoginMenu"
+		output-channel="responseChannelLoginMenu"
+		requires-reply="true"  
+		send-timeout="30000"/>
+	
 </beans>
