@@ -16,9 +16,9 @@
 	<security:global-method-security secured-annotations="enabled" />
 	
 	<security:http auto-config="true" create-session="always">
-        <security:intercept-url pattern="/!#login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <security:form-login login-page="/!#login" authentication-failure-url="/!#login?error=true"/>
-        <security:intercept-url pattern="/**" access="ROLE_SALESMAN, ROLE_AREASALESMANAGER, ROLE_NATIONALSALESMANAGER, ROLE_ADMIN, IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/laris/!#login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:form-login login-page="/laris/!#login" authentication-failure-url="/laris/!#login?error=true"/>
+        <security:intercept-url pattern="/laris/**" access="ROLE_SALESMAN, ROLE_AREASALESMANAGER, ROLE_NATIONALSALESMANAGER, ROLE_ADMIN, IS_AUTHENTICATED_ANONYMOUSLY"/>
     </security:http>
     
 	<security:authentication-manager alias="authenticationManager">
