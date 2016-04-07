@@ -34,10 +34,6 @@ public class ActivityLogin extends ABaseActivity {
 
     private ALoginHandler loginHandler;
 
-    @Override
-    public void handlingStatusBar() {
-        super.handlingStatusBar();
-    }
 
     @Override
     public void initWidget() {

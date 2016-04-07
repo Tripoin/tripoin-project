@@ -30,8 +30,8 @@ public interface ApplicationConstant {
      * </p>
      */
     interface Rest {
-        String INIT_HOST                = "10.10.128.34";
-        int INIT_PORT                   = 8280;
+        String INIT_HOST                = "172.20.10.6";
+        int INIT_PORT                   = 80;
 
         /*String INIT_HOST = "127.0.0.1";
         int INIT_PORT = 8081;*/
@@ -63,7 +63,8 @@ public interface ApplicationConstant {
             String BASE_TICKETING_INQUIRY = "/rqid={rqid}&app={app}&action={action}&book_code={book_code}";
             String CHECK_TICKET         = BASE_TICKETING_INQUIRY;
             String GET_TICKET           = BASE_TICKETING_INQUIRY;
-            String DUMMY_IMAGE          = "http://javatechig.com/?json=get_recent_posts&count=45";
+            //String DUMMY_IMAGE          = "http://javatechig.com/?json=get_recent_posts&count=45";
+            String DUMMY_IMAGE          = "http://172.20.10.6/dmt-rest/public/api/v1/imageUser/select/all";
         }
 
         /**

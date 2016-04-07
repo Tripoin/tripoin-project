@@ -51,6 +51,12 @@ public class FragmentHome extends ABaseFragment implements SearchView.OnQueryTex
     @Bind(R.id.searchView)
     SearchView searchView;
 
+    @Bind(R.id.gridImageHome)
+    GridView gridImageSearch;
+
+    @Bind(R.id.progressBarFragmentSearchImageLoader)
+    ProgressBar progressBarImageLoader;
+
     @BindColor(R.color.base_color)
     int baseColor;
 
@@ -62,12 +68,6 @@ public class FragmentHome extends ABaseFragment implements SearchView.OnQueryTex
 
     @BindString(R.string.internet_available)
     String internetAvailable;
-
-    @Bind(R.id.gridImageHome)
-    GridView gridImageSearch;
-
-    @Bind(R.id.progressBarFragmentSearchImageLoader)
-    ProgressBar progressBarImageLoader;
 
     NetworkConnectivity networkConnectivity;
 
@@ -95,7 +95,7 @@ public class FragmentHome extends ABaseFragment implements SearchView.OnQueryTex
         }else{
             Log.w(ApplicationConstant.LogTag.TRIPOIN_WARNING, internetAvailable);
         }
-        //initUserImageGallery();
+        initUserImageGallery();
     }
 
     @Override

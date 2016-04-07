@@ -1,1 +1,1 @@
-include ':app', ':tripoin-common', ':tripoin-component', ':tripoin-dao', ':tripoin-model', ':tripoin-rest', ':tripoin-service', ':tripoin-util', ':tripoin-phone-network'
+include ':app', ':tripoin-common', ':tripoin-component', ':tripoin-dao', ':tripoin-model', ':tripoin-rest', ':tripoin-service', ':tripoin-util', ':tripoin-phone-network', ':tripoin-dto'

@@ -1,7 +1,7 @@
 package com.tripoin.rest.endpoints;
 
 import com.tripoin.common.constant.ApplicationConstant.Rest.EndPoints;
-import com.tripoin.rest.dto.request.login.DTORequestLogin;
+import com.tripoin.rest.dto.request.login.DTOParcelRequestLogin;
 import com.tripoin.rest.dto.response.DTOBaseResponse;
 
 import retrofit.Callback;
@@ -19,7 +19,7 @@ public interface EPLogin {
 
     @POST(EndPoints.LOGIN)
     void login(
-            @Body DTORequestLogin p_DtoRequestLogin,
+            @Body DTOParcelRequestLogin p_DtoRequestLogin,
             Callback<DTOBaseResponse> p_DtoBaseResponseCallback
     );
 }

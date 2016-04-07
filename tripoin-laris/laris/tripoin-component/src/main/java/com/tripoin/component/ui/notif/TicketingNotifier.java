@@ -44,7 +44,7 @@ public class TicketingNotifier {
             Intent notificationIntent = new Intent(context, contextClass);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
-            notification.setLatestEventInfo(context, title, msg, pendingIntent);
+            //notification.setLatestEventInfo(context, title, msg, pendingIntent);
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
             notification.defaults |= Notification.DEFAULT_SOUND;

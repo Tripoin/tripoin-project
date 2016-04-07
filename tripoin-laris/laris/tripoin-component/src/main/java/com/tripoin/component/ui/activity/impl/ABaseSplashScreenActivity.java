@@ -16,7 +16,7 @@ import com.tripoin.component.ui.activity.ISplashScreen;
 import com.tripoin.component.ui.activity.base.ABaseActivity;
 import com.tripoin.dao.impl.DAOUser;
 import com.tripoin.model.ModelUser;
-import com.tripoin.rest.dto.app.DTOUserLogin;
+import com.tripoin.rest.dto.app.DTOParcelUserLogin;
 
 import org.parceler.Parcels;
 
@@ -106,7 +106,7 @@ public abstract class ABaseSplashScreenActivity<LOGIN_ACTIVITY_CLASS, HOME_ACTIV
                 modelUser = (ModelUser) daoUser.getAllData().get(0);
                 if(modelUser.getLoginStatus() == GeneralConstant.BinaryValue.ONE){
                     Log.i(ApplicationConstant.LogTag.TRIPOIN_INFO, getResources().getString(R.string.go_to_home));
-                    DTOUserLogin DTOUserLogin = new DTOUserLogin();
+                    DTOParcelUserLogin DTOUserLogin = new DTOParcelUserLogin();
                     DTOUserLogin.setUserName(modelUser.getUserName());
                     DTOUserLogin.setUserCode(modelUser.getUserCode());
                     intent = new Intent(ABaseSplashScreenActivity.this, getHomeActivity());
@@ -125,7 +125,5 @@ public abstract class ABaseSplashScreenActivity<LOGIN_ACTIVITY_CLASS, HOME_ACTIV
             finish();
         }
     }
-
-
 
 }

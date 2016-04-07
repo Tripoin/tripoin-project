@@ -2,7 +2,7 @@ package com.tripoin.rest.bgp.impl;
 
 import com.tripoin.rest.bgp.base.ABGP;
 import com.tripoin.rest.callback.GenericCallBack;
-import com.tripoin.rest.dto.request.login.DTORequestLogin;
+import com.tripoin.rest.dto.request.login.DTOParcelRequestLogin;
 import com.tripoin.rest.endpoints.EPLogin;
 import com.tripoin.rest.post.IGenericPost;
 
@@ -36,5 +36,5 @@ public abstract class BGPLogin extends ABGP{
         return EPLogin.class;
     }
 
-    public abstract DTORequestLogin getDTORequestLogin();
+    public abstract DTOParcelRequestLogin getDTORequestLogin();
 }
