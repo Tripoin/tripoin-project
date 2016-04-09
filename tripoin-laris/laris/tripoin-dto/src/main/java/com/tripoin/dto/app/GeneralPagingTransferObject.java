@@ -5,10 +5,10 @@ package com.tripoin.dto.app;
  */
 public class GeneralPagingTransferObject extends GeneralTransferObject {
 
-	private String pageName;
-	private Integer positionPage;
-	private Integer totalPage;
-	private Integer rowPerPage;
+	String pageName;
+	Integer positionPage;
+	Integer totalPage;
+	Integer rowPerPage;
 
 	public GeneralPagingTransferObject(){}
 

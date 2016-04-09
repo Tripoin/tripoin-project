@@ -5,11 +5,11 @@ package com.tripoin.dto.app;
  */
 public class GeneralTransferObject {
 
-	protected String responseCode;
+	String responseCode;
 
-	protected String responseMsg;
+	String responseMsg;
 
-	protected String responseDesc;
+	String responseDesc;
 
 	public String getResponseCode() {
 		return responseCode;

@@ -5,21 +5,21 @@ package com.tripoin.dto.app;
  */
 public class UserData {
 
-	private String username;
+	String username;
 
-	private Integer enabled;
+	Integer enabled;
 
-	private String expiredDate;
+	String expiredDate;
 
-	private Integer nonLocked;
+	Integer nonLocked;
 
-	private String auth;
+	String auth;
 
-	private Integer status;
+	Integer status;
 
-	private String remarks;
+	String remarks;
 
-	private RoleData roleData;
+	RoleData roleData;
 	
 	public UserData(){}
 

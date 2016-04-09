@@ -1,7 +1,5 @@
 package com.tripoin.dto.app;
 
-import java.util.Arrays;
-
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
@@ -63,20 +61,24 @@ public class FacebookProfileData {
 		this.email = email;
 	}
 
-	public byte[] getUrlPhoto() {
+	public String getUrlPhoto() {
 		return urlPhoto;
 	}
 
-	public void setUrlPhoto(byte[] urlPhoto) {
+	public void setUrlPhoto(String urlPhoto) {
 		this.urlPhoto = urlPhoto;
 	}
 
 	@Override
 	public String toString() {
-		return "FacebookProfileData [id=" + id + ", name=" + name
-				+ ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", gender=" + gender + ", email=" + email + ", urlPhoto="
-				+ Arrays.toString(urlPhoto) + "]";
+		return "FacebookProfileData{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", gender='" + gender + '\'' +
+				", email='" + email + '\'' +
+				", urlPhoto='" + urlPhoto + '\'' +
+				'}';
 	}
-
 }

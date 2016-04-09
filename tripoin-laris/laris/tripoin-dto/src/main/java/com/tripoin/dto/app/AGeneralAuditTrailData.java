@@ -5,16 +5,16 @@ package com.tripoin.dto.app;
  */
 public class AGeneralAuditTrailData {
 
-	private Integer status;
-	private String remarks;
-	private String createdBy;
-    private String createdIP;
-    private String createdTime;
-    private String createdPlatform;
-    private String modifiedBy;
-    private String modifiedIP;
-    private String modifiedTime;
-    private String modifiedPlatform;
+	Integer status;
+	String remarks;
+	String createdBy;
+    String createdIP;
+    String createdTime;
+    String createdPlatform;
+    String modifiedBy;
+    String modifiedIP;
+    String modifiedTime;
+    String modifiedPlatform;
 
 	public AGeneralAuditTrailData() {}
 

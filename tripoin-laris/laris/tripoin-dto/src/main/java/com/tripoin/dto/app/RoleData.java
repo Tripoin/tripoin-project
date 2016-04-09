@@ -5,11 +5,11 @@ package com.tripoin.dto.app;
  */
 public class RoleData {
 
-	private String code;
+	String code;
 
-	private Integer status;
+	Integer status;
 
-	private String remarks;	
+	String remarks;
 
 	public RoleData() {}
 
