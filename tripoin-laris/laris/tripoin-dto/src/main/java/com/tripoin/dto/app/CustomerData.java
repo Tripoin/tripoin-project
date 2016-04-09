@@ -6,6 +6,7 @@ package com.tripoin.dto.app;
 public class CustomerData {
 
 	String password;
+	String phoneNumber;
 	String email;
 	String address;
 	String roleCode;
@@ -17,6 +18,14 @@ public class CustomerData {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public String getEmail() {
@@ -53,8 +62,9 @@ public class CustomerData {
 
 	@Override
 	public String toString() {
-		return "CustomerData [password=" + password + ", email=" + email
-				+ ", address=" + address + ", roleCode=" + roleCode
-				+ ", accountNumber=" + accountNumber + "]";
+		return "CustomerData [password=" + password + ", phoneNumber="
+				+ phoneNumber + ", email=" + email + ", address=" + address
+				+ ", roleCode=" + roleCode + ", accountNumber=" + accountNumber
+				+ "]";
 	}
 }
