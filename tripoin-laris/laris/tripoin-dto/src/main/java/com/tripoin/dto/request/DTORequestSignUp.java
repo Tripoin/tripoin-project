@@ -8,10 +8,10 @@ import com.tripoin.dto.app.FacebookProfileData;
  */
 public class DTORequestSignUp {
 
-	private FacebookProfileData facebookProfileData;
-	private CustomerData customerData;
-	private String state;
-	private String accessToken;
+	FacebookProfileData facebookProfileData;
+	CustomerData customerData;
+	String state;
+	String accessToken;
 
 	public FacebookProfileData getFacebookProfileData() {
 		return facebookProfileData;

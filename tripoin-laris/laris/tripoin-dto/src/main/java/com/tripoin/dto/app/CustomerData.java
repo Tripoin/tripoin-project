@@ -5,11 +5,11 @@ package com.tripoin.dto.app;
  */
 public class CustomerData {
 
-	private String password;
-	private String email;
-	private String address;
-	private String roleCode;
-	private String accountNumber;
+	String password;
+	String email;
+	String address;
+	String roleCode;
+	String accountNumber;
 
 	public String getPassword() {
 		return password;

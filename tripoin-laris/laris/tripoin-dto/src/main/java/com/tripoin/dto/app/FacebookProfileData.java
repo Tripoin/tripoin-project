@@ -7,13 +7,13 @@ import java.util.Arrays;
  */
 public class FacebookProfileData {
 
-	private String id;
-	private String name;
-	private String firstName;
-	private String lastName;
-	private String gender;
-	private String email;
-	private byte[] urlPhoto;
+	String id;
+	String name;
+	String firstName;
+	String lastName;
+	String gender;
+	String email;
+	String urlPhoto;
 
 	public String getId() {
 		return id;
