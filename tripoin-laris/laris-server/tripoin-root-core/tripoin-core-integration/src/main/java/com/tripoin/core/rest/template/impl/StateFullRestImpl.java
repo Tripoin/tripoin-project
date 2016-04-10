@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.codec.Base64;
 
 import com.tripoin.core.rest.template.ABaseHttpRest;
 import com.tripoin.core.rest.template.IStateFullRest;
@@ -14,6 +15,9 @@ import com.tripoin.core.rest.template.IStateFullRest;
  */
 @Component("stateFullRest")
 public class StateFullRestImpl extends ABaseHttpRest implements IStateFullRest {
+	
+	private boolean isSSL = false;
+	private String typeSSL;
 	
 	@Override
 	public <T> T get(String url, Class<T> clazz) {
@@ -36,10 +40,52 @@ public class StateFullRestImpl extends ABaseHttpRest implements IStateFullRest {
 	}
 
 	@Override
-	public HttpHeaders getHeaders() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));		
+	public HttpHeaders getHeaders() {	
+		httpHeaders.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));
+		return httpHeaders;
+	}
+
+	@Override
+	public void setHeaders(HttpHeaders httpHeaders) {
+		this.httpHeaders = httpHeaders;
+		this.httpHeaders.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));
+	}
+
+	@Override
+	public void setSSL(boolean isSSL) {
+		this.isSSL = isSSL;
+	}
+
+	@Override
+	public boolean isSSL() {
+		return isSSL;
+	}
+
+	@Override
+	public HttpHeaders encodeUserCredentials(HttpHeaders headers, String username, String password){
+		String combinedUsernamePassword = username.concat(":").concat(password);
+		byte[] base64Token = Base64.encode(combinedUsernamePassword.getBytes());
+		String base64EncodedToken = new String (base64Token);
+		headers.add("Authorization","Basic ".concat(base64EncodedToken));
 		return headers;
+	}
+
+	@Override
+	public HttpHeaders encodeUserCredentials(HttpHeaders headers, String usernamePassword){
+		String combinedUsernamePassword = usernamePassword;
+		byte[] base64Token = Base64.encode(combinedUsernamePassword.getBytes());
+		String base64EncodedToken = new String (base64Token);
+		headers.add("Authorization","Basic ".concat(base64EncodedToken));
+		return headers;
+	}
+
+	@Override
+	public String typeSSL() {
+		return typeSSL;
+	}
+
+	public void setTypeSSL(String typeSSL) {
+		this.typeSSL = typeSSL;
 	}
 	
 }

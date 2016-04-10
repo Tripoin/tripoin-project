@@ -11,7 +11,7 @@ public enum EResponseCode {
 	
 	RC_USERNAME_EXISTS("02", "Username already exists, please try others!"),
 	RC_EMAIL_EXISTS("03", "Email already exists, please try others!"),
-	RC_PHONE_EXISTS("04", "Mobile Phone already exists, please try others!"),
+	RC_PHONE_EXISTS("04", "Phone No. already exists, please try others!"),
 	RC_NIK_EXISTS("05", "NIK already exists, please try others!"),
 	RC_OCCUPATION_EXISTS("06", "Occupation already exists, please try others!"),
 	RC_AREA_EXISTS("07", "Area already exists, please try others!"),

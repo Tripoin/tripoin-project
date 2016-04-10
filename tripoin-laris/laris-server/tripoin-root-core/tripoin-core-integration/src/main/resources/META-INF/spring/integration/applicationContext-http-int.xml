@@ -19,17 +19,14 @@
 	<import resource="applicationContext-http-int-logout.xml" />
 	<import resource="applicationContext-http-int-report.xml" />
 	<import resource="applicationContext-http-int-upload.xml" />
+	<import resource="applicationContext-http-int-sign-up.xml" />
 	
-	<int:annotation-config/>
-	
+	<int:annotation-config/>		
+
 	<context:component-scan base-package="com.tripoin.core.rest.endpoint">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
     </context:component-scan>	
     
-	<context:component-scan base-package="com.tripoin.core.rest.template">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
-    </context:component-scan>			
-
 	<int:chain input-channel="errors">
 	    <int:header-enricher>
 	        <int:header name="http_statusCode" value="504" />

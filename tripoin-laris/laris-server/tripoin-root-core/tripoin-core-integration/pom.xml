@@ -100,6 +100,10 @@
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-webmvc</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>commons-codec</artifactId>
+					<groupId>commons-codec</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- refer spring data -->
@@ -310,6 +314,52 @@
 			</exclusions>
 		</dependency>
 		<!-- refer other data -->
+		<dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>org.springframework.web</artifactId>
+	        <version>3.0.0.M4</version>
+	    </dependency>
+		<dependency>
+	        <groupId>commons-httpclient</groupId>
+	        <artifactId>commons-httpclient</artifactId>
+	        <version>3.1</version>
+	        <exclusions>
+	        	<exclusion>
+	        		<artifactId>commons-codec</artifactId>
+	        		<groupId>commons-codec</groupId>
+	        	</exclusion>
+	        	<exclusion>
+	        		<artifactId>commons-logging</artifactId>
+	        		<groupId>commons-logging</groupId>
+	        	</exclusion>
+	        </exclusions>
+	    </dependency>
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>${httpcore.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.apache.httpcomponents</groupId>
+            		<artifactId>httpcore</artifactId>
+            	</exclusion>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 		<dependency>
 			<groupId>com.googlecode.lambdaj</groupId>
 			<artifactId>lambdaj</artifactId>

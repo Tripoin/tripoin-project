@@ -54,6 +54,8 @@
         <oracle.version>10.2.0.5</oracle.version>
         
         <!-- Convenience property to set the Other Lib -->
+        <httpcore.version>4.4.3</httpcore.version>
+        <httpclient.version>4.5.1</httpclient.version>
         <slf4j.version>1.6.1</slf4j.version>
         <junit.version>4.11</junit.version>
         <quartz.version>2.2.1</quartz.version>

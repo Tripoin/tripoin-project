@@ -20,12 +20,14 @@ import com.tripoin.util.api.facebook.OAuthServiceProvider;
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-@ImportResource("/WEB-INF/config/core-integration-config.xml")
+@ImportResource({"/WEB-INF/config/core-integration-config.xml",
+	"classpath:META-INF/spring/applicationContext-component-scan.xml"})
 @Configuration
 public class SocialConfig {
 
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
+	
 	
 	@Bean(name="connectionFactoryRegistry")
     public ConnectionFactoryLocator connectionFactoryLocator() {

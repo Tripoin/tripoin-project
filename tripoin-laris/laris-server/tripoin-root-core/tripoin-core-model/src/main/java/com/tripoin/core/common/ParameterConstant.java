@@ -8,9 +8,12 @@ import java.text.SimpleDateFormat;
 public class ParameterConstant {
 
 	public static final String HOST_SERVER = "tripoin.host.server";
+
+	private static final String formatDefault = "dd-MM-yyyy HH:mm:ss.S";
+	private static final String formatISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";	
 	
-	private static final String formatDefault = "dd-MM-yyyy HH:mm:ss.S";	
 	public static SimpleDateFormat FORMAT_DEFAULT = new SimpleDateFormat(formatDefault);
+	public static SimpleDateFormat FORMAT_TIME_BCA = new SimpleDateFormat(formatISO8601);
 
 	public static final String IP_ADDRESSV4_DEFAULT = "127.0.0.1";
 	public static final String PLATFORM_DEFAULT = "Computer | Unknown Operating System | Unknown Browser";
@@ -24,6 +27,9 @@ public class ParameterConstant {
 
 	public static final String FEMALE = "Female";
 	public static final String MALE = "Male";
+
+	public static final String SELLER = "Seller";
+	public static final String BUYER = "Buyer";
 	
 	public static final Integer ROW_PER_PAGE = 20;
 

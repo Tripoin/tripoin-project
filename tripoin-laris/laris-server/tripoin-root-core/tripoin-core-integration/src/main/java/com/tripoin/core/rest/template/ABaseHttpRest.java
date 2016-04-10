@@ -1,18 +1,27 @@
 package com.tripoin.core.rest.template;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.codec.Base64;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -24,13 +33,42 @@ public abstract class ABaseHttpRest {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ABaseHttpRest.class);
 
-	private final RestTemplate template = new RestTemplate();
+	@Autowired
+	private RestTemplate restTemplate;
 	private HttpStatus statusCode;
 	private final Map<String, String> cookies = new HashMap<>();
+	protected HttpHeaders httpHeaders = new HttpHeaders();
+	
+	private static final TrustManager[] UNQUESTIONING_TRUST_MANAGER = new TrustManager[]{
+        new X509TrustManager() {
+			
+        	 public java.security.cert.X509Certificate[] getAcceptedIssuers(){
+ 				return null;
+             }
+             public void checkClientTrusted( X509Certificate[] certs, String authType ){}
+             public void checkServerTrusted( X509Certificate[] certs, String authType ){}
+		}
+    };
 
-	protected RestTemplate getTemplate() {
-		return template;
-	}	
+	protected RestTemplate getTemplate() throws Exception {
+		if(isSSL()){
+			final  SSLContext sslContext = SSLContext.getInstance(typeSSL());
+			sslContext.init( null, UNQUESTIONING_TRUST_MANAGER, new java.security.SecureRandom() );
+			HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+			HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
+	        
+			restTemplate.setRequestFactory( new SimpleClientHttpRequestFactory() {
+			    @Override
+			    protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
+			        if(connection instanceof HttpsURLConnection ){
+			            ((HttpsURLConnection) connection).setHostnameVerifier(new NullHostnameVerifier());
+			        }
+			        super.prepareConnection(connection, httpMethod);
+			    }
+			});
+		}
+		return restTemplate;
+	}
 
 	protected void setStatusCode(HttpStatus statusCode) {
 		this.statusCode = statusCode;
@@ -57,10 +95,10 @@ public abstract class ABaseHttpRest {
 	}
 	
 	protected <T> T getObject(HttpMethod method, String url, Object data, Class<T> clazz) {
-		HttpEntity<?> request = new HttpEntity<Object>(data, getHeaders());
+		HttpEntity<?> request = new HttpEntity<Object>(data, httpHeaders);
 		ResponseEntity<T> response;
 		try{
-			response = template.exchange(url, method, request, clazz);
+			response = getTemplate().exchange(url, method, request, clazz);
 			extractCookies(response.getHeaders());
 		}catch(HttpClientErrorException hcee){
 			hcee.printStackTrace();
@@ -78,17 +116,12 @@ public abstract class ABaseHttpRest {
 			LOGGER.error("Exception : ".concat(e.getMessage()), e);
 			clearAllCookies();		
 		}
+		httpHeaders = new HttpHeaders();
 		setStatusCode(response.getStatusCode());
 		return response.getBody();
 	}
 
-	protected HttpHeaders encodeUserCredentials(HttpHeaders headers, String username, String password){
-		String combinedUsernamePassword = username.concat(":").concat(password);
-		byte[] base64Token = Base64.encode(combinedUsernamePassword.getBytes());
-		String base64EncodedToken = new String (base64Token);
-		headers.add("Authorization","Basic ".concat(base64EncodedToken));
-		return headers;
-	}
+	public abstract HttpHeaders encodeUserCredentials(HttpHeaders headers, String username, String password);
 	
 	/**
 	 * <b>Description :</b><br>
@@ -131,6 +164,10 @@ public abstract class ABaseHttpRest {
 		return sb.toString();
 	}
 	
-	public abstract HttpHeaders getHeaders();
+	public abstract HttpHeaders getHeaders(); 
+
+	public abstract boolean isSSL();
+	
+	public abstract String typeSSL();
 	
 }

@@ -75,5 +75,52 @@ public interface IStateFullRest {
 	 * @return
 	 */
 	public HttpHeaders getHeaders();
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>setHeaders</code><br>
+	 * @param httpHeaders
+	 */
+	public void setHeaders(HttpHeaders httpHeaders);
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>setSSL</code><br>
+	 * @param ssl
+	 */
+	public void setSSL(boolean ssl);
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>encodeUserCredentials</code><br>
+	 * @param headers
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public HttpHeaders encodeUserCredentials(HttpHeaders headers, String username, String password);
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>encodeUserCredentials</code><br>
+	 * @param headers
+	 * @param usernamePassword
+	 * @return
+	 */
+	public HttpHeaders encodeUserCredentials(HttpHeaders headers, String usernamePassword);
+
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>typeSSL</code><br>
+	 * @return
+	 */
+	public String typeSSL();
+	
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>setTypeSSL</code><br>
+	 * @param typeSSL
+	 */
+	public void setTypeSSL(String typeSSL);
 
 }

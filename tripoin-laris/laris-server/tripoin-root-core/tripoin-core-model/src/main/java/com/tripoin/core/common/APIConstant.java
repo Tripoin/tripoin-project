@@ -20,7 +20,12 @@ public enum APIConstant {
 	RELATIONSHIPS("relationships"),
 	LIKES("likes"),
 	
-	FACEBOOK("FACEBOOK");
+	FACEBOOK("FACEBOOK"),
+	STATE("state"),
+	ACCESS_TOKEN("access_token"),
+	EXPIRES("expires_in"),
+
+	BCA("BCA");
 
 	private String operator;
 	private String operand;
