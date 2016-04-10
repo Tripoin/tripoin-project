@@ -21,6 +21,7 @@ import com.tripoin.core.common.RoleConstant;
 import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.dto.app.MenuData;
 import com.tripoin.web.authentication.IAccessControl;
+import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.common.IStateFullRest;
 import com.tripoin.web.common.WebServiceConstant;
@@ -34,6 +35,7 @@ import com.tripoin.web.view.main.admin.HomeAdminView;
 import com.tripoin.web.view.main.customer.HomeCustomerView;
 import com.tripoin.web.view.menu.RootMenuLayout;
 import com.tripoin.web.view.menu.RootMenuLayout.LogoutListener;
+import com.tripoin.web.view.signup.SignUpScreen;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -45,6 +47,7 @@ import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.server.WrappedHttpSession;
 import com.vaadin.server.WrappedSession;
 import com.vaadin.shared.Position;
@@ -82,6 +85,9 @@ public class TripoinUI extends UI implements ErrorHandler {
     
     @Autowired
     private LoginScreen loginScreen;
+    
+    @Autowired
+    private SignUpScreen signUpScreen;
 	
 	@Autowired
     private IAccessControl accessControl;
@@ -143,8 +149,13 @@ public class TripoinUI extends UI implements ErrorHandler {
 				mainView();
 			}
 		});
-    	getPage().setTitle("Tripoin Login");
-        setContent(loginScreen);
+    	if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_FACEBOOK_DATA.toString()) == null){
+        	getPage().setTitle("Tripoin Login");
+            setContent(loginScreen);
+    	}else{
+    		getPage().setTitle("Tripoin Register");
+            setContent(signUpScreen);    		
+    	}
 	}
 
     protected void mainView() {

@@ -29,6 +29,8 @@ public enum EWebUIConstant {
     REGEX_EMAIL("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"),
 	REGEX_USERNAME("^[a-zA-Z0-9_.@-]{5,55}$"),
+	REGEX_PHONE_NUMBER("^[0-9\\-\\+]+[0-9]{9,15}$"),
+	REGEX_ACCOUNT_NUMBER("^[0-9]{7,15}$"),
 	REGEX_PASSWORD("((?=\\S+$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,20})"),
 	REGEX_CONTAINS_LOWERUPERCASE("((?=\\S+$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})"),
 	REGEX_CONTAINS_DIGIT("((?=\\S+$)(?=.*\\d).{6,20})"),

@@ -7,7 +7,9 @@ public enum EWebSessionConstant {
 
 	SESSION_GRID_DATA("sessionGridData"),
 	SESSION_OCUPATION_DATA("occupationData"),
-	SESSION_EMPLOYEE_DATA("employeeData");
+	SESSION_EMPLOYEE_DATA("employeeData"),
+	
+	SESSION_API_FACEBOOK_DATA("dtoResponseCallbackFacebook");
 
 	private String operator;	
 	

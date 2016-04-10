@@ -42,6 +42,8 @@ import com.vaadin.ui.themes.ValoTheme;
 public class LoginScreen extends CssLayout implements View {
 
 	private static final long serialVersionUID = -1126309038760546247L;
+	private final Panel panel = new Panel();
+	private final TabSheet tabs = new TabSheet();
 	private TextField username;
     private PasswordField password;
     private Button login;
@@ -87,15 +89,15 @@ public class LoginScreen extends CssLayout implements View {
 	private void buildUI() {
         addStyleName("login-screen");
 
-        Component signInForm = buildSignInForm();
-        Component signUpForm = buildSignUpForm();
+        Component signInTab = buildSignInForm();
+        Component signUpTab = panelSignUp();
 
-        TabSheet tabs = new TabSheet();
         tabs.setWidth("400px");
         tabs.addStyleName("login-tabs");
         tabs.addStyleName("framed equal-width-tabs");
-        tabs.addTab(signInForm, "Login");
-        tabs.addTab(signUpForm, "Register");
+    	tabs.addTab(signInTab, "Login");
+    	tabs.addTab(signUpTab, "Register");
+        
         VerticalLayout centeringLayout = new VerticalLayout();
         centeringLayout.setStyleName("centering-layout");
         centeringLayout.addComponent(tabs);
@@ -106,13 +108,16 @@ public class LoginScreen extends CssLayout implements View {
         addComponent(centeringLayout);
         addComponent(loginInformation);
     }
-    
-    private Component buildSignUpForm() {
-        Panel panel = new Panel();
+	
+	private Component panelSignUp(){
         panel.addStyleName("borderless");
         panel.addStyleName("scroll-divider");
         panel.setHeight("216px");
-        
+        panel.setContent(buildSocMedForm());
+		return panel;
+	}
+    
+    private Component buildSocMedForm() {        
         VerticalLayout signUpLayout = new VerticalLayout();
         signUpLayout.setMargin(true);
         signUpLayout.setSpacing(true);
@@ -126,12 +131,11 @@ public class LoginScreen extends CssLayout implements View {
 			private static final long serialVersionUID = -534324766257259614L;
 			@Override
 			public void buttonClick(ClickEvent event) {
-				urlFacebook = urlFacebook.concat("client_id=").concat(clientIdFacebook).concat("&response_type=code&")
-						.concat("type=").concat("user_agent").concat("&")
-						.concat("response_type=").concat("token").concat("&")
-						.concat("redirect_uri=").concat(callbackFacebook).concat("&")
-						.concat("scope=").concat(scopesFacebook).concat("&")
-						.concat("state=").concat(UUID.randomUUID().toString());
+				urlFacebook = urlFacebook.concat("client_id=").concat(clientIdFacebook)
+						.concat("&response_type=").concat("code")
+						.concat("&redirect_uri=").concat(callbackFacebook)
+						.concat("&scope=").concat(scopesFacebook)
+						.concat("&state=").concat(UUID.randomUUID().toString());
 				Page.getCurrent().open(urlFacebook, "_top");
 			}
 		});
@@ -153,9 +157,7 @@ public class LoginScreen extends CssLayout implements View {
         googlePlusButton.setIcon(googlePlusIco);
         googlePlusButton.addStyleName("borderless-colored");
         signUpLayout.addComponent(googlePlusButton);
-        
-        panel.setContent(signUpLayout);
-        return panel;
+        return signUpLayout;
     }
 
     private Component buildSignInForm() {
@@ -252,7 +254,7 @@ public class LoginScreen extends CssLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		
+    	System.out.println(getUI().getPage().getLocation().getQuery());		
 	}
 	
 	public void addLoginListener(LoginListener loginListener){

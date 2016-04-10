@@ -7,6 +7,7 @@ public class WebServiceConstant {
 
 	private static final String HTTP_CONTEXT_REST = "/wscontext";
 	private static final String HTTP_CONTEXT_ANONYMOUS = "/anonymous";
+	private static final String HTTP_CONTEXT_API = "/api";
 	private static final String HTTP_CONTEXT_RESOURCES = "/resources";
 	private static final String HTTP_CONTEXT_SOAP = "/soapcontext";
 	
@@ -19,6 +20,7 @@ public class WebServiceConstant {
 	private static final String HTTP_IMAGE = "/image";
 	private static final String HTTP_DELETE = "/delete";
 	private static final String HTTP_SELECT = "/select";
+	private static final String HTTP_SECRET = "/secret";
 
 	public static final String CONTEXT_CONSTANT_ROLES = "ROLES";
 	public static final String CONTEXT_CONSTANT_OCCUPATION = "OCCUPATION";
@@ -36,7 +38,9 @@ public class WebServiceConstant {
 	public static final String HTTP_FORGOT_PASSWORD_VERIFY = HTTP_CONTEXT_ANONYMOUS.concat("/forgotpassword").concat(HTTP_VERIFY);
 	
 	public static final String HTTP_LOGIN_MENU_SOAP = HTTP_CONTEXT_SOAP.concat("/loginMenuService");
-		
+
+	public static final String HTTP_CALLBACK_FACEBOOK = HTTP_CONTEXT_API.concat(HTTP_SECRET).concat("/facebook");
+	
 	public static final String HTTP_CONNECTION = HTTP_CONTEXT_REST.concat("/connection");
 	public static final String HTTP_LOGIN_MENU = HTTP_CONTEXT_REST.concat("/login-menu");
 	public static final String HTTP_LOGOUT = HTTP_CONTEXT_REST.concat("/logout");

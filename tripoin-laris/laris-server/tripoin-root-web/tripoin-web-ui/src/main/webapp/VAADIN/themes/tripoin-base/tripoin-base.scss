@@ -244,5 +244,12 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
   .align-right {
   	text-align: right;
   }
+  .v-csslayout-margin {
+    padding: 5px;
+  }
 
+}
+.v-csslayout-container .v-caption {
+    padding-left:  3px;
+    padding-right: 10px;
 }

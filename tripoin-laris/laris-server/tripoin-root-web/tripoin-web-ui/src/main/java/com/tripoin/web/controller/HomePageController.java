@@ -11,7 +11,7 @@ public class HomePageController {
 
 	@RequestMapping("/")
     public String redirectHomePageApp() {
-        return "redirect:/laris";
+        return "redirect:/laris/";
     }
 	
 }
