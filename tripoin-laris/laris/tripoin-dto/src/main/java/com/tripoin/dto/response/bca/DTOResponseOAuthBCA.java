@@ -9,7 +9,7 @@ public class DTOResponseOAuthBCA extends ErrorMessageData {
 
 	String access_token;
 	String token_type;
-	String expires_in;
+	Integer expires_in;
 	String scope;
 
 	public String getAccess_token() {
@@ -28,11 +28,11 @@ public class DTOResponseOAuthBCA extends ErrorMessageData {
 		this.token_type = token_type;
 	}
 
-	public String getExpires_in() {
+	public Integer getExpires_in() {
 		return expires_in;
 	}
 
-	public void setExpires_in(String expires_in) {
+	public void setExpires_in(Integer expires_in) {
 		this.expires_in = expires_in;
 	}
 
