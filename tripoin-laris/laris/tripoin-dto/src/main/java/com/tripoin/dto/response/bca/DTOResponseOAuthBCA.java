@@ -1,5 +1,6 @@
 package com.tripoin.dto.response.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tripoin.dto.app.bca.ErrorMessageData;
 
 /**
@@ -7,33 +8,40 @@ import com.tripoin.dto.app.bca.ErrorMessageData;
  */
 public class DTOResponseOAuthBCA extends ErrorMessageData {
 
-	String access_token;
-	String token_type;
-	Integer expires_in;
+	@JsonProperty("access_token")
+	String accessToken;
+
+	@JsonProperty("token_type")
+	String tokenType;
+
+	@JsonProperty("expires_in")
+	Integer expiresIn;
+
+	@JsonProperty("scope")
 	String scope;
 
-	public String getAccess_token() {
-		return access_token;
+	public String getAccessToken() {
+		return accessToken;
 	}
 
-	public void setAccess_token(String access_token) {
-		this.access_token = access_token;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
-	public String getToken_type() {
-		return token_type;
+	public String getTokenType() {
+		return tokenType;
 	}
 
-	public void setToken_type(String token_type) {
-		this.token_type = token_type;
+	public void setTokenType(String tokenType) {
+		this.tokenType = tokenType;
 	}
 
-	public Integer getExpires_in() {
-		return expires_in;
+	public Integer getExpiresIn() {
+		return expiresIn;
 	}
 
-	public void setExpires_in(Integer expires_in) {
-		this.expires_in = expires_in;
+	public void setExpiresIn(Integer expiresIn) {
+		this.expiresIn = expiresIn;
 	}
 
 	public String getScope() {
@@ -46,8 +54,8 @@ public class DTOResponseOAuthBCA extends ErrorMessageData {
 
 	@Override
 	public String toString() {
-		return "OAuthBCAData [access_token=" + access_token + ", token_type="
-				+ token_type + ", expires_in=" + expires_in + ", scope="
-				+ scope + "]";
+		return "DTOResponseOAuthBCA [accessToken=" + accessToken
+				+ ", tokenType=" + tokenType + ", expiresIn=" + expiresIn
+				+ ", scope=" + scope + "]";
 	}
 }

@@ -1,73 +1,87 @@
 package com.tripoin.dto.app.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class PaymentBCAData extends BaseIdentifierBCAData {
 
-	String TransactionID;
-	String ReferenceID;
-	String RequestDate;
-	String Amount;
-	String CurrencyCode;
+	@JsonProperty("TransactionID")
+	String transactionID;
+
+	@JsonProperty("ReferenceID")
+	String referenceID;
+
+	@JsonProperty("RequestDate")
+	String requestDate;
+
+	@JsonProperty("Amount")
+	String amount;
+
+	@JsonProperty("CurrencyCode")
+	String currencyCode;
 	
-	String PaymentID;
-	String TransactionDate;
+	@JsonProperty("PaymentID")
+	String paymentID;
+
+	@JsonProperty("TransactionDate")
+	String transactionDate;
 
 	public String getTransactionID() {
-		return TransactionID;
+		return transactionID;
 	}
 
 	public void setTransactionID(String transactionID) {
-		TransactionID = transactionID;
+		this.transactionID = transactionID;
 	}
 
 	public String getReferenceID() {
-		return ReferenceID;
+		return referenceID;
 	}
 
 	public void setReferenceID(String referenceID) {
-		ReferenceID = referenceID;
+		this.referenceID = referenceID;
 	}
 
 	public String getRequestDate() {
-		return RequestDate;
+		return requestDate;
 	}
 
 	public void setRequestDate(String requestDate) {
-		RequestDate = requestDate;
+		this.requestDate = requestDate;
 	}
 
 	public String getAmount() {
-		return Amount;
+		return amount;
 	}
 
 	public void setAmount(String amount) {
-		Amount = amount;
+		this.amount = amount;
 	}
 
 	public String getCurrencyCode() {
-		return CurrencyCode;
+		return currencyCode;
 	}
 
 	public void setCurrencyCode(String currencyCode) {
-		CurrencyCode = currencyCode;
+		this.currencyCode = currencyCode;
 	}
 
 	public String getPaymentID() {
-		return PaymentID;
+		return paymentID;
 	}
 
 	public void setPaymentID(String paymentID) {
-		PaymentID = paymentID;
+		this.paymentID = paymentID;
 	}
 
 	public String getTransactionDate() {
-		return TransactionDate;
+		return transactionDate;
 	}
 
 	public void setTransactionDate(String transactionDate) {
-		TransactionDate = transactionDate;
+		this.transactionDate = transactionDate;
 	}
 
 }

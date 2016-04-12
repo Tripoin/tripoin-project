@@ -1,33 +1,38 @@
 package com.tripoin.dto.app.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class ErrorMessageData {
 
-	String ErrorCode;
-	LanguageErrorMessage ErrorMessage;
+	@JsonProperty("ErrorCode")
+	String errorCode;
+	
+	@JsonProperty("ErrorMessage")
+	LanguageErrorMessage errorMessage;
 
 	public String getErrorCode() {
-		return ErrorCode;
+		return errorCode;
 	}
 
 	public void setErrorCode(String errorCode) {
-		ErrorCode = errorCode;
+		this.errorCode = errorCode;
 	}
 
 	public LanguageErrorMessage getErrorMessage() {
-		return ErrorMessage;
+		return errorMessage;
 	}
 
 	public void setErrorMessage(LanguageErrorMessage errorMessage) {
-		ErrorMessage = errorMessage;
+		this.errorMessage = errorMessage;
 	}
 
 	@Override
 	public String toString() {
-		return "ErrorMessageData [ErrorCode=" + ErrorCode + ", ErrorMessage="
-				+ ErrorMessage + "]";
+		return "ErrorMessageData [ErrorCode=" + errorCode + ", ErrorMessage="
+				+ errorMessage + "]";
 	}
 
 }

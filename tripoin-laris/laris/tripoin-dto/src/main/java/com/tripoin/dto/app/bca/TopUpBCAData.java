@@ -1,89 +1,106 @@
 package com.tripoin.dto.app.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class TopUpBCAData {
-	String CompanyCode;
-	String CustomerNumber;
-	String TransactionID;
-	String RequestDate;
-	String Amount;
-	String CurrencyCode;
+	
+	@JsonProperty("CompanyCode")
+	String companyCode;
 
-	String TopUpID;
-	String TransactionDate;
+	@JsonProperty("CustomerNumber")
+	String customerNumber;
+
+	@JsonProperty("TransactionID")
+	String transactionID;
+
+	@JsonProperty("RequestDate")
+	String requestDate;
+
+	@JsonProperty("Amount")
+	String amount;
+
+	@JsonProperty("CurrencyCode")
+	String currencyCode;
+
+	@JsonProperty("TopUpID")
+	String topUpID;
+
+	@JsonProperty("TransactionDate")
+	String transactionDate;
 
 	public String getCompanyCode() {
-		return CompanyCode;
+		return companyCode;
 	}
 
 	public void setCompanyCode(String companyCode) {
-		CompanyCode = companyCode;
+		this.companyCode = companyCode;
 	}
 
 	public String getCustomerNumber() {
-		return CustomerNumber;
+		return customerNumber;
 	}
 
 	public void setCustomerNumber(String customerNumber) {
-		CustomerNumber = customerNumber;
+		this.customerNumber = customerNumber;
 	}
 
 	public String getTransactionID() {
-		return TransactionID;
+		return transactionID;
 	}
 
 	public void setTransactionID(String transactionID) {
-		TransactionID = transactionID;
+		this.transactionID = transactionID;
 	}
 
 	public String getRequestDate() {
-		return RequestDate;
+		return requestDate;
 	}
 
 	public void setRequestDate(String requestDate) {
-		RequestDate = requestDate;
+		this.requestDate = requestDate;
 	}
 
 	public String getAmount() {
-		return Amount;
+		return amount;
 	}
 
 	public void setAmount(String amount) {
-		Amount = amount;
+		this.amount = amount;
 	}
 
 	public String getCurrencyCode() {
-		return CurrencyCode;
+		return currencyCode;
 	}
 
 	public void setCurrencyCode(String currencyCode) {
-		CurrencyCode = currencyCode;
+		this.currencyCode = currencyCode;
 	}
 
 	public String getTopUpID() {
-		return TopUpID;
+		return topUpID;
 	}
 
 	public void setTopUpID(String topUpID) {
-		TopUpID = topUpID;
+		this.topUpID = topUpID;
 	}
 
 	public String getTransactionDate() {
-		return TransactionDate;
+		return transactionDate;
 	}
 
 	public void setTransactionDate(String transactionDate) {
-		TransactionDate = transactionDate;
+		this.transactionDate = transactionDate;
 	}
 
 	@Override
 	public String toString() {
-		return "TopUpBCAData [CompanyCode=" + CompanyCode + ", CustomerNumber="
-				+ CustomerNumber + ", TransactionID=" + TransactionID
-				+ ", RequestDate=" + RequestDate + ", Amount=" + Amount
-				+ ", CurrencyCode=" + CurrencyCode + ", TopUpID=" + TopUpID
-				+ ", TransactionDate=" + TransactionDate + "]";
+		return "TopUpBCAData [CompanyCode=" + companyCode + ", CustomerNumber="
+				+ customerNumber + ", TransactionID=" + transactionID
+				+ ", RequestDate=" + requestDate + ", Amount=" + amount
+				+ ", CurrencyCode=" + currencyCode + ", TopUpID=" + topUpID
+				+ ", TransactionDate=" + transactionDate + "]";
 	}
 }

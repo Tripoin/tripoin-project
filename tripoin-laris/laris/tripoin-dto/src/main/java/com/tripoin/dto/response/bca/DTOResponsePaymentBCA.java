@@ -1,5 +1,6 @@
 package com.tripoin.dto.response.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tripoin.dto.app.bca.LanguageErrorMessage;
 import com.tripoin.dto.app.bca.PaymentBCAData;
 
@@ -8,23 +9,26 @@ import com.tripoin.dto.app.bca.PaymentBCAData;
  */
 public class DTOResponsePaymentBCA extends PaymentBCAData {
 
-	String ErrorCode;
-	LanguageErrorMessage ErrorMessage;
+	@JsonProperty("ErrorCode")
+	String errorCode;
+	
+	@JsonProperty("ErrorMessage")
+	LanguageErrorMessage errorMessage;
 
 	public String getErrorCode() {
-		return ErrorCode;
+		return errorCode;
 	}
 
 	public void setErrorCode(String errorCode) {
-		ErrorCode = errorCode;
+		this.errorCode = errorCode;
 	}
 
 	public LanguageErrorMessage getErrorMessage() {
-		return ErrorMessage;
+		return errorMessage;
 	}
 
 	public void setErrorMessage(LanguageErrorMessage errorMessage) {
-		ErrorMessage = errorMessage;
+		this.errorMessage = errorMessage;
 	}
 
 	@Override

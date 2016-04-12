@@ -1,33 +1,38 @@
 package com.tripoin.dto.app.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class BaseIdentifierBCAData {
 
-	String PrimaryID;
-	String CompanyCode;
+	@JsonProperty("PrimaryID")
+	String primaryID;
+
+	@JsonProperty("CompanyCode")
+	String companyCode;
 
 	public String getPrimaryID() {
-		return PrimaryID;
+		return primaryID;
 	}
 
 	public void setPrimaryID(String primaryID) {
-		PrimaryID = primaryID;
+		this.primaryID = primaryID;
 	}
 
 	public String getCompanyCode() {
-		return CompanyCode;
+		return companyCode;
 	}
 
 	public void setCompanyCode(String companyCode) {
-		CompanyCode = companyCode;
+		this.companyCode = companyCode;
 	}
 
 	@Override
 	public String toString() {
-		return "BaseIdentifierBCAData [PrimaryID=" + PrimaryID
-				+ ", CompanyCode=" + CompanyCode + "]";
+		return "BaseIdentifierBCAData [PrimaryID=" + primaryID
+				+ ", CompanyCode=" + companyCode + "]";
 	}
 	
 }

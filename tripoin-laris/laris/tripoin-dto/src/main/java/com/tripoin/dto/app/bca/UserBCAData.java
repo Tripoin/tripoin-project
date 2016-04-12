@@ -1,92 +1,107 @@
 package com.tripoin.dto.app.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class UserBCAData extends BaseIdentifierBCAData {
 
-	String CustomerName;
-	String DateOfBirth;
-	String MobileNumber;
-	String EmailAddress;
-	String CustomerNumber;
-	
-	String CurrencyCode;
-	String Balance;
-	
-    String WalletStatus;
+	@JsonProperty("CustomerName")
+	String customerName;
+
+	@JsonProperty("DateOfBirth")
+	String dateOfBirth;
+
+	@JsonProperty("MobileNumber")
+	String mobileNumber;
+
+	@JsonProperty("EmailAddress")
+	String emailAddress;
+
+	@JsonProperty("CustomerNumber")
+	String customerNumber;
+
+	@JsonProperty("CurrencyCode")
+	String currencyCode;
+
+	@JsonProperty("Balance")
+	String balance;
+
+	@JsonProperty("WalletStatus")
+    String walletStatus;
 
 	public String getCustomerName() {
-		return CustomerName;
+		return customerName;
 	}
 
 	public void setCustomerName(String customerName) {
-		CustomerName = customerName;
+		this.customerName = customerName;
 	}
 
 	public String getDateOfBirth() {
-		return DateOfBirth;
+		return dateOfBirth;
 	}
 
 	public void setDateOfBirth(String dateOfBirth) {
-		DateOfBirth = dateOfBirth;
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public String getMobileNumber() {
-		return MobileNumber;
+		return mobileNumber;
 	}
 
 	public void setMobileNumber(String mobileNumber) {
-		MobileNumber = mobileNumber;
+		this.mobileNumber = mobileNumber;
 	}
 
 	public String getEmailAddress() {
-		return EmailAddress;
+		return emailAddress;
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		EmailAddress = emailAddress;
+		this.emailAddress = emailAddress;
 	}
 
 	public String getCustomerNumber() {
-		return CustomerNumber;
+		return customerNumber;
 	}
 
 	public void setCustomerNumber(String customerNumber) {
-		CustomerNumber = customerNumber;
+		this.customerNumber = customerNumber;
 	}
 
 	public String getCurrencyCode() {
-		return CurrencyCode;
+		return currencyCode;
 	}
 
 	public void setCurrencyCode(String currencyCode) {
-		CurrencyCode = currencyCode;
+		this.currencyCode = currencyCode;
 	}
 
 	public String getBalance() {
-		return Balance;
+		return balance;
 	}
 
 	public void setBalance(String balance) {
-		Balance = balance;
+		this.balance = balance;
 	}
 
 	public String getWalletStatus() {
-		return WalletStatus;
+		return walletStatus;
 	}
 
 	public void setWalletStatus(String walletStatus) {
-		WalletStatus = walletStatus;
+		this.walletStatus = walletStatus;
 	}
 
 	@Override
 	public String toString() {
-		return "UserBCAData [CustomerName=" + CustomerName + ", DateOfBirth="
-				+ DateOfBirth + ", MobileNumber=" + MobileNumber
-				+ ", EmailAddress=" + EmailAddress + ", CustomerNumber="
-				+ CustomerNumber + ", CurrencyCode=" + CurrencyCode
-				+ ", Balance=" + Balance + ", WalletStatus=" + WalletStatus
+		return "UserBCAData [CustomerName=" + customerName + ", DateOfBirth="
+				+ dateOfBirth + ", MobileNumber=" + mobileNumber
+				+ ", EmailAddress=" + emailAddress + ", CustomerNumber="
+				+ customerNumber + ", CurrencyCode=" + currencyCode
+				+ ", Balance=" + balance + ", WalletStatus=" + walletStatus
 				+ "]";
 	}
 	

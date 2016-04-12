@@ -1,91 +1,108 @@
 package com.tripoin.dto.app.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class TransactionDetailBCAData {
 
-	String TransactionID;
-	String AccountStatementID;
-	String TransactionDate;
-	String TransactionType;
-	String Amount;
-	String CurrencyCode;
-	String Description;
-	String CurrentBalance;
+	@JsonProperty("TransactionID")
+	String transactionID;
+
+	@JsonProperty("AccountStatementID")
+	String accountStatementID;
+
+	@JsonProperty("TransactionDate")
+	String transactionDate;
+
+	@JsonProperty("TransactionType")
+	String transactionType;
+
+	@JsonProperty("Amount")
+	String amount;
+
+	@JsonProperty("CurrencyCode")
+	String currencyCode;
+
+	@JsonProperty("Description")
+	String description;
+
+	@JsonProperty("CurrentBalance")
+	String currentBalance;
 
 	public String getTransactionID() {
-		return TransactionID;
+		return transactionID;
 	}
 
 	public void setTransactionID(String transactionID) {
-		TransactionID = transactionID;
+		this.transactionID = transactionID;
 	}
 
 	public String getAccountStatementID() {
-		return AccountStatementID;
+		return accountStatementID;
 	}
 
 	public void setAccountStatementID(String accountStatementID) {
-		AccountStatementID = accountStatementID;
+		this.accountStatementID = accountStatementID;
 	}
 
 	public String getTransactionDate() {
-		return TransactionDate;
+		return transactionDate;
 	}
 
 	public void setTransactionDate(String transactionDate) {
-		TransactionDate = transactionDate;
+		this.transactionDate = transactionDate;
 	}
 
 	public String getTransactionType() {
-		return TransactionType;
+		return transactionType;
 	}
 
 	public void setTransactionType(String transactionType) {
-		TransactionType = transactionType;
+		this.transactionType = transactionType;
 	}
 
 	public String getAmount() {
-		return Amount;
+		return amount;
 	}
 
 	public void setAmount(String amount) {
-		Amount = amount;
+		this.amount = amount;
 	}
 
 	public String getCurrencyCode() {
-		return CurrencyCode;
+		return currencyCode;
 	}
 
 	public void setCurrencyCode(String currencyCode) {
-		CurrencyCode = currencyCode;
+		this.currencyCode = currencyCode;
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public String getCurrentBalance() {
-		return CurrentBalance;
+		return currentBalance;
 	}
 
 	public void setCurrentBalance(String currentBalance) {
-		CurrentBalance = currentBalance;
+		this.currentBalance = currentBalance;
 	}
 
 	@Override
 	public String toString() {
-		return "TransactionDetailBCAData [TransactionID=" + TransactionID
-				+ ", AccountStatementID=" + AccountStatementID
-				+ ", TransactionDate=" + TransactionDate + ", TransactionType="
-				+ TransactionType + ", Amount=" + Amount + ", CurrencyCode="
-				+ CurrencyCode + ", Description=" + Description
-				+ ", CurrentBalance=" + CurrentBalance + "]";
+		return "TransactionDetailBCAData [TransactionID=" + transactionID
+				+ ", AccountStatementID=" + accountStatementID
+				+ ", TransactionDate=" + transactionDate + ", TransactionType="
+				+ transactionType + ", Amount=" + amount + ", CurrencyCode="
+				+ currencyCode + ", Description=" + description
+				+ ", CurrentBalance=" + currentBalance + "]";
 	}
 
 }

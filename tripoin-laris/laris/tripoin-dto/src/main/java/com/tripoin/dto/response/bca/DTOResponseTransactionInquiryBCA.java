@@ -2,6 +2,7 @@ package com.tripoin.dto.response.bca;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tripoin.dto.app.bca.ErrorMessageData;
 import com.tripoin.dto.app.bca.TransactionDetailBCAData;
 
@@ -10,60 +11,68 @@ import com.tripoin.dto.app.bca.TransactionDetailBCAData;
  */
 public class DTOResponseTransactionInquiryBCA extends ErrorMessageData {
 
-	String CompanyCode;
-	String PrimaryID;
-	String TotalTransactions;
-	String LastAccountStatementID;
-	List<TransactionDetailBCAData> TransactionDetails;
+	@JsonProperty("CompanyCode")
+	String companyCode;
+
+	@JsonProperty("PrimaryID")
+	String primaryID;
+
+	@JsonProperty("TotalTransactions")
+	String totalTransactions;
+
+	@JsonProperty("LastAccountStatementID")
+	String lastAccountStatementID;
+
+	@JsonProperty("TransactionDetails")
+	List<TransactionDetailBCAData> transactionDetails;
 
 	public String getCompanyCode() {
-		return CompanyCode;
+		return companyCode;
 	}
 
 	public void setCompanyCode(String companyCode) {
-		CompanyCode = companyCode;
+		this.companyCode = companyCode;
 	}
 
 	public String getPrimaryID() {
-		return PrimaryID;
+		return primaryID;
 	}
 
 	public void setPrimaryID(String primaryID) {
-		PrimaryID = primaryID;
+		this.primaryID = primaryID;
 	}
 
 	public String getTotalTransactions() {
-		return TotalTransactions;
+		return totalTransactions;
 	}
 
 	public void setTotalTransactions(String totalTransactions) {
-		TotalTransactions = totalTransactions;
+		this.totalTransactions = totalTransactions;
 	}
 
 	public String getLastAccountStatementID() {
-		return LastAccountStatementID;
+		return lastAccountStatementID;
 	}
 
 	public void setLastAccountStatementID(String lastAccountStatementID) {
-		LastAccountStatementID = lastAccountStatementID;
+		this.lastAccountStatementID = lastAccountStatementID;
 	}
 
 	public List<TransactionDetailBCAData> getTransactionDetails() {
-		return TransactionDetails;
+		return transactionDetails;
 	}
 
-	public void setTransactionDetails(
-			List<TransactionDetailBCAData> transactionDetails) {
-		TransactionDetails = transactionDetails;
+	public void setTransactionDetails(List<TransactionDetailBCAData> transactionDetails) {
+		this.transactionDetails = transactionDetails;
 	}
 
 	@Override
 	public String toString() {
-		return "DTOResponseTransactionInquiryBCA [CompanyCode=" + CompanyCode
-				+ ", PrimaryID=" + PrimaryID + ", TotalTransactions="
-				+ TotalTransactions + ", LastAccountStatementID="
-				+ LastAccountStatementID + ", TransactionDetails="
-				+ TransactionDetails + "]";
+		return "DTOResponseTransactionInquiryBCA [CompanyCode=" + companyCode
+				+ ", PrimaryID=" + primaryID + ", TotalTransactions="
+				+ totalTransactions + ", LastAccountStatementID="
+				+ lastAccountStatementID + ", TransactionDetails="
+				+ transactionDetails + "]";
 	}
 
 }

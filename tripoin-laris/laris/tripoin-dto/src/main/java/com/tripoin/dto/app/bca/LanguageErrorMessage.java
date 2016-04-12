@@ -1,33 +1,38 @@
 package com.tripoin.dto.app.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class LanguageErrorMessage {
 
-	String Indonesian;
-	String English;
+	@JsonProperty("Indonesian")
+	String indonesian;
+	
+	@JsonProperty("English")
+	String english;
 
 	public String getIndonesian() {
-		return Indonesian;
+		return indonesian;
 	}
 
 	public void setIndonesian(String indonesian) {
-		Indonesian = indonesian;
+		this.indonesian = indonesian;
 	}
 
 	public String getEnglish() {
-		return English;
+		return english;
 	}
 
 	public void setEnglish(String english) {
-		English = english;
+		this.english = english;
 	}
 
 	@Override
 	public String toString() {
-		return "LanguageErrorMessage [Indonesian=" + Indonesian + ", English="
-				+ English + "]";
+		return "LanguageErrorMessage [Indonesian=" + indonesian + ", English="
+				+ english + "]";
 	}
 
 }

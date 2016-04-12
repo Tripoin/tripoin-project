@@ -1,54 +1,65 @@
 package com.tripoin.dto.request.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class DTORequestUserUpdateBCA {
 
-	String CustomerName;
-	String DateOfBirth;
-	String MobileNumber;
-	String EmailAddress;
-	String WalletStatus;
+	@JsonProperty("CustomerName")
+	String customerName;
+	
+	@JsonProperty("DateOfBirth")
+	String dateOfBirth;
+
+	@JsonProperty("MobileNumber")
+	String mobileNumber;
+
+	@JsonProperty("EmailAddress")
+	String emailAddress;
+
+	@JsonProperty("WalletStatus")
+	String walletStatus;
 
 	public String getCustomerName() {
-		return CustomerName;
+		return customerName;
 	}
 
 	public void setCustomerName(String customerName) {
-		CustomerName = customerName;
+		this.customerName = customerName;
 	}
 
 	public String getDateOfBirth() {
-		return DateOfBirth;
+		return dateOfBirth;
 	}
 
 	public void setDateOfBirth(String dateOfBirth) {
-		DateOfBirth = dateOfBirth;
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public String getMobileNumber() {
-		return MobileNumber;
+		return mobileNumber;
 	}
 
 	public void setMobileNumber(String mobileNumber) {
-		MobileNumber = mobileNumber;
+		this.mobileNumber = mobileNumber;
 	}
 
 	public String getEmailAddress() {
-		return EmailAddress;
+		return emailAddress;
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		EmailAddress = emailAddress;
+		this.emailAddress = emailAddress;
 	}
 
 	public String getWalletStatus() {
-		return WalletStatus;
+		return walletStatus;
 	}
 
 	public void setWalletStatus(String walletStatus) {
-		WalletStatus = walletStatus;
+		this.walletStatus = walletStatus;
 	}
 
 }

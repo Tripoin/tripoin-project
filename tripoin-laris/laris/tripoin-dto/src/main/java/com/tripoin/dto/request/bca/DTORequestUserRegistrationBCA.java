@@ -1,81 +1,88 @@
 package com.tripoin.dto.request.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class DTORequestUserRegistrationBCA {
 
-	String CustomerName;
-	String DateOfBirth;
-	String PrimaryID;
-	String MobileNumber;
-	String EmailAddress;
-	String CompanyCode;
-	String CustomerNumber;
+	@JsonProperty("CustomerName")
+	String customerName;
+
+	@JsonProperty("DateOfBirth")
+	String dateOfBirth;
+	
+	@JsonProperty("PrimaryID")
+	String primaryID;
+
+	@JsonProperty("MobileNumber")
+	String mobileNumber;
+
+	@JsonProperty("EmailAddress")
+	String emailAddress;
+
+	@JsonProperty("CompanyCode")
+	String companyCode;
+
+	@JsonProperty("CustomerNumber")
+	String customerNumber;
 
 	public String getCustomerName() {
-		return CustomerName;
+		return customerName;
 	}
 
 	public void setCustomerName(String customerName) {
-		CustomerName = customerName;
+		this.customerName = customerName;
 	}
 
 	public String getDateOfBirth() {
-		return DateOfBirth;
+		return dateOfBirth;
 	}
 
 	public void setDateOfBirth(String dateOfBirth) {
-		DateOfBirth = dateOfBirth;
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public String getPrimaryID() {
-		return PrimaryID;
+		return primaryID;
 	}
 
 	public void setPrimaryID(String primaryID) {
-		PrimaryID = primaryID;
+		this.primaryID = primaryID;
 	}
 
 	public String getMobileNumber() {
-		return MobileNumber;
+		return mobileNumber;
 	}
 
 	public void setMobileNumber(String mobileNumber) {
-		MobileNumber = mobileNumber;
+		this.mobileNumber = mobileNumber;
 	}
 
 	public String getEmailAddress() {
-		return EmailAddress;
+		return emailAddress;
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		EmailAddress = emailAddress;
+		this.emailAddress = emailAddress;
 	}
 
 	public String getCompanyCode() {
-		return CompanyCode;
+		return companyCode;
 	}
 
 	public void setCompanyCode(String companyCode) {
-		CompanyCode = companyCode;
+		this.companyCode = companyCode;
 	}
 
 	public String getCustomerNumber() {
-		return CustomerNumber;
+		return customerNumber;
 	}
 
 	public void setCustomerNumber(String customerNumber) {
-		CustomerNumber = customerNumber;
-	}
-
-	@Override
-	public String toString() {
-		return "DTORequestUserRegistrationBCA [CustomerName=" + CustomerName
-				+ ", DateOfBirth=" + DateOfBirth + ", PrimaryID=" + PrimaryID
-				+ ", MobileNumber=" + MobileNumber + ", EmailAddress="
-				+ EmailAddress + ", CompanyCode=" + CompanyCode
-				+ ", CustomerNumber=" + CustomerNumber + "]";
+		this.customerNumber = customerNumber;
 	}
 
 }

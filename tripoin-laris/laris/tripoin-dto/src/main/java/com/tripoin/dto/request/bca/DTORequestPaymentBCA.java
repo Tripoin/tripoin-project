@@ -1,72 +1,87 @@
 package com.tripoin.dto.request.bca;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
 public class DTORequestPaymentBCA {
 
-	String CompanyCode;
-	String PrimaryID;
-	String TransactionID;
-	String ReferenceID;
-	String RequestDate;
-	String Amount;
-	String CurrencyCode;
+	@JsonProperty("CompanyCode")
+	String companyCode;
+
+	@JsonProperty("PrimaryID")
+	String primaryID;
+
+	@JsonProperty("TransactionID")
+	String transactionID;
+
+	@JsonProperty("ReferenceID")
+	String referenceID;
+
+	@JsonProperty("RequestDate")
+	String requestDate;
+
+	@JsonProperty("Amount")
+	String amount;
+
+	@JsonProperty("CurrencyCode")
+	String currencyCode;
 
 	public String getCompanyCode() {
-		return CompanyCode;
+		return companyCode;
 	}
 
 	public void setCompanyCode(String companyCode) {
-		CompanyCode = companyCode;
+		this.companyCode = companyCode;
 	}
 
 	public String getPrimaryID() {
-		return PrimaryID;
+		return primaryID;
 	}
 
 	public void setPrimaryID(String primaryID) {
-		PrimaryID = primaryID;
+		this.primaryID = primaryID;
 	}
 
 	public String getTransactionID() {
-		return TransactionID;
+		return transactionID;
 	}
 
 	public void setTransactionID(String transactionID) {
-		TransactionID = transactionID;
+		this.transactionID = transactionID;
 	}
 
 	public String getReferenceID() {
-		return ReferenceID;
+		return referenceID;
 	}
 
 	public void setReferenceID(String referenceID) {
-		ReferenceID = referenceID;
+		this.referenceID = referenceID;
 	}
 
 	public String getRequestDate() {
-		return RequestDate;
+		return requestDate;
 	}
 
 	public void setRequestDate(String requestDate) {
-		RequestDate = requestDate;
+		this.requestDate = requestDate;
 	}
 
 	public String getAmount() {
-		return Amount;
+		return amount;
 	}
 
 	public void setAmount(String amount) {
-		Amount = amount;
+		this.amount = amount;
 	}
 
 	public String getCurrencyCode() {
-		return CurrencyCode;
+		return currencyCode;
 	}
 
 	public void setCurrencyCode(String currencyCode) {
-		CurrencyCode = currencyCode;
+		this.currencyCode = currencyCode;
 	}
 
 }
