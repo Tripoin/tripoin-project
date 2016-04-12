@@ -27,7 +27,8 @@
 	<int-http:inbound-gateway request-channel="requestChannelSignUp"
 		reply-channel="responseChannelSignUp"
 		supported-methods="GET" 
-		path="/api/signup">
+		path="/api/signup"
+		request-payload-type="com.tripoin.dto.request.DTORequestSignUp">
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
 	<int:service-activator ref="signUpEndpoint"

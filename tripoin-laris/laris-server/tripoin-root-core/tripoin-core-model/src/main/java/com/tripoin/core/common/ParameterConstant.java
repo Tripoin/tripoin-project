@@ -11,9 +11,11 @@ public class ParameterConstant {
 
 	private static final String formatDefault = "dd-MM-yyyy HH:mm:ss.S";
 	private static final String formatISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";	
+	private static final String formatDateOfBirth = "yyyy-MM-dd";
 	
 	public static SimpleDateFormat FORMAT_DEFAULT = new SimpleDateFormat(formatDefault);
 	public static SimpleDateFormat FORMAT_TIME_BCA = new SimpleDateFormat(formatISO8601);
+	public static SimpleDateFormat FORMAT_DATE_OF_BIRTH = new SimpleDateFormat(formatDateOfBirth);
 
 	public static final String IP_ADDRESSV4_DEFAULT = "127.0.0.1";
 	public static final String PLATFORM_DEFAULT = "Computer | Unknown Operating System | Unknown Browser";
@@ -64,5 +66,7 @@ public class ParameterConstant {
 	public static final String TRIPOIN_UPLOAD_DATA = "TRIPOIN-UPLOAD-DATA";
 	
 	public static final String TRIPOIN_AUTHORIZATION = "TRIPOIN-AUTHORIZATION=";
+
+	public static final String BCA_PARAM_COMPANY_CODE = "BCA.API.FORM.PARAM.COMPANY.CODE";
 	
 }

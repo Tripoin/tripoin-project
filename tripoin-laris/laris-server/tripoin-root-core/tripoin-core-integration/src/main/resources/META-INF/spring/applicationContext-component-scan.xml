@@ -19,11 +19,18 @@
     <bean id="restTemplate" name="restTemplate" class="org.springframework.web.client.RestTemplate" autowire-candidate="true">
 	    <property name="messageConverters">
 	        <list>
-	            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-	            <bean class="org.springframework.http.converter.FormHttpMessageConverter" />
 	            <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+	            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		            <property name="supportedMediaTypes" value="application/json"/>
+	            </bean>
+	            <bean class="org.springframework.http.converter.FormHttpMessageConverter" />
 	            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 	        </list>
+	    </property>
+	    <property name="interceptors">
+	    	<list>
+	    		<bean class="com.tripoin.core.rest.handler.LoggingRequestInterceptor"/>
+	    	</list>
 	    </property>
 	</bean>
 

@@ -11,23 +11,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.pojo.APIType;
 import com.tripoin.core.rest.security.bca.SignatureBCA;
 import com.tripoin.core.rest.template.IStateFullRest;
 import com.tripoin.core.service.IGenericManagerJpa;
-import com.tripoin.dto.request.bca.DTORequestUserRegistrationBCA;
 import com.tripoin.dto.response.bca.DTOResponseOAuthBCA;
-import com.tripoin.dto.response.bca.DTOResponseUserRegistrationBCA;
+import com.tripoin.dto.response.bca.DTOResponseTransactionInquiryBCA;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-@Service("userRegistrationBCAApi")
-public class UserRegistrationBCAApi {
+@Service("transactionInquiryBCAApi")
+public class TransactionInquiryBCAApi {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserRegistrationBCAApi.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionInquiryBCAApi.class);
 
 	@Autowired
 	private IStateFullRest stateFullRest;
@@ -63,22 +61,25 @@ public class UserRegistrationBCAApi {
 		this.bcaSignatureHeader = bcaSignatureHeader;
 	}
 
-	public DTOResponseUserRegistrationBCA doUserRegistration(DTORequestUserRegistrationBCA dtoRequestUserRegistrationBCA){
-		DTOResponseUserRegistrationBCA dtoResponseUserRegistrationBCA = null;
+	public DTOResponseTransactionInquiryBCA doHistoryTransactions(String companyCode, String primaryID, 
+			String startDate, String endDate, String lastAccountStatementID){
+		DTOResponseTransactionInquiryBCA dtoResponseTransactionInquiryBCA = null;
 		try {
 			DTOResponseOAuthBCA dtoResponseOAuthBCA = oauthBCAApi.getTokenBCA();
 			APIType apiType = oauthBCAApi.getApiType();
 
-			ObjectMapper mapper = new ObjectMapper();
-			String dataRequestJson = mapper.writeValueAsString(dtoRequestUserRegistrationBCA);
-			String pathString = WebServiceBCAConstant.HTTP_USER_REGISTRATION;
+			String pathString = WebServiceBCAConstant.HTTP_TRANSACTION_INQUIRY
+					.concat("/").concat(companyCode).concat("/").concat(primaryID)
+					.concat("?StartDate=").concat(startDate)
+					.concat("&EndDate=").concat(endDate)
+					.concat("&LastAccountStatementID=").concat(lastAccountStatementID);
 			String urlString = apiType.getProtocol().concat("://")
 					.concat(apiType.getHost()).concat(":")
 					.concat(apiType.getPort()).concat(pathString);
 			String timesTampBCA = ParameterConstant.FORMAT_TIME_BCA.format(new Date());
-			String signaturePlainText = "POST"+":"+pathString
+			String signaturePlainText = "GET"+":"+pathString
 					+":"+dtoResponseOAuthBCA.getAccessToken()
-					+":"+SignatureBCA.hexSha256(dataRequestJson)
+					+":"+""
 					+":"+timesTampBCA;
 			String signature = SignatureBCA.hmacSha256(apiType.getSecret(), signaturePlainText); 
 			LOGGER.debug(bcaSignatureHeader,signature);
@@ -93,14 +94,14 @@ public class UserRegistrationBCAApi {
 			httpHeaders.add(bcaSignatureHeader, signature);
 			stateFullRest.setHeaders(httpHeaders);
 			try {				
-				dtoResponseUserRegistrationBCA = stateFullRest.post(urlString, dataRequestJson, DTOResponseUserRegistrationBCA.class);
+				dtoResponseTransactionInquiryBCA = stateFullRest.get(urlString, DTOResponseTransactionInquiryBCA.class);
 			} catch (Exception e) {
 				e.printStackTrace();				
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return dtoResponseUserRegistrationBCA;
+		return dtoResponseTransactionInquiryBCA;
 	}
 	
 }

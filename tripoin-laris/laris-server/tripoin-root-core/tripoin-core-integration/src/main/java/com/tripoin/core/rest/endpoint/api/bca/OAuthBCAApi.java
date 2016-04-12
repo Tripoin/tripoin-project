@@ -66,7 +66,7 @@ public class OAuthBCAApi {
 			HttpHeaders httpHeaders = new HttpHeaders();
 			httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-			httpHeaders.add("Host", "api.finhacks.id");
+			httpHeaders.add("Host", apiType.getHost());
 			httpHeaders = stateFullRest.encodeUserCredentials(httpHeaders, apiType.getAdditional());
 			MultiValueMap<String, String> dataMap = new LinkedMultiValueMap<String, String>();
 			dataMap.add(grantType, userCredentials);

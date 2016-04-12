@@ -56,7 +56,7 @@ public abstract class ABaseHttpRest {
 			sslContext.init( null, UNQUESTIONING_TRUST_MANAGER, new java.security.SecureRandom() );
 			HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
 			HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
-	        
+	        			
 			restTemplate.setRequestFactory( new SimpleClientHttpRequestFactory() {
 			    @Override
 			    protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
@@ -96,28 +96,27 @@ public abstract class ABaseHttpRest {
 	
 	protected <T> T getObject(HttpMethod method, String url, Object data, Class<T> clazz) {
 		HttpEntity<?> request = new HttpEntity<Object>(data, httpHeaders);
-		ResponseEntity<T> response;
+		ResponseEntity<T> response = null;
 		try{
 			response = getTemplate().exchange(url, method, request, clazz);
 			extractCookies(response.getHeaders());
 		}catch(HttpClientErrorException hcee){
 			hcee.printStackTrace();
-			response = new ResponseEntity<>(hcee.getStatusCode());
 			LOGGER.warn("HttpClientErrorException : ".concat(hcee.getMessage()));
 			clearAllCookies();
 		}catch(ResourceAccessException e){
 			e.printStackTrace();
-			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			LOGGER.warn("Exception : ".concat("Connection refused, please check Web Service"));
 			clearAllCookies();
 		}catch(Exception e){
 			e.printStackTrace();
-			response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			LOGGER.error("Exception : ".concat(e.getMessage()), e);
 			clearAllCookies();		
 		}
 		httpHeaders = new HttpHeaders();
 		setStatusCode(response.getStatusCode());
+		LOGGER.debug("Response Status Code : "+response.getStatusCode());
+		LOGGER.debug("Response Headers : "+response.getHeaders());
 		return response.getBody();
 	}
 

@@ -48,7 +48,7 @@ public interface IStateFullRest {
 	 * @return
 	 */
 	public <T> T delete(String url, Object data, Class<T> clazz);
-	
+
 	/**
 	 * <b>Sample Code:</b><br>
 	 * <code>post(commonRest.getUrl(WebServiceConstant.HTTP_CONNECTION), data, UserDTO.class)</code><br>
@@ -58,6 +58,16 @@ public interface IStateFullRest {
 	 * @return
 	 */
 	public <T> T post(String url, Object data, Class<T> clazz);
+
+	/**
+	 * <b>Sample Code:</b><br>
+	 * <code>options(commonRest.getUrl(WebServiceConstant.HTTP_CONNECTION), data, UserDTO.class)</code><br>
+	 * @param url
+	 * @param data
+	 * @param clazz
+	 * @return
+	 */
+	public <T> T options(String url, Object data, Class<T> clazz);
 	
 	/**
 	 * <b>Sample Code:</b><br>

@@ -17,17 +17,17 @@ import com.tripoin.core.pojo.APIType;
 import com.tripoin.core.rest.security.bca.SignatureBCA;
 import com.tripoin.core.rest.template.IStateFullRest;
 import com.tripoin.core.service.IGenericManagerJpa;
-import com.tripoin.dto.request.bca.DTORequestUserRegistrationBCA;
+import com.tripoin.dto.request.bca.DTORequestTopUpBCA;
 import com.tripoin.dto.response.bca.DTOResponseOAuthBCA;
-import com.tripoin.dto.response.bca.DTOResponseUserRegistrationBCA;
+import com.tripoin.dto.response.bca.DTOResponseTopUpBCA;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-@Service("userRegistrationBCAApi")
-public class UserRegistrationBCAApi {
+@Service("topUpBCAApi")
+public class TopUpBCAApi {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserRegistrationBCAApi.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TopUpBCAApi.class);
 
 	@Autowired
 	private IStateFullRest stateFullRest;
@@ -63,15 +63,15 @@ public class UserRegistrationBCAApi {
 		this.bcaSignatureHeader = bcaSignatureHeader;
 	}
 
-	public DTOResponseUserRegistrationBCA doUserRegistration(DTORequestUserRegistrationBCA dtoRequestUserRegistrationBCA){
-		DTOResponseUserRegistrationBCA dtoResponseUserRegistrationBCA = null;
+	public DTOResponseTopUpBCA doTopUp(DTORequestTopUpBCA dtoRequestTopUpBCA){
+		DTOResponseTopUpBCA dtoResponseTopUpBCA = null;
 		try {
 			DTOResponseOAuthBCA dtoResponseOAuthBCA = oauthBCAApi.getTokenBCA();
 			APIType apiType = oauthBCAApi.getApiType();
 
 			ObjectMapper mapper = new ObjectMapper();
-			String dataRequestJson = mapper.writeValueAsString(dtoRequestUserRegistrationBCA);
-			String pathString = WebServiceBCAConstant.HTTP_USER_REGISTRATION;
+			String dataRequestJson = mapper.writeValueAsString(dtoRequestTopUpBCA);
+			String pathString = WebServiceBCAConstant.HTTP_TOPUP;
 			String urlString = apiType.getProtocol().concat("://")
 					.concat(apiType.getHost()).concat(":")
 					.concat(apiType.getPort()).concat(pathString);
@@ -93,14 +93,14 @@ public class UserRegistrationBCAApi {
 			httpHeaders.add(bcaSignatureHeader, signature);
 			stateFullRest.setHeaders(httpHeaders);
 			try {				
-				dtoResponseUserRegistrationBCA = stateFullRest.post(urlString, dataRequestJson, DTOResponseUserRegistrationBCA.class);
+				dtoResponseTopUpBCA = stateFullRest.post(urlString, dataRequestJson, DTOResponseTopUpBCA.class);
 			} catch (Exception e) {
 				e.printStackTrace();				
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return dtoResponseUserRegistrationBCA;
+		return dtoResponseTopUpBCA;
 	}
 	
 }

@@ -25,7 +25,9 @@ public enum APIConstant {
 	ACCESS_TOKEN("access_token"),
 	EXPIRES("expires_in"),
 
-	BCA("BCA");
+	BCA("BCA"),
+	WALLET_ACTIVE("ACTIVE"),
+	WALLET_BLOCKED("BLOCKED");
 
 	private String operator;
 	private String operand;

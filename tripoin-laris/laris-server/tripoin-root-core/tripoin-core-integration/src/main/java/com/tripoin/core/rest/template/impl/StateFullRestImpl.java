@@ -35,20 +35,24 @@ public class StateFullRestImpl extends ABaseHttpRest implements IStateFullRest {
 	}
 
 	@Override
+	public <T> T options(String url, Object data, Class<T> clazz) {
+		return getObject(HttpMethod.OPTIONS, url, data, clazz);
+	}
+
+	@Override
 	public <T> T put(String url, Object data, Class<T> clazz) {
 		return getObject(HttpMethod.PUT, url, data, clazz);
 	}
 
 	@Override
 	public HttpHeaders getHeaders() {	
-		httpHeaders.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));
+		/*httpHeaders.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));*/
 		return httpHeaders;
 	}
 
 	@Override
 	public void setHeaders(HttpHeaders httpHeaders) {
 		this.httpHeaders = httpHeaders;
-		this.httpHeaders.put("Cookie", Arrays.asList(new String[]{getCookiesString()}));
 	}
 
 	@Override
