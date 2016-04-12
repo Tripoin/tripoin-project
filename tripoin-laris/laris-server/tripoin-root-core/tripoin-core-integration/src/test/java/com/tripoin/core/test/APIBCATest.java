@@ -21,11 +21,11 @@ import org.springframework.util.MultiValueMap;
 import com.tripoin.core.common.APIConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
+import com.tripoin.core.dto.response.bca.DTOResponseOAuthBCA;
 import com.tripoin.core.pojo.APIType;
 import com.tripoin.core.rest.endpoint.api.bca.WebServiceBCAConstant;
 import com.tripoin.core.rest.template.IStateFullRest;
 import com.tripoin.core.service.IGenericManagerJpa;
-import com.tripoin.dto.response.bca.DTOResponseOAuthBCA;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>

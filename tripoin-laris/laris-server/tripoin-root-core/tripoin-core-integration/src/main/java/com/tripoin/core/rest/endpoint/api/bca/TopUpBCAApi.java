@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.dto.request.bca.DTORequestTopUpBCA;
+import com.tripoin.core.dto.response.bca.DTOResponseOAuthBCA;
+import com.tripoin.core.dto.response.bca.DTOResponseTopUpBCA;
 import com.tripoin.core.pojo.APIType;
 import com.tripoin.core.rest.security.bca.SignatureBCA;
 import com.tripoin.core.rest.template.IStateFullRest;
 import com.tripoin.core.service.IGenericManagerJpa;
-import com.tripoin.dto.request.bca.DTORequestTopUpBCA;
-import com.tripoin.dto.response.bca.DTOResponseOAuthBCA;
-import com.tripoin.dto.response.bca.DTOResponseTopUpBCA;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>

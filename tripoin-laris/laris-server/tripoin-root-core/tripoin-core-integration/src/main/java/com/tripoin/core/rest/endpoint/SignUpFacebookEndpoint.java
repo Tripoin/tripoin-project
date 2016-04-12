@@ -31,6 +31,8 @@ import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.ValueArgument;
 import com.tripoin.core.dto.exception.WSEndpointFault;
+import com.tripoin.core.dto.request.bca.DTORequestUserRegistrationBCA;
+import com.tripoin.core.dto.response.bca.DTOResponseUserRegistrationBCA;
 import com.tripoin.core.pojo.APIType;
 import com.tripoin.core.pojo.Currency;
 import com.tripoin.core.pojo.LinkedAccount;
@@ -48,8 +50,6 @@ import com.tripoin.dto.app.CustomerData;
 import com.tripoin.dto.app.FacebookProfileData;
 import com.tripoin.dto.app.GeneralTransferObject;
 import com.tripoin.dto.request.DTORequestSignUpFacebook;
-import com.tripoin.dto.request.bca.DTORequestUserRegistrationBCA;
-import com.tripoin.dto.response.bca.DTOResponseUserRegistrationBCA;
 import com.tripoin.util.mail.ICoreMailSender;
 
 /**
@@ -255,7 +255,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
         						    content = content.replaceAll(ParameterConstant.TRIPOIN_CONTENT_USERNAME, username);
         		                    iCoreMailSender.sendMailContent(emailFrom, email, mapSystemParamter.get(ParameterConstant.NEW_USER_SUBJECT), content);
         						} catch (Exception e) {
-        							LOGGER.error("Sign Up Account System Error : " + e.getLocalizedMessage(), e);
+        							LOGGER.error("Sign Up Account Facebook System Error : " + e.getLocalizedMessage(), e);
         						}
         						return null;
         					}
@@ -272,7 +272,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
 			generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			generalTransferObject.setResponseDesc(e.getFaultInfo().getMessage());
         }  catch (Exception e) {
-			LOGGER.error("Sign Up Account System Error : "+e.getMessage(), e);
+			LOGGER.error("Sign Up Account Facebook System Error : "+e.getMessage(), e);
 			generalTransferObject.setResponseCode(EResponseCode.RC_FAILURE.getResponseCode());
 			generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			generalTransferObject.setResponseDesc(EResponseCode.RC_FAILURE.toString() + e.getMessage());
