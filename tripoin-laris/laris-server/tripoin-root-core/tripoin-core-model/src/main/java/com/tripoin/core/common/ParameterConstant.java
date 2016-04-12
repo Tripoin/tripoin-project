@@ -68,5 +68,6 @@ public class ParameterConstant {
 	public static final String TRIPOIN_AUTHORIZATION = "TRIPOIN-AUTHORIZATION=";
 
 	public static final String BCA_PARAM_COMPANY_CODE = "BCA.API.FORM.PARAM.COMPANY.CODE";
+	public static final String BCA_WALLET_ACTIVE = "ACTIVE";
 	
 }
