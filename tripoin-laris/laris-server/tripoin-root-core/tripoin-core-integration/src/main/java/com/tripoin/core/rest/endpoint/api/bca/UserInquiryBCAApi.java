@@ -78,7 +78,7 @@ public class UserInquiryBCAApi {
 					+":"+""
 					+":"+timesTampBCA;
 			String signature = SignatureBCA.hmacSha256(apiType.getSecret(), signaturePlainText); 
-			LOGGER.debug(bcaSignatureHeader,signature);
+			LOGGER.debug(bcaSignatureHeader+" : "+signature);
 			
 			HttpHeaders httpHeaders = new HttpHeaders();
 			httpHeaders.add("Authorization", dtoResponseOAuthBCA.getTokenType().concat(" ").concat(dtoResponseOAuthBCA.getAccessToken()));

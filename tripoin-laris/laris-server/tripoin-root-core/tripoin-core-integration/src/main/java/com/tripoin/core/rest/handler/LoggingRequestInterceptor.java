@@ -27,7 +27,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         logRequest(request,body);
         ClientHttpResponse response = execution.execute(request, body);
-        LOGGER.debug("Interceptor Response Status Code",response.getRawStatusCode());
+        LOGGER.debug("Interceptor Response Status Code : "+response.getRawStatusCode());
         if(response.getRawStatusCode() >= 400)
             return interceptNotSuccess(response);
         return response;
