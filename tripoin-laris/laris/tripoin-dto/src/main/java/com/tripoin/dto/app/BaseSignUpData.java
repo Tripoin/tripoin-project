@@ -1,25 +1,13 @@
-package com.tripoin.dto.request;
-
-import com.tripoin.dto.app.CustomerData;
-import com.tripoin.dto.app.FacebookProfileData;
+package com.tripoin.dto.app;
 
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-public class DTORequestSignUp {
+public class BaseSignUpData {
 
-	FacebookProfileData facebookProfileData;
 	CustomerData customerData;
 	String state;
 	String accessToken;
-
-	public FacebookProfileData getFacebookProfileData() {
-		return facebookProfileData;
-	}
-
-	public void setFacebookProfileData(FacebookProfileData facebookProfileData) {
-		this.facebookProfileData = facebookProfileData;
-	}
 
 	public CustomerData getCustomerData() {
 		return customerData;
@@ -47,8 +35,8 @@ public class DTORequestSignUp {
 
 	@Override
 	public String toString() {
-		return "DTORequestSignUp [facebookProfileData=" + facebookProfileData
-				+ ", customerData=" + customerData + ", state=" + state
-				+ ", accessToken=" + accessToken + "]";
+		return "BaseSignUpData [customerData=" + customerData + ", state="
+				+ state + ", accessToken=" + accessToken + "]";
 	}
+
 }
