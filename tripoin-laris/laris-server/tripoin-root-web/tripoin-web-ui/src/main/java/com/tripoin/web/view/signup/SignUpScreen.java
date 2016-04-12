@@ -13,14 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
 import com.tripoin.core.common.RoleConstant;
 import com.tripoin.dto.app.CustomerData;
-import com.tripoin.dto.request.DTORequestSignUp;
+import com.tripoin.dto.app.FacebookProfileData;
+import com.tripoin.dto.app.GeneralTransferObject;
+import com.tripoin.dto.request.DTORequestSignUpFacebook;
 import com.tripoin.dto.response.DTOResponseCallbackFacebook;
 import com.tripoin.web.common.EWebSessionConstant;
 import com.tripoin.web.common.EWebUIConstant;
 import com.tripoin.web.service.IForgotPasswordService;
+import com.tripoin.web.service.ISignUpService;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.MouseEvents.ClickEvent;
@@ -65,6 +69,9 @@ public class SignUpScreen extends CssLayout implements View {
 	
 	@Autowired
 	private Producer captchaProducer;
+	
+	@Autowired
+	private ISignUpService signUpService;
 
 	private final TabSheet tabs = new TabSheet();
 	private Tab tab1;
@@ -195,8 +202,8 @@ public class SignUpScreen extends CssLayout implements View {
 			@Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
+    				reloadCaptcha.setSource(generateCaptcha());
                 	if(!validateForm1()){
-                		reloadCaptcha.setSource(generateCaptcha());
                 		notificationAfterSend.setCaption("Error");
                 		notificationAfterSend.setDescription("Register account error, please try again later!");
                 		notificationAfterSend.show(Page.getCurrent());
@@ -349,8 +356,7 @@ public class SignUpScreen extends CssLayout implements View {
     	}
     	if(validateForm){
         	DTOResponseCallbackFacebook dtoResponseCallbackFacebook = (DTOResponseCallbackFacebook)VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_FACEBOOK_DATA.toString());
-        	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_API_FACEBOOK_DATA.toString());
-        	DTORequestSignUp dtoRequestSignUp = new DTORequestSignUp();
+        	DTORequestSignUpFacebook<FacebookProfileData, CustomerData> dtoRequestSignUp = new DTORequestSignUpFacebook<FacebookProfileData, CustomerData>();
         	dtoRequestSignUp.setFacebookProfileData(dtoResponseCallbackFacebook.getFacebookProfileData());
         	dtoRequestSignUp.setAccessToken(dtoResponseCallbackFacebook.getAccessToken());
         	dtoRequestSignUp.setState(dtoResponseCallbackFacebook.getState());
@@ -360,15 +366,26 @@ public class SignUpScreen extends CssLayout implements View {
         	customerData.setAddress(addressTextField.getValue());
         	customerData.setEmail(emailTextField.getValue());
         	customerData.setPassword(passwordTextField.getValue());
+        	customerData.setPhoneNumber(phoneNumberTextField.getValue());
         	if(ParameterConstant.SELLER.equals(customerOptionGroup.getValue().toString())){
         		customerData.setRoleCode(RoleConstant.ROLE_SELLER);
         	}else{
         		customerData.setRoleCode(RoleConstant.ROLE_BUYER);
         	}
         	dtoRequestSignUp.setCustomerData(customerData);
-    		notificationAfterSend.setCaption("Success");
-    		notificationAfterSend.setDescription(dtoRequestSignUp.toString());
-    		notificationAfterSend.show(Page.getCurrent());
+        	GeneralTransferObject generalTransferObject = signUpService.registerWithFacebook(dtoRequestSignUp);
+        	if(EResponseCode.RC_SUCCESS.toString().equals(generalTransferObject.getResponseCode())){
+        		notificationAfterSend.setCaption("Success");
+        		notificationAfterSend.setDescription(dtoRequestSignUp.toString());
+        		notificationAfterSend.show(Page.getCurrent());
+            	VaadinSession.getCurrent().getSession().removeAttribute(EWebSessionConstant.SESSION_API_FACEBOOK_DATA.toString());
+        		Page.getCurrent().setLocation("/");        		
+        	}else{
+        		reloadCaptcha.setSource(generateCaptcha());
+        		notificationAfterSend.setCaption("Error");
+        		notificationAfterSend.setDescription("Register account error, please try again later!");
+        		notificationAfterSend.show(Page.getCurrent());        		
+        	}
     	}else{
     		reloadCaptcha.setSource(generateCaptcha());
     		notificationAfterSend.setCaption("Error");
@@ -434,8 +451,7 @@ public class SignUpScreen extends CssLayout implements View {
 			@Override
 			public InputStream getStream() {
 		        BufferedImage bufferedImage = captchaProducer.createImage(captchaPlainText);
-		        ByteArrayOutputStream imageInputStream = new ByteArrayOutputStream();
-		        
+		        ByteArrayOutputStream imageInputStream = new ByteArrayOutputStream();		        
 		        try {
 					ImageIO.write(bufferedImage, "jpg", imageInputStream);
 				} catch (IOException e) {

@@ -21,6 +21,7 @@ public class WebServiceConstant {
 	private static final String HTTP_DELETE = "/delete";
 	private static final String HTTP_SELECT = "/select";
 	private static final String HTTP_SECRET = "/secret";
+	private static final String HTTP_SIGNUP = "/signup";
 
 	public static final String CONTEXT_CONSTANT_ROLES = "ROLES";
 	public static final String CONTEXT_CONSTANT_OCCUPATION = "OCCUPATION";
@@ -40,6 +41,7 @@ public class WebServiceConstant {
 	public static final String HTTP_LOGIN_MENU_SOAP = HTTP_CONTEXT_SOAP.concat("/loginMenuService");
 
 	public static final String HTTP_CALLBACK_FACEBOOK = HTTP_CONTEXT_API.concat(HTTP_SECRET).concat("/facebook");
+	public static final String HTTP_SIGNUP_FACEBOOK = HTTP_CONTEXT_API.concat(HTTP_SIGNUP).concat("/facebook");
 	
 	public static final String HTTP_CONNECTION = HTTP_CONTEXT_REST.concat("/connection");
 	public static final String HTTP_LOGIN_MENU = HTTP_CONTEXT_REST.concat("/login-menu");

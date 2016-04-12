@@ -149,12 +149,16 @@ public class TripoinUI extends UI implements ErrorHandler {
 				mainView();
 			}
 		});
-    	if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_FACEBOOK_DATA.toString()) == null){
-        	getPage().setTitle("Tripoin Login");
-            setContent(loginScreen);
-    	}else{
+    	if(VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_FACEBOOK_DATA.toString()) != null ||
+    			VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_INSTAGRAM_DATA.toString()) != null ||
+    			VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_TWITTER_DATA.toString()) != null ||
+    			VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_GPLUS_DATA.toString()) != null ||
+    			VaadinSession.getCurrent().getSession().getAttribute(EWebSessionConstant.SESSION_API_LINE_DATA.toString()) != null){
     		getPage().setTitle("Tripoin Register");
-            setContent(signUpScreen);    		
+            setContent(signUpScreen);
+    	}else{
+    		getPage().setTitle("Tripoin Login");
+            setContent(loginScreen);    		
     	}
 	}
 
