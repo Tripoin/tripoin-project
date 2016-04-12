@@ -28,10 +28,10 @@
 		reply-channel="responseChannelSignUp"
 		supported-methods="GET" 
 		path="/api/signup/facebook"
-		request-payload-type="com.tripoin.dto.request.DTORequestSignUp">
+		request-payload-type="com.tripoin.dto.request.DTORequestSignUpFacebook">
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
-	<int:service-activator ref="signUpEndpoint"
+	<int:service-activator ref="signUpFacebookEndpoint"
 		method="doRegisterAccount" 
 		input-channel="requestChannelSignUp" 
 		output-channel="responseChannelSignUp"

@@ -47,7 +47,7 @@ import com.tripoin.core.service.util.IVersionControlSystemTableService;
 import com.tripoin.dto.app.CustomerData;
 import com.tripoin.dto.app.FacebookProfileData;
 import com.tripoin.dto.app.GeneralTransferObject;
-import com.tripoin.dto.request.DTORequestSignUp;
+import com.tripoin.dto.request.DTORequestSignUpFacebook;
 import com.tripoin.dto.request.bca.DTORequestUserRegistrationBCA;
 import com.tripoin.dto.response.bca.DTOResponseUserRegistrationBCA;
 import com.tripoin.util.mail.ICoreMailSender;
@@ -55,10 +55,10 @@ import com.tripoin.util.mail.ICoreMailSender;
 /**
  * @author <a href="mailto:ridla.fadilah@gmail.com">Ridla Fadilah</a>
  */
-@Component("signUpEndpoint")
-public class SignUpEndpoint extends XReturnStatus {
+@Component("signUpFacebookEndpoint")
+public class SignUpFacebookEndpoint extends XReturnStatus {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(SignUpEndpoint.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(SignUpFacebookEndpoint.class);
 
 	@Autowired
 	private IGenericManagerJpa iGenericManagerJpa;
@@ -106,11 +106,11 @@ public class SignUpEndpoint extends XReturnStatus {
 	 * @param inMessage
 	 * @return
 	 */
-	public Message<GeneralTransferObject> doRegisterAccount(Message<DTORequestSignUp> inMessage){
+	public Message<GeneralTransferObject> doRegisterAccount(Message<DTORequestSignUpFacebook> inMessage){
 		GeneralTransferObject generalTransferObject = new GeneralTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 		try {
-			DTORequestSignUp dtoRequestSignUp = inMessage.getPayload();
+			DTORequestSignUpFacebook dtoRequestSignUp = inMessage.getPayload();
 			if(dtoRequestSignUp != null){
 				FacebookProfileData facebookProfileData = dtoRequestSignUp.getFacebookProfileData();
 				CustomerData customerData = dtoRequestSignUp.getCustomerData();
@@ -198,10 +198,10 @@ public class SignUpEndpoint extends XReturnStatus {
     					new ValueArgument("createdPlatform", ParameterConstant.PLATFORM_DEFAULT)
     			};
             	iGenericManagerJpa.execQueryNotCriteria("INSERT INTO mst_linked_account( "+
-            			"linked_account_code, linked_account_name, linked_account_username,  "+
+            			"linked_account_code, linked_account_name, linked_account_username, "+
             			"linked_account_photo, linked_account_token, api_type_id, "+
             			"profile_id, status, created_by, "+
-            			"created_ip, created_time, created_platform, ) "+
+            			"created_ip, created_time, created_platform) "+
             			"VALUES ( "+
             			":code, :name, :username, "+
             			":photo, :token, :apiId, "+
