@@ -106,18 +106,18 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
 	 * @param inMessage
 	 * @return
 	 */
-	public Message<GeneralTransferObject> doRegisterAccount(Message<DTORequestSignUpFacebook> inMessage){
+	public Message<GeneralTransferObject> doRegisterAccount(Message<DTORequestSignUpFacebook<FacebookProfileData, CustomerData>> inMessage){
 		GeneralTransferObject generalTransferObject = new GeneralTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
 		try {
-			DTORequestSignUpFacebook dtoRequestSignUp = inMessage.getPayload();
+			DTORequestSignUpFacebook<FacebookProfileData, CustomerData> dtoRequestSignUp = inMessage.getPayload();
 			if(dtoRequestSignUp != null){
 				FacebookProfileData facebookProfileData = dtoRequestSignUp.getFacebookProfileData();
 				CustomerData customerData = dtoRequestSignUp.getCustomerData();
-				List<Profile> userList = iGenericManagerJpa.loadObjectsJQLStatement(
-						"SELECT usr FROM Profile usr WHERE usr.username = ? OR usr.profile.",
-						new Object[] { customerData.getPhoneNumber(), customerData.getEmail() }, null);
-				if (userList != null) {
+				List<Profile> profileListCheck = iGenericManagerJpa.loadObjectsJQLStatement(
+						"SELECT prf FROM Profile prf WHERE prf.user.username = ? OR prf.email = ? OR prf.phone = ?",
+						new Object[] { customerData.getEmail(), customerData.getEmail(), customerData.getPhoneNumber() }, null);
+				if (profileListCheck != null && !profileListCheck.isEmpty()) {
 					wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString());
     				throw new WSEndpointFaultException(EResponseCode.RC_PHONE_EXISTS.getResponseCode(), wsEndpointFault);
 				}
@@ -135,7 +135,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
 				dtoRequestUserRegistrationBCA.setCustomerNumber(mobileNo);
 				dtoRequestUserRegistrationBCA.setDateOfBirth("");
 				DTOResponseUserRegistrationBCA dtoResponseUserRegistrationBCA = userRegistrationBCAApi.doUserRegistration(dtoRequestUserRegistrationBCA);
-				if(!dtoResponseUserRegistrationBCA.getErrorCode().isEmpty()){
+				if(dtoResponseUserRegistrationBCA.getErrorCode() != null){
 					wsEndpointFault.setMessage(EResponseCode.RC_FAILURE.toString());
     				throw new WSEndpointFaultException(dtoResponseUserRegistrationBCA.getErrorMessage().getEnglish(), wsEndpointFault);					
 				}
@@ -143,7 +143,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
 			    String password = jasyptStringDigester.digest(customerData.getPassword());
 			    final String name = facebookProfileData.getName();
 			    String gender = facebookProfileData.getGender();
-			    String address = customerData.getAccountNumber();
+			    String address = customerData.getAddress();
 			    final UUID uuid = UUID.randomUUID();
 				
 			    Role role = iGenericManagerJpa.loadObjectsFilterArgument(Role.class, 
@@ -174,7 +174,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
     					new ValueArgument("resources", uuid.toString()),
     					new ValueArgument("createdBy", email),
     					new ValueArgument("createdIP", ParameterConstant.IP_ADDRESSV4_DEFAULT),
-    					new ValueArgument("createdTime", ParameterConstant.FORMAT_DEFAULT.format(new Date())),
+    					new ValueArgument("createdTime", new Date()),
     					new ValueArgument("createdPlatform", ParameterConstant.PLATFORM_DEFAULT)
     			};
             	iGenericManagerJpa.execQueryNotCriteria("INSERT INTO mst_profile "
@@ -194,7 +194,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
     					new ValueArgument("photo", facebookProfileData.getUrlPhoto()), new ValueArgument("token", dtoRequestSignUp.getAccessToken()), new ValueArgument("apiId", apiType.getId()),
     					new ValueArgument("profileId", getProfileId.get(0).getId()), new ValueArgument("status", 1), new ValueArgument("createdBy", email),
     					new ValueArgument("createdIP", ParameterConstant.IP_ADDRESSV4_DEFAULT),
-    					new ValueArgument("createdTime", ParameterConstant.FORMAT_DEFAULT.format(new Date())),
+    					new ValueArgument("createdTime", new Date()),
     					new ValueArgument("createdPlatform", ParameterConstant.PLATFORM_DEFAULT)
     			};
             	iGenericManagerJpa.execQueryNotCriteria("INSERT INTO mst_linked_account( "+
@@ -220,7 +220,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
     					new ValueArgument("currencyId", currency.getId()),
     					new ValueArgument("status", 1), new ValueArgument("createdBy", email),
     					new ValueArgument("createdIP", ParameterConstant.IP_ADDRESSV4_DEFAULT),
-    					new ValueArgument("createdTime", ParameterConstant.FORMAT_DEFAULT.format(new Date())),
+    					new ValueArgument("createdTime", new Date()),
     					new ValueArgument("createdPlatform", ParameterConstant.PLATFORM_DEFAULT)
     			};
             	iGenericManagerJpa.execQueryNotCriteria("INSERT INTO mst_account_finance( "+
@@ -265,9 +265,10 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
 				generalTransferObject.setResponseCode(EResponseCode.RC_SUCCESS.getResponseCode());
 				generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_SUCCESS);
 				generalTransferObject.setResponseDesc(EResponseCode.RC_SUCCESS.toString());
-				userList = null;
+				profileListCheck = null;
 			}
-		} catch (WSEndpointFaultException e) {	
+		} catch (WSEndpointFaultException e) {
+			LOGGER.error("Sign Up Account Facebook System Error : "+e.getMessage(), e);
 			generalTransferObject.setResponseCode(e.getMessage());
 			generalTransferObject.setResponseMsg(ParameterConstant.RESPONSE_FAILURE);
 			generalTransferObject.setResponseDesc(e.getFaultInfo().getMessage());

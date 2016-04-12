@@ -54,7 +54,7 @@ public class User implements IBaseModel {
         this.id = id;
     }
 
-    @Column(name = "user_username", unique=true, length = 20)
+    @Column(name = "user_username", unique=true, length = 50)
     public String getUsername() {
         return username;
     }

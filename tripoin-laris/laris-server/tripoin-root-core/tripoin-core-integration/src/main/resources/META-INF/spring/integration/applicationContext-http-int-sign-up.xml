@@ -10,31 +10,41 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
 		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd">
 			
-	<int:channel id="responseChannelSignUp">
+	<int:channel id="responseChannelSignUpFacebook">
 		<int:interceptors>
-			<int:wire-tap channel="logResponseChannelSignUp" />
+			<int:wire-tap channel="logResponseChannelSignUpFacebook" />
 		</int:interceptors>
 	</int:channel>
-	<int:logging-channel-adapter id="logResponseChannelSignUp"
-		level="INFO" logger-name="responseChannelSignUp" log-full-message="true" />
-	<int:channel id="requestChannelSignUp">
+	<int:logging-channel-adapter id="logResponseChannelSignUpFacebook"
+		level="INFO" logger-name="responseChannelSignUpFacebook" log-full-message="true" />
+	<int:channel id="requestChannelSignUpFacebook">
 		<int:interceptors>
-			<int:wire-tap channel="logResponseChannelSignUp" />
+			<int:wire-tap channel="logResponseChannelSignUpFacebook" />
 		</int:interceptors>
 	</int:channel>
-	<int:logging-channel-adapter id="logResponseChannelSignUp"
-		level="INFO" logger-name="responseChannelSignUp" log-full-message="true" />	
-	<int-http:inbound-gateway request-channel="requestChannelSignUp"
-		reply-channel="responseChannelSignUp"
-		supported-methods="GET" 
+	<int:logging-channel-adapter id="logResponseChannelSignUpFacebook"
+		level="INFO" logger-name="responseChannelSignUpFacebook" log-full-message="true" />
+	<int:channel id="routeChannelSignUpFacebook">
+		<int:interceptors>
+			<int:wire-tap channel="logRouteChannelSignUpFacebook" />
+		</int:interceptors>
+	</int:channel>
+	<int:logging-channel-adapter id="logRouteChannelSignUpFacebook"
+		level="INFO" logger-name="routeChannelSignUpFacebook" log-full-message="true" />
+	<int-http:inbound-gateway request-channel="requestChannelSignUpFacebook"
+		reply-channel="responseChannelSignUpFacebook"
+		supported-methods="POST" 
 		path="/api/signup/facebook"
 		request-payload-type="com.tripoin.dto.request.DTORequestSignUpFacebook">
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
+	<int:router input-channel="routeChannelSignUpFacebook" expression="headers.http_requestMethod">
+	    <int:mapping value="POST" channel="requestChannelSignUpFacebook"/>
+	</int:router>
 	<int:service-activator ref="signUpFacebookEndpoint"
 		method="doRegisterAccount" 
-		input-channel="requestChannelSignUp" 
-		output-channel="responseChannelSignUp"
+		input-channel="requestChannelSignUpFacebook" 
+		output-channel="responseChannelSignUpFacebook"
 		requires-reply="true"  
 		send-timeout="30000"/>
 		
