@@ -108,7 +108,7 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
 	 * @param inMessage
 	 * @return
 	 */
-	@Secured({RoleConstant.ROLE_GATEWAY, RoleConstant.ROLE_ADMIN})
+	@Secured({RoleConstant.ROLE_ANONYMOUS_SECURE})
 	public Message<GeneralTransferObject> doRegisterAccount(Message<DTORequestSignUpFacebook<FacebookProfileData, CustomerData>> inMessage){
 		GeneralTransferObject generalTransferObject = new GeneralTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

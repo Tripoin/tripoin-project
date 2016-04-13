@@ -1,11 +1,9 @@
 package com.tripoin.core.rest.template.impl;
 
-import java.util.Arrays;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
 import org.springframework.security.crypto.codec.Base64;
+import org.springframework.stereotype.Component;
 
 import com.tripoin.core.rest.template.ABaseHttpRest;
 import com.tripoin.core.rest.template.IStateFullRest;
