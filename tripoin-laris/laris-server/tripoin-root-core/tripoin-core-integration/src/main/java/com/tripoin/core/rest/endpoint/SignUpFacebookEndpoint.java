@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -27,6 +28,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.tripoin.core.common.APIConstant;
 import com.tripoin.core.common.EResponseCode;
 import com.tripoin.core.common.ParameterConstant;
+import com.tripoin.core.common.RoleConstant;
 import com.tripoin.core.dao.filter.ECommonOperator;
 import com.tripoin.core.dao.filter.FilterArgument;
 import com.tripoin.core.dao.filter.ValueArgument;
@@ -102,10 +104,11 @@ public class SignUpFacebookEndpoint extends XReturnStatus {
 
 	/**
 	 * <b>Sample Code:</b><br>
-	 * <code>/api/signup/facebook</code><br>
+	 * <code>/wscontext/signup/facebook</code><br>
 	 * @param inMessage
 	 * @return
 	 */
+	@Secured({RoleConstant.ROLE_GATEWAY, RoleConstant.ROLE_ADMIN})
 	public Message<GeneralTransferObject> doRegisterAccount(Message<DTORequestSignUpFacebook<FacebookProfileData, CustomerData>> inMessage){
 		GeneralTransferObject generalTransferObject = new GeneralTransferObject();
 		Map<String, Object> responseHeaderMap = new HashMap<String, Object>();

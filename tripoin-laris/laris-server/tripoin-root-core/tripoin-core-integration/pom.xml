@@ -265,7 +265,7 @@
             	</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-java-dsl</artifactId>
 			<version>1.0.0.RELEASE</version>
@@ -275,7 +275,7 @@
 					<groupId>org.springframework.integration</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency> -->
 		<!-- refert servlet data -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -314,11 +314,6 @@
 			</exclusions>
 		</dependency>
 		<!-- refer other data -->
-		<dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>org.springframework.web</artifactId>
-	        <version>3.0.0.M4</version>
-	    </dependency>
 		<dependency>
 	        <groupId>commons-httpclient</groupId>
 	        <artifactId>commons-httpclient</artifactId>

@@ -34,7 +34,7 @@
 	<int-http:inbound-gateway request-channel="requestChannelSignUpFacebook"
 		reply-channel="responseChannelSignUpFacebook"
 		supported-methods="POST" 
-		path="/api/signup/facebook"
+		path="/wscontext/signup/facebook"
 		request-payload-type="com.tripoin.dto.request.DTORequestSignUpFacebook">
 		<int-http:request-mapping consumes="application/json" produces="application/json"/>
 	</int-http:inbound-gateway>
