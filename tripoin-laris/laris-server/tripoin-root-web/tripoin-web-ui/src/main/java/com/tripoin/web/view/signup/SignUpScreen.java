@@ -374,7 +374,7 @@ public class SignUpScreen extends CssLayout implements View {
         	}
         	dtoRequestSignUp.setCustomerData(customerData);
         	GeneralTransferObject generalTransferObject = signUpService.registerWithFacebook(dtoRequestSignUp);
-        	if(EResponseCode.RC_SUCCESS.toString().equals(generalTransferObject.getResponseCode())){
+        	if(EResponseCode.RC_SUCCESS.getResponseCode().equals(generalTransferObject.getResponseCode())){
         		notificationAfterSend.setCaption("Success");
         		notificationAfterSend.setDescription(dtoRequestSignUp.toString());
         		notificationAfterSend.show(Page.getCurrent());

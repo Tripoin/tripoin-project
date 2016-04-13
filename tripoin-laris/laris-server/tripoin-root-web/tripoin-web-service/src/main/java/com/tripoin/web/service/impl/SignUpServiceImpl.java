@@ -1,6 +1,7 @@
 package com.tripoin.web.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.tripoin.dto.app.CustomerData;
@@ -22,11 +23,21 @@ public class SignUpServiceImpl implements ISignUpService {
 	private ICommonRest commonRest;
 	
 	@Autowired
-	private IStateFullRest stateFullRest;
+	private IStateFullRest stateFullRest;	
+
+	private String username;
+	private String password;
+
+	@Value("${tripoin.web.app.username}")	
+	public void setUsername(String username) {this.username = username;}
+	@Value("${tripoin.web.app.password}")
+	public void setPassword(String password) {this.password = password;}
 
 	@Override
 	public GeneralTransferObject registerWithFacebook(DTORequestSignUpFacebook<FacebookProfileData, CustomerData> dtoRequestSignUp) {
 		stateFullRest.clearAllCookies();
+		stateFullRest.setUsername(this.username);
+		stateFullRest.setPassword(this.password);
 		GeneralTransferObject generalTransferObject = stateFullRest.post(
 				commonRest.getUrl(WebServiceConstant.HTTP_SIGNUP_FACEBOOK), 
 				dtoRequestSignUp,
