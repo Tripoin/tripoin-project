@@ -146,7 +146,7 @@ public class SignUpScreen extends CssLayout implements View {
         signUpForm.addComponent(phoneNumberTextField = new TextField("Phone No."));
         phoneNumberTextField.setWidth(12, Unit.EM);
         phoneNumberTextField.setDescription("Phone No.");
-        phoneNumberTextField.setMaxLength(15);
+        phoneNumberTextField.setMaxLength(16);
         phoneNumberTextField.setRequired(true);
         signUpForm.addComponent(emailTextField = new TextField("Email"));
         emailTextField.setWidth(12, Unit.EM);
