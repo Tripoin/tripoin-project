@@ -20,6 +20,7 @@
 	<import resource="applicationContext-http-int-report.xml" />
 	<import resource="applicationContext-http-int-upload.xml" />
 	<import resource="applicationContext-http-int-sign-up.xml" />
+	<import resource="applicationContext-http-int-product.xml" />
 	
 	<int:annotation-config/>		
 

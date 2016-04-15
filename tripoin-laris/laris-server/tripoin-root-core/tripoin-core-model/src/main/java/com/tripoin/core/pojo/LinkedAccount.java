@@ -32,6 +32,7 @@ public class LinkedAccount extends AGeneralAuditTrail {
     private String authorization;
     private String token;
     private String userCredentials;
+    private String additionalData;
     private APIType apiType;
     private Profile profile;
 
@@ -111,6 +112,15 @@ public class LinkedAccount extends AGeneralAuditTrail {
 		this.userCredentials = userCredentials;
 	}
 
+	@Column(name="linked_account_additional_data")
+	public String getAdditionalData() {
+		return additionalData;
+	}
+
+	public void setAdditionalData(String additionalData) {
+		this.additionalData = additionalData;
+	}
+
 	@ManyToOne
     @JoinColumn(name = "api_type_id")
 	public APIType getApiType() {
@@ -141,8 +151,8 @@ public class LinkedAccount extends AGeneralAuditTrail {
 		return "LinkedAccount [id=" + id + ", code=" + code + ", name=" + name
 				+ ", username=" + username + ", photo=" + photo
 				+ ", authorization=" + authorization + ", token=" + token
-				+ ", userCredentials=" + userCredentials + ", apiType="
-				+ apiType + ", profile.id=" + profile.getId() + "]";
+				+ ", userCredentials=" + userCredentials + ", additionalData=" + additionalData
+				+ ", apiType=" + apiType + ", profile.id=" + profile.getId() + "]";
 	}	
 	
 }
